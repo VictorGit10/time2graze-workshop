@@ -1,8 +1,9 @@
 import { Clock3 } from 'lucide-react';
+import { AGENDA } from '@/data/agenda';
 import type { Day, Session, Track } from '@/data/types';
 import { VENUES } from '@/data/venues';
 import {
-  axisBounds, axisTicks, durationOf, isEvening, sessionTitle, timeLabel, toMinutes,
+  axisBounds, axisTicks, dayLabel, durationOf, isEvening, sessionTitle, timeLabel, toMinutes,
 } from '@/lib/schedule';
 
 /** Minutes offset from the top of the axis, as a CSS custom property. */
@@ -153,7 +154,7 @@ function Timeline({ day }: { day: Day }) {
  * proportional axis, and is what small screens and print use — forcing the
  * diagram into 375px would turn the signature into an obstacle.
  */
-function List({ sessions }: { sessions: Session[] }) {
+function List({ sessions, anchors = true }: { sessions: Session[]; anchors?: boolean }) {
   return (
     <ol className="session-list">
       {sessions.map((session) => {
@@ -161,7 +162,7 @@ function List({ sessions }: { sessions: Session[] }) {
         const who = speakerOf(session);
 
         return (
-          <li className="session" key={session.id} data-session={session.id}>
+          <li className="session" key={session.id} data-session={anchors ? session.id : undefined}>
             <p className="session-time">
               <Clock3 aria-hidden="true" />
               <span>{timeLabel(session)}</span>
@@ -223,6 +224,26 @@ export function Programme({ day }: { day: Day }) {
       {/* The same day as a list: the only version small screens and print show,
           and the one assistive technology reads. */}
       <List sessions={day.sessions} />
+    </div>
+  );
+}
+
+/**
+ * Every day, in order, for paper. The interactive panel holds one day at a
+ * time, so printing it would silently produce a single day — this block is
+ * what the print stylesheet shows instead.
+ */
+export function ProgrammeForPrint() {
+  return (
+    <div className="print-programme" aria-hidden="true">
+      {AGENDA.map((day) => (
+        <section className="print-day" key={day.date}>
+          <h3 className="print-day-title">
+            Day {day.index} — {dayLabel(day.date)} — {day.label}
+          </h3>
+          <List sessions={day.sessions} anchors={false} />
+        </section>
+      ))}
     </div>
   );
 }

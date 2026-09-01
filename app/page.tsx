@@ -5,7 +5,7 @@ import {
   ArrowDown, BusFront, CalendarDays, ChevronRight, CircleAlert, ExternalLink,
   FileText, FolderOpen, Hotel, Info, MapPin, Presentation, UtensilsCrossed,
 } from 'lucide-react';
-import { Programme } from '@/components/programme';
+import { Programme, ProgrammeForPrint } from '@/components/programme';
 import { AGENDA } from '@/data/agenda';
 import { MATERIAL_GROUPS } from '@/data/materials';
 import { MAP_VENUES } from '@/data/venues';
@@ -159,6 +159,8 @@ export default function Home() {
           <aside className="day-summary"><span>{dayShort(day)}</span><p>{dayLabel(day.date)}</p><h3>{day.label}</h3><small>{day.sessions.length} scheduled items</small></aside>
           <Programme day={day} />
         </div>
+
+        <ProgrammeForPrint />
       </section>
 
       <section className="materials section-pad" id="materials">

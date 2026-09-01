@@ -340,3 +340,66 @@ footer > a:last-child svg { width: 12px; height: 12px; transform: rotate(180deg)
 /* Os títulos de sessão são dado funcional, não display: Manrope nas duas
    representações. A serifada fica para os títulos de seção e os nomes dos dias. */
 .tl-title, .tl-track-title, .session-body h4, .session-tracks strong { font-family: var(--font-sans), Arial, sans-serif; }
+
+/* --- Impressão --------------------------------------------------------------
+   O painel interativo guarda um dia por vez, então imprimi-lo entregaria um
+   dia só, em silêncio. O bloco .print-programme carrega os cinco e é ele que
+   aparece no papel. */
+
+.print-programme { display: none; }
+
+@media print {
+  @page { margin: 15mm; }
+
+  body { background: #fff; font-size: 10pt; }
+
+  /* Bandas tonalizadas gastam tinta e não informam nada no papel. */
+  .overview, .materials, .practical, .maps, .agenda-section, footer,
+  .practical-card, .location-selector, .fact-list, .objective-block,
+  .institutional-hero { background: #fff !important; }
+
+  /* Controles não têm sentido no papel; iframes de mapa, menos ainda. */
+  .site-header,
+  .information-nav,
+  .hero-actions,
+  .event-visual,
+  .skip-link,
+  .day-tabs,
+  .agenda-panel,
+  .materials,
+  .map-frame,
+  .split-title > span,
+  footer > a,
+  footer > .brand { display: none !important; }
+
+  .print-programme { display: block; }
+  /* O título da seção já anuncia a programação; o respiro de tela é excesso. */
+  .agenda-section .section-title { margin-bottom: 10pt; }
+
+  .institutional-hero { display: block; min-height: 0; border: 0; }
+  .event-summary { padding: 0; }
+  .event-summary h1 { font-size: 24pt; line-height: 1.05; }
+  .event-objective { max-width: none; margin-top: 10pt; font-size: 10pt; }
+  .hero-meta { margin-top: 8pt; }
+
+  .section-pad { padding: 14pt 0 0; }
+  .section-title h2 { font-size: 16pt; }
+  .objective-block p { font-size: 11pt; }
+  .overview-layout, .practical-grid { break-inside: avoid; }
+
+  /* Um dia por página, e nenhuma sessão partida ao meio. */
+  .print-day { break-before: page; }
+  .print-day:first-child { break-before: auto; }
+  .print-day-title { margin: 0 0 8pt; padding-bottom: 5pt; border-bottom: 1px solid #000; font-size: 12pt; font-weight: 700; }
+  .print-programme .session-list { padding: 0; }
+  .print-programme .session { break-inside: avoid; padding: 7pt 0; grid-template-columns: 92pt 1fr; }
+  .print-programme .session-time svg { display: none; }
+
+  /* Sem o mapa, a lista de locais é a informação que resta. */
+  .maps-layout { display: block; min-height: 0; border: 0; }
+  .location-selector { border-right: 0; }
+  .location-selector button { width: 100%; text-align: left; }
+
+  .practical-card, .recommendation-list article { break-inside: avoid; }
+  .tl-tbd, .resource-item em { border: 1px solid #000; }
+}

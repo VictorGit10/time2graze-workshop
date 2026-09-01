@@ -155,6 +155,20 @@ Decisions that came out of building it, and that are easy to break:
   The serif stays for section titles and day names.
 - 76px per hour, half-hour rules, hours labelled.
 
+### Print
+
+- **A separate block, `ProgrammeForPrint`, holds all five days.** The
+  interactive panel carries one day, so printing it would quietly produce a
+  single day. The print stylesheet hides the panel and shows this block.
+- **The print lists carry no `data-session`.** Duplicating the anchors would
+  give the deep-link lookup two matches for the same session.
+- One day per page (`break-before: page`, `auto` on the first), no session
+  split across a page break.
+- Interactive chrome, the hero image, the materials list and the map iframes
+  are dropped; venue names, practical information and recommendations stay.
+  Section backgrounds are forced white — tinted bands spend ink and say
+  nothing on paper.
+
 ### Deep links
 
 `#day-3` opens that day; a session id opens its day and scrolls to it.
