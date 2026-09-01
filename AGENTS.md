@@ -73,6 +73,69 @@ fact first.
   the reader how to use it, the section is wrong.
 - **English only.** The working language of the workshop.
 
+## Design direction
+
+The register is **sober institutional**, in the manner of Land & Carbon Lab
+(landcarbonlab.org) — the consortium's parent brand. Restraint, real
+photography, generous whitespace, no ornament. The previous edition's site
+(Global Pasture Watch, Pirenópolis) is the content model; this one should
+carry the same information with far better execution.
+
+**Palette and type are settled.** Cream-green paper (`--paper: #f5f6f2`), dark
+forest (`--forest: #184b39`), pale lime accent (`--accent: #dce89b`) — the lime
+deliberately rhymes with Land & Carbon Lab's accent. Cormorant Garamond for
+display, Manrope for text.
+
+**Know this hazard:** cream background plus high-contrast serif is the single
+most common look in AI-generated design right now. This palette sits next to
+it. What keeps the site from reading as generated is not the colour — it is
+structure and detail. Do not try to fix "it looks AI-made" by changing the
+palette; fix it by making the structure specific to this content.
+
+**The thesis is measured time.** Five days, 45 sessions, a strict clock, people
+arriving from seven time zones. The programme is not one section among others —
+it is why the site exists. Everything else is reference material.
+
+**The signature is the programme, drawn to scale.** The vertical axis is real
+time: a three-hour workshop occupies three times the height of a forty-five
+minute country presentation, so the shape of a day is visible at a glance.
+Parallel sessions (Day 1 at 10:00, Day 4 at 14:00) sit side by side, because
+that is what they are — a flat list renders a split session as one line and
+hides the choice the participant has to make.
+
+That is the one bold move. Everything around it stays quiet. Structure should
+encode something true about the content; if a device is only decorative, cut
+it.
+
+## Functional standard
+
+Refinement here means utility executed well, not features added:
+
+- **"Today" state.** During 14–18 September the site opens on the current day
+  and marks the running session. Invisible before, essential during.
+- **Add to calendar.** Generated `.ics`, per day and per session. For thirty
+  people travelling internationally this is the highest-return feature on the
+  site.
+- **Deep links.** `#day-3` and a stable anchor per session, so a material or a
+  message can point at one session.
+- **Print stylesheet.** People print agendas. Five days, clean, on A4.
+- **Requirements, stated early.** Day 1 includes a Google Earth Engine course;
+  participants need a laptop and a registered account before Monday morning.
+- **Accessibility section**, with a route to ask for support.
+
+## Type and detail rules
+
+- **Nothing below 12px.** The current CSS bottoms out at 8px for uppercase
+  eyebrow labels (`.event-label`, `.information-nav span`, `.event-visual p`).
+  That is both an accessibility failure and one of the most recognisable tells
+  of generated layout. Raise the floor.
+- **Tabular numerals for times** (`font-variant-numeric: tabular-nums`) so the
+  time column aligns exactly.
+- **No third typeface.** Cormorant Garamond and Manrope are enough. Reach for
+  weight, size and spacing before reaching for a new family.
+- **Photography must be of the real place.** The Cerrado, the campus, Cidade de
+  Goiás. Never stock, and never decorative imagery standing in for a place.
+
 ## Planned scope
 
 The empty-looking sections are **deliberate stubs**, not clutter to remove.
