@@ -425,3 +425,8 @@ footer > a:last-child svg { width: 12px; height: 12px; transform: rotate(180deg)
 @media print {
   .tl-now, .tl-mark, .tab-today { display: none !important; }
 }
+
+/* O bloco noturno fica fora do eixo, então a sessão em curso ali precisa de
+   um destaque próprio: a linha do agora não chega até ele. */
+.tl-evening-items p[data-state='running'] { padding-left: 10px; border-left: 3px solid var(--forest); margin-left: -13px; }
+.tl-evening-items p[data-state='next'] { padding-left: 10px; border-left: 3px solid var(--accent); margin-left: -13px; }

@@ -261,9 +261,10 @@ export function Programme({ day, clock }: { day: Day; clock: Clock | null }) {
           <h4 className="tl-evening-title">Evening</h4>
           <div className="tl-evening-items">
             {evening.map((s) => (
-              <p key={s.id} data-session={s.id}>
+              <p key={s.id} data-session={s.id} data-state={marks(s) ?? undefined}>
                 <span className="tl-time">{timeLabel(s)}</span>
                 {sessionTitle(s)}
+                <Mark state={marks(s)} />
               </p>
             ))}
           </div>
