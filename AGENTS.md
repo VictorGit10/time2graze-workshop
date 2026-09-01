@@ -311,27 +311,37 @@ and do not fill them with invented detail in the meantime.
 ## Layout
 
 ```
-app/page.tsx      The entire site. Content arrays at the top, JSX below.
-app/globals.css   All styles (~230 lines). Imports Tailwind for its reset only;
-                  the markup uses semantic class names, not utility classes.
-app/layout.tsx    Fonts and metadata (title, description, Open Graph).
-public/           Hero image, favicon, og.png.
-components/ui/    60 unused shadcn components. Nothing imports them.
+app/page.tsx                 Page composition and interactive day/map state.
+app/globals.css              Shared tokens, screen, responsive and print styles.
+app/layout.tsx               Fonts and metadata (title, description, Open Graph).
+components/programme.tsx     Proportional, chronological and print programmes.
+data/agenda.ts               The five days, sessions, tracks and materials.
+data/types.ts                Content contracts.
+data/venues.ts               The single venue registry.
+hooks/use-workshop-clock.ts  Client clock with a null server snapshot.
+lib/deep-link.ts             Day/session hash resolution and scrolling.
+lib/materials.ts             Materials view derived from the agenda.
+lib/now.ts                   Goiânia clock and Today/Now/Next rules.
+lib/schedule.ts              Time, duration and programme-axis helpers.
+public/                      Hero, social preview, favicon and candidate logos.
+research/logos/              Logo provenance and previous-site references.
+components/ui/               60 unused shadcn components. Nothing imports them.
 ```
 
-`app/page.tsx` is `'use client'` because the day tabs and map selector use
-`useState`. That is the only reason.
+`app/page.tsx` is `'use client'` because day/map selection, deep-link handling
+and the workshop clock are client behaviour. Content remains in typed data
+modules rather than being declared inside the component.
 
-## Content lives at the top of app/page.tsx
+## Where content lives
 
-Three arrays, before the component:
-
-- `agenda` — the five days and every session
-- materials — declared on the session or track that produces them
-- `locations` — venues shown in the map panel
-
-To change a session time or add a presenter, edit `agenda`. Nothing else needs
-to move.
+- Edit `data/agenda.ts` to change a session, presenter, track, requirement or
+  expected material.
+- Edit `data/venues.ts` to change a venue or map query. The programme and maps
+  share this registry.
+- Materials are declared on the day, session or track that produces them.
+  `lib/materials.ts` aggregates them; do not recreate a hand-maintained list.
+- `app/page.tsx` composes the data. Do not move operational facts back into its
+  JSX.
 
 ## Images
 
@@ -388,6 +398,19 @@ highest-value work available on this project:
 - Dietary requirements: how participants report them, and by when
 - Day 5: the two grazing livestock farms are still "TBD"
 - Workshop emergency contact and nearest hospital
+- Accessibility arrangements and a contact route for support
+- Partner matrix: approved institutions, their roles (project, funder, host,
+  co-lead or technical partner), order, links and permission to display marks
 
 The hotel blocks everyone — participants from seven countries are booking
 international flights.
+
+## Known technical debt
+
+- `components/ui/` contains 60 generated shadcn components that the site does
+  not import, along with dependencies used only by that scaffold. Remove them
+  as one mechanical cleanup commit, not mixed into feature or content work.
+- Global `npm run lint` currently reports accessibility/compiler findings in
+  those unused components and `next/no-img-element` for the pre-optimised hero
+  image. Targeted TypeScript checks for the active site pass; the repository
+  should return to a clean global lint when the scaffold cleanup is done.
