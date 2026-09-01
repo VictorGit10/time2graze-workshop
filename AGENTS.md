@@ -136,6 +136,25 @@ here is correct, not a compromise.
 Everything around the programme stays quiet. Structure should encode something
 true about the content; if a device is only decorative, cut it.
 
+### How the grid is built
+
+Decisions that came out of building it, and that are easy to break:
+
+- **The two representations live in the same DOM.** The grid is `aria-hidden`;
+  the chronological list is what assistive technology reads at every width. On
+  large screens the list is clipped out of sight rather than `display: none`,
+  so screen-reader users are never left with an absolutely-positioned diagram
+  as their only source.
+- **The time sits in a column inside each block, not stacked above the title.**
+  Stacking costs about 20px of height, which a 45-minute block at 76px/hour
+  does not have — that alone clipped 11 of the blocks.
+- **Blocks under 45 minutes lay out on one row** (`data-compact`), because
+  three stacked lines do not fit in 38px.
+- **Session titles are Manrope in both representations.** They are functional
+  data, and Cormorant Garamond loses legibility at 13–14px in a narrow block.
+  The serif stays for section titles and day names.
+- 76px per hour, half-hour rules, hours labelled.
+
 ## Functional standard
 
 Refinement here means utility executed well, not features added:

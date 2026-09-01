@@ -131,16 +131,6 @@ button { color: inherit; font: inherit; }
 .day-summary p { margin: 100px 0 8px; color: var(--muted); font-size: var(--t-meta); font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
 .day-summary h3 { margin: 0; font-family: var(--font-serif), Georgia, serif; font-size: 42px; font-weight: 600; }
 .day-summary small { display: block; margin-top: 12px; color: var(--muted); font-size: var(--t-meta); }
-.session-list { padding: 0 34px; }
-.session { display: grid; grid-template-columns: 32px 155px minmax(0, 1fr) 26px; align-items: center; gap: 18px; min-height: 80px; border-bottom: 1px solid var(--line); }
-.session:last-child { border-bottom: 0; }
-.session-index { color: var(--muted); font-size: var(--t-label); font-weight: 800; }
-.session time {
-  font-variant-numeric: tabular-nums; display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: var(--t-meta-lg); font-weight: 800; white-space: nowrap; }
-.session time svg { width: 12px; height: 12px; }
-.session h4 { margin: 0; font-family: var(--font-serif), Georgia, serif; font-size: clamp(16px, 1.35vw, 20px); font-weight: 600; line-height: 1.3; }
-.session-icon { display: grid; place-items: center; width: 25px; height: 25px; background: var(--surface-soft); border-radius: 50%; }
-.session-icon svg { width: 11px; height: 11px; }
 
 .materials { background: var(--paper); }
 .materials-notice { display: flex; gap: 14px; max-width: 780px; margin: -20px 0 52px; padding: 18px 20px; color: var(--text); background: var(--surface-soft); border-left: 3px solid var(--forest); }
@@ -267,3 +257,86 @@ footer > a:last-child svg { width: 12px; height: 12px; transform: rotate(180deg)
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition-duration: .01ms !important; }
 }
+
+/* --- Programação -----------------------------------------------------------
+   Duas representações do mesmo dia. A grade proporcional desenha o tempo real
+   e vale só em telas largas; a lista cronológica carrega a mesma informação e
+   é o que aparece no celular, na impressão e para leitores de tela — a grade
+   é aria-hidden, porque um diagrama posicionado em absoluto lê muito mal. */
+
+.programme { --hour: 76px; }
+
+/* Converte minutos em pixels: a única regra da qual a proporção depende. */
+.timeline { display: grid; grid-template-columns: 62px 1fr; gap: 18px; margin-top: 8px; }
+.tl-axis { position: relative; height: calc(var(--span) * var(--hour) / 60); }
+.tl-body { position: relative; height: calc(var(--span) * var(--hour) / 60); }
+
+.tl-tick { position: absolute; top: calc(var(--start) * var(--hour) / 60); right: 0; color: var(--muted); font-size: var(--t-label); font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1; transform: translateY(-50%); }
+.tl-rule { position: absolute; top: calc(var(--start) * var(--hour) / 60); right: 0; left: 0; border-top: 1px solid var(--line); opacity: .45; }
+.tl-rule[data-hour] { opacity: 1; }
+
+.tl-block { position: absolute; top: calc(var(--start) * var(--hour) / 60); right: 0; left: 0; display: grid; grid-template-columns: 92px 1fr; gap: 14px; overflow: hidden; align-content: center; padding: 7px 14px; background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--forest); border-radius: var(--radius); height: calc(var(--dur) * var(--hour) / 60); }
+.tl-block .tl-time { margin: 0; color: var(--muted); font-size: var(--t-label); font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.35; }
+.tl-block-body { min-width: 0; }
+.tl-block-meta { display: flex; flex-wrap: wrap; gap: 9px; align-items: center; margin: 4px 0 0; }
+.tl-title { margin: 0; font-size: var(--t-meta-lg); font-weight: 700; line-height: 1.3; }
+.tl-who { margin: 2px 0 0; color: var(--muted); font-size: var(--t-meta); }
+.tl-where { color: var(--muted); font-size: var(--t-meta); }
+
+/* Refeições, cafés e deslocamentos ocupam o mesmo tempo, com menos peso. */
+.tl-block[data-kind='meal'], .tl-block[data-kind='break'], .tl-block[data-kind='transport'], .tl-block[data-kind='social'] { border-left-color: var(--line); background: var(--surface-soft); }
+.tl-block[data-kind='field'] { border-left-color: var(--accent); }
+
+.tl-tbd { padding: 2px 7px; color: var(--warning); background: var(--warning-bg); border-radius: 99px; font-size: var(--t-label); font-style: normal; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+
+.tl-split-label { margin: 0 0 6px; color: var(--forest); font-size: var(--t-label); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.tl-tracks { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.tl-track { padding: 8px 11px; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); }
+.tl-track-title { margin: 0; font-size: var(--t-meta-lg); font-weight: 700; line-height: 1.3; }
+
+/* Início sem término registrado: marca no eixo, sem altura. */
+.tl-point { position: absolute; top: calc(var(--start) * var(--hour) / 60); right: 0; left: 0; display: flex; gap: 10px; align-items: baseline; padding-left: 4px; transform: translateY(-9px); }
+.tl-dot { flex: none; width: 6px; height: 6px; background: var(--muted); border-radius: 50%; transform: translateY(-2px); }
+.tl-point .tl-time { margin: 0; color: var(--muted); font-size: var(--t-label); font-weight: 700; font-variant-numeric: tabular-nums; }
+.tl-point-title { margin: 0; font-size: var(--t-meta); }
+
+.tl-evening { display: grid; grid-template-columns: 62px 1fr; gap: 18px; margin-top: 26px; padding-top: 20px; border-top: 1px solid var(--ink); }
+.tl-evening-title { margin: 0; color: var(--muted); font-size: var(--t-label); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.tl-evening-items { display: grid; gap: 8px; }
+.tl-evening-items p { display: flex; gap: 14px; margin: 0; font-size: var(--t-meta-lg); }
+.tl-evening-items .tl-time { flex: none; min-width: 96px; color: var(--muted); font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* A lista. No desktop sai de vista sem sair da árvore de acessibilidade. */
+@media (min-width: 1000px) {
+  .programme > .session-list { position: absolute; overflow: hidden; clip-path: inset(50%); width: 1px; height: 1px; white-space: nowrap; }
+}
+
+@media (max-width: 999px) {
+  .timeline, .tl-evening { display: none; }
+}
+
+.session-list { display: grid; gap: 0; margin: 0; padding: 0 34px; list-style: none; }
+.session-list .session { display: grid; grid-template-columns: 128px 1fr; gap: 18px; padding: 15px 0; border-top: 1px solid var(--line); }
+.session-list .session:first-child { border-top: 0; }
+.session-time { display: flex; gap: 8px; align-items: center; margin: 0; color: var(--muted); font-size: var(--t-meta); font-weight: 700; font-variant-numeric: tabular-nums; }
+.session-time svg { width: 14px; height: 14px; }
+.session-body h4 { margin: 0; font-size: var(--t-body); font-weight: 700; line-height: 1.35; }
+.session-tracks { display: grid; gap: 7px; margin: 0; padding: 0; list-style: none; }
+.session-tracks li { padding-left: 12px; border-left: 2px solid var(--line); }
+.session-tracks strong { display: block; font-size: var(--t-meta-lg); }
+.session-meta { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 5px 0 0; }
+.session-meta:empty { display: none; }
+
+@media (max-width: 620px) {
+  .session-list .session { grid-template-columns: 1fr; gap: 6px; }
+}
+
+/* Blocos abaixo de 45 minutos: uma linha só, para nada ser cortado. */
+.tl-block[data-compact] { padding-block: 0; }
+.tl-block[data-compact] .tl-block-body { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; }
+.tl-block[data-compact] .tl-title { font-size: var(--t-meta); }
+.tl-block[data-compact] .tl-block-meta { margin: 0; }
+
+/* Os títulos de sessão são dado funcional, não display: Manrope nas duas
+   representações. A serifada fica para os títulos de seção e os nomes dos dias. */
+.tl-title, .tl-track-title, .session-body h4, .session-tracks strong { font-family: var(--font-sans), Arial, sans-serif; }

@@ -2,22 +2,14 @@
 
 import { useState } from 'react';
 import {
-  ArrowDown, BusFront, CalendarDays, ChevronRight, CircleAlert, Clock3, Coffee,
-  ExternalLink, FileText, FolderOpen, Hotel, Info, MapPin,
-  Presentation, UtensilsCrossed,
+  ArrowDown, BusFront, CalendarDays, ChevronRight, CircleAlert, ExternalLink,
+  FileText, FolderOpen, Hotel, Info, MapPin, Presentation, UtensilsCrossed,
 } from 'lucide-react';
+import { Programme } from '@/components/programme';
 import { AGENDA } from '@/data/agenda';
 import { MATERIAL_GROUPS } from '@/data/materials';
-import type { SessionKind } from '@/data/types';
 import { MAP_VENUES } from '@/data/venues';
-import { dayLabel, dayShort, sessionTitle, timeLabel } from '@/lib/schedule';
-
-function SessionIcon({ kind }: { kind: SessionKind }) {
-  if (kind === 'meal' || kind === 'social') return <UtensilsCrossed aria-hidden="true" />;
-  if (kind === 'break') return <Coffee aria-hidden="true" />;
-  if (kind === 'transport' || kind === 'field') return <BusFront aria-hidden="true" />;
-  return <ChevronRight aria-hidden="true" />;
-}
+import { dayLabel, dayShort } from '@/lib/schedule';
 
 /**
  * Arrow-key navigation between tabs, which `role="tab"` requires and the
@@ -116,16 +108,7 @@ export default function Home() {
         </div>
         <div className="agenda-panel" id="day-panel" role="tabpanel" aria-labelledby={`day-tab-${activeDay}`}>
           <aside className="day-summary"><span>{dayShort(day)}</span><p>{dayLabel(day.date)}</p><h3>{day.label}</h3><small>{day.sessions.length} scheduled items</small></aside>
-          <div className="session-list">
-            {day.sessions.map((session, index) => (
-              <article className="session" key={session.id}>
-                <span className="session-index">{String(index + 1).padStart(2, '0')}</span>
-                <time><Clock3 aria-hidden="true" />{timeLabel(session)}</time>
-                <h4>{sessionTitle(session)}</h4>
-                <span className="session-icon"><SessionIcon kind={session.kind} /></span>
-              </article>
-            ))}
-          </div>
+          <Programme day={day} />
         </div>
       </section>
 

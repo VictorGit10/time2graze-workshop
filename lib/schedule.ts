@@ -65,3 +65,47 @@ export function sessionTitle(session: Session) {
 export function dayShort(day: Day) {
   return `Day ${day.index}`;
 }
+
+/** Activities from this hour on move to the evening block, below the axis. */
+export const EVENING_FROM = 18 * 60;
+
+/** '14:30' -> 870 */
+export function toMinutes(hhmm: string) {
+  const [h, m] = hhmm.split(':').map(Number);
+  return h * 60 + m;
+}
+
+/** Minutes, or null when no end time has been recorded. */
+export function durationOf(session: Session) {
+  return session.end ? toMinutes(session.end) - toMinutes(session.start) : null;
+}
+
+export function isEvening(session: Session) {
+  return toMinutes(session.start) >= EVENING_FROM;
+}
+
+/**
+ * The span the time axis has to cover: from the first start to the last
+ * recorded moment, ignoring the evening block. Point markers contribute their
+ * start only — an unknown end never stretches the axis.
+ */
+export function axisBounds(day: Day) {
+  const daytime = day.sessions.filter((s) => !isEvening(s));
+  const starts = daytime.map((s) => toMinutes(s.start));
+  const ends = daytime.map((s) => (s.end ? toMinutes(s.end) : toMinutes(s.start)));
+  return { from: Math.min(...starts), to: Math.max(...ends) };
+}
+
+/** Half-hour ticks across the axis, the hour ones labelled. */
+export function axisTicks(day: Day) {
+  const { from, to } = axisBounds(day);
+  const ticks = [];
+  for (let m = Math.floor(from / 30) * 30; m <= to; m += 30) {
+    ticks.push({
+      minutes: m,
+      onTheHour: m % 60 === 0,
+      label: `${String(Math.floor(m / 60)).padStart(2, '0')}:00`,
+    });
+  }
+  return ticks;
+}
