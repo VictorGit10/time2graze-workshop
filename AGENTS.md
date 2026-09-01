@@ -368,6 +368,8 @@ lib/deep-link.ts             Day/session hash resolution and scrolling.
 lib/materials.ts             Materials view derived from the agenda.
 lib/now.ts                   Goiânia clock and Today/Now/Next rules.
 lib/schedule.ts              Time, duration and programme-axis helpers.
+next.config.ts               Static export, trailing slash and the Pages basePath.
+postcss.config.mjs           Tailwind, imported by globals.css for its reset only.
 public/                      Hero, social preview, favicon and candidate logos.
 research/logos/              Logo provenance and previous-site references.
 components/ui/               60 unused shadcn components. Nothing imports them.
@@ -416,21 +418,38 @@ compatibility.
 
 ```
 npm run dev     Local dev server on :3000
-npm run build   Production build into dist/
+npm run build   Static export into out/
 npm run lint    oxlint
 ```
 
 Pushing to `main` triggers `.github/workflows/deploy-pages.yml`, which builds
-and publishes to https://victorgit10.github.io/time2graze-workshop/
+and publishes `out/` to https://victorgit10.github.io/time2graze-workshop/
+
+**Why Next.js and not `vinext`.** The site was built on `vinext`
+1.0.0-beta.5 until September 2026. Its static export could not emit a second
+route: a throwaway `/probe` returning nothing but an `<h1>` was classified
+`? Unknown` and skipped, no `probe/index.html` was written anywhere in
+`dist/`, **and the build still exited successfully.** A silent 404 in
+production is not an acceptable failure mode for a site people read while
+travelling. Next.js `output: 'export'` writes one HTML file per route. If the
+toolchain is ever changed again, prove routing with a throwaway route and a
+real deploy before moving any content.
 
 GitHub Pages is the **current** host, chosen to get the site up quickly; it is
-not a permanent commitment. The project still carries a Cloudflare Workers
-config (`wrangler`, `@cloudflare/vite-plugin`) if it needs to move — which it
-would, for example, to serve a private site or a custom domain.
+not a permanent commitment. The Cloudflare Workers configuration was removed
+with `vinext`, since it depended on that server; moving host again means
+choosing a new target, not restoring the old one.
 
-`NEXT_PUBLIC_BASE_PATH` is set by the deploy workflow from the repository name,
-so every asset path goes through it — see the hero `<img>` in `page.tsx` and
-the favicon in `layout.tsx`. Do not hardcode a leading `/`.
+`NEXT_PUBLIC_BASE_PATH` is set by the deploy workflow from the repository name.
+Know what it does and does not cover:
+
+- `basePath` in `next.config.ts` prefixes `next/link` hrefs and everything
+  under `_next/` automatically. Route with `next/link`.
+- It does **not** touch a plain `<img src>`, a raw `<a href>` or a metadata
+  icon. Those read `process.env.NEXT_PUBLIC_BASE_PATH` themselves — see the
+  hero image in `page.tsx` and the favicon in `layout.tsx`.
+
+Never hardcode a leading `/` into a path.
 
 ## Waiting on the LAPIG team
 

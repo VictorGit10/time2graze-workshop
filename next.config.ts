@@ -1,11 +1,21 @@
 import type { NextConfig } from 'next';
 
+/**
+ * GitHub Pages serves the site from a repository subpath, so every route and
+ * asset has to carry it. `basePath` applies it to `next/link` and to the
+ * `_next` bundle automatically; do not hand-write it into an href.
+ */
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
 
 const nextConfig: NextConfig = {
+  // One HTML file per route, in `out/` — the whole reason for this toolchain.
   output: 'export',
+  // `out/programme/index.html` rather than `out/programme.html`, which Pages
+  // would not serve at `/programme/`.
   trailingSlash: true,
-  assetPrefix: basePath,
+  basePath,
+  // No image server exists on Pages.
+  images: { unoptimized: true },
 };
 
 export default nextConfig;
