@@ -356,10 +356,17 @@ and do not fill them with invented detail in the meantime.
 ## Layout
 
 ```
-app/page.tsx                 Page composition and interactive day/map state.
+app/layout.tsx               Fonts, metadata, and the header/footer every page gets.
+app/page.tsx                 Home: hero, today's session, directory, overview.
+app/programme/page.tsx       Day tabs, deep links and the printable programme.
+app/materials/page.tsx       Materials by day. A server component: no state.
+app/practical/page.tsx       Stay, meals, transport, maps and recommendations.
 app/globals.css              Shared tokens, screen, responsive and print styles.
-app/layout.tsx               Fonts and metadata (title, description, Open Graph).
+components/site-header.tsx   Persistent navigation, with the current page marked.
+components/site-footer.tsx   Footer, shared by every page.
+components/now-next.tsx      The home page's "happening now", workshop week only.
 components/programme.tsx     Proportional, chronological and print programmes.
+hooks/use-tab-keys.ts        Arrow-key movement for the day and location tablists.
 data/agenda.ts               The five days, sessions, tracks and materials.
 data/types.ts                Content contracts.
 data/venues.ts               The single venue registry.
@@ -375,20 +382,23 @@ research/logos/              Logo provenance and previous-site references.
 components/ui/               60 unused shadcn components. Nothing imports them.
 ```
 
-`app/page.tsx` is `'use client'` because day/map selection, deep-link handling
-and the workshop clock are client behaviour. Content remains in typed data
-modules rather than being declared inside the component.
+Only the pages that need the browser are client components: `/programme/`
+(day selection, deep links, the clock) and `/practical/` (the map tablist).
+`/materials/` is a plain server component and ships no JavaScript of its own;
+keep it that way. Content stays in typed data modules rather than being
+declared inside a component.
 
 ## Where content lives
 
 - Edit `data/agenda.ts` to change a session, presenter, track, requirement or
-  expected material.
+  expected material. It feeds `/programme/`, `/materials/` and the home page's
+  "happening now" band at once.
 - Edit `data/venues.ts` to change a venue or map query. The programme and maps
   share this registry.
 - Materials are declared on the day, session or track that produces them.
   `lib/materials.ts` aggregates them; do not recreate a hand-maintained list.
-- `app/page.tsx` composes the data. Do not move operational facts back into its
-  JSX.
+- The four page components compose the data. Do not move operational facts
+  back into their JSX.
 
 ## Images
 

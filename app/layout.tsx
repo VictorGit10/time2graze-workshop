@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import { SiteFooter } from '@/components/site-footer';
+import { SiteHeader } from '@/components/site-header';
 import { Cormorant_Garamond, Manrope } from 'next/font/google';
 import './globals.css';
 
@@ -28,5 +30,16 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body className={`${sans.variable} ${serif.variable}`}>{children}</body></html>;
+  return (
+    <html lang="en">
+      <body className={`${sans.variable} ${serif.variable}`}>
+        {/* Ahead of the header, so the first tab stop on every page skips the
+            navigation rather than walking through it. */}
+        <a className="skip-link" href="#content">Skip to the content</a>
+        <SiteHeader />
+        <main id="content">{children}</main>
+        <SiteFooter />
+      </body>
+    </html>
+  );
 }
