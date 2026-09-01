@@ -107,7 +107,7 @@ export default function Home() {
 
       <section className="agenda-section section-pad" id="agenda">
         <div className="section-title split-title"><div><p>Programme</p><h2>Daily schedule</h2></div><span>Draft programme · Five working days</span></div>
-        <div className="day-tabs" role="tablist" aria-label="Workshop days" onKeyDown={onDayKeys}>
+        <div className="day-tabs" role="tablist" aria-label="Workshop days" tabIndex={-1} onKeyDown={onDayKeys}>
           {AGENDA.map((item, index) => (
             <button key={item.date} type="button" role="tab" aria-selected={activeDay === index} aria-controls="day-panel" id={`day-tab-${index}`} tabIndex={activeDay === index ? 0 : -1} onClick={() => setActiveDay(index)}>
               <span>{dayShort(item)}</span><strong>{dayLabel(item.date)}</strong><small>{item.label}</small>
@@ -185,7 +185,7 @@ export default function Home() {
       <section className="maps section-pad" id="maps">
         <div className="section-title split-title"><div><p>Maps and venues</p><h2>Workshop locations</h2></div><span>Use the list to inspect each location</span></div>
         <div className="maps-layout">
-          <div className="location-selector" role="tablist" aria-label="Workshop locations" onKeyDown={onMapKeys}>
+          <div className="location-selector" role="tablist" aria-label="Workshop locations" tabIndex={-1} onKeyDown={onMapKeys}>
             {MAP_VENUES.map((location, index) => (
               <button key={location.id} type="button" role="tab" aria-selected={activeMap === index} aria-controls="map-panel" id={`map-tab-${index}`} tabIndex={activeMap === index ? 0 : -1} onClick={() => setActiveMap(index)}>
                 <MapPin aria-hidden="true" /><span><strong>{location.name}</strong><small>{location.use}</small></span><ChevronRight aria-hidden="true" />
