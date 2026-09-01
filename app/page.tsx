@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
   ArrowDown, BusFront, CalendarDays, ChevronRight, CircleAlert, ExternalLink,
   FileText, FolderOpen, Hotel, Info, MapPin, Presentation, UtensilsCrossed,
@@ -9,6 +9,7 @@ import { Programme } from '@/components/programme';
 import { AGENDA } from '@/data/agenda';
 import { MATERIAL_GROUPS } from '@/data/materials';
 import { MAP_VENUES } from '@/data/venues';
+import { dayFromHash, dayFromSessionHash, scrollToSession } from '@/lib/deep-link';
 import { dayLabel, dayShort } from '@/lib/schedule';
 
 /**
@@ -36,7 +37,55 @@ function useTabKeys(count: number, active: number, setActive: (i: number) => voi
 export default function Home() {
   const [activeDay, setActiveDay] = useState(0);
   const [activeMap, setActiveMap] = useState(0);
-  const onDayKeys = useTabKeys(AGENDA.length, activeDay, setActiveDay);
+  /** A session waiting to be scrolled to, once its day has actually rendered. */
+  const [pending, setPending] = useState<{ id: string } | null>(null);
+
+  /** Choosing a day rewrites the hash, so the address bar is always copyable. */
+  const selectDay = useCallback((index: number) => {
+    setActiveDay(index);
+    history.replaceState(null, '', `#day-${AGENDA[index].index}`);
+  }, []);
+
+  /**
+   * Deep links. `#day-3` opens that day; a session id opens the day holding it
+   * and scrolls to it. Runs on load and whenever the hash changes, so a link
+   * pasted into the address bar works from any state.
+   */
+  useEffect(() => {
+    const apply = () => {
+      const hash = location.hash;
+      const day = dayFromHash(hash);
+      if (day !== null) {
+        setActiveDay(day);
+        return;
+      }
+      const owner = dayFromSessionHash(hash);
+      if (owner !== null) {
+        // The browser restores the previous scroll position after load, which
+        // would land on top of ours. This link decides where the page goes.
+        history.scrollRestoration = 'manual';
+        setActiveDay(owner);
+        setPending({ id: hash.slice(1) });
+      }
+    };
+
+    apply();
+    addEventListener('hashchange', apply);
+    return () => removeEventListener('hashchange', apply);
+  }, []);
+
+  /**
+   * Scrolling has to wait for the day panel to be in the DOM. An effect runs
+   * after the commit; a requestAnimationFrame does not, and looked for the
+   * session before React had rendered it.
+   */
+  useEffect(() => {
+    if (!pending) return;
+    scrollToSession(pending.id);
+    setPending(null);
+  }, [pending]);
+
+  const onDayKeys = useTabKeys(AGENDA.length, activeDay, selectDay);
   const onMapKeys = useTabKeys(MAP_VENUES.length, activeMap, setActiveMap);
   const day = AGENDA[activeDay];
   const map = MAP_VENUES[activeMap];
@@ -101,7 +150,7 @@ export default function Home() {
         <div className="section-title split-title"><div><p>Programme</p><h2>Daily schedule</h2></div><span>Draft programme · Five working days</span></div>
         <div className="day-tabs" role="tablist" aria-label="Workshop days" tabIndex={-1} onKeyDown={onDayKeys}>
           {AGENDA.map((item, index) => (
-            <button key={item.date} type="button" role="tab" aria-selected={activeDay === index} aria-controls="day-panel" id={`day-tab-${index}`} tabIndex={activeDay === index ? 0 : -1} onClick={() => setActiveDay(index)}>
+            <button key={item.date} type="button" role="tab" aria-selected={activeDay === index} aria-controls="day-panel" id={`day-tab-${index}`} tabIndex={activeDay === index ? 0 : -1} onClick={() => selectDay(index)}>
               <span>{dayShort(item)}</span><strong>{dayLabel(item.date)}</strong><small>{item.label}</small>
             </button>
           ))}

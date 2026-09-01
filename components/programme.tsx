@@ -50,6 +50,7 @@ function Block({ session, from }: { session: Session; from: number }) {
   return (
     <article
       className="tl-block"
+      data-session={session.id}
       data-kind={session.kind}
       data-compact={compact || undefined}
       style={span(session, from)}
@@ -90,7 +91,12 @@ function Point({ session, from }: { session: Session; from: number }) {
   const venue = venueOf(session);
 
   return (
-    <div className="tl-point" data-kind={session.kind} style={offset(session, from)}>
+    <div
+      className="tl-point"
+      data-session={session.id}
+      data-kind={session.kind}
+      style={offset(session, from)}
+    >
       <span className="tl-dot" aria-hidden="true" />
       <p className="tl-time">{session.start}</p>
       <p className="tl-point-title">
@@ -155,7 +161,7 @@ function List({ sessions }: { sessions: Session[] }) {
         const who = speakerOf(session);
 
         return (
-          <li className="session" key={session.id}>
+          <li className="session" key={session.id} data-session={session.id}>
             <p className="session-time">
               <Clock3 aria-hidden="true" />
               <span>{timeLabel(session)}</span>
@@ -205,7 +211,7 @@ export function Programme({ day }: { day: Day }) {
           <h4 className="tl-evening-title">Evening</h4>
           <div className="tl-evening-items">
             {evening.map((s) => (
-              <p key={s.id}>
+              <p key={s.id} data-session={s.id}>
                 <span className="tl-time">{timeLabel(s)}</span>
                 {sessionTitle(s)}
               </p>

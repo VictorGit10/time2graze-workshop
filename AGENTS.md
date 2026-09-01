@@ -155,6 +155,25 @@ Decisions that came out of building it, and that are easy to break:
   The serif stays for section titles and day names.
 - 76px per hour, half-hour rules, hours labelled.
 
+### Deep links
+
+`#day-3` opens that day; a session id opens its day and scrolls to it.
+
+- **No element carries an `id`** — both representations use `data-session`.
+  An `id` makes the browser jump to the element on its own, before React has
+  switched days, and it fights the scroll.
+- **Scroll from an effect, never from `requestAnimationFrame`.** rAF does not
+  wait for React to commit, so the session is not in the DOM yet and the scroll
+  silently does nothing.
+- **`history.scrollRestoration` goes to `manual`** when a session link is
+  followed. Otherwise the browser restores the previous position after load and
+  lands on top of the one the link asked for.
+- **Evening sessions live outside the axis**, so the lookup covers the evening
+  block as well as the grid — it picks whichever match is not inside
+  `.session-list`.
+- `scrollIntoView` is called without `behavior`, letting the CSS decide; the
+  `prefers-reduced-motion` rule already switches it to instant.
+
 ## Functional standard
 
 Refinement here means utility executed well, not features added:
