@@ -1,0 +1,7 @@
+# O build roda no Ubuntu (GitHub Actions). Normaliza tudo como LF no repositório
+# para que o checkout do CI seja idêntico ao daqui, apesar do Windows.
+* text=auto eol=lf
+
+*.png binary
+*.webp binary
+*.ico binary
