@@ -7,8 +7,8 @@ Live site: https://victorgit10.github.io/time2graze-workshop/
 
 The site is intentionally operational rather than promotional. It brings the
 programme, presentation materials, venues, accommodation, meals, transport and
-participant guidance into one page. Unknown information remains visibly
-pending; it is never replaced by a plausible guess.
+participant guidance together under four plainly named pages. Unknown
+information remains visibly pending; it is never replaced by a plausible guess.
 
 ## Current state
 

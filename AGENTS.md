@@ -4,7 +4,7 @@ Read this before changing anything.
 
 ## What this is
 
-A single-page site for the **Time2Graze Brazil Workshop** — an internal
+An information site for the **Time2Graze Brazil Workshop** — an internal
 technical workshop of the Time2Graze project, held at LAPIG / Federal
 University of Goiás in Goiânia, 14–18 September 2026.
 
@@ -49,8 +49,13 @@ the site's own navigation. It was internally consistent and it was worse. It
 cost 1,555 lines of CSS, it made people translate "Sheet 05" into "hotel", and
 along the way it dropped the presenter names out of the agenda.
 
-That version was reverted on 1 September 2026. The current version is the one
-that was there before.
+That version was reverted on 1 September 2026.
+
+**What was rejected there was the metaphor, not the existence of routes.** On
+2 September 2026 the site was deliberately split into four pages — see
+[Architecture](#architecture). Do not read the paragraph above as an argument
+against that split. The test is the name: `Programme` is a destination a
+participant already understands; `Sheet 05` is one they have to learn.
 
 **The failure mode to avoid is applying craft where content is missing.** When
 this site looks unfinished, it is usually because a fact has not been confirmed
@@ -59,8 +64,9 @@ fact first.
 
 ## Rules
 
-- **Keep it one page.** One URL, one Ctrl+F, one link to paste into a group
-  chat. The content fits in a scroll; it does not need routing.
+- **Four pages, no more.** Home, Programme, Materials, Practical information —
+  see [Architecture](#architecture). Do not add a fifth destination, and never
+  give a single day, session, venue or hotel a page of its own.
 - **Plain words for section names.** "Programme", "Materials", "Stay & meals",
   "Maps". No metaphor, no house vocabulary a reader has to learn.
 - **Never invent a fact.** Unconfirmed details render as "Pending
@@ -72,6 +78,42 @@ fact first.
 - **No prose explaining the interface.** If a section needs a paragraph telling
   the reader how to use it, the section is wrong.
 - **English only.** The working language of the workshop.
+
+## Architecture
+
+Four pages, literal names:
+
+| Path          | Holds |
+| ------------- | ----- |
+| `/`           | What, when and where; the overview; partners; and during the week, the session running now and the one due next. |
+| `/programme/` | The five days, the proportional grid, requirements, print, and `.ics` once times are approved. |
+| `/materials/` | Presentations and documents by day, each linked to the session that produces it. |
+| `/practical/` | Hotel, meals, transfers, daily transport, maps, recommendations, accessibility, emergency contact. |
+
+The same navigation appears on every page: the brand returns home, then
+`Programme`, `Materials`, `Practical information`. On small screens it stays in
+the sticky header as a compact scrollable row — not a drawer. Three links in a
+row beat three links behind a hamburger.
+
+**Why it stopped being one page.** It was one page until September 2026, and
+that was right while the content was short. Measured just before the split, it
+ran 10 screens on a 1440px desktop and **15.6 screens on a 375px phone**, with
+the main navigation set to `display: none` below 760px — so the only shortcuts
+sat near the top and disappeared the moment a reader entered the programme.
+Hotel, transport, accessibility and partners are all still to be added.
+
+**Links between pages carry their anchor**: a material points at
+`/programme/#d3-country-uganda`, and the programme resolves the day from the
+hash on load. Route with `next/link` and let `basePath` supply the repository
+subpath; never hand-write a leading `/` into an href.
+
+**Print belongs to `/programme/`** and covers all five days. There is no
+"print the whole site".
+
+**Static is not offline.** A participant in the field with no signal gets only
+what their browser already cached. If offline access matters it needs a service
+worker or a downloadable PDF — an explicit decision, not something the static
+export gives for free.
 
 ## Design direction
 
@@ -293,6 +335,9 @@ Extract the data with no visual change at all, as its own step.
 7. `.ics` files — once times are confirmed.
 8. Materials linked to their sessions.
 9. Hotel, meals, transport and accessibility, as data is confirmed.
+10. Toolchain migration to Next.js, so that routes actually emit HTML.
+11. The four-page split and its persistent navigation.
+12. Offline: a service worker or a downloadable PDF — decide, do not assume.
 
 ## Planned scope
 
