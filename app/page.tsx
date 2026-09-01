@@ -6,111 +6,24 @@ import {
   ExternalLink, FileText, FolderOpen, Hotel, Info, MapPin,
   Presentation, UtensilsCrossed,
 } from 'lucide-react';
+import { AGENDA } from '@/data/agenda';
+import { MATERIAL_GROUPS } from '@/data/materials';
+import type { SessionKind } from '@/data/types';
+import { MAP_VENUES } from '@/data/venues';
+import { dayLabel, dayShort, sessionTitle, timeLabel } from '@/lib/schedule';
 
-type Session = { time: string; title: string };
-type Day = { short: string; date: string; label: string; sessions: Session[] };
-
-const agenda: Day[] = [
-  {
-    short: 'Day 1', date: 'Mon · 14 Sep', label: 'Welcome',
-    sessions: [
-      { time: '08:30 – 10:00', title: 'UFG Tour — Welcome at LAPIG' },
-      { time: '10:00 – 12:00', title: 'Split Session: Visual Inspection Workshop (Ana Paula/LAPIG) — GEE / GEE App short course' },
-      { time: '12:00', title: 'Lunch @ Samauma' },
-      { time: '14:00 – 15:30', title: 'Interactive Session: Field Protocol Alignment' },
-      { time: '15:30', title: 'Coffee Break @ LAPIG' },
-      { time: '16:00 – 18:00', title: 'Field Visit — T2G Biomass Experimental Area' },
-      { time: '18:00 – 22:00', title: 'Welcome Dinner @ LAPIG (Pizza)' },
-    ],
-  },
-  {
-    short: 'Day 2', date: 'Tue · 15 Sep', label: 'Retreat',
-    sessions: [
-      { time: '08:30', title: 'Brief check-in' },
-      { time: '09:00 – 09:30', title: 'Project Overview & Theory of Change (Santiago/GMH)' },
-      { time: '09:30 – 11:00', title: 'Interactive Session: Priorities, Barriers, and Partner Needs (Lindsey/WRI)' },
-      { time: '11:00 – 12:00', title: 'Open Agenda' },
-      { time: '12:00', title: 'Lunch @ Centro de Eventos' },
-      { time: '14:00 – 15:30', title: 'Biomass Data: Methodology and Updates (Leandro/OGH)' },
-      { time: '15:30', title: 'Coffee Break @ FUNAPE' },
-      { time: '16:00 – 16:45', title: 'Pasto Legal (Leandro/OGH and Tiago/LAPIG)' },
-      { time: '16:45 – 17:30', title: 'Biomass Data for Management and Decision Making (Prof. Wilton Ladeira)' },
-      { time: '17:30', title: 'Daily Summary' },
-      { time: '19:00', title: 'Dinner @ Hotel' },
-    ],
-  },
-  {
-    short: 'Day 3', date: 'Wed · 16 Sep', label: 'Retreat',
-    sessions: [
-      { time: '08:30', title: 'Brief check-in' },
-      { time: '09:00 – 09:45', title: 'State of the Art: Remote Sensing of Pasture & Decision Support Tools (Leandro/OGH and Emily/WWF)' },
-      { time: '09:45 – 10:30', title: 'Country Presentation: Uruguay (INIA)' },
-      { time: '10:30 – 11:15', title: 'Country Presentation: Argentina (UIB - INTA & UNMdP)' },
-      { time: '11:15 – 12:00', title: 'Country Presentation: Colombia (CIAT)' },
-      { time: '12:00', title: 'Lunch @ Centro de Eventos' },
-      { time: '14:00 – 14:45', title: 'Country Presentation: Tanzania' },
-      { time: '14:45 – 15:30', title: 'Country Presentation: Nigeria' },
-      { time: '15:30 – 16:00', title: 'Coffee Break @ FUNAPE' },
-      { time: '16:00 – 16:45', title: 'Country Presentation: Uganda' },
-      { time: '16:45 – 17:30', title: 'Country Presentation: Zimbabwe' },
-      { time: '17:30', title: 'Daily Summary' },
-      { time: '19:00', title: 'Dinner @ Hotel' },
-    ],
-  },
-  {
-    short: 'Day 4', date: 'Thu · 17 Sep', label: 'Retreat',
-    sessions: [
-      { time: '08:30', title: 'Brief check-in' },
-      { time: '09:00 – 12:00', title: 'Interactive workshop: Building a collaboration map and country uptake journey (Beatriz/OGH)' },
-      { time: '12:00', title: 'Lunch @ Centro de Eventos' },
-      { time: '14:00 – 15:30', title: 'Split Session: DST Data Production — Livestock Methane Emission Data (Humberto / LAPIG)' },
-      { time: '15:30', title: 'Coffee Break @ FUNAPE' },
-      { time: '16:00 – 17:30', title: "Building Together the Roadmap for the Project's Next Steps (Santiago/GMH and Lindsey/WRI)" },
-      { time: '17:30', title: 'Wrap-up: Summary of Key Takeaways (Laerte/LAPIG)' },
-      { time: '18:30', title: 'Closing Reception @ Churrascaria Favo de Mel' },
-    ],
-  },
-  {
-    short: 'Day 5', date: 'Fri · 18 Sep', label: 'Field',
-    sessions: [
-      { time: '06:30', title: 'Trip to Cidade de Goiás' },
-      { time: '09:30 – 11:30', title: 'Field Visit: Grazing Livestock Farm (TBD)' },
-      { time: '12:00', title: 'Lunch @ Cidade de Goiás' },
-      { time: '14:00 – 17:30', title: 'Field Visit: Grazing Livestock Farm (TBD)' },
-      { time: '17:30', title: 'Return trip to Goiânia' },
-      { time: '19:00', title: 'Dinner @ Hotel' },
-    ],
-  },
-];
-
-const resourceGroups = [
-  { day: 'Day 1 · Welcome', items: ['Visual Inspection Workshop', 'GEE / GEE App short course', 'Field Protocol Alignment'] },
-  { day: 'Day 2 · Retreat', items: ['Project Overview & Theory of Change', 'Priorities, Barriers, and Partner Needs', 'Biomass Data: Methodology and Updates', 'Pasto Legal', 'Biomass Data for Management and Decision Making'] },
-  { day: 'Day 3 · Retreat', items: ['Remote Sensing of Pasture & Decision Support Tools', 'Country presentations'] },
-  { day: 'Day 4 · Retreat', items: ['Collaboration Map and Country Uptake Journey', 'DST Data Production & Livestock Methane Emission Data', 'Project Roadmap and Key Takeaways'] },
-  { day: 'Day 5 · Field', items: ['Field visit information sheet'] },
-];
-
-const locations = [
-  { name: 'LAPIG · UFG', use: 'Welcome, technical sessions and experimental area visit', query: 'LAPIG UFG Goiânia' },
-  { name: 'Centro de Eventos · UFG', use: 'Lunches during the retreat', query: 'Centro de Eventos UFG Goiânia' },
-  { name: 'Churrascaria Favo de Mel', use: 'Closing reception · 17 September', query: 'Churrascaria Favo de Mel Goiânia' },
-  { name: 'Cidade de Goiás', use: 'Field visits · 18 September', query: 'Cidade de Goiás Goiás' },
-];
-
-function SessionIcon({ title }: { title: string }) {
-  const value = title.toLowerCase();
-  if (value.includes('lunch') || value.includes('dinner') || value.includes('reception')) return <UtensilsCrossed aria-hidden="true" />;
-  if (value.includes('coffee')) return <Coffee aria-hidden="true" />;
-  if (value.includes('trip') || value.includes('visit')) return <BusFront aria-hidden="true" />;
+function SessionIcon({ kind }: { kind: SessionKind }) {
+  if (kind === 'meal' || kind === 'social') return <UtensilsCrossed aria-hidden="true" />;
+  if (kind === 'break') return <Coffee aria-hidden="true" />;
+  if (kind === 'transport' || kind === 'field') return <BusFront aria-hidden="true" />;
   return <ChevronRight aria-hidden="true" />;
 }
 
 export default function Home() {
   const [activeDay, setActiveDay] = useState(0);
   const [activeMap, setActiveMap] = useState(0);
-  const day = agenda[activeDay];
-  const map = locations[activeMap];
+  const day = AGENDA[activeDay];
+  const map = MAP_VENUES[activeMap];
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
 
   return (
@@ -169,21 +82,21 @@ export default function Home() {
       <section className="agenda-section section-pad" id="agenda">
         <div className="section-title split-title"><div><p>Programme</p><h2>Daily schedule</h2></div><span>Draft programme · Five working days</span></div>
         <div className="day-tabs" role="tablist" aria-label="Workshop days">
-          {agenda.map((item, index) => (
-            <button key={item.short} type="button" role="tab" aria-selected={activeDay === index} aria-controls="day-panel" id={`day-tab-${index}`} onClick={() => setActiveDay(index)}>
-              <span>{item.short}</span><strong>{item.date}</strong><small>{item.label}</small>
+          {AGENDA.map((item, index) => (
+            <button key={item.date} type="button" role="tab" aria-selected={activeDay === index} aria-controls="day-panel" id={`day-tab-${index}`} onClick={() => setActiveDay(index)}>
+              <span>{dayShort(item)}</span><strong>{dayLabel(item.date)}</strong><small>{item.label}</small>
             </button>
           ))}
         </div>
         <div className="agenda-panel" id="day-panel" role="tabpanel" aria-labelledby={`day-tab-${activeDay}`}>
-          <aside className="day-summary"><span>{day.short}</span><p>{day.date}</p><h3>{day.label}</h3><small>{day.sessions.length} scheduled items</small></aside>
+          <aside className="day-summary"><span>{dayShort(day)}</span><p>{dayLabel(day.date)}</p><h3>{day.label}</h3><small>{day.sessions.length} scheduled items</small></aside>
           <div className="session-list">
             {day.sessions.map((session, index) => (
-              <article className="session" key={`${session.time}-${session.title}`}>
+              <article className="session" key={session.id}>
                 <span className="session-index">{String(index + 1).padStart(2, '0')}</span>
-                <time><Clock3 aria-hidden="true" />{session.time}</time>
-                <h4>{session.title}</h4>
-                <span className="session-icon"><SessionIcon title={session.title} /></span>
+                <time><Clock3 aria-hidden="true" />{timeLabel(session)}</time>
+                <h4>{sessionTitle(session)}</h4>
+                <span className="session-icon"><SessionIcon kind={session.kind} /></span>
               </article>
             ))}
           </div>
@@ -194,7 +107,7 @@ export default function Home() {
         <div className="section-title split-title"><div><p>Workshop materials</p><h2>Presentations and documents</h2></div><span>Materials will be added as they are approved</span></div>
         <div className="materials-notice"><Info aria-hidden="true" /><p>This area is prepared to receive presentations, reading materials, protocols and supporting documents. Some files may be restricted to workshop participants.</p></div>
         <div className="resource-groups">
-          {resourceGroups.map((group) => (
+          {MATERIAL_GROUPS.map((group) => (
             <section className="resource-group" key={group.day}>
               <h3>{group.day}</h3>
               <div>
@@ -247,15 +160,15 @@ export default function Home() {
         <div className="section-title split-title"><div><p>Maps and venues</p><h2>Workshop locations</h2></div><span>Use the list to inspect each location</span></div>
         <div className="maps-layout">
           <div className="location-selector" role="tablist" aria-label="Workshop locations">
-            {locations.map((location, index) => (
-              <button key={location.name} type="button" role="tab" aria-selected={activeMap === index} onClick={() => setActiveMap(index)}>
+            {MAP_VENUES.map((location, index) => (
+              <button key={location.id} type="button" role="tab" aria-selected={activeMap === index} onClick={() => setActiveMap(index)}>
                 <MapPin aria-hidden="true" /><span><strong>{location.name}</strong><small>{location.use}</small></span><ChevronRight aria-hidden="true" />
               </button>
             ))}
           </div>
           <div className="map-frame" role="tabpanel">
-            <iframe key={map.query} title={`Map of ${map.name}`} loading="lazy" referrerPolicy="no-referrer-when-downgrade" src={`https://www.google.com/maps?q=${encodeURIComponent(map.query)}&output=embed`} />
-            <div><span><strong>{map.name}</strong><small>{map.use}</small></span><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(map.query)}`} target="_blank" rel="noreferrer">Open in Google Maps <ExternalLink aria-hidden="true" /></a></div>
+            <iframe key={map.mapQuery} title={`Map of ${map.name}`} loading="lazy" referrerPolicy="no-referrer-when-downgrade" src={`https://www.google.com/maps?q=${encodeURIComponent(map.mapQuery)}&output=embed`} />
+            <div><span><strong>{map.name}</strong><small>{map.use}</small></span><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(map.mapQuery)}`} target="_blank" rel="noreferrer">Open in Google Maps <ExternalLink aria-hidden="true" /></a></div>
           </div>
         </div>
       </section>
