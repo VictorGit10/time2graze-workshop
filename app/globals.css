@@ -275,7 +275,7 @@ footer > a:last-child svg { width: 12px; height: 12px; transform: rotate(180deg)
 .tl-rule { position: absolute; top: calc(var(--start) * var(--hour) / 60); right: 0; left: 0; border-top: 1px solid var(--line); opacity: .45; }
 .tl-rule[data-hour] { opacity: 1; }
 
-.tl-block { position: absolute; top: calc(var(--start) * var(--hour) / 60); right: 0; left: 0; display: grid; grid-template-columns: 92px 1fr; gap: 14px; overflow: hidden; align-content: center; padding: 7px 14px; background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--forest); border-radius: var(--radius); height: calc(var(--dur) * var(--hour) / 60); }
+.tl-block { position: absolute; z-index: 2; top: calc(var(--start) * var(--hour) / 60); right: 0; left: 0; display: grid; grid-template-columns: 92px 1fr; gap: 14px; overflow: hidden; align-content: center; padding: 7px 14px; background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--forest); border-radius: var(--radius); height: calc(var(--dur) * var(--hour) / 60); }
 .tl-block .tl-time { margin: 0; color: var(--muted); font-size: var(--t-label); font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.35; }
 .tl-block-body { min-width: 0; }
 .tl-block-meta { display: flex; flex-wrap: wrap; gap: 9px; align-items: center; margin: 4px 0 0; }
@@ -402,4 +402,26 @@ footer > a:last-child svg { width: 12px; height: 12px; transform: rotate(180deg)
 
   .practical-card, .recommendation-list article { break-inside: avoid; }
   .tl-tbd, .resource-item em { border: 1px solid #000; }
+}
+
+/* --- Estado "agora" ---------------------------------------------------------
+   Só existe durante a semana do workshop. Antes e depois, nada é marcado. */
+
+/* A linha atravessa o corpo; o rótulo fica na canaleta do eixo, para não
+   cobrir o texto do bloco em curso, e mostra a hora em vez de repetir "agora". */
+.tl-now { position: absolute; z-index: 1; top: calc(var(--start) * var(--hour) / 60); right: 0; left: 0; border-top: 2px solid var(--forest); pointer-events: none; }
+.tl-now-label { position: absolute; z-index: 4; right: calc(100% + 18px); padding: 2px 7px; color: #fff; background: var(--forest); border-radius: 99px; font-size: var(--t-label); font-weight: 800; font-variant-numeric: tabular-nums; transform: translateY(-50%); }
+
+.tl-mark { display: inline-block; margin-left: 9px; vertical-align: 1px; padding: 2px 8px; color: #fff; background: var(--forest); border-radius: 99px; font-size: var(--t-label); font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
+.tl-mark--next { color: var(--forest); background: var(--accent); }
+
+.tl-block[data-state='running'] { border-color: var(--forest); border-left-width: 5px; box-shadow: 0 0 0 1px var(--forest); }
+.tl-block[data-state='next'] { border-left-color: var(--accent); border-left-width: 5px; }
+.session-body[data-state='running'] h4, .session-body[data-state='running'] .tl-split-label { color: var(--forest); }
+
+.tab-today { margin-left: 8px; padding: 1px 7px; color: var(--forest); background: var(--accent); border-radius: 99px; font-size: var(--t-label); font-style: normal; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
+.day-tabs button[aria-selected='true'] .tab-today { color: var(--forest-dark); }
+
+@media print {
+  .tl-now, .tl-mark, .tab-today { display: none !important; }
 }

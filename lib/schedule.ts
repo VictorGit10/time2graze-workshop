@@ -109,3 +109,10 @@ export function axisTicks(day: Day) {
   }
   return ticks;
 }
+
+/** 980 -> '16:20' */
+export function fromMinutes(total: number) {
+  const h = Math.floor(total / 60);
+  const m = total % 60;
+  return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+}

@@ -9,7 +9,9 @@ import { Programme, ProgrammeForPrint } from '@/components/programme';
 import { AGENDA } from '@/data/agenda';
 import { MATERIAL_GROUPS } from '@/data/materials';
 import { MAP_VENUES } from '@/data/venues';
+import { useWorkshopClock } from '@/hooks/use-workshop-clock';
 import { dayFromHash, dayFromSessionHash, scrollToSession } from '@/lib/deep-link';
+import { todayIndex } from '@/lib/now';
 import { dayLabel, dayShort } from '@/lib/schedule';
 
 /**
@@ -35,14 +37,24 @@ function useTabKeys(count: number, active: number, setActive: (i: number) => voi
 }
 
 export default function Home() {
-  const [activeDay, setActiveDay] = useState(0);
   const [activeMap, setActiveMap] = useState(0);
   /** A session waiting to be scrolled to, once its day has actually rendered. */
   const [pending, setPending] = useState<{ id: string } | null>(null);
+  const clock = useWorkshopClock();
+  const today = todayIndex(AGENDA, clock);
+
+  /**
+   * Null until a link or the reader picks a day. The displayed day is derived
+   * rather than stored, so during the workshop week the panel follows the
+   * clock without an effect having to push it there — and a choice, once made,
+   * outranks the clock for good.
+   */
+  const [picked, setPicked] = useState<number | null>(null);
+  const activeDay = picked ?? today ?? 0;
 
   /** Choosing a day rewrites the hash, so the address bar is always copyable. */
   const selectDay = useCallback((index: number) => {
-    setActiveDay(index);
+    setPicked(index);
     history.replaceState(null, '', `#day-${AGENDA[index].index}`);
   }, []);
 
@@ -56,7 +68,7 @@ export default function Home() {
       const hash = location.hash;
       const day = dayFromHash(hash);
       if (day !== null) {
-        setActiveDay(day);
+        setPicked(day);
         return;
       }
       const owner = dayFromSessionHash(hash);
@@ -64,7 +76,7 @@ export default function Home() {
         // The browser restores the previous scroll position after load, which
         // would land on top of ours. This link decides where the page goes.
         history.scrollRestoration = 'manual';
-        setActiveDay(owner);
+        setPicked(owner);
         setPending({ id: hash.slice(1) });
       }
     };
@@ -82,7 +94,8 @@ export default function Home() {
   useEffect(() => {
     if (!pending) return;
     scrollToSession(pending.id);
-    setPending(null);
+    // Not cleared: every link produces a fresh object, and it is that identity
+    // change that runs this again.
   }, [pending]);
 
   const onDayKeys = useTabKeys(AGENDA.length, activeDay, selectDay);
@@ -151,13 +164,13 @@ export default function Home() {
         <div className="day-tabs" role="tablist" aria-label="Workshop days" tabIndex={-1} onKeyDown={onDayKeys}>
           {AGENDA.map((item, index) => (
             <button key={item.date} type="button" role="tab" aria-selected={activeDay === index} aria-controls="day-panel" id={`day-tab-${index}`} tabIndex={activeDay === index ? 0 : -1} onClick={() => selectDay(index)}>
-              <span>{dayShort(item)}</span><strong>{dayLabel(item.date)}</strong><small>{item.label}</small>
+              <span>{dayShort(item)}{today === index && <em className="tab-today">Today</em>}</span><strong>{dayLabel(item.date)}</strong><small>{item.label}</small>
             </button>
           ))}
         </div>
         <div className="agenda-panel" id="day-panel" role="tabpanel" aria-labelledby={`day-tab-${activeDay}`}>
           <aside className="day-summary"><span>{dayShort(day)}</span><p>{dayLabel(day.date)}</p><h3>{day.label}</h3><small>{day.sessions.length} scheduled items</small></aside>
-          <Programme day={day} />
+          <Programme day={day} clock={clock} />
         </div>
 
         <ProgrammeForPrint />

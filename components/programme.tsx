@@ -2,9 +2,23 @@ import { Clock3 } from 'lucide-react';
 import { AGENDA } from '@/data/agenda';
 import type { Day, Session, Track } from '@/data/types';
 import { VENUES } from '@/data/venues';
+import { type Clock, nextSessionId, stateOf } from '@/lib/now';
 import {
-  axisBounds, axisTicks, dayLabel, durationOf, isEvening, sessionTitle, timeLabel, toMinutes,
+  axisBounds, axisTicks, dayLabel, durationOf, fromMinutes, isEvening, sessionTitle,
+  timeLabel, toMinutes,
 } from '@/lib/schedule';
+
+type SessionMark = 'running' | 'next' | null;
+
+/** "Now" while a session is running, "Next" for the one due after it. */
+function Mark({ state }: { state: SessionMark }) {
+  if (!state) return null;
+  return (
+    <span className={state === 'next' ? 'tl-mark tl-mark--next' : 'tl-mark'}>
+      {state === 'next' ? 'Next' : 'Now'}
+    </span>
+  );
+}
 
 /** Minutes offset from the top of the axis, as a CSS custom property. */
 function offset(session: Session, from: number) {
@@ -41,7 +55,9 @@ function TrackCard({ track }: { track: Track }) {
  * A session whose start and end are both recorded: drawn as a block whose
  * height is its real duration.
  */
-function Block({ session, from }: { session: Session; from: number }) {
+function Block(
+  { session, from, state }: { session: Session; from: number; state: SessionMark },
+) {
   const venue = venueOf(session);
   const who = speakerOf(session);
   /* Under 45 minutes there is no room to stack time, title and venue, so the
@@ -54,6 +70,7 @@ function Block({ session, from }: { session: Session; from: number }) {
       data-session={session.id}
       data-kind={session.kind}
       data-compact={compact || undefined}
+      data-state={state ?? undefined}
       style={span(session, from)}
     >
       <p className="tl-time">{timeLabel(session)}</p>
@@ -61,14 +78,20 @@ function Block({ session, from }: { session: Session; from: number }) {
       <div className="tl-block-body">
         {session.tracks ? (
           <>
-            <p className="tl-split-label">Split session · choose one</p>
+            <p className="tl-split-label">
+              Split session · choose one
+              <Mark state={state} />
+            </p>
             <div className="tl-tracks">
               {session.tracks.map((t) => <TrackCard key={t.id} track={t} />)}
             </div>
           </>
         ) : (
           <>
-            <h4 className="tl-title">{session.title}</h4>
+            <h4 className="tl-title">
+              {session.title}
+              <Mark state={state} />
+            </h4>
             {who && <p className="tl-who">{who}</p>}
           </>
         )}
@@ -88,7 +111,9 @@ function Block({ session, from }: { session: Session; from: number }) {
  * A session with a start and no recorded end. Drawn as a mark on the axis and
  * given no height, so the page never implies a duration nobody has set.
  */
-function Point({ session, from }: { session: Session; from: number }) {
+function Point(
+  { session, from, state }: { session: Session; from: number; state: SessionMark },
+) {
   const venue = venueOf(session);
 
   return (
@@ -96,6 +121,7 @@ function Point({ session, from }: { session: Session; from: number }) {
       className="tl-point"
       data-session={session.id}
       data-kind={session.kind}
+      data-state={state ?? undefined}
       style={offset(session, from)}
     >
       <span className="tl-dot" aria-hidden="true" />
@@ -103,17 +129,25 @@ function Point({ session, from }: { session: Session; from: number }) {
       <p className="tl-point-title">
         {session.title}
         {venue && <span className="tl-where"> · {venue}</span>}
+        <Mark state={state} />
       </p>
     </div>
   );
 }
 
 /** The proportional grid. Large screens only — see the list below. */
-function Timeline({ day }: { day: Day }) {
+function Timeline({ day, clock }: { day: Day; clock: Clock | null }) {
   const { from, to } = axisBounds(day);
   const daytime = day.sessions.filter((s) => !isEvening(s));
   const ticks = axisTicks(day);
   const height = { '--span': to - from } as React.CSSProperties;
+  const nextId = nextSessionId(day, clock);
+  const mark = (s: Session): SessionMark =>
+    stateOf(s, clock) ?? (s.id === nextId ? 'next' : null);
+
+  // The now line only exists while the day is running and inside the axis.
+  const isToday = clock !== null && clock.date === day.date;
+  const onAxis = isToday && clock.minutes >= from && clock.minutes <= to;
 
   return (
     <div className="timeline" style={height} aria-hidden="true">
@@ -139,10 +173,15 @@ function Timeline({ day }: { day: Day }) {
             style={{ '--start': t.minutes - from } as React.CSSProperties}
           />
         ))}
+        {onAxis && (
+          <div className="tl-now" style={{ '--start': clock.minutes - from } as React.CSSProperties}>
+            <span className="tl-now-label">{fromMinutes(clock.minutes)}</span>
+          </div>
+        )}
         {daytime.map((s) =>
           s.end
-            ? <Block key={s.id} session={s} from={from} />
-            : <Point key={s.id} session={s} from={from} />
+            ? <Block key={s.id} session={s} from={from} state={mark(s)} />
+            : <Point key={s.id} session={s} from={from} state={mark(s)} />
         )}
       </div>
     </div>
@@ -154,7 +193,13 @@ function Timeline({ day }: { day: Day }) {
  * proportional axis, and is what small screens and print use — forcing the
  * diagram into 375px would turn the signature into an obstacle.
  */
-function List({ sessions, anchors = true }: { sessions: Session[]; anchors?: boolean }) {
+function List(
+  { sessions, anchors = true, marks }: {
+    sessions: Session[];
+    anchors?: boolean;
+    marks?: (s: Session) => SessionMark;
+  },
+) {
   return (
     <ol className="session-list">
       {sessions.map((session) => {
@@ -168,7 +213,7 @@ function List({ sessions, anchors = true }: { sessions: Session[]; anchors?: boo
               <span>{timeLabel(session)}</span>
             </p>
 
-            <div className="session-body">
+            <div className="session-body" data-state={marks?.(session) ?? undefined}>
               {session.tracks ? (
                 <>
                   <p className="tl-split-label">Split session · choose one</p>
@@ -191,6 +236,7 @@ function List({ sessions, anchors = true }: { sessions: Session[]; anchors?: boo
               <p className="session-meta">
                 {venue && <span className="tl-where">{venue}</span>}
                 {session.status === 'tbd' && <em className="tl-tbd">To be confirmed</em>}
+                <Mark state={marks?.(session) ?? null} />
               </p>
             </div>
           </li>
@@ -200,12 +246,15 @@ function List({ sessions, anchors = true }: { sessions: Session[]; anchors?: boo
   );
 }
 
-export function Programme({ day }: { day: Day }) {
+export function Programme({ day, clock }: { day: Day; clock: Clock | null }) {
   const evening = day.sessions.filter(isEvening);
+  const nextId = nextSessionId(day, clock);
+  const marks = (s: Session): SessionMark =>
+    stateOf(s, clock) ?? (s.id === nextId ? 'next' : null);
 
   return (
     <div className="programme">
-      <Timeline day={day} />
+      <Timeline day={day} clock={clock} />
 
       {evening.length > 0 && (
         <section className="tl-evening" aria-hidden="true">
@@ -223,7 +272,7 @@ export function Programme({ day }: { day: Day }) {
 
       {/* The same day as a list: the only version small screens and print show,
           and the one assistive technology reads. */}
-      <List sessions={day.sessions} />
+      <List sessions={day.sessions} marks={marks} />
     </div>
   );
 }

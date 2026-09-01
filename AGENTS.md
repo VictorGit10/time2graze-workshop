@@ -155,6 +155,26 @@ Decisions that came out of building it, and that are easy to break:
   The serif stays for section titles and day names.
 - 76px per hour, half-hour rules, hours labelled.
 
+### The "now" state
+
+Only exists during the workshop week. Before and after, nothing is marked and
+the panel opens on Day 1.
+
+- **The clock is Goiânia's**, via `Intl` with `America/Sao_Paulo`, whatever
+  time it is where the reader is.
+- **Null while prerendering.** The site is static, so the build has no "now".
+  `useSyncExternalStore` returns null for the server snapshot and the real
+  clock arrives after hydration — no mismatch, no effect pushing state.
+- **The displayed day is derived, not stored**: `picked ?? today ?? 0`. During
+  the week the panel follows the clock on its own; a link or a reader's choice
+  sets `picked` and outranks it from then on. Syncing this in an effect was the
+  first attempt and it was wrong.
+- **Only a session with a recorded end can be "running".** A start alone would
+  mean guessing when it finishes. Items without an end can still be "next".
+- The now line sits behind the blocks, so it does not strike through their
+  text, and its label lives in the axis gutter showing the actual time rather
+  than repeating the word.
+
 ### Print
 
 - **A separate block, `ProgrammeForPrint`, holds all five days.** The
