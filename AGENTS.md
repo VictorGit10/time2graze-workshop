@@ -92,49 +92,127 @@ it. What keeps the site from reading as generated is not the colour — it is
 structure and detail. Do not try to fix "it looks AI-made" by changing the
 palette; fix it by making the structure specific to this content.
 
-**The thesis is measured time.** Five days, 45 sessions, a strict clock, people
-arriving from seven time zones. The programme is not one section among others —
-it is why the site exists. Everything else is reference material.
+**The thesis is measured time.** Five days, 45 scheduled items, a strict clock,
+people arriving from seven time zones. The programme is not one section among
+others — it is why the site exists. Everything else is reference material.
 
-**The signature is the programme, drawn to scale.** The vertical axis is real
-time: a three-hour workshop occupies three times the height of a forty-five
-minute country presentation, so the shape of a day is visible at a glance.
-Parallel sessions (Day 1 at 10:00, Day 4 at 14:00) sit side by side, because
-that is what they are — a flat list renders a split session as one line and
-hides the choice the participant has to make.
+In one line: **an international operational document, with editorial finish and
+temporal behaviour.**
 
-That is the one bold move. Everything around it stays quiet. Structure should
-encode something true about the content; if a device is only decorative, cut
-it.
+Count carefully. "45 sessions" is wrong — the 45 includes meals, coffee breaks,
+transfers and receptions. Say *scheduled items*.
+
+**The signature is the programme, drawn to scale — on large screens only.**
+The vertical axis is real time, so a three-hour workshop occupies three times
+the height of a forty-five minute country presentation and the shape of a day
+is visible at a glance. Parallel activities sit in adjacent columns, because
+that is what they are.
+
+**The constraint that governs this: 20 of the 45 items have no end time.**
+Lunches, coffee breaks, check-ins, daily summaries, dinners and both Day 5
+transfers carry only a start. Drawing them to a guessed height would invent
+duration for 44% of the schedule and break the site's central rule. So the
+grid renders four distinct states:
+
+| State | Rendering |
+|---|---|
+| Confirmed interval (`start` + `end`) | Block, height proportional to duration |
+| Start only | Point marker on the axis, no implied height |
+| Parallel activities | Separate blocks in adjacent columns, same interval |
+| Unconfirmed item (`status: 'tbd'`) | Visibly marked as not yet fixed |
+
+Two of those — a genuinely instantaneous check-in and a lunch whose end nobody
+recorded — render identically as point markers. Do not add a field to tell them
+apart; it would change nothing on screen. If the team later confirms that lunch
+runs 12:00–14:00, it simply becomes an interval.
+
+**Do not force this diagram onto a phone.** Below the desktop breakpoint, and
+in print, use a compact chronological list — very well composed, carrying time,
+duration, presenter and institution, venue, materials, requirements, calendar
+action, and parallel activities grouped under their shared start. Making the
+signature work at 375px would turn it into an obstacle. Responsive adaptation
+here is correct, not a compromise.
+
+Everything around the programme stays quiet. Structure should encode something
+true about the content; if a device is only decorative, cut it.
 
 ## Functional standard
 
 Refinement here means utility executed well, not features added:
 
-- **"Today" state.** During 14–18 September the site opens on the current day
-  and marks the running session. Invisible before, essential during.
-- **Add to calendar.** Generated `.ics`, per day and per session. For thirty
-  people travelling internationally this is the highest-return feature on the
-  site.
+- **"Today" state**, computed in `America/Sao_Paulo`. Before the workshop the
+  site opens on Day 1 and marks nothing as current. From 14–18 September it
+  opens on the right day and marks the running session. Afterwards it returns
+  to being an institutional archive.
 - **Deep links.** `#day-3` and a stable anchor per session, so a material or a
   message can point at one session.
-- **Print stylesheet.** People print agendas. Five days, clean, on A4.
+- **Print.** People print agendas. All five days in sequence, one per page
+  where possible — which means every day must reach the print output, not only
+  the selected tab. Printing the active panel alone would be a bug.
 - **Requirements, stated early.** Day 1 includes a Google Earth Engine course;
   participants need a laptop and a registered account before Monday morning.
+- **Add to calendar** (`.ics`, per day and per session). High value, but **only
+  after times, venues and timezone are confirmed.** Generating calendar files
+  from provisional data pushes wrong times into thirty people's phones, which
+  is worse than not offering it.
 - **Accessibility section**, with a route to ask for support.
+
+## Data model
+
+Extract content into typed data before any redesign. Keep the model small:
+
+```ts
+type WorkshopSession = {
+  id: string;                  // hand-written, stable, never derived from the title
+  date: string;                // full ISO date, not "Day 3"
+  start: string;
+  end?: string;                // absent = point marker, never a guessed duration
+  title: string;
+  speakers?: Speaker[];
+  venueId?: string;            // into the single venue registry
+  kind: 'technical' | 'meal' | 'break' | 'transport' | 'field' | 'social';
+  tracks?: ParallelTrack[];    // parallel activities modelled explicitly
+  materials?: Material[];
+  requirements?: string[];
+  status?: 'confirmed' | 'tbd';
+};
+```
+
+- IDs are written by hand and never change once a material links to one.
+- Official timezone is `America/Sao_Paulo`.
+- One venue registry, referenced by both the agenda and the maps.
+- Parallel activities are two entries sharing an interval — never one combined
+  title. Day 1 at 10:00 is currently a single string holding two courses; that
+  is a modelling error to fix, not a formatting choice.
+- Unknown fields stay absent or `tbd`. Never filled with a plausible value.
+- **Materials is an aggregated view of materials attached to sessions**, not a
+  second list maintained by hand.
+
+Extract the data with no visual change at all, as its own step.
 
 ## Type and detail rules
 
-- **Nothing below 12px.** The current CSS bottoms out at 8px for uppercase
-  eyebrow labels (`.event-label`, `.information-nav span`, `.event-visual p`).
-  That is both an accessibility failure and one of the most recognisable tells
-  of generated layout. Raise the floor.
+- **12px is the floor for metadata only** — eyebrows, captions, labels.
+  Functional text belongs at **14–17px**. The current CSS bottoms out at 8px
+  for uppercase labels (`.event-label`, `.information-nav span`,
+  `.event-visual p`), which is both an accessibility failure and one of the
+  most recognisable tells of generated layout.
 - **Tabular numerals for times** (`font-variant-numeric: tabular-nums`) so the
   time column aligns exactly.
 - **No third typeface.** Cormorant Garamond and Manrope are enough. Reach for
   weight, size and spacing before reaching for a new family.
-- **Photography must be of the real place.** The Cerrado, the campus, Cidade de
-  Goiás. Never stock, and never decorative imagery standing in for a place.
+
+## Implementation order
+
+1. Typed data structure, no visual change.
+2. Typography and accessibility corrections.
+3. Proportional agenda on desktop, chronological list on mobile.
+4. `#day-3` links and per-session IDs.
+5. Print output covering all five days.
+6. "Today / Now / Next" state in `America/Sao_Paulo`.
+7. `.ics` files — once times are confirmed.
+8. Materials linked to their sessions.
+9. Hotel, meals, transport and accessibility, as data is confirmed.
 
 ## Planned scope
 
@@ -177,8 +255,18 @@ to move.
 
 ## Images
 
-`public/time2graze-hero.webp` and `public/og.png` were generated, not
-photographed. Both are current and match the institutional design. The prompt
+**The hero image is temporary.** `public/time2graze-hero.webp` and
+`public/og.png` were generated, not photographed. They match the institutional
+design and are fine as placeholders, but this is a site about measuring real
+land, published by a laboratory that photographs and maps it — a synthetic
+Cerrado undercuts that.
+
+Replace it with an authorised photograph of LAPIG, the Samambaia campus, the
+Cerrado or Cidade de Goiás. **If no real photograph is available, a sober
+typographic header is more honest than a plausible synthetic landscape.**
+Never stock imagery, and never a decorative picture standing in for a place.
+
+The prompt
 behind the hero, kept so it can be regenerated at another crop or size:
 
 > authentic aerial editorial photograph of well-managed pasture in the Cerrado
