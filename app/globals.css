@@ -430,3 +430,8 @@ footer > a:last-child svg { width: 12px; height: 12px; transform: rotate(180deg)
    um destaque próprio: a linha do agora não chega até ele. */
 .tl-evening-items p[data-state='running'] { padding-left: 10px; border-left: 3px solid var(--forest); margin-left: -13px; }
 .tl-evening-items p[data-state='next'] { padding-left: 10px; border-left: 3px solid var(--accent); margin-left: -13px; }
+
+/* Cada material aponta para a sessão que o produz. */
+.resource-session { font-size: var(--t-body); font-weight: 700; line-height: 1.4; text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
+.resource-session:hover { text-decoration-color: var(--forest); }
+.resource-file { padding: 5px 12px; color: #fff; background: var(--forest); border-radius: 99px; font-size: var(--t-label); font-weight: 800; letter-spacing: .05em; text-transform: uppercase; white-space: nowrap; }

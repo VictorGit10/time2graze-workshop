@@ -257,8 +257,16 @@ type WorkshopSession = {
   title. Day 1 at 10:00 is currently a single string holding two courses; that
   is a modelling error to fix, not a formatting choice.
 - Unknown fields stay absent or `tbd`. Never filled with a plausible value.
-- **Materials is an aggregated view of materials attached to sessions**, not a
-  second list maintained by hand.
+- **Materials is an aggregated view of files attached to sessions**, not a
+  second list maintained by hand. `lib/materials.ts` reads the agenda; there is
+  nothing to keep in step.
+- A material's `href` is absent until the file exists. Never invent one, and
+  never write a path for a file that has not been uploaded.
+- Files belonging to a whole day rather than a session go on `Day.materials` —
+  the Day 5 field visit sheet is one. Forcing it onto an arbitrary session
+  would be a small lie.
+- A track's files link back to the session that holds it, because that is what
+  the programme anchors.
 
 Extract the data with no visual change at all, as its own step.
 
@@ -291,7 +299,7 @@ Extract the data with no visual change at all, as its own step.
 The empty-looking sections are **deliberate stubs**, not clutter to remove.
 The site is meant to grow into a full workshop hub and will receive:
 
-- presentation files and supporting documents, per session
+- the actual files for the 22 materials already declared on their sessions
 - hotel details, booking and check-in information
 - meals and dietary arrangements
 - detailed maps of the venues and the region
@@ -319,7 +327,7 @@ components/ui/    60 unused shadcn components. Nothing imports them.
 Three arrays, before the component:
 
 - `agenda` — the five days and every session
-- `resourceGroups` — the materials list, grouped by day
+- materials — declared on the session or track that produces them
 - `locations` — venues shown in the map panel
 
 To change a session time or add a presenter, edit `agenda`. Nothing else needs

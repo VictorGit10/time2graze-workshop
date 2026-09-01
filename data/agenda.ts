@@ -36,10 +36,12 @@ export const AGENDA: Day[] = [
             id: 'd1-visual-inspection',
             title: 'Visual Inspection Workshop',
             speakers: [{ name: 'Ana Paula', org: 'LAPIG' }],
+            materials: [{ kind: 'slides' }],
           },
           {
             id: 'd1-gee-course',
             title: 'GEE / GEE App short course',
+            materials: [{ kind: 'slides' }],
           },
         ],
         requirements: ['A laptop with a registered Google Earth Engine account.'],
@@ -60,6 +62,7 @@ export const AGENDA: Day[] = [
         title: 'Interactive Session: Field Protocol Alignment',
         venueId: 'lapig',
         kind: 'technical',
+        materials: [{ kind: 'slides' }],
       },
       {
         id: 'd1-coffee',
@@ -110,6 +113,7 @@ export const AGENDA: Day[] = [
         title: 'Project Overview & Theory of Change',
         speakers: [{ name: 'Santiago', org: 'GMH' }],
         kind: 'technical',
+        materials: [{ kind: 'slides' }],
       },
       {
         id: 'd2-priorities-barriers',
@@ -119,6 +123,7 @@ export const AGENDA: Day[] = [
         title: 'Interactive Session: Priorities, Barriers, and Partner Needs',
         speakers: [{ name: 'Lindsey', org: 'WRI' }],
         kind: 'technical',
+        materials: [{ kind: 'slides' }],
       },
       {
         id: 'd2-open-agenda',
@@ -144,6 +149,7 @@ export const AGENDA: Day[] = [
         title: 'Biomass Data: Methodology and Updates',
         speakers: [{ name: 'Leandro', org: 'OGH' }],
         kind: 'technical',
+        materials: [{ kind: 'slides' }],
       },
       {
         id: 'd2-coffee',
@@ -164,6 +170,7 @@ export const AGENDA: Day[] = [
           { name: 'Tiago', org: 'LAPIG' },
         ],
         kind: 'technical',
+        materials: [{ kind: 'slides' }],
       },
       {
         id: 'd2-biomass-decision-making',
@@ -173,6 +180,7 @@ export const AGENDA: Day[] = [
         title: 'Biomass Data for Management and Decision Making',
         speakers: [{ name: 'Prof. Wilton Ladeira' }],
         kind: 'technical',
+        materials: [{ kind: 'slides' }],
       },
       {
         id: 'd2-daily-summary',
@@ -214,6 +222,7 @@ export const AGENDA: Day[] = [
           { name: 'Emily', org: 'WWF' },
         ],
         kind: 'technical',
+        materials: [{ kind: 'slides' }],
       },
       {
         id: 'd3-country-uruguay',
@@ -223,6 +232,7 @@ export const AGENDA: Day[] = [
         title: 'Country Presentation: Uruguay',
         speakers: [{ name: 'INIA' }],
         kind: 'technical',
+        materials: [{ kind: 'slides' }],
       },
       {
         id: 'd3-country-argentina',
@@ -232,6 +242,7 @@ export const AGENDA: Day[] = [
         title: 'Country Presentation: Argentina',
         speakers: [{ name: 'UIB - INTA & UNMdP' }],
         kind: 'technical',
+        materials: [{ kind: 'slides' }],
       },
       {
         id: 'd3-country-colombia',
@@ -241,6 +252,7 @@ export const AGENDA: Day[] = [
         title: 'Country Presentation: Colombia',
         speakers: [{ name: 'CIAT' }],
         kind: 'technical',
+        materials: [{ kind: 'slides' }],
       },
       {
         id: 'd3-lunch',
@@ -257,6 +269,7 @@ export const AGENDA: Day[] = [
         end: '14:45',
         title: 'Country Presentation: Tanzania',
         kind: 'technical',
+        materials: [{ kind: 'slides' }],
       },
       {
         id: 'd3-country-nigeria',
@@ -265,6 +278,7 @@ export const AGENDA: Day[] = [
         end: '15:30',
         title: 'Country Presentation: Nigeria',
         kind: 'technical',
+        materials: [{ kind: 'slides' }],
       },
       {
         id: 'd3-coffee',
@@ -282,6 +296,7 @@ export const AGENDA: Day[] = [
         end: '16:45',
         title: 'Country Presentation: Uganda',
         kind: 'technical',
+        materials: [{ kind: 'slides' }],
       },
       {
         id: 'd3-country-zimbabwe',
@@ -290,6 +305,7 @@ export const AGENDA: Day[] = [
         end: '17:30',
         title: 'Country Presentation: Zimbabwe',
         kind: 'technical',
+        materials: [{ kind: 'slides' }],
       },
       {
         id: 'd3-daily-summary',
@@ -328,6 +344,7 @@ export const AGENDA: Day[] = [
         title: 'Interactive workshop: Building a collaboration map and country uptake journey',
         speakers: [{ name: 'Beatriz', org: 'OGH' }],
         kind: 'technical',
+        materials: [{ kind: 'slides' }],
       },
       {
         id: 'd4-lunch',
@@ -345,11 +362,16 @@ export const AGENDA: Day[] = [
         title: 'Split Session',
         kind: 'technical',
         tracks: [
-          { id: 'd4-dst-data-production', title: 'DST Data Production' },
+          {
+            id: 'd4-dst-data-production',
+            title: 'DST Data Production',
+            materials: [{ kind: 'slides' }],
+          },
           {
             id: 'd4-methane-data',
             title: 'Livestock Methane Emission Data',
             speakers: [{ name: 'Humberto', org: 'LAPIG' }],
+            materials: [{ kind: 'slides' }],
           },
         ],
       },
@@ -372,6 +394,7 @@ export const AGENDA: Day[] = [
           { name: 'Lindsey', org: 'WRI' },
         ],
         kind: 'technical',
+        materials: [{ kind: 'slides' }],
       },
       {
         id: 'd4-wrap-up',
@@ -380,6 +403,7 @@ export const AGENDA: Day[] = [
         title: 'Wrap-up: Summary of Key Takeaways',
         speakers: [{ name: 'Laerte', org: 'LAPIG' }],
         kind: 'technical',
+        materials: [{ kind: 'slides' }],
       },
       {
         id: 'd4-closing-reception',
@@ -395,6 +419,7 @@ export const AGENDA: Day[] = [
     index: 5,
     date: '2026-09-18',
     label: 'Field',
+    materials: [{ kind: 'document', title: 'Field visit information sheet' }],
     sessions: [
       {
         id: 'd5-trip-out',

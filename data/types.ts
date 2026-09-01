@@ -1,5 +1,24 @@
 import type { VenueId } from './venues';
 
+export type MaterialKind = 'slides' | 'document' | 'protocol';
+
+/**
+ * A file a session is expected to produce. Declaring one before it exists is
+ * how the site says "this is coming"; `href` stays absent until the file is
+ * actually published, and is never invented.
+ */
+export type Material = {
+  kind: MaterialKind;
+  /** Only when the file needs a name of its own beyond its kind. */
+  title?: string;
+  /** Absent means not published yet. */
+  href?: string;
+  /** 'PDF', 'PPTX'. Only meaningful once there is an href. */
+  format?: string;
+  /** Open to workshop participants only, rather than to anyone with the link. */
+  restricted?: boolean;
+};
+
 export type Speaker = {
   name: string;
   /** Institution, rendered after the name as "Name/ORG". */
@@ -19,6 +38,7 @@ export type Track = {
   id: string;
   title: string;
   speakers?: Speaker[];
+  materials?: Material[];
 };
 
 export type Session = {
@@ -46,6 +66,7 @@ export type Session = {
   tracks?: Track[];
   /** What a participant must bring or prepare beforehand. */
   requirements?: string[];
+  materials?: Material[];
   /** Omitted means confirmed. 'tbd' renders visibly as unresolved. */
   status?: 'tbd';
 };
@@ -57,4 +78,6 @@ export type Day = {
   /** 'Welcome' | 'Retreat' | 'Field' */
   label: string;
   sessions: Session[];
+  /** Files belonging to the day as a whole rather than to one session. */
+  materials?: Material[];
 };

@@ -7,10 +7,10 @@ import {
 } from 'lucide-react';
 import { Programme, ProgrammeForPrint } from '@/components/programme';
 import { AGENDA } from '@/data/agenda';
-import { MATERIAL_GROUPS } from '@/data/materials';
 import { MAP_VENUES } from '@/data/venues';
 import { useWorkshopClock } from '@/hooks/use-workshop-clock';
 import { dayFromHash, dayFromSessionHash, scrollToSession } from '@/lib/deep-link';
+import { materialDetail, materialsByDay } from '@/lib/materials';
 import { todayIndex } from '@/lib/now';
 import { dayLabel, dayShort } from '@/lib/schedule';
 
@@ -180,13 +180,22 @@ export default function Home() {
         <div className="section-title split-title"><div><p>Workshop materials</p><h2>Presentations and documents</h2></div><span>Materials will be added as they are approved</span></div>
         <div className="materials-notice"><Info aria-hidden="true" /><p>This area is prepared to receive presentations, reading materials, protocols and supporting documents. Some files may be restricted to workshop participants.</p></div>
         <div className="resource-groups">
-          {MATERIAL_GROUPS.map((group) => (
-            <section className="resource-group" key={group.day}>
-              <h3>{group.day}</h3>
+          {materialsByDay().map(({ day, entries }) => (
+            <section className="resource-group" key={day.date}>
+              <h3>Day {day.index} · {day.label}</h3>
               <div>
-                {group.items.map((item) => (
-                  <article className="resource-item" key={item}>
-                    <Presentation aria-hidden="true" /><span><strong>{item}</strong><small>Presentation or supporting file</small></span><em>To be published</em>
+                {entries.map((entry) => (
+                  <article className="resource-item" key={`${entry.sessionId ?? 'day'}-${entry.context}`}>
+                    <Presentation aria-hidden="true" />
+                    <span>
+                      {entry.sessionId
+                        ? <a className="resource-session" href={`#${entry.sessionId}`}>{entry.context}</a>
+                        : <strong>{entry.context}</strong>}
+                      <small>{materialDetail(entry)}</small>
+                    </span>
+                    {entry.material.href
+                      ? <a className="resource-file" href={entry.material.href}>Download</a>
+                      : <em>To be published</em>}
                   </article>
                 ))}
               </div>
