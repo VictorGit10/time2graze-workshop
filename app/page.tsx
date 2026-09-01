@@ -19,15 +19,41 @@ function SessionIcon({ kind }: { kind: SessionKind }) {
   return <ChevronRight aria-hidden="true" />;
 }
 
+/**
+ * Arrow-key navigation between tabs, which `role="tab"` requires and the
+ * browser does not provide. Left/right move, Home/End jump to the ends, and
+ * focus follows selection.
+ */
+function useTabKeys(count: number, active: number, setActive: (i: number) => void) {
+  return (event: React.KeyboardEvent<HTMLDivElement>) => {
+    const keys: Record<string, number> = {
+      ArrowLeft: (active - 1 + count) % count,
+      ArrowRight: (active + 1) % count,
+      Home: 0,
+      End: count - 1,
+    };
+    const next = keys[event.key];
+    if (next === undefined) return;
+    event.preventDefault();
+    setActive(next);
+    const list = event.currentTarget.querySelectorAll<HTMLButtonElement>('[role="tab"]');
+    list[next]?.focus();
+  };
+}
+
 export default function Home() {
   const [activeDay, setActiveDay] = useState(0);
   const [activeMap, setActiveMap] = useState(0);
+  const onDayKeys = useTabKeys(AGENDA.length, activeDay, setActiveDay);
+  const onMapKeys = useTabKeys(MAP_VENUES.length, activeMap, setActiveMap);
   const day = AGENDA[activeDay];
   const map = MAP_VENUES[activeMap];
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
 
   return (
     <main>
+      <a className="skip-link" href="#agenda">Skip to the programme</a>
+
       <header className="site-header">
         <a className="brand" href="#top" aria-label="Time2Graze Brazil Workshop — home">
           <span className="brand-mark">T2G</span>
@@ -81,9 +107,9 @@ export default function Home() {
 
       <section className="agenda-section section-pad" id="agenda">
         <div className="section-title split-title"><div><p>Programme</p><h2>Daily schedule</h2></div><span>Draft programme · Five working days</span></div>
-        <div className="day-tabs" role="tablist" aria-label="Workshop days">
+        <div className="day-tabs" role="tablist" aria-label="Workshop days" onKeyDown={onDayKeys}>
           {AGENDA.map((item, index) => (
-            <button key={item.date} type="button" role="tab" aria-selected={activeDay === index} aria-controls="day-panel" id={`day-tab-${index}`} onClick={() => setActiveDay(index)}>
+            <button key={item.date} type="button" role="tab" aria-selected={activeDay === index} aria-controls="day-panel" id={`day-tab-${index}`} tabIndex={activeDay === index ? 0 : -1} onClick={() => setActiveDay(index)}>
               <span>{dayShort(item)}</span><strong>{dayLabel(item.date)}</strong><small>{item.label}</small>
             </button>
           ))}
@@ -159,14 +185,14 @@ export default function Home() {
       <section className="maps section-pad" id="maps">
         <div className="section-title split-title"><div><p>Maps and venues</p><h2>Workshop locations</h2></div><span>Use the list to inspect each location</span></div>
         <div className="maps-layout">
-          <div className="location-selector" role="tablist" aria-label="Workshop locations">
+          <div className="location-selector" role="tablist" aria-label="Workshop locations" onKeyDown={onMapKeys}>
             {MAP_VENUES.map((location, index) => (
-              <button key={location.id} type="button" role="tab" aria-selected={activeMap === index} onClick={() => setActiveMap(index)}>
+              <button key={location.id} type="button" role="tab" aria-selected={activeMap === index} aria-controls="map-panel" id={`map-tab-${index}`} tabIndex={activeMap === index ? 0 : -1} onClick={() => setActiveMap(index)}>
                 <MapPin aria-hidden="true" /><span><strong>{location.name}</strong><small>{location.use}</small></span><ChevronRight aria-hidden="true" />
               </button>
             ))}
           </div>
-          <div className="map-frame" role="tabpanel">
+          <div className="map-frame" id="map-panel" role="tabpanel" aria-labelledby={`map-tab-${activeMap}`}>
             <iframe key={map.mapQuery} title={`Map of ${map.name}`} loading="lazy" referrerPolicy="no-referrer-when-downgrade" src={`https://www.google.com/maps?q=${encodeURIComponent(map.mapQuery)}&output=embed`} />
             <div><span><strong>{map.name}</strong><small>{map.use}</small></span><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(map.mapQuery)}`} target="_blank" rel="noreferrer">Open in Google Maps <ExternalLink aria-hidden="true" /></a></div>
           </div>
