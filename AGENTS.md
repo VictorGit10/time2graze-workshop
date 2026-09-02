@@ -236,8 +236,10 @@ the panel opens on Day 1.
   give the deep-link lookup two matches for the same session.
 - One day per page (`break-before: page`, `auto` on the first), no session
   split across a page break.
-- Interactive chrome, the hero image, the materials list and the map iframes
-  are dropped; venue names, practical information and recommendations stay.
+- Interactive chrome, the hero image and the map iframes are dropped; venue
+  names, practical information, recommendations and the materials list stay —
+  `/materials/` is a page of its own now, and printing it blank would be a
+  bug. Only the "prepared to receive" notice is screen-only.
   Section backgrounds are forced white — tinted bands spend ink and say
   nothing on paper.
 

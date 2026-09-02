@@ -317,12 +317,6 @@ footer > a:last-child svg { width: 12px; height: 12px; transform: rotate(180deg)
   .split-title > span { text-align: left; }
   .day-tabs { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; }
   .day-tabs button { min-width: 160px; scroll-snap-align: start; }
-  .session-list { padding: 0 20px; }
-  .session { grid-template-columns: 25px 1fr 24px; gap: 10px; padding: 19px 0; }
-  .session time { grid-column: 2; margin-bottom: -3px; }
-  .session h4 { grid-column: 2; }
-  .session-index { grid-row: 1 / span 2; }
-  .session-icon { grid-column: 3; grid-row: 1 / span 2; }
   .resource-group { grid-template-columns: 1fr; gap: 17px; }
   .resource-item { grid-template-columns: 26px 1fr; }
   .resource-item em { grid-column: 2; justify-self: start; }
@@ -340,11 +334,6 @@ footer > a:last-child svg { width: 12px; height: 12px; transform: rotate(180deg)
   .photo-pending { min-height: 128px; padding: 20px; }
   footer { grid-template-columns: 1fr auto; }
   footer > p { display: none; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after { transition-duration: .01ms !important; }
 }
 
 /* --- Programação -----------------------------------------------------------
@@ -460,7 +449,9 @@ footer > a:last-child svg { width: 12px; height: 12px; transform: rotate(180deg)
   .practical-card, .location-selector, .fact-list, .objective-block,
   .institutional-hero { background: #fff !important; }
 
-  /* Controles não têm sentido no papel; iframes de mapa, menos ainda. */
+  /* Controles não têm sentido no papel; iframes de mapa, menos ainda.
+     O aviso de "área preparada" é um aviso de tela — e a sua margem
+     negativa de -20px invadiria o título no papel. */
   .site-header,
   .now-band,
   .information-nav,
@@ -469,7 +460,7 @@ footer > a:last-child svg { width: 12px; height: 12px; transform: rotate(180deg)
   .skip-link,
   .day-tabs,
   .agenda-panel,
-  .materials,
+  .materials-notice,
   .venue-panel,
   .split-title > span,
   footer > a,

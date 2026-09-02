@@ -45,9 +45,12 @@ Content is kept out of the page markup:
 - `data/venues.ts` — the single venue registry used by the programme and maps;
 - `data/types.ts` — the content contracts;
 - `lib/materials.ts` — derives the Materials section from the agenda;
+- `lib/practical.ts` — derives the meals and transport lines on `/practical/`
+  from the agenda;
 - `components/programme.tsx` — proportional, chronological and print
   representations of the programme;
-- `app/page.tsx` — page composition and interactive day/map selection.
+- `app/page.tsx` — home page composition. Day and map selection live in the
+  programme and practical pages.
 
 Material files belong to a day, session or parallel track. Leave `href` absent
 until the file actually exists. The Materials section updates automatically;
@@ -81,7 +84,7 @@ npm run dev
 Useful commands:
 
 ```bash
-npm run build   # production build in dist/
+npm run build   # production build in out/
 npm run lint    # oxlint
 npm run format  # oxfmt
 ```
@@ -94,7 +97,7 @@ separate cleanup task and should not be mixed with content changes.
 ## Deployment
 
 Pushing `main` runs `.github/workflows/deploy-pages.yml`. The workflow builds
-the static Vinext output with the repository base path and publishes it to
+the static Next.js output with the repository base path and publishes it to
 GitHub Pages.
 
 Asset URLs must respect `NEXT_PUBLIC_BASE_PATH`; do not hardcode root-relative
@@ -102,7 +105,6 @@ paths. `NEXT_PUBLIC_SITE_URL` is supplied during deployment for absolute social
 metadata.
 
 GitHub Pages is the current delivery target, not a permanent hosting decision.
-The repository also retains its Sites/Cloudflare-compatible project metadata.
 
 ## Contribution rule
 
