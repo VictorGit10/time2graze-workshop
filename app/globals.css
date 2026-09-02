@@ -161,11 +161,18 @@ button { color: inherit; font: inherit; }
 .day-tabs strong { display: block; margin: 13px 0 6px; font-family: var(--font-serif), Georgia, serif; font-size: clamp(20px, 2vw, 27px); font-weight: 600; }
 .day-tabs button[aria-selected='true'] { color: #fff; background: var(--forest); }
 .day-tabs button[aria-selected='true'] span, .day-tabs button[aria-selected='true'] small { color: var(--accent); }
-.agenda-panel { display: grid; grid-template-columns: minmax(220px, .62fr) minmax(0, 2.38fr); border: 1px solid var(--line); border-top: 0; }
-.day-summary { padding: 38px 34px; background: var(--surface-soft); border-right: 1px solid var(--line); }
+/* O resumo e a aba selecionada sao a mesma coluna, e tem de ser desenhados
+   como tal: 1fr de 5 aqui e 1fr de 5 em .day-tabs. Uma fracao diferente nas
+   duas grades (era .62fr de 3) desloca o painel da aba em alguns pixels, e o
+   desvio cresce com a largura da tela. O recuo do texto tambem acompanha o
+   das abas, senao os dois "Day 1" nao caem na mesma vertical. */
+.agenda-panel { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 4fr); border: 1px solid var(--line); border-top: 0; }
+.day-summary { padding: 38px clamp(15px, 2vw, 28px); background: var(--surface-soft); border-right: 1px solid var(--line); }
 .day-summary > span { color: var(--forest); font-size: var(--t-label); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .day-summary p { margin: 100px 0 8px; color: var(--muted); font-size: var(--t-meta); font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
-.day-summary h3 { margin: 0; font-family: var(--font-serif), Georgia, serif; font-size: 42px; font-weight: 600; }
+/* Um quinto da faixa e estreito: em 42px fixos "Welcome" transborda a coluna
+   abaixo de ~1280px. Escala com a largura ate chegar aos 42px. */
+.day-summary h3 { margin: 0; font-family: var(--font-serif), Georgia, serif; font-size: clamp(30px, 3.4vw, 42px); font-weight: 600; }
 .day-summary small { display: block; margin-top: 12px; color: var(--muted); font-size: var(--t-meta); }
 
 .materials { background: var(--paper); }
@@ -285,7 +292,10 @@ footer > a:last-child svg { width: 12px; height: 12px; transform: rotate(180deg)
   .institution-group { padding: 28px 0 30px; border-top: 1px solid var(--line); border-left: 0; }
   .institution-group:first-child { border-top: 0; }
   .agenda-panel { grid-template-columns: 1fr; }
-  .day-summary { border-right: 0; border-bottom: 1px solid var(--line); }
+  /* Empilhado, o resumo ocupa a faixa inteira: o recuo estreito das abas nao
+     serve mais, e o titulo cabe no tamanho cheio. */
+  .day-summary { padding: 30px 24px; border-right: 0; border-bottom: 1px solid var(--line); }
+  .day-summary h3 { font-size: 42px; }
   .day-summary p { margin-top: 40px; }
   .practical-grid { grid-template-columns: 1fr; }
   .practical-card { min-height: auto; }
