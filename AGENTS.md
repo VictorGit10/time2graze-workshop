@@ -104,8 +104,9 @@ Hotel, transport, accessibility and partners are all still to be added.
 
 **Links between pages carry their anchor**: a material points at
 `/programme/#d3-country-uganda`, and the programme resolves the day from the
-hash on load. Route with `next/link` and let `basePath` supply the repository
-subpath; never hand-write a leading `/` into an href.
+hash on load. Route with `next/link` and write the path from the site root —
+`href="/programme/"` — letting `basePath` supply the repository subpath. The
+repository name is never written by hand.
 
 **Print belongs to `/programme/`** and covers all five days. There is no
 "print the whole site".
@@ -303,7 +304,11 @@ type WorkshopSession = {
   second list maintained by hand. `lib/materials.ts` reads the agenda; there is
   nothing to keep in step.
 - A material's `href` is absent until the file exists. Never invent one, and
-  never write a path for a file that has not been uploaded.
+  never write a path for a file that has not been uploaded. When the file does
+  arrive under `public/`, write it site-rooted (`/files/day-1-slides.pdf`, not
+  under `/materials/`, which is a route); the materials page adds `basePath`
+  to it, because a plain `<a href>` does not get it for free — see
+  [Running and deploying](#running-and-deploying).
 - Files belonging to a whole day rather than a session go on `Day.materials` —
   the Day 5 field visit sheet is one. Forcing it onto an arbitrary session
   would be a small lie.
@@ -454,12 +459,23 @@ choosing a new target, not restoring the old one.
 Know what it does and does not cover:
 
 - `basePath` in `next.config.ts` prefixes `next/link` hrefs and everything
-  under `_next/` automatically. Route with `next/link`.
+  under `_next/` automatically. Route with `next/link`, and give it the path
+  from the site root: `href="/programme/"`, not `href="programme/"`.
 - It does **not** touch a plain `<img src>`, a raw `<a href>` or a metadata
   icon. Those read `process.env.NEXT_PUBLIC_BASE_PATH` themselves — see the
-  hero image in `page.tsx` and the favicon in `layout.tsx`.
+  hero image in `page.tsx`, the favicon in `layout.tsx` and `fileHref` in
+  `app/materials/page.tsx`.
 
-Never hardcode a leading `/` into a path.
+**Never write the repository name into a path.** `/time2graze-workshop/…` is
+what the browser sees and the wrong thing to put in the source: `basePath`
+supplies it at build time, and hardcoding it breaks `npm run dev` and any move
+to a host that serves the site from its root.
+
+**This will matter when the material files arrive.** A material's `href`
+renders in a plain `<a href>`, so a file under `public/` would 404 on Pages
+without the prefix. `app/materials/page.tsx` applies it in `fileHref`, for
+site-rooted paths only; external URLs pass through untouched. Any other local
+file link added later needs the same treatment.
 
 ## Waiting on the LAPIG team
 
