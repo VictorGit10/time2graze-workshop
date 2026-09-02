@@ -1,6 +1,8 @@
 import { ArrowRight, CalendarDays, ChevronRight, MapPin } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { NowNext } from '@/components/now-next';
+import { INSTITUTION_GROUPS, INSTITUTION_ROLE_SOURCE } from '@/data/institutions';
 import { withBasePath } from '@/lib/base-path';
 
 /** The three destinations, as a directory rather than a shortcut bar. */
@@ -29,7 +31,8 @@ export default function Home() {
         </div>
         <div className="event-visual">
           {/* basePath does not reach a plain img; it has to be prefixed here. */}
-          <img src={withBasePath('/time2graze-hero.webp')} alt="Grazing lands in the Brazilian Cerrado" />
+          <img src={withBasePath('/time2graze-hero.webp')} alt="Aerial view of pastureland documented by LAPIG" />
+          <a className="image-credit" href="https://jornal.ufg.br/n/80658-radiografia-das-pastagens-do-brasil" target="_blank" rel="noreferrer">Photo: LAPIG · Jornal UFG</a>
           <p><strong>In person</strong><span>Hosted by LAPIG · UFG</span></p>
         </div>
       </section>
@@ -60,6 +63,44 @@ export default function Home() {
             <div><dt>Host</dt><dd>LAPIG · Federal University of Goiás</dd></div>
           </dl>
         </div>
+      </section>
+
+      <section className="institutions section-pad" aria-labelledby="institutions-title">
+        <div className="section-title">
+          <p>Institutions</p>
+          <h2 id="institutions-title">Project leadership and workshop host</h2>
+        </div>
+        <div className="institution-groups">
+          {INSTITUTION_GROUPS.map((group) => (
+            <section className="institution-group" key={group.label}>
+              <h3>{group.label}</h3>
+              <div className="institution-list">
+                {group.institutions.map((institution) => (
+                  <a
+                    className="institution-mark"
+                    href={institution.href}
+                    key={institution.name}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={`${institution.name} website`}
+                  >
+                    <Image
+                      className={institution.logoClass}
+                      src={withBasePath(institution.logo)}
+                      alt={institution.name}
+                      width={institution.width}
+                      height={institution.height}
+                      loading="lazy"
+                    />
+                  </a>
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+        <p className="institution-source">
+          Roles follow the <a href={INSTITUTION_ROLE_SOURCE} target="_blank" rel="noreferrer">public Time2Graze project announcement</a>.
+        </p>
       </section>
     </>
   );

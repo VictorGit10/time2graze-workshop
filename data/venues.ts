@@ -69,6 +69,12 @@ export const VENUES = {
      */
     coords: { lat: -16.6022387, lon: -49.2649118 },
     pending: 'Postal address, building entrance and campus access to be confirmed by LAPIG.',
+    photo: {
+      src: '/images/venues/lapig.webp',
+      alt: 'Entrance to the LAPIG building on the UFG Campus Samambaia',
+      credit: 'Photo: LAPIG · Jornal UFG',
+      creditHref: 'https://jornal.ufg.br/n/187113-nos-seus-30-anos-lapig-e-referencia-nacional-na-area-de-geotecnologias',
+    },
     website: 'https://lapig.iesa.ufg.br/',
     phone: '+55 62 3521-1360',
     onMap: true,
@@ -117,6 +123,12 @@ export const VENUES = {
     mapSpan: 0.08,
     pending: 'The two grazing livestock farms visited on 18 September are still to be confirmed.',
     organisedTransport: true,
+    photo: {
+      src: '/images/venues/cidade-de-goias.webp',
+      alt: 'Historic street and colonial buildings in Cidade de Goiás',
+      credit: 'Historic centre · Adelano Lázaro · CC BY-SA 4.0',
+      creditHref: 'https://commons.wikimedia.org/wiki/File:Rua_do_Conjunto_Arquitet%C3%B4nico_da_Cidade_de_Goi%C3%A1s,_Goi%C3%A1s,_Brasil.jpg',
+    },
     onMap: true,
   },
   funape: {

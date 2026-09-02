@@ -447,24 +447,15 @@ building it, and that are easy to break:
 
 ## Images
 
-**The hero image is temporary.** `public/time2graze-hero.webp` and
-`public/og.png` were generated, not photographed. They match the institutional
-design and are fine as placeholders, but this is a site about measuring real
-land, published by a laboratory that photographs and maps it — a synthetic
-Cerrado undercuts that.
+**The hero is now real photography.** `public/time2graze-hero.webp` is a crop of
+an aerial pasture photograph by LAPIG, reproduced through Jornal UFG under its
+credit policy. `public/og.png` uses the same source. The visible credit links to
+the article, and full provenance is recorded in `research/venues.md`.
 
-Replace it with an authorised photograph of LAPIG, the Samambaia campus, the
-Cerrado or Cidade de Goiás. **If no real photograph is available, a sober
-typographic header is more honest than a plausible synthetic landscape.**
-Never stock imagery, and never a decorative picture standing in for a place.
-
-The prompt
-behind the hero, kept so it can be regenerated at another crop or size:
-
-> authentic aerial editorial photograph of well-managed pasture in the Cerrado
-> near Goiânia, green and ochre mosaic, native trees and a small herd at
-> natural scale, soft morning light, 16:9 composition with negative space; no
-> text, logos, neon or stock-photo look
+The practical page also carries sourced photographs of the LAPIG façade and
+the historic centre of Cidade de Goiás. The latter is contextual — it does not
+stand in for either Day 5 farm. Never use stock imagery or a decorative picture
+as if it depicted a workshop location.
 
 Serve new raster images as WebP. `og.png` stays PNG for social-preview
 compatibility.
@@ -528,15 +519,15 @@ highest-value work available on this project:
 - Confirmation of the LAPIG pin, its street address and its CEP — the address
   LAPIG publishes carries a probable typo and a Caixa Postal CEP. See
   `research/venues.md`
-- An authorised photograph of LAPIG and of the hotel, with a credit line
+- An authorised photograph of the hotel, with a credit line
 - Airport transfers: who arranges them, pickup times
 - Daily transport between hotel and campus
 - Dietary requirements: how participants report them, and by when
 - Day 5: the two grazing livestock farms are still "TBD"
 - Workshop emergency contact and nearest hospital
 - Accessibility arrangements and a contact route for support
-- Partner matrix: approved institutions, their roles (project, funder, host,
-  co-lead or technical partner), order, links and permission to display marks
+- Final partner matrix beyond the publicly documented funder, project leads
+  and workshop hosts already grouped on the home page
 
 The hotel blocks everyone — participants from seven countries are booking
 international flights.

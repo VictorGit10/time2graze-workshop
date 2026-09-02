@@ -170,12 +170,13 @@ That number, not the distance, is what decides when the bus leaves.
 
 ## Photographs
 
-The question was whether a venue photo can come from Google Maps. It cannot.
+The question was whether a venue photo can simply be copied from Google Maps.
+It cannot.
 
 | Source | Usable | Terms |
 | --- | --- | --- |
-| Google Maps / Places photos | **No** | User-contributed and copyrighted. Places API photos may only be displayed through Google's own surfaces, with attribution, and may not be stored or republished. Taking a screenshot does not create a licence. |
-| Google Street View | Only as a live embed | The Street View Embed API needs an API key, which a static site would expose. It is Google's surface, not a photograph the site owns. |
+| Google Maps / Places photos | Do not copy or rehost | User-contributed and copyrighted. The official Places API can display them dynamically under Google's terms and attribution requirements, but they may not be downloaded into `public/`. Taking a screenshot does not create a licence. |
+| Google Street View | Only as a live embed | It remains Google's surface, not a photograph the site owns, and would add an API dependency to this static site. |
 | Wikimedia Commons | **Yes**, with conditions | CC BY-SA 4.0: credit the author, name the licence, and share derivatives alike. Real photographs of the campus exist — see the candidates below. |
 | A photograph from LAPIG | **Best** | The host institution photographing its own building. No licensing question, and it shows the actual entrance participants will walk into. |
 | Hotel press photography | Ask | Hotels normally grant use for an event page. Worth requesting when the room block is negotiated; do not lift images from the site without it. |
@@ -183,6 +184,20 @@ The question was whether a venue photo can come from Google Maps. It cannot.
 This follows the rule already in `AGENTS.md` for the hero image: an authorised
 real photograph, never stock, never a decorative picture standing in for a
 place.
+
+### Adopted photographs
+
+| Use | Source | Credit and permission |
+| --- | --- | --- |
+| Home hero | `BHRV_2013_2_VANT.jpg`, published in *Radiografia das Pastagens do Brasil* | Photo: LAPIG, via Jornal UFG. Jornal UFG permits reproduction of its photographs with attribution. The local WebP is a crop of the source photograph. |
+| LAPIG venue | `lapig_sede.png`, published in *Nos seus 30 anos, Lapig é referência nacional na área de geotecnologias* | Photo: LAPIG, via Jornal UFG. The photograph shows the current LAPIG façade and sign. |
+| Cidade de Goiás | `Rua do Conjunto Arquitetônico da Cidade de Goiás, Goiás, Brasil.jpg` | Adelano Lázaro, CC BY-SA 4.0, via Wikimedia Commons. The local WebP is a resized derivative distributed under the same licence. It represents the historic centre, not either Day 5 farm. |
+
+Sources:
+
+- https://jornal.ufg.br/n/80658-radiografia-das-pastagens-do-brasil
+- https://jornal.ufg.br/n/187113-nos-seus-30-anos-lapig-e-referencia-nacional-na-area-de-geotecnologias
+- https://commons.wikimedia.org/wiki/File:Rua_do_Conjunto_Arquitet%C3%B4nico_da_Cidade_de_Goi%C3%A1s,_Goi%C3%A1s,_Brasil.jpg
 
 ### Wikimedia Commons candidates
 
@@ -198,9 +213,8 @@ Direct files live under `https://upload.wikimedia.org/wikipedia/commons/…`;
 resolve each through its Commons file page so the credit line is taken from the
 page rather than assumed.
 
-**None of these show the LAPIG building itself.** The IESA façade is the
-closest honest option and is defensible with an accurate caption. A photograph
-from LAPIG would be better, and asking for one costs a single email.
+The Wikimedia campus candidates remain alternatives, but the adopted Jornal
+UFG photograph is preferable because it shows the LAPIG building itself.
 
 ---
 

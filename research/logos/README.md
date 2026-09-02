@@ -17,6 +17,18 @@ official institutional sites or from the Land & Carbon Lab asset host.
 | LAPIG | `lapig-en-color.png`, `lapig-en-black.png` | https://lapig.iesa.ufg.br/p/comunicacao | Official communication page; English versions, 1080 x 1080 |
 | UFG | `ufg-color-horizontal.png` | https://ufg.br/p/51425-marca-ufg | Official brand page; horizontal colour version, 652 x 335 |
 | INIA Uruguay | `inia-uruguay.png` | https://www.inia.uy/index.php/comunicacion/logotipo-institucional | Official site logo. Confirm against the recommended short `INIA Uruguay` lockup in the current brand manual before use |
+| Alliance Bioversity International & CIAT | `alliance-bioversity-ciat.svg` | https://commons.wikimedia.org/wiki/File:Alliance_Logo_Refresh_EN_color.svg | Current English mark; Alliance-authored asset, CC BY 4.0 |
+| WWF | `wwf.png` | https://cdnassets.panda.org/_skins/international/img/logo.png | Mark served by WWF's official global site; compact production asset |
+
+## Roles currently shown
+
+The home page groups marks by role instead of presenting an undifferentiated
+logo wall. Global Methane Hub's public Time2Graze announcement identifies the
+funder and the organisations leading the remote-sensing data system and the
+three regional decision-support tools. LAPIG and UFG are identified in the
+event brief as workshop hosts.
+
+Source: https://www.globalmethanehub.org/2025/09/10/the-global-methane-hub-launches-international-project-to-develop-satellite-guided-grazing-to-cut-livestock-emissions/
 
 ## Previous GPW workshop references
 
@@ -42,15 +54,9 @@ logo use.
 
 ## Still to obtain or confirm
 
-- Alliance Bioversity International & CIAT: official logo kit exists at
-  https://alliancebioversityciat.org/information-new-logo, but its ZIP download
-  is currently protected by a security challenge.
 - OpenGeoHub: replace the 200 x 200 reference with an official high-resolution
   asset if it is confirmed as a displayed partner.
-- WWF: request the current brand toolkit/approved logo from the relevant WWF
-  partner contact before publication.
 - INTA, UNMdP, IIASA, GLAD and Cornell: confirm whether these are partners for
   this event rather than institutions mentioned only in programme content.
-- Confirm the official hierarchy and grouping: project, funder, host, co-leads,
-  country partners and technical partners should not be presented as a single
-  undifferentiated logo wall.
+- Confirm the final partner matrix beyond the publicly documented funder,
+  project leads and workshop hosts now displayed.
