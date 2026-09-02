@@ -1,8 +1,9 @@
 import { ArrowRight, CalendarDays, ChevronRight, MapPin } from 'lucide-react';
+import type { CSSProperties } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { NowNext } from '@/components/now-next';
-import { INSTITUTION_GROUPS, INSTITUTION_ROLE_SOURCE } from '@/data/institutions';
+import { INSTITUTION_GROUPS, INSTITUTION_ROLE_SOURCE, type Institution } from '@/data/institutions';
 import { withBasePath } from '@/lib/base-path';
 
 /** The three destinations, as a directory rather than a shortcut bar. */
@@ -11,6 +12,19 @@ const DESTINATIONS = [
   { href: '/materials/', title: 'Materials', detail: 'Presentations and documents' },
   { href: '/practical/', title: 'Practical information', detail: 'Stay, meals, transport and maps' },
 ] as const;
+
+/**
+ * Marks are drawn to a shared optical area, not a shared height. At one height
+ * a three-to-one wordmark reads far larger than an upright emblem, which is
+ * what a hand-tuned `max-height` per logo was papering over. The cap stops a
+ * tall mark from setting the height of the whole row.
+ */
+const MARK_AREA = 3200;
+const MARK_MAX_HEIGHT = 56;
+
+function markHeight({ width, height }: Institution) {
+  return Math.min(MARK_MAX_HEIGHT, Math.round(Math.sqrt((MARK_AREA * height) / width)));
+}
 
 export default function Home() {
   return (
@@ -83,9 +97,9 @@ export default function Home() {
                     target="_blank"
                     rel="noreferrer"
                     aria-label={`${institution.name} website`}
+                    style={{ '--mark-h': `${markHeight(institution)}px` } as CSSProperties}
                   >
                     <Image
-                      className={institution.logoClass}
                       src={withBasePath(institution.logo)}
                       alt={institution.name}
                       width={institution.width}
@@ -98,8 +112,12 @@ export default function Home() {
             </section>
           ))}
         </div>
+        {/* The announcement documents the funder and the leads; the hosts come
+            from the event brief. Neither places Land & Carbon Lab, so the note
+            says the list is still to be confirmed rather than crediting a
+            source for all of it. */}
         <p className="institution-source">
-          Roles follow the <a href={INSTITUTION_ROLE_SOURCE} target="_blank" rel="noreferrer">public Time2Graze project announcement</a>.
+          Roles follow the <a href={INSTITUTION_ROLE_SOURCE} target="_blank" rel="noreferrer">public Time2Graze project announcement</a> and the event brief. The final partner list is pending confirmation.
         </p>
       </section>
     </>

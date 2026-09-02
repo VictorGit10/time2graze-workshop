@@ -6,8 +6,10 @@ logo list and ordering must be approved by the Time2Graze/LAPIG team.
 
 ## Candidate final assets
 
-Files in `public/logos/institutions/` were downloaded without modification from
-official institutional sites or from the Land & Carbon Lab asset host.
+Files in `public/logos/institutions/` were downloaded from official
+institutional sites or from the Land & Carbon Lab asset host. The artwork is
+unmodified; several files had their **canvas** cropped to the artwork, which is
+recorded under [Canvas crops](#canvas-crops) below.
 
 | Institution | Local file | Source | Status |
 | --- | --- | --- | --- |
@@ -20,6 +22,34 @@ official institutional sites or from the Land & Carbon Lab asset host.
 | Alliance Bioversity International & CIAT | `alliance-bioversity-ciat.svg` | https://commons.wikimedia.org/wiki/File:Alliance_Logo_Refresh_EN_color.svg | Current English mark; Alliance-authored asset, CC BY 4.0 |
 | WWF | `wwf.png` | https://cdnassets.panda.org/_skins/international/img/logo.png | Mark served by WWF's official global site; compact production asset |
 
+## Canvas crops
+
+Several assets ship on a padded canvas — a 4:3 export frame, or a 1080 x 1080
+social-post square holding a horizontal wordmark. The home page draws every
+mark to a shared optical area, so it needs the artwork's own dimensions and not
+the export frame's: LAPIG's mark was 407px of ink in a 1080px-tall file, which
+is why it used to be rendered at a hand-tuned height and still looked wrong.
+
+No artwork was altered. SVGs had the `viewBox` narrowed to the content bounds
+and PNGs were cropped to their ink box; both are reversible by re-downloading
+from the source in the table above.
+
+| File | Original canvas | Now | Crop |
+| --- | --- | --- | --- |
+| `land-carbon-lab.svg` | `viewBox="0 0 400 300"` | `viewBox="0 62 400 176"` | Top and bottom padding of the 4:3 frame |
+| `world-resources-institute.svg` | `viewBox="0 0 400 300"` | `viewBox="0 86 400 129"` | Same; the mark is a raster in a pattern-filled rect |
+| `alliance-bioversity-ciat.svg` | `viewBox="0 0 371.55 269.85"` | `viewBox="60 71 251 128"` | Symmetric padding on both axes |
+| `lapig-en-color.png` | 1080 x 1080 | 958 x 407 | Social-post square around a horizontal wordmark |
+| `lapig-en-black.png` | 1080 x 1080 | 958 x 407 | Same |
+| `wwf.png` | 186 x 209 | 109 x 163 | White margin around the panda and wordmark |
+
+`global-methane-hub.png`, `inia-uruguay.png` and `ufg-color-horizontal.png`
+already filled their canvas and were left alone.
+
+`wwf.png` carries a **white background**, not transparency. The institutions
+band is white for that reason; moving it onto the cream paper would show the
+mark's plate.
+
 ## Roles currently shown
 
 The home page groups marks by role instead of presenting an undifferentiated
@@ -27,6 +57,13 @@ logo wall. Global Methane Hub's public Time2Graze announcement identifies the
 funder and the organisations leading the remote-sensing data system and the
 three regional decision-support tools. LAPIG and UFG are identified in the
 event brief as workshop hosts.
+
+**Land & Carbon Lab is shown alongside WRI in "Data and decision-support
+leads", on the client's instruction (2 September 2026).** The announcement
+above names WRI, not Land & Carbon Lab, so this placement is not sourced from
+it; Land & Carbon Lab is a WRI initiative and the consortium's parent brand.
+The LAPIG team still has to confirm the role, as it does for the rest of the
+matrix.
 
 Source: https://www.globalmethanehub.org/2025/09/10/the-global-methane-hub-launches-international-project-to-develop-satellite-guided-grazing-to-cut-livestock-emissions/
 
@@ -60,3 +97,5 @@ logo use.
   this event rather than institutions mentioned only in programme content.
 - Confirm the final partner matrix beyond the publicly documented funder,
   project leads and workshop hosts now displayed.
+- Confirm Land & Carbon Lab's role, and whether "Data and decision-support
+  leads" is the right group for it.

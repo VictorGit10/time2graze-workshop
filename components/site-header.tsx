@@ -3,8 +3,13 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-/** The three destinations besides the home page. */
+/**
+ * Every destination, home included. The wordmark also returns home, but a
+ * reader deep in the programme should not have to know that: `Home` is the
+ * affordance people look for, and it costs one slot in a row of four.
+ */
 const DESTINATIONS = [
+  { href: '/', label: 'Home' },
   { href: '/programme/', label: 'Programme' },
   { href: '/materials/', label: 'Materials' },
   { href: '/practical/', label: 'Practical information' },
@@ -12,8 +17,8 @@ const DESTINATIONS = [
 
 /**
  * The same navigation on every page. It stays in the sticky header on small
- * screens as a scrollable row rather than collapsing into a drawer: three
- * links are quicker to read than a button that hides three links.
+ * screens as a scrollable row rather than collapsing into a drawer: four
+ * links are quicker to read than a button that hides them.
  */
 export function SiteHeader() {
   const pathname = usePathname();
@@ -21,9 +26,10 @@ export function SiteHeader() {
   return (
     <header className="site-header">
       <div className="header-bar">
+        {/* The workshop has no mark of its own, and inventing one would put a
+            logo next to real institutional marks. The name is the brand. */}
         <Link className="brand" href="/" aria-label="Time2Graze Brazil Workshop — home">
-          <span className="brand-mark">T2G</span>
-          <span className="brand-copy"><strong>Time2Graze</strong><small>Brazil Workshop</small></span>
+          <strong>Time2Graze</strong><small>Brazil Workshop</small>
         </Link>
 
         <nav className="site-nav" aria-label="Main navigation">

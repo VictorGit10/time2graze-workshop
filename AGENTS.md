@@ -90,10 +90,13 @@ Four pages, literal names:
 | `/materials/` | Presentations and documents by day, each linked to the session that produces it. |
 | `/practical/` | Hotel, meals, transfers, daily transport, maps, recommendations, accessibility, emergency contact. |
 
-The same navigation appears on every page: the brand returns home, then
-`Programme`, `Materials`, `Practical information`. On small screens it stays in
-the sticky header as a compact scrollable row — not a drawer. Three links in a
-row beat three links behind a hamburger.
+The same navigation appears on every page: `Home`, `Programme`, `Materials`,
+`Practical information`. On small screens it stays in the sticky header as a
+compact scrollable row — not a drawer. Four links in a row beat four links
+behind a hamburger.
+
+**`Home` is a link of its own, not only the wordmark.** The wordmark returns
+home as well, but a reader three pages deep should not have to know that.
 
 **Why it stopped being one page.** It was one page until September 2026, and
 that was right while the content was short. Measured just before the split, it
@@ -123,6 +126,12 @@ The register is **sober institutional**, in the manner of Land & Carbon Lab
 photography, generous whitespace, no ornament. The previous edition's site
 (Global Pasture Watch, Pirenópolis) is the content model; this one should
 carry the same information with far better execution.
+
+**The workshop has no mark of its own, and must not be given one.** The header
+and footer carry the name set in type; an invented badge next to real
+institutional marks reads as a logo the project does not have. The favicon is a
+plain monogram because a browser tab needs an icon — that is a tab marker, not
+a brand.
 
 **Palette and type are settled.** Cream-green paper (`--paper: #f5f6f2`), dark
 forest (`--forest: #184b39`), pale lime accent (`--accent: #dce89b`) — the lime
@@ -459,6 +468,22 @@ as if it depicted a workshop location.
 
 Serve new raster images as WebP. `og.png` stays PNG for social-preview
 compatibility.
+
+### Institutional marks
+
+The home page groups the marks by role. Two rules came out of drawing them, and
+both are easy to undo by accident:
+
+- **No plate under a mark.** Each logo used to sit in a bordered white tile on
+  a white section — a box drawn around every logo that said nothing about it.
+  The marks sit directly on the section, separated by the role columns alone.
+- **Every asset is cropped to its own artwork, and the marks are drawn to a
+  shared optical area** (`MARK_AREA` in `app/page.tsx`), not a shared height:
+  at one height a three-to-one wordmark reads far larger than an upright
+  emblem. The `width`/`height` in `data/institutions.ts` are the artwork's own
+  dimensions and are what the scaling reads, so a new logo must be cropped to
+  its ink before its numbers go in. `research/logos/README.md` records the crop
+  applied to each file.
 
 ## Running and deploying
 

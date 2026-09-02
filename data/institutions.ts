@@ -2,9 +2,13 @@ export type Institution = {
   name: string;
   href: string;
   logo: string;
+  /**
+   * The mark's own dimensions, in its own file. Every asset is cropped to its
+   * artwork, so these are ink and not canvas: they are what the home page
+   * scales the marks by.
+   */
   width: number;
   height: number;
-  logoClass?: string;
 };
 
 export type InstitutionGroup = {
@@ -27,7 +31,6 @@ export const INSTITUTION_GROUPS: InstitutionGroup[] = [
         logo: '/logos/institutions/global-methane-hub.png',
         width: 879,
         height: 452,
-        logoClass: 'logo-gmh',
       },
     ],
   },
@@ -38,17 +41,22 @@ export const INSTITUTION_GROUPS: InstitutionGroup[] = [
         name: 'World Resources Institute',
         href: 'https://www.wri.org/',
         logo: '/logos/institutions/world-resources-institute.svg',
-        width: 435,
-        height: 140,
-        logoClass: 'logo-wri',
+        width: 400,
+        height: 129,
+      },
+      {
+        name: 'Land & Carbon Lab',
+        href: 'https://landcarbonlab.org/',
+        logo: '/logos/institutions/land-carbon-lab.svg',
+        width: 400,
+        height: 176,
       },
       {
         name: 'Alliance of Bioversity International and CIAT',
         href: 'https://alliancebioversityciat.org/',
         logo: '/logos/institutions/alliance-bioversity-ciat.svg',
-        width: 372,
-        height: 270,
-        logoClass: 'logo-alliance',
+        width: 251,
+        height: 128,
       },
       {
         name: 'INIA Uruguay',
@@ -56,15 +64,13 @@ export const INSTITUTION_GROUPS: InstitutionGroup[] = [
         logo: '/logos/institutions/inia-uruguay.png',
         width: 1636,
         height: 812,
-        logoClass: 'logo-inia',
       },
       {
         name: 'World Wide Fund for Nature',
         href: 'https://wwf.panda.org/',
         logo: '/logos/institutions/wwf.png',
-        width: 186,
-        height: 209,
-        logoClass: 'logo-wwf',
+        width: 109,
+        height: 163,
       },
     ],
   },
@@ -75,9 +81,8 @@ export const INSTITUTION_GROUPS: InstitutionGroup[] = [
         name: 'LAPIG',
         href: 'https://lapig.iesa.ufg.br/',
         logo: '/logos/institutions/lapig-en-color.png',
-        width: 1080,
-        height: 1080,
-        logoClass: 'logo-lapig',
+        width: 958,
+        height: 407,
       },
       {
         name: 'Federal University of Goiás',
@@ -85,7 +90,6 @@ export const INSTITUTION_GROUPS: InstitutionGroup[] = [
         logo: '/logos/institutions/ufg-color-horizontal.png',
         width: 652,
         height: 335,
-        logoClass: 'logo-ufg',
       },
     ],
   },
