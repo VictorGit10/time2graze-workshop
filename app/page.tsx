@@ -35,7 +35,7 @@ export default function Home() {
           <h1>Time2Graze<br />Brazil Workshop</h1>
           <p className="event-objective">Strengthening collaboration across partner teams by connecting data development and decision support for improved grazing management.</p>
           <div className="hero-meta" aria-label="Event information">
-            <span><CalendarDays aria-hidden="true" />14—18 September 2026</span>
+            <span><CalendarDays aria-hidden="true" />14–18 September 2026</span>
             <span><MapPin aria-hidden="true" />Goiânia, Goiás · Brazil</span>
           </div>
           <div className="hero-actions">
@@ -44,8 +44,16 @@ export default function Home() {
           </div>
         </div>
         <div className="event-visual">
-          {/* basePath does not reach a plain img; it has to be prefixed here. */}
-          <img src={withBasePath('/time2graze-hero.webp')} alt="Aerial view of pastureland documented by LAPIG" />
+          {/* basePath does not reach a plain img; it has to be prefixed here.
+              The intrinsic 1440×1080 lets the browser reserve the box before
+              the file arrives, and the hero is the largest thing on the page. */}
+          <img
+            src={withBasePath('/time2graze-hero.webp')}
+            alt="Aerial view of pastureland documented by LAPIG"
+            width={1440}
+            height={1080}
+            fetchPriority="high"
+          />
           <a className="image-credit" href="https://jornal.ufg.br/n/80658-radiografia-das-pastagens-do-brasil" target="_blank" rel="noreferrer">Photo: LAPIG · Jornal UFG</a>
           <p><strong>In person</strong><span>Hosted by LAPIG · UFG</span></p>
         </div>

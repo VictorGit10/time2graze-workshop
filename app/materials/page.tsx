@@ -1,8 +1,16 @@
-import { FileText, FolderOpen, Info, Presentation } from 'lucide-react';
+import { ClipboardList, FileText, FolderOpen, Info, Presentation, type LucideIcon } from 'lucide-react';
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import type { MaterialKind } from '@/data/types';
 import { materialDetail, materialsByDay } from '@/lib/materials';
 import { withBasePath } from '@/lib/base-path';
+
+/** The file's own icon, not one for everything: the model already knows the kind. */
+const KIND_ICON: Record<MaterialKind, LucideIcon> = {
+  slides: Presentation,
+  document: FileText,
+  protocol: ClipboardList,
+};
 
 export const metadata: Metadata = {
   title: 'Materials · Time2Graze Brazil Workshop',
@@ -15,7 +23,7 @@ export default function MaterialsPage() {
   return (
     <section className="materials section-pad" id="materials">
       <div className="section-title split-title">
-        <div><p>Workshop materials</p><h2>Presentations and documents</h2></div>
+        <div><p>Workshop materials</p><h1>Presentations and documents</h1></div>
         <span>Materials will be added as they are approved</span>
       </div>
 
@@ -29,24 +37,31 @@ export default function MaterialsPage() {
           <section className="resource-group" key={day.date}>
             <h3>Day {day.index} · {day.label}</h3>
             <div>
-              {entries.map((entry) => (
-                <article className="resource-item" key={`${entry.sessionId ?? 'day'}-${entry.context}`}>
-                  <Presentation aria-hidden="true" />
-                  <span>
-                    {entry.sessionId
-                      ? (
-                        <Link className="resource-session" href={`/programme/#${entry.sessionId}`}>
-                          {entry.context}
-                        </Link>
-                      )
-                      : <strong>{entry.context}</strong>}
-                    <small>{materialDetail(entry)}</small>
-                  </span>
+              {entries.map((entry, index) => {
+                const KindIcon = KIND_ICON[entry.material.kind];
+                /* Composed from what makes the entry distinct — day, session,
+                   kind and position within the group — so two same-labelled
+                   files on one session can never collide. */
+                const key = `${day.date}-${entry.sessionId ?? 'day'}-${entry.material.kind}-${index}`;
+                return (
+                  <article className="resource-item" key={key}>
+                    <KindIcon aria-hidden="true" />
+                    <span>
+                      {entry.sessionId
+                        ? (
+                          <Link className="resource-session" href={`/programme/#${entry.sessionId}`}>
+                            {entry.context}
+                          </Link>
+                        )
+                        : <strong>{entry.context}</strong>}
+                      <small>{materialDetail(entry)}</small>
+                    </span>
                   {entry.material.href
                     ? <a className="resource-file" href={withBasePath(entry.material.href)}>Download</a>
                     : <em>To be published</em>}
-                </article>
-              ))}
+                  </article>
+                );
+              })}
             </div>
           </section>
         ))}

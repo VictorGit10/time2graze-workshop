@@ -120,7 +120,8 @@ button { color: inherit; font: inherit; }
 
 .section-pad { padding: clamp(90px, 10vw, 145px) clamp(24px, 7.5vw, 118px); }
 .section-title { margin-bottom: clamp(52px, 6vw, 80px); }
-.section-title h2 { margin: 0; font-family: var(--font-serif), Georgia, serif; font-size: clamp(43px, 5.2vw, 70px); font-weight: 600; line-height: .95; letter-spacing: -.04em; }
+/* O título de abertura de cada página interna é um h1; as seções da home, h2. */
+.section-title h1, .section-title h2 { margin: 0; font-family: var(--font-serif), Georgia, serif; font-size: clamp(43px, 5.2vw, 70px); font-weight: 600; line-height: .95; letter-spacing: -.04em; }
 .split-title { display: flex; justify-content: space-between; align-items: end; gap: 35px; }
 .split-title > span { max-width: 340px; color: var(--muted); font-size: var(--t-label); font-weight: 700; line-height: 1.5; letter-spacing: .07em; text-align: right; text-transform: uppercase; }
 
@@ -487,7 +488,7 @@ footer > a:last-child svg { width: 12px; height: 12px; transform: rotate(180deg)
   .hero-meta { margin-top: 8pt; }
 
   .section-pad { padding: 14pt 0 0; }
-  .section-title h2 { font-size: 16pt; }
+  .section-title h1, .section-title h2 { font-size: 16pt; }
   .objective-block p { font-size: 11pt; }
   .overview-layout, .practical-grid { break-inside: avoid; }
 

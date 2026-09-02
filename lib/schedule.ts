@@ -22,6 +22,12 @@ export function dayLabel(date: string) {
   return `${WEEKDAYS[d.getUTCDay()]} · ${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]}`;
 }
 
+/** '2026-09-14' -> '14 Sep' */
+export function shortDate(date: string) {
+  const d = parseISO(date);
+  return `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]}`;
+}
+
 /** '08:30' + '10:00' -> '08:30 – 10:00'; a start alone stays '08:30'. */
 export function timeLabel(session: Session) {
   return session.end ? `${session.start} – ${session.end}` : session.start;

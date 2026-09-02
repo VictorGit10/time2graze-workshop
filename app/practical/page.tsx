@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { MAP_VENUES, VENUES } from '@/data/venues';
 import { withBasePath } from '@/lib/base-path';
+import { mealsByDay, movementsByDay } from '@/lib/practical';
 import { formatCoordinates, osmEmbedSrc, osmLink, straightLineKm, uberLink } from '@/lib/places';
 import { useTabKeys } from '@/hooks/use-tab-keys';
 
@@ -50,7 +51,7 @@ export default function PracticalPage() {
   return (
     <>
       <section className="practical section-pad" id="practical">
-        <div className="section-title"><p>Practical information</p><h2>Stay, meals and transport</h2></div>
+        <div className="section-title"><p>Practical information</p><h1>Stay, meals and transport</h1></div>
         <div className="practical-grid">
           <article className="practical-card">
             <Hotel aria-hidden="true" /><span className="status">Booking pending</span><h3>Accommodation</h3>
@@ -70,19 +71,18 @@ export default function PracticalPage() {
           <article className="practical-card">
             <UtensilsCrossed aria-hidden="true" /><span className="status confirmed">From the programme</span><h3>Meals</h3>
             <ul>
-              <li><strong>14 Sep</strong><span>Lunch at Samauma · Welcome dinner at LAPIG</span></li>
-              <li><strong>15–16 Sep</strong><span>Lunch at Centro de Eventos · Dinner at hotel</span></li>
-              <li><strong>17 Sep</strong><span>Lunch at Centro de Eventos · Closing reception</span></li>
-              <li><strong>18 Sep</strong><span>Lunch in Cidade de Goiás · Dinner at hotel</span></li>
+              {mealsByDay().map((row) => (
+                <li key={row.day}><strong>{row.day}</strong><span>{row.lines.join(' · ')}</span></li>
+              ))}
             </ul>
             <p className="card-note">Dietary requirement instructions and meal details are still to be confirmed.</p>
           </article>
           <article className="practical-card">
             <BusFront aria-hidden="true" /><span className="status confirmed">Field transport confirmed</span><h3>Transport</h3>
             <ul>
-              <li><strong>14 Sep</strong><span>Field visit to T2G Biomass Experimental Area</span></li>
-              <li><strong>18 Sep · 06:30</strong><span>Departure to Cidade de Goiás</span></li>
-              <li><strong>18 Sep · 17:30</strong><span>Return trip to Goiânia</span></li>
+              {movementsByDay().map((row) => (
+                <li key={row.day}><strong>{row.day}</strong><span>{row.lines.join(' · ')}</span></li>
+              ))}
             </ul>
             <p className="card-note">Airport transfers and daily transport arrangements have not yet been provided.</p>
           </article>

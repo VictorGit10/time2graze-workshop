@@ -43,7 +43,7 @@ export function SiteHeader() {
           })}
         </nav>
 
-        <Link className="header-date" href="/programme/">14—18 Sep <span>2026</span></Link>
+        <Link className="header-date" href="/programme/">14–18 Sep <span>2026</span></Link>
       </div>
     </header>
   );

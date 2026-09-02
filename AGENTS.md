@@ -372,8 +372,10 @@ and do not fill them with invented detail in the meantime.
 ```
 app/layout.tsx               Fonts, metadata, and the header/footer every page gets.
 app/page.tsx                 Home: hero, today's session, directory, overview.
+app/programme/layout.tsx     Route metadata. The page is a client component.
 app/programme/page.tsx       Day tabs, deep links and the printable programme.
 app/materials/page.tsx       Materials by day. A server component: no state.
+app/practical/layout.tsx     Route metadata. The page is a client component.
 app/practical/page.tsx       Stay, meals, transport, maps and recommendations.
 app/globals.css              Shared tokens, screen, responsive and print styles.
 components/site-header.tsx   Persistent navigation, with the current page marked.
@@ -390,6 +392,7 @@ lib/deep-link.ts             Day/session hash resolution and scrolling.
 lib/materials.ts             Materials view derived from the agenda.
 lib/now.ts                   Goiânia clock and Today/Now/Next rules.
 lib/places.ts                Map embed, map link and ride link, from coordinates.
+lib/practical.ts             Meals and transport lines, derived from the agenda.
 lib/schedule.ts              Time, duration and programme-axis helpers.
 next.config.ts               Static export, trailing slash and the Pages basePath.
 postcss.config.mjs           Tailwind, imported by globals.css for its reset only.
@@ -408,8 +411,9 @@ declared inside a component.
 ## Where content lives
 
 - Edit `data/agenda.ts` to change a session, presenter, track, requirement or
-  expected material. It feeds `/programme/`, `/materials/` and the home page's
-  "happening now" band at once.
+  expected material. It feeds `/programme/`, `/materials/`, the home page's
+  "happening now" band, and the meals and transport lines on `/practical/`
+  (`lib/practical.ts`) at once.
 - Edit `data/venues.ts` to change a venue, its pin or its address. The
   programme, the agenda lines and the location panel share this registry.
   Record where a new fact came from in `research/venues.md` at the same time.

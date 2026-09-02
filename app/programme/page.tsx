@@ -77,7 +77,7 @@ export default function ProgrammePage() {
   return (
     <section className="agenda-section section-pad" id="agenda">
       <div className="section-title split-title">
-        <div><p>Programme</p><h2>Daily schedule</h2></div>
+        <div><p>Programme</p><h1>Daily schedule</h1></div>
         <span>Draft programme · Five working days</span>
       </div>
 
