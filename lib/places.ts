@@ -35,24 +35,24 @@ export function osmLink({ lat, lon }: Coordinates, zoom = 17): string {
 
 /**
  * Uber's documented universal link, in its current form: the ride-request
- * path, with the pickup and the first stop as encoded location objects. It
- * opens the app when installed and falls back to the mobile site otherwise,
- * with no API key and no account on our side.
+ * path, with `pickup=my_location` and the first stop as an encoded location
+ * object. It opens the app where supported and falls back to the mobile site
+ * otherwise, with no API key or integration account on our side.
  * https://developer.uber.com/docs/riders/ride-requests/tutorials/deep-links/introduction
  *
  * It carries the reader to a point, not to a name they can re-read, so it is
  * only ever built for a venue marked `ride` in the registry — a coordinate and
  * an address we are willing to stand behind.
  */
-export function uberLink({ lat, lon }: Coordinates, nickname: string, address?: string): string {
+export function uberLink({ lat, lon }: Coordinates, nickname: string, address: string): string {
   /* `addressLine1` is the dropoff's name and `addressLine2` the address a
      driver reads, in the location object the link parameters specify. */
-  const dropoff: Record<string, string | number> = {
+  const dropoff = {
     latitude: lat,
     longitude: lon,
     addressLine1: nickname,
+    addressLine2: address,
   };
-  if (address) dropoff.addressLine2 = address;
   const query = new URLSearchParams({
     pickup: 'my_location',
     'drop[0]': JSON.stringify(dropoff),

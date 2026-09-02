@@ -103,7 +103,9 @@ that was right while the content was short. Measured just before the split, it
 ran 10 screens on a 1440px desktop and **15.6 screens on a 375px phone**, with
 the main navigation set to `display: none` below 760px — so the only shortcuts
 sat near the top and disappeared the moment a reader entered the programme.
-Hotel, transport, accessibility and partners are all still to be added.
+Several hotel, transport, accessibility and partner details still depend on
+confirmation; the corresponding sections already exist and remain visibly
+pending.
 
 **Links between pages carry their anchor**: a material points at
 `/programme/#d3-country-uganda`, and the programme resolves the day from the
@@ -437,13 +439,17 @@ building it, and that are easy to break:
 - **A sourced pin is not a confirmed pin.** `research/venues.md` records where
   each one came from and what cross-checked it. A venue with no sourced
   coordinate stays off the panel rather than being given an approximate one.
-- **Maps are OpenStreetMap embeds** — coordinate-exact, no API key to expose in
-  a static export, and no third-party cookies for participants in seven
-  countries. ODbL attribution is required, and is rendered under the panel.
+- **Maps are OpenStreetMap embeds** — coordinate-exact and with no API key to
+  expose in a static export. They remain a third-party surface governed by
+  OpenStreetMap's privacy terms. ODbL attribution is required, and is rendered
+  under the panel.
 - **An address is printed only once the venue or the host has confirmed it.**
   LAPIG's published address carries a probable typo and a Caixa Postal CEP, so
   the panel shows its locality and a visible pending note instead. A plausible
   address is worse than a blank one for someone reading it out to a driver.
+  Candidate addresses and the candidate Favo de Mel phone stay in
+  `research/venues.md`, not in operational fields on the page. Centro de
+  Eventos' phone is published because its official UFG page supplies it.
 - **A photograph has to be authorised.** Google Maps and Places photographs are
   third-party copyright and cannot be republished — a screenshot does not
   create a licence. Until a venue supplies one, the panel shows a visibly empty
@@ -451,10 +457,12 @@ building it, and that are easy to break:
   interim image is ever wanted; candidates are listed in `research/venues.md`,
   and every published photograph carries its credit.
 - **The ride link is Uber's documented universal link** (`m.uber.com/looking`,
-  with `pickup` and `drop[0]` as encoded location objects), built from the
-  coordinate: no key, no account. 99 has no documented equivalent, so the panel
-  says the link opens Uber and offers the address and coordinates for every
-  other app. Never generate a ride link for a pin that is not right — it
+  with `pickup=my_location` and `drop[0]` as an encoded location object), built
+  from the coordinate and confirmed address: the site needs no API key or Uber
+  integration account, though the passenger still signs in to Uber to request
+  the trip. 99 has no documented equivalent, so the panel says the link opens
+  Uber and offers the address and coordinates for every other app. Never
+  generate a ride link for a pin that is not right — it
   carries someone to a point, not to a name they can re-read. In the registry
   this gate is the `ride` flag, set only where the destination itself is
   confirmed: Golden Lis carries it; LAPIG, Centro de Eventos and Favo de Mel
@@ -546,15 +554,19 @@ external URLs pass through untouched. Keep material files out of
 
 ## Waiting on the LAPIG team
 
-Blank on the live site, and not answerable by guessing. Filling these in is the
-highest-value work available on this project:
+Unresolved on the live site, and not answerable by guessing. Filling these in
+is the highest-value work available on this project. The complete, dated
+checklist is in `research/pending-information.md`; keep that file and this
+summary aligned.
 
 - Hotel: the Golden Lis is named and pinned; still missing are the booking
   route and deadline, what the rate covers, and check-in/check-out times
 - Confirmation of the LAPIG pin, its street address and its CEP — the address
   LAPIG publishes carries a probable typo and a Caixa Postal CEP. See
   `research/venues.md`
-- An authorised photograph of the hotel, with a credit line
+- Confirmation of the Centro de Eventos details and the exact Favo de Mel unit
+- Authorised photographs of the hotel, Centro de Eventos and Favo de Mel, with
+  credit lines
 - Airport transfers: who arranges them, pickup times
 - Daily transport between hotel and campus
 - Dietary requirements: how participants report them, and by when
@@ -563,6 +575,10 @@ highest-value work available on this project:
 - Accessibility arrangements and a contact route for support
 - Final partner matrix beyond the publicly documented funder, project leads
   and workshop hosts already grouped on the home page
+- Final approval of the agenda, required before `.ics` files are generated
+- The 22 expected presentation/document files, the shared-folder route and the
+  final programme PDF
+- Field checklist, weather guidance and local participant recommendations
 
 The hotel blocks everyone — participants from seven countries are booking
 international flights.
@@ -574,8 +590,10 @@ international flights.
   as one mechanical cleanup commit, not mixed into feature or content work.
 - Global `npm run lint` currently reports accessibility/compiler findings in
   those unused components and `next/no-img-element` for the two raw `<img>`
-  tags — the pre-optimised hero and the venue photograph. Both are deliberate:
-  `images: { unoptimized: true }` is required by the static export, so
-  `next/image` would buy nothing. Targeted TypeScript checks pass; the
-  repository
-  should return to a clean global lint when the scaffold cleanup is done.
+  tags. The hero already carries intrinsic dimensions and high fetch priority;
+  venue photographs are lazy-loaded inside a size-constrained panel. Static
+  export requires unoptimised output, but `next/image` could still provide
+  intrinsic sizing and loading semantics, so switching remains a valid small
+  cleanup rather than an impossible one. Targeted TypeScript checks pass; the
+  repository should return to a clean global lint when the scaffold cleanup is
+  done.

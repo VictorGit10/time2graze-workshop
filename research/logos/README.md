@@ -2,7 +2,8 @@
 
 This folder records provenance and usage status for the workshop logo set.
 Logo presence in the agenda does not by itself confirm partner status. The final
-logo list and ordering must be approved by the Time2Graze/LAPIG team.
+logo list and ordering must be approved by the Time2Graze/LAPIG team. The
+cross-project operational checklist is in `research/pending-information.md`.
 
 ## Candidate final assets
 

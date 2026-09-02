@@ -106,10 +106,9 @@ export const VENUES = {
     short: 'Centro de Eventos',
     use: 'Lunches during the retreat',
     locality: 'Campus Samambaia · Universidade Federal de Goiás, Goiânia',
-    address: 'Av. Esperança, s/n — Vila Itatiaia, Goiânia, GO, 74690-612',
     coords: { lat: -16.6040384, lon: -49.2589823 },
-    /** From public place records only — no ride link until the venue confirms. */
-    pending: 'Address, pin and phone are from the venue\'s public place record; confirmation with the venue is still pending.',
+    /** Candidate facts stay in research/venues.md, not in operational fields. */
+    pending: 'The visitor address and map pin are awaiting confirmation from UFG. The pin is shown for reference only.',
     website: 'https://centrodeeventos.ufg.br/',
     phone: '+55 62 3521-1900',
     onMap: true,
@@ -119,11 +118,9 @@ export const VENUES = {
     short: 'Churrascaria Favo de Mel',
     use: 'Closing reception · 17 September',
     locality: 'Setor Sul, Goiânia',
-    address: 'R. 87, 127 — Setor Sul, Goiânia, GO, 74080-295',
     coords: { lat: -16.6904676, lon: -49.2552251 },
     /** Which house hosts the reception is an open question — no ride link. */
-    pending: 'Address, pin and phone are from the restaurant\'s public place record; which house hosts the closing reception is still to be confirmed.',
-    phone: '+55 62 3541-5555',
+    pending: 'The restaurant unit, address and pin for the closing reception are awaiting confirmation. The map pin is shown for reference only.',
     onMap: true,
   },
   cidadeDeGoias: {

@@ -1,5 +1,5 @@
 import { AGENDA } from '@/data/agenda';
-import type { Session } from '@/data/types';
+import type { Session, SessionKind } from '@/data/types';
 import { sessionTitle, shortDate, timeLabel } from './schedule';
 
 /**
@@ -14,10 +14,15 @@ import { sessionTitle, shortDate, timeLabel } from './schedule';
 /** One row of the list: the days it covers, and what happens on each of them. */
 export type DayLines = { day: string; lines: string[] };
 
-const MEAL_KINDS = new Set(['meal', 'social']);
-const MOVEMENT_KINDS = new Set(['transport', 'field']);
+const MEAL_KINDS = new Set<SessionKind>(['meal', 'social']);
+const MOVEMENT_KINDS = new Set<SessionKind>(['transport', 'field']);
 
-function linesOf(kinds: Set<string>, withTime: boolean): DayLines[] {
+function isFollowingDay(previous: string, current: string) {
+  const oneDay = 24 * 60 * 60 * 1000;
+  return Date.parse(current) - Date.parse(previous) === oneDay;
+}
+
+function linesOf(kinds: Set<SessionKind>, withTime: boolean): DayLines[] {
   const days = AGENDA.map((day) => ({
     date: day.date,
     lines: day.sessions
@@ -30,7 +35,11 @@ function linesOf(kinds: Set<string>, withTime: boolean): DayLines[] {
   const rows: { dates: string[]; lines: string[] }[] = [];
   for (const day of days) {
     const last = rows.at(-1);
-    if (last && last.lines.join(' ') === day.lines.join(' ')) {
+    if (
+      last
+      && isFollowingDay(last.dates.at(-1) ?? last.dates[0], day.date)
+      && JSON.stringify(last.lines) === JSON.stringify(day.lines)
+    ) {
       last.dates.push(day.date);
     } else {
       rows.push({ dates: [day.date], lines: day.lines });

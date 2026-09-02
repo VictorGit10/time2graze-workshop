@@ -1,9 +1,10 @@
 # Venue and location research
 
-Provenance for the places the site names. Nothing in this file reaches the
-published site until the Time2Graze/LAPIG team confirms it — a coordinate
-returned by a geocoder is a **candidate**, not a confirmation. Someone will
-follow these pins from an arrivals hall.
+Provenance for the places the site names. A coordinate returned by a geocoder
+is a **candidate**, not a confirmation. Candidate pins may appear on the site
+only with a visible pending notice and without a ride link; candidate addresses
+and phone numbers remain in this research file until the Time2Graze/LAPIG team
+confirms them. Someone will follow these instructions from an arrivals hall.
 
 Survey opened 2 September 2026. Five venues carry a pin: LAPIG, the hotel,
 Centro de Eventos, the reception restaurant and Cidade de Goiás. FUNAPE,
@@ -111,14 +112,20 @@ Surveyed the same way, and to the same standard: sourced, not confirmed.
 | Field | Value | Source | Status |
 | --- | --- | --- | --- |
 | Registered name | Centro de Cultura e Eventos Professor Ricardo Freua Bufáiçal | Google place record | The site prints `Centro de Eventos · UFG`, which is what a participant will hear |
-| Address | Av. Esperança, s/n - Vila Itatiaia, Goiânia - GO, 74690-612 | Google place record | Street CEP, unlike LAPIG's |
+| Address candidate | Av. Esperança, s/n - Vila Itatiaia, Goiânia - GO, 74690-612 | Google place record | Candidate |
+| Official contact-page address | Avenida Esperança s/n, Câmpus Samambaia - Prédio da Reitoria, CEP 74690-900 | https://centrodeeventos.ufg.br/ | Official, but names the Reitoria building rather than the event venue; ask which visitor address to publish |
 | Coordinates | `-16.6040384, -49.2589823` | Google place record | Candidate |
-| Website | centrodeeventos.ufg.br | Google place record | Unverified |
-| Phone | (62) 3521-1900 | Google place record | Unverified |
+| Website | centrodeeventos.ufg.br | UFG official domain | Confirmed |
+| Phone | (62) 3521-1900 | https://centrodeeventos.ufg.br/ | Published by the official site |
 
 Sits 663 m east-south-east of the LAPIG pin, on the same campus — consistent
 with lunches being a short walk from the sessions, though whether participants
 walk or are driven is worth confirming rather than assuming.
+
+The conflicting addresses remain documented here and are withheld from the
+participant-facing address field. The official phone is published. The panel
+shows the candidate pin for reference, marks it pending and offers no ride
+link.
 
 ### Churrascaria Favo de Mel
 
@@ -131,6 +138,10 @@ walk or are driven is worth confirming rather than assuming.
 This is the unit the search resolves to. **Whether the closing reception is at
 this address has not been confirmed** — a restaurant of this size may operate
 more than one house, and the agenda names only the restaurant.
+
+The candidate address and phone remain documented here but are withheld from
+the participant-facing fields. The panel shows the candidate pin for reference,
+marks it pending and offers no ride link.
 
 ### Cidade de Goiás
 
@@ -164,7 +175,8 @@ publish as travel times.
 The hotel sits in the airport district and the campus is north-west of it, so
 the daily commute crosses the city. The accommodation card publishes the
 Golden Lis → LAPIG figure, computed from the two registry pins and labelled
-"straight line" so it cannot be read as a travel time.
+"straight line" so it cannot be read as a travel time. The LAPIG pin is still
+provisional, so the number must be treated as approximate until it is confirmed.
 
 **Real driving time in Goiânia morning traffic is the number participants
 need, and only the team can supply it.** That number, not the distance, is
@@ -224,8 +236,9 @@ UFG photograph is preferable because it shows the LAPIG building itself.
 
 ## Ride-hailing
 
-**Uber works without an account, a key or a contract.** The documented
-universal deep link opens the app if installed and falls back to the mobile
+**The site needs no Uber API key, integration account or contract.** The
+passenger still needs to sign in to Uber to request a trip. The documented
+universal deep link opens the app where supported and falls back to the mobile
 site otherwise. The current form is the ride-request path, with the pickup and
 the first stop as encoded location objects:
 
@@ -244,6 +257,12 @@ https://developer.uber.com/docs/riders/ride-requests/tutorials/deep-links/introd
 (previously the same parameters were documented under `m.uber.com/ul/` with
 `action=setPickup` and flat `dropoff[…]` fields; the site moved to the
 `/looking` form in September 2026).
+
+**Verified 2 September 2026 in the desktop web fallback.** The exact Golden Lis
+URL opened Uber's “Request a ride” surface with “Current location” as pickup
+and “Golden Lis Hotel Boutique” retained as the destination. A final physical
+Android/iOS check with the Uber app installed remains pending before the
+workshop.
 
 **It is gated on the destination being confirmed.** A deep link carries the
 participant to a point, not to a name they can re-read — a wrong pin is worse
@@ -273,14 +292,16 @@ copyable address, which Uber, 99, a taxi and a hotel receptionist all accept.
 
 ## Map rendering
 
-The site currently embeds `https://www.google.com/maps?q=…&output=embed` in an
-iframe on `/practical/`, keyed by a search string rather than a coordinate.
+The site uses OpenStreetMap embeds on `/practical/`, built from the registry
+coordinates rather than search strings. This keeps the rendered pin stable and
+requires no API key. OpenStreetMap remains a third-party surface and its own
+privacy terms apply.
 
 | Option | Key needed | Notes |
 | --- | --- | --- |
-| Google embed iframe (current) | No | Familiar, but the pin is resolved from a search string at load time — Google decides where it lands, and it can move. Sets Google cookies for every reader. |
+| Google embed iframe (previous implementation) | No | Familiar, but the pin was resolved from a search string at load time — Google decided where it landed, and it could move. |
 | Google Maps Embed API | Yes | A key in a static site is public. Precise pins, official support. |
-| OpenStreetMap embed iframe | No | `openstreetmap.org/export/embed.html?bbox=…&marker=lat,lon` — coordinate-exact, no key, no third-party cookies, ODbL attribution required. Less familiar to readers. |
+| OpenStreetMap embed iframe (**current**) | No | `openstreetmap.org/export/embed.html?bbox=…&marker=lat,lon` — coordinate-exact, no key, third-party surface, ODbL attribution required. Less familiar to readers. |
 | MapLibre + a tile provider | Depends | Full control, real styling, but adds a JS dependency and a tile bill or usage limit to a site that currently ships almost none. |
 | Google My Maps | No | A second place to maintain the same venue data, which contradicts the single-registry rule in `AGENTS.md`. Rejected. |
 
@@ -300,16 +321,18 @@ Blocking, and not answerable by guessing:
 3. Is the street "Alameda das Palmeiras" or "Almeida Palmeiras"?
 4. Which CEP belongs on a visitor-facing address — 74001-970 (PO box) or
    74690-900 (campus street)?
-5. A photograph of the LAPIG building the workshop may publish, with a credit
-   line.
-6. Which entrance and gate should participants use, and is campus access
+5. Which entrance and gate should participants use, and is campus access
    controlled?
-7. Hotel: check-in/check-out, what the rate covers, booking route and deadline,
+6. Hotel: check-in/check-out, what the rate covers, booking route and deadline,
    and whether an airport transfer exists.
-8. Realistic hotel → campus travel time in morning traffic.
-9. Permission to publish the hotel's photographs, or a hotel-supplied image.
+7. Realistic hotel → campus travel time in morning traffic.
+8. Permission to publish the hotel's photographs, or a hotel-supplied image.
+9. Resolve the Centro de Eventos address conflict and confirm its visitor pin;
+   the official site already supplies the phone.
 10. Which Favo de Mel address hosts the closing reception on 17 September.
-11. Do participants walk from LAPIG to Centro de Eventos for lunch, or are they
+11. May the workshop publish photographs of Centro de Eventos and Favo de Mel,
+    and with which credit lines?
+12. Do participants walk from LAPIG to Centro de Eventos for lunch, or are they
     driven?
-12. Addresses for FUNAPE, Samauma and the T2G Biomass Experimental Area, so
+13. Addresses for FUNAPE, Samauma and the T2G Biomass Experimental Area, so
     they can join the location panel.

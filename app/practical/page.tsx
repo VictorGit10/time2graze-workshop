@@ -36,7 +36,7 @@ export default function PracticalPage() {
    * it takes a reader to a point, so a candidate pin must never produce one.
    * Reached-by-bus venues never produce one either, for the obvious reason.
    */
-  const ridable = venue.ride === true && !venue.organisedTransport;
+  const ridable = venue.ride === true && !venue.organisedTransport && address !== undefined;
 
   async function copy(field: string, value: string) {
     try {
@@ -61,7 +61,7 @@ export default function PracticalPage() {
               <li><strong>Position</strong><span>Between the airport district and Campus Samambaia</span></li>
               {/* Straight line from the sourced pins, not a travel time — the
                   driving time in morning traffic is for the team to supply. */}
-              <li><strong>Distance</strong><span>{straightLineKm(hotel.coords, VENUES.lapig.coords)} from LAPIG · UFG, straight line</span></li>
+              <li><strong>Distance</strong><span>Approx. {straightLineKm(hotel.coords, VENUES.lapig.coords)} from the current LAPIG pin, straight line</span></li>
             </ul>
             <div className="empty-detail">
               <CircleAlert aria-hidden="true" />
@@ -78,7 +78,7 @@ export default function PracticalPage() {
             <p className="card-note">Dietary requirement instructions and meal details are still to be confirmed.</p>
           </article>
           <article className="practical-card">
-            <BusFront aria-hidden="true" /><span className="status confirmed">Field transport confirmed</span><h3>Transport</h3>
+            <BusFront aria-hidden="true" /><span className="status confirmed">From the programme</span><h3>Transport</h3>
             <ul>
               {movementsByDay().map((row) => (
                 <li key={row.day}><strong>{row.day}</strong><span>{row.lines.join(' · ')}</span></li>
@@ -90,7 +90,7 @@ export default function PracticalPage() {
       </section>
 
       <section className="maps section-pad" id="maps">
-        <div className="section-title split-title"><div><p>Maps and venues</p><h2>Workshop locations</h2></div><span>Use the list to inspect each location</span></div>
+        <div className="section-title split-title"><div><p>Maps and venues</p><h2>Workshop locations</h2></div><span>Confirmed and provisional locations</span></div>
         <div className="maps-layout">
           <div className="location-selector" role="tablist" aria-label="Workshop locations" tabIndex={-1} onKeyDown={onMapKeys}>
             {MAP_VENUES.map((location, index) => (
@@ -195,7 +195,7 @@ export default function PracticalPage() {
                   ? ' The workshop provides transport to this location.'
                   : ridable
                     ? ' The ride link opens Uber; other apps accept the coordinates above.'
-                    : ' The location is still to be confirmed, so no ride link is offered; the coordinates above serve any app.'}
+                    : ' The pin is shown for reference while the location is confirmed; no ride link is offered.'}
               </p>
             </div>
           </div>

@@ -21,20 +21,26 @@ Implemented:
 - print layout containing all five days;
 - `Today`, `Now` and `Next` states in `America/Sao_Paulo`;
 - materials generated from the sessions and tracks that produce them;
+- venue maps with candidate pins visibly marked and ride links restricted to
+  confirmed destinations;
 - official and reference institutional logo assets with provenance notes.
 
 Waiting for confirmed information:
 
 - `.ics` calendar files: blocked until times, venues and timezone are approved;
 - hotel, booking, check-in and check-out details;
+- confirmation of the LAPIG and Centro de Eventos pins and the exact Favo de
+  Mel unit;
 - airport transfers and daily transport;
 - dietary-requirement instructions;
 - the two Day 5 farm locations;
 - accessibility arrangements, emergency contact and nearest hospital;
-- the approved partner matrix and logo hierarchy.
+- the final partner matrix and logo hierarchy;
+- the expected presentation files, shared folder and final programme PDF.
 
 See [AGENTS.md](AGENTS.md) for the complete product, design and implementation
-decisions.
+decisions. The complete operational checklist is in
+[research/pending-information.md](research/pending-information.md).
 
 ## Content model
 
@@ -91,8 +97,9 @@ npm run format  # oxfmt
 
 The generated scaffold still contains 60 unused shadcn components and several
 unused dependencies. Global lint currently reports issues inside that unused
-scaffold, plus the intentional plain hero `<img>`. Removing the scaffold is a
-separate cleanup task and should not be mixed with content changes.
+scaffold, plus the two intentional plain `<img>` elements used for the hero and
+venue photographs. Removing the scaffold is a separate cleanup task and should
+not be mixed with content changes.
 
 ## Deployment
 
