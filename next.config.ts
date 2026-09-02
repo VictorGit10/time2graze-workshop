@@ -16,6 +16,9 @@ const nextConfig: NextConfig = {
   basePath,
   // No image server exists on Pages.
   images: { unoptimized: true },
+  // `next dev` otherwise appends a block of its own to AGENTS.md, which is a
+  // hand-written document and the primary brief for this project.
+  agentRules: false,
 };
 
 export default nextConfig;

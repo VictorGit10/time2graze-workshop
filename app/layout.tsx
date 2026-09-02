@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
 import { Cormorant_Garamond, Manrope } from 'next/font/google';
+import { withBasePath } from '@/lib/base-path';
 import './globals.css';
 
 const sans = Manrope({ variable: '--font-sans', subsets: ['latin'] });
@@ -12,7 +13,7 @@ const serif = Cormorant_Garamond({
 export const metadata: Metadata = {
   title: 'Time2Graze Brazil Workshop · 14–18 September 2026',
   description: 'Internal Time2Graze technical workshop in Goiânia, Brazil, focused on data development, decision support and grazing management.',
-  icons: { icon: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/favicon.svg` },
+  icons: { icon: withBasePath('/favicon.svg') },
   openGraph: {
     title: 'Time2Graze Brazil Workshop',
     description: 'Internal technical workshop · 14–18 September 2026 · Goiânia, Brazil.',

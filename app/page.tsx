@@ -1,6 +1,7 @@
 import { ArrowRight, CalendarDays, ChevronRight, MapPin } from 'lucide-react';
 import Link from 'next/link';
 import { NowNext } from '@/components/now-next';
+import { withBasePath } from '@/lib/base-path';
 
 /** The three destinations, as a directory rather than a shortcut bar. */
 const DESTINATIONS = [
@@ -10,8 +11,6 @@ const DESTINATIONS = [
 ] as const;
 
 export default function Home() {
-  const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
-
   return (
     <>
       <section className="institutional-hero" id="top">
@@ -30,7 +29,7 @@ export default function Home() {
         </div>
         <div className="event-visual">
           {/* basePath does not reach a plain img; it has to be prefixed here. */}
-          <img src={`${basePath}/time2graze-hero.webp`} alt="Grazing lands in the Brazilian Cerrado" />
+          <img src={withBasePath('/time2graze-hero.webp')} alt="Grazing lands in the Brazilian Cerrado" />
           <p><strong>In person</strong><span>Hosted by LAPIG · UFG</span></p>
         </div>
       </section>

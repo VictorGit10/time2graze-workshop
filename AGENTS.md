@@ -374,16 +374,19 @@ components/programme.tsx     Proportional, chronological and print programmes.
 hooks/use-tab-keys.ts        Arrow-key movement for the day and location tablists.
 data/agenda.ts               The five days, sessions, tracks and materials.
 data/types.ts                Content contracts.
-data/venues.ts               The single venue registry.
+data/venues.ts               The single venue registry: names, pins, addresses.
 hooks/use-workshop-clock.ts  Client clock with a null server snapshot.
+lib/base-path.ts             The one place a raw path gets the Pages basePath.
 lib/deep-link.ts             Day/session hash resolution and scrolling.
 lib/materials.ts             Materials view derived from the agenda.
 lib/now.ts                   Goiânia clock and Today/Now/Next rules.
+lib/places.ts                Map embed, map link and ride link, from coordinates.
 lib/schedule.ts              Time, duration and programme-axis helpers.
 next.config.ts               Static export, trailing slash and the Pages basePath.
 postcss.config.mjs           Tailwind, imported by globals.css for its reset only.
 public/                      Hero, social preview, favicon and candidate logos.
 research/logos/              Logo provenance and previous-site references.
+research/venues.md           Where every address, pin and photo licence came from.
 components/ui/               60 unused shadcn components. Nothing imports them.
 ```
 
@@ -398,12 +401,49 @@ declared inside a component.
 - Edit `data/agenda.ts` to change a session, presenter, track, requirement or
   expected material. It feeds `/programme/`, `/materials/` and the home page's
   "happening now" band at once.
-- Edit `data/venues.ts` to change a venue or map query. The programme and maps
-  share this registry.
+- Edit `data/venues.ts` to change a venue, its pin or its address. The
+  programme, the agenda lines and the location panel share this registry.
+  Record where a new fact came from in `research/venues.md` at the same time.
 - Materials are declared on the day, session or track that produces them.
   `lib/materials.ts` aggregates them; do not recreate a hand-maintained list.
 - The four page components compose the data. Do not move operational facts
   back into their JSX.
+
+## Locations
+
+The location panel on `/practical/` presents each venue: a photograph, a map,
+the address, the coordinates and a way to get there. Rules that came out of
+building it, and that are easy to break:
+
+- **Pins come from coordinates, never from a search string.** A search string
+  is re-resolved by someone else's geocoder on every load, so the place a
+  reader sees is whatever that query returns today. The registry carries
+  `coords`; the `mapQuery` it used to carry is gone.
+- **A sourced pin is not a confirmed pin.** `research/venues.md` records where
+  each one came from and what cross-checked it. A venue with no sourced
+  coordinate stays off the panel rather than being given an approximate one.
+- **Maps are OpenStreetMap embeds** — coordinate-exact, no API key to expose in
+  a static export, and no third-party cookies for participants in seven
+  countries. ODbL attribution is required, and is rendered under the panel.
+- **An address is printed only once the venue or the host has confirmed it.**
+  LAPIG's published address carries a probable typo and a Caixa Postal CEP, so
+  the panel shows its locality and a visible pending note instead. A plausible
+  address is worse than a blank one for someone reading it out to a driver.
+- **A photograph has to be authorised.** Google Maps and Places photographs are
+  third-party copyright and cannot be republished — a screenshot does not
+  create a licence. Until a venue supplies one, the panel shows a visibly empty
+  slot. Wikimedia Commons holds CC BY-SA 4.0 photographs of the campus if an
+  interim image is ever wanted; candidates are listed in `research/venues.md`,
+  and every published photograph carries its credit.
+- **The ride link is Uber's documented universal link**, built from the
+  coordinate: no key, no account. 99 has no documented equivalent, so the panel
+  says the link opens Uber and offers the address and coordinates for every
+  other app. Never generate a ride link for a pin that is not right — it
+  carries someone to a point, not to a name they can re-read.
+- **A venue the workshop drives people to carries `organisedTransport: true`
+  and gets no ride link.** Cidade de Goiás is reached by the 06:30 bus on day
+  5; offering a ride there would propose a 130 km taxi for a journey that is
+  already arranged.
 
 ## Images
 
@@ -462,9 +502,10 @@ Know what it does and does not cover:
   under `_next/` automatically. Route with `next/link`, and give it the path
   from the site root: `href="/programme/"`, not `href="programme/"`.
 - It does **not** touch a plain `<img src>`, a raw `<a href>` or a metadata
-  icon. Those read `process.env.NEXT_PUBLIC_BASE_PATH` themselves — see the
-  hero image in `page.tsx`, the favicon in `layout.tsx` and `fileHref` in
-  `app/materials/page.tsx`.
+  icon. Those go through `withBasePath` in `lib/base-path.ts` — the hero image,
+  the favicon, the material downloads and the venue photographs all call it.
+  Add a new raw path to that helper rather than reading the environment
+  variable again.
 
 **Never write the repository name into a path.** `/time2graze-workshop/…` is
 what the browser sees and the wrong thing to put in the source: `basePath`
@@ -473,16 +514,21 @@ to a host that serves the site from its root.
 
 **This will matter when the material files arrive.** A material's `href`
 renders in a plain `<a href>`, so a file under `public/` would 404 on Pages
-without the prefix. `app/materials/page.tsx` applies it in `fileHref`, for
-site-rooted paths only; external URLs pass through untouched. Any other local
-file link added later needs the same treatment.
+without the prefix. `withBasePath` handles it, for site-rooted paths only;
+external URLs pass through untouched. Keep material files out of
+`public/materials/`, which collides with the `/materials/` route.
 
 ## Waiting on the LAPIG team
 
 Blank on the live site, and not answerable by guessing. Filling these in is the
 highest-value work available on this project:
 
-- Hotel: name, address, what the rate covers, check-in and check-out
+- Hotel: the Golden Lis is named and pinned; still missing are the booking
+  route and deadline, what the rate covers, and check-in/check-out times
+- Confirmation of the LAPIG pin, its street address and its CEP — the address
+  LAPIG publishes carries a probable typo and a Caixa Postal CEP. See
+  `research/venues.md`
+- An authorised photograph of LAPIG and of the hotel, with a credit line
 - Airport transfers: who arranges them, pickup times
 - Daily transport between hotel and campus
 - Dietary requirements: how participants report them, and by when
@@ -501,6 +547,9 @@ international flights.
   not import, along with dependencies used only by that scaffold. Remove them
   as one mechanical cleanup commit, not mixed into feature or content work.
 - Global `npm run lint` currently reports accessibility/compiler findings in
-  those unused components and `next/no-img-element` for the pre-optimised hero
-  image. Targeted TypeScript checks for the active site pass; the repository
+  those unused components and `next/no-img-element` for the two raw `<img>`
+  tags — the pre-optimised hero and the venue photograph. Both are deliberate:
+  `images: { unoptimized: true }` is required by the static export, so
+  `next/image` would buy nothing. Targeted TypeScript checks pass; the
+  repository
   should return to a clean global lint when the scaffold cleanup is done.

@@ -2,25 +2,63 @@
 
 import { useState } from 'react';
 import {
-  BusFront, ChevronRight, CircleAlert, ExternalLink, Hotel, MapPin, UtensilsCrossed,
+  BusFront, Camera, Car, Check, ChevronRight, CircleAlert, Copy, ExternalLink, Globe,
+  Hotel, MapPin, Phone, UtensilsCrossed,
 } from 'lucide-react';
-import { MAP_VENUES } from '@/data/venues';
+import { MAP_VENUES, VENUES } from '@/data/venues';
+import { withBasePath } from '@/lib/base-path';
+import { formatCoordinates, osmEmbedSrc, osmLink, uberLink } from '@/lib/places';
 import { useTabKeys } from '@/hooks/use-tab-keys';
+
+const hotel = VENUES.hotel;
+
+/** `tel:` wants digits and a plus, not the spacing a reader needs. */
+function telHref(phone: string) {
+  return `tel:${phone.replace(/[^+\d]/g, '')}`;
+}
 
 export default function PracticalPage() {
   const [activeMap, setActiveMap] = useState(0);
-  const onMapKeys = useTabKeys(MAP_VENUES.length, activeMap, setActiveMap);
-  const map = MAP_VENUES[activeMap];
+  const [copied, setCopied] = useState<string | null>(null);
+
+  /** Selecting another venue drops the copy confirmation with it. */
+  const selectVenue = (index: number) => {
+    setActiveMap(index);
+    setCopied(null);
+  };
+  const onMapKeys = useTabKeys(MAP_VENUES.length, activeMap, selectVenue);
+  const venue = MAP_VENUES[activeMap];
+  /** Locals rather than property reads: narrowing survives into the handlers. */
+  const { address, coords, phone, photo, website } = venue;
+  /** Reached by the workshop bus, so a ride link would be the wrong offer. */
+  const ridable = !venue.organisedTransport;
+
+  async function copy(field: string, value: string) {
+    try {
+      await navigator.clipboard.writeText(value);
+      setCopied(field);
+      window.setTimeout(() => setCopied((current) => (current === field ? null : current)), 2500);
+    } catch {
+      /* Clipboard access can be refused. The text is on screen and selectable. */
+    }
+  }
 
   return (
     <>
       <section className="practical section-pad" id="practical">
         <div className="section-title"><p>Practical information</p><h2>Stay, meals and transport</h2></div>
         <div className="practical-grid">
-          <article className="practical-card pending-card">
-            <Hotel aria-hidden="true" /><span className="status">Pending confirmation</span><h3>Accommodation</h3>
-            <p>Hotel name, address, booking arrangements, check-in and check-out information will be published here when confirmed.</p>
-            <div className="empty-detail"><CircleAlert aria-hidden="true" />No accommodation details have been provided yet.</div>
+          <article className="practical-card">
+            <Hotel aria-hidden="true" /><span className="status">Booking pending</span><h3>Accommodation</h3>
+            <p><strong>{hotel.name}</strong><br />{hotel.address}</p>
+            <ul>
+              <li><strong>Contact</strong><span><a href={telHref(hotel.phone)}>{hotel.phone}</a></span></li>
+              <li><strong>Distance</strong><span>Between the airport district and Campus Samambaia</span></li>
+            </ul>
+            <div className="empty-detail">
+              <CircleAlert aria-hidden="true" />
+              Booking route, rate, what it covers, check-in and check-out times have not been provided yet.
+            </div>
           </article>
           <article className="practical-card">
             <UtensilsCrossed aria-hidden="true" /><span className="status confirmed">From the programme</span><h3>Meals</h3>
@@ -49,14 +87,106 @@ export default function PracticalPage() {
         <div className="maps-layout">
           <div className="location-selector" role="tablist" aria-label="Workshop locations" tabIndex={-1} onKeyDown={onMapKeys}>
             {MAP_VENUES.map((location, index) => (
-              <button key={location.id} type="button" role="tab" aria-selected={activeMap === index} aria-controls="map-panel" id={`map-tab-${index}`} tabIndex={activeMap === index ? 0 : -1} onClick={() => setActiveMap(index)}>
+              <button key={location.id} type="button" role="tab" aria-selected={activeMap === index} aria-controls="map-panel" id={`map-tab-${index}`} tabIndex={activeMap === index ? 0 : -1} onClick={() => selectVenue(index)}>
                 <MapPin aria-hidden="true" /><span><strong>{location.name}</strong><small>{location.use}</small></span><ChevronRight aria-hidden="true" />
               </button>
             ))}
           </div>
-          <div className="map-frame" id="map-panel" role="tabpanel" aria-labelledby={`map-tab-${activeMap}`}>
-            <iframe key={map.mapQuery} title={`Map of ${map.name}`} loading="lazy" referrerPolicy="no-referrer-when-downgrade" src={`https://www.google.com/maps?q=${encodeURIComponent(map.mapQuery)}&output=embed`} />
-            <div><span><strong>{map.name}</strong><small>{map.use}</small></span><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(map.mapQuery)}`} target="_blank" rel="noreferrer">Open in Google Maps <ExternalLink aria-hidden="true" /></a></div>
+
+          <div className="venue-panel" id="map-panel" role="tabpanel" aria-labelledby={`map-tab-${activeMap}`}>
+            <div className="venue-media">
+              {photo
+                ? (
+                  <figure className="venue-photo">
+                    <img src={withBasePath(photo.src)} alt={photo.alt} loading="lazy" />
+                    <figcaption>
+                      {photo.creditHref
+                        ? <a href={photo.creditHref} target="_blank" rel="noreferrer">{photo.credit}</a>
+                        : photo.credit}
+                    </figcaption>
+                  </figure>
+                )
+                : (
+                  <div className="venue-photo photo-pending">
+                    <Camera aria-hidden="true" />
+                    <strong>Photograph pending</strong>
+                    <small>No authorised photograph of this venue has been provided yet.</small>
+                  </div>
+                )}
+              <iframe
+                key={venue.id}
+                title={`Map of ${venue.name}`}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                src={osmEmbedSrc(coords, venue.mapSpan)}
+              />
+            </div>
+
+            <div className="venue-details">
+              <div className="venue-identity">
+                <h3>{venue.name}</h3>
+                <p>{venue.use}</p>
+                {venue.locality ? <p className="venue-locality">{venue.locality}</p> : null}
+              </div>
+
+              <dl className="venue-facts">
+                <div>
+                  <dt>Address</dt>
+                  <dd>
+                    {address
+                      ? (
+                        <>
+                          <span>{address}</span>
+                          <button type="button" onClick={() => copy('address', address)}>
+                            {copied === 'address' ? <Check aria-hidden="true" /> : <Copy aria-hidden="true" />}
+                            {copied === 'address' ? 'Copied' : 'Copy'}
+                          </button>
+                        </>
+                      )
+                      : <em>To be confirmed</em>}
+                  </dd>
+                </div>
+                <div>
+                  <dt>Coordinates</dt>
+                  <dd>
+                    <span className="venue-coords">{formatCoordinates(coords)}</span>
+                    <button type="button" onClick={() => copy('coords', formatCoordinates(coords))}>
+                      {copied === 'coords' ? <Check aria-hidden="true" /> : <Copy aria-hidden="true" />}
+                      {copied === 'coords' ? 'Copied' : 'Copy'}
+                    </button>
+                  </dd>
+                </div>
+              </dl>
+              <output className="visually-hidden">{copied ? `${copied === 'address' ? 'Address' : 'Coordinates'} copied to the clipboard` : ''}</output>
+
+              {venue.pending
+                ? <p className="venue-pending"><CircleAlert aria-hidden="true" />{venue.pending}</p>
+                : null}
+
+              <div className="venue-actions">
+                <a href={osmLink(coords)} target="_blank" rel="noreferrer">
+                  <MapPin aria-hidden="true" />Open map<ExternalLink aria-hidden="true" />
+                </a>
+                {ridable
+                  ? (
+                    <a href={uberLink(coords, venue.name, address)} target="_blank" rel="noreferrer">
+                      <Car aria-hidden="true" />Ride to here<ExternalLink aria-hidden="true" />
+                    </a>
+                  )
+                  : null}
+                {website
+                  ? <a href={website} target="_blank" rel="noreferrer"><Globe aria-hidden="true" />Website<ExternalLink aria-hidden="true" /></a>
+                  : null}
+                {phone
+                  ? <a href={telHref(phone)}><Phone aria-hidden="true" />{phone}</a>
+                  : null}
+              </div>
+
+              <p className="venue-note">
+                Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap</a> contributors.
+                {ridable ? ' The ride link opens Uber; other apps accept the coordinates above.' : ' The workshop provides transport to this location.'}
+              </p>
+            </div>
           </div>
         </div>
       </section>

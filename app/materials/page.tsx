@@ -2,18 +2,12 @@ import { FileText, FolderOpen, Info, Presentation } from 'lucide-react';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { materialDetail, materialsByDay } from '@/lib/materials';
+import { withBasePath } from '@/lib/base-path';
 
 export const metadata: Metadata = {
   title: 'Materials · Time2Graze Brazil Workshop',
   description: 'Presentations, documents and protocols for each day of the workshop.',
 };
-
-/** `basePath` reaches a `next/link` href on its own, but not a plain
- *  `<a href>`. A material served from `public/` therefore has to be prefixed
- *  here; an external URL is left alone. */
-function fileHref(href: string) {
-  return href.startsWith('/') ? `${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}${href}` : href;
-}
 
 /** No state and no clock: this page is a read of the agenda, so it stays a
  *  server component and ships no JavaScript of its own. */
@@ -49,7 +43,7 @@ export default function MaterialsPage() {
                     <small>{materialDetail(entry)}</small>
                   </span>
                   {entry.material.href
-                    ? <a className="resource-file" href={fileHref(entry.material.href)}>Download</a>
+                    ? <a className="resource-file" href={withBasePath(entry.material.href)}>Download</a>
                     : <em>To be published</em>}
                 </article>
               ))}

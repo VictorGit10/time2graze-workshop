@@ -40,6 +40,8 @@ button { color: inherit; font: inherit; }
 .print-only { display: none; }
 
 /* Atalho para o conteúdo: primeiro item do documento, visível só ao receber foco. */
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
 .skip-link {
   position: fixed;
   z-index: 60;
@@ -196,14 +198,48 @@ button { color: inherit; font: inherit; }
 .location-selector strong { font-size: var(--t-body); }
 .location-selector small { margin-top: 7px; color: var(--muted); font-size: var(--t-meta); line-height: 1.5; }
 .location-selector button[aria-selected='true'] small { color: rgba(255,255,255,.7); }
-.map-frame { display: grid; grid-template-rows: 1fr auto; min-width: 0; background: #e8ece7; }
-.map-frame iframe { width: 100%; height: 100%; min-height: 455px; border: 0; }
-.map-frame > div { display: flex; justify-content: space-between; align-items: center; gap: 25px; min-height: 84px; padding: 18px 22px; background: var(--surface); border-top: 1px solid var(--line); }
-.map-frame > div > span { display: grid; }
-.map-frame > div strong { font-size: var(--t-body); }
-.map-frame > div small { margin-top: 5px; color: var(--muted); font-size: var(--t-meta); }
-.map-frame a { display: inline-flex; align-items: center; gap: 8px; font-size: var(--t-label); font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
-.map-frame a svg { width: 13px; height: 13px; }
+/* Painel de um local: foto e mapa lado a lado, depois os dados operacionais.
+   O pino vem de coordenada, não de string de busca — ver lib/places.ts. */
+.venue-panel { display: grid; grid-template-rows: auto minmax(0, 1fr); min-width: 0; background: var(--surface); }
+.venue-media { display: grid; grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr); min-height: 310px; border-bottom: 1px solid var(--line); }
+.venue-media iframe { width: 100%; height: 100%; min-height: 310px; border: 0; background: #e8ece7; }
+.venue-photo { position: relative; margin: 0; overflow: hidden; background: var(--surface-soft); border-right: 1px solid var(--line); }
+.venue-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.venue-photo figcaption { position: absolute; right: 0; bottom: 0; left: 0; padding: 9px 13px; color: rgba(255,255,255,.9); background: linear-gradient(transparent, rgba(16,56,43,.82)); font-size: var(--t-label); line-height: 1.45; }
+.venue-photo figcaption a { text-decoration: underline; text-underline-offset: 2px; }
+
+/* Espaço reservado, não decoração: fica visivelmente vazio até a foto
+   autorizada chegar. Discreto de propósito — quem avisa é a faixa de
+   pendência abaixo, em cor de alerta. */
+.photo-pending { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 7px; padding: 26px; text-align: center; border-right: 1px solid var(--line); box-shadow: inset 0 0 0 1px var(--line); }
+.photo-pending svg { width: 22px; height: 22px; color: var(--muted); }
+.photo-pending strong { color: var(--ink); font-size: var(--t-meta-lg); }
+.photo-pending small { max-width: 30ch; color: var(--muted); font-size: var(--t-meta); line-height: 1.5; }
+
+.venue-details { display: grid; align-content: start; gap: 20px; padding: 26px 28px 28px; }
+.venue-identity h3 { margin: 0; font-family: var(--font-serif), Georgia, serif; font-size: 31px; font-weight: 600; }
+.venue-identity > p { margin: 7px 0 0; color: var(--muted); font-size: var(--t-meta-lg); line-height: 1.5; }
+.venue-identity .venue-locality { color: var(--text); }
+
+.venue-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 30px; margin: 0; }
+.venue-facts > div { display: grid; gap: 7px; padding: 14px 0; border-top: 1px solid var(--line); }
+.venue-facts dt { color: var(--muted); font-size: var(--t-label); font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
+.venue-facts dd { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 0; font-size: var(--t-meta-lg); line-height: 1.5; }
+.venue-facts em { color: var(--warning); font-style: normal; }
+.venue-coords { font-variant-numeric: tabular-nums; }
+.venue-facts button { display: inline-flex; align-items: center; gap: 6px; padding: 5px 9px; color: var(--forest); background: var(--surface-soft); border: 1px solid var(--line); border-radius: var(--radius); font-size: var(--t-label); font-weight: 800; letter-spacing: .04em; text-transform: uppercase; cursor: pointer; }
+.venue-facts button svg { width: 12px; height: 12px; }
+
+.venue-pending { display: flex; gap: 9px; margin: 0; padding: 13px 14px; color: var(--warning); background: var(--warning-bg); font-size: var(--t-meta-lg); line-height: 1.5; }
+.venue-pending svg { flex: 0 0 auto; width: 14px; height: 14px; margin-top: 3px; }
+
+.venue-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.venue-actions a { display: inline-flex; align-items: center; gap: 9px; min-height: 42px; padding: 0 15px; border: 1px solid var(--line); border-radius: var(--radius); font-size: var(--t-label); font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
+.venue-actions a:first-child { color: #fff; background: var(--forest); border-color: var(--forest); }
+.venue-actions a svg { width: 13px; height: 13px; }
+.venue-actions a svg:last-child { width: 11px; height: 11px; opacity: .55; }
+.venue-note { margin: 0; color: var(--muted); font-size: var(--t-meta); line-height: 1.6; }
+.venue-note a { text-decoration: underline; text-underline-offset: 2px; }
 
 .recommendations { background: var(--surface); border-top: 1px solid var(--line); }
 .recommendation-list { border-top: 1px solid var(--line); }
@@ -231,6 +267,8 @@ footer > a:last-child svg { width: 12px; height: 12px; transform: rotate(180deg)
   .day-summary p { margin-top: 40px; }
   .practical-grid { grid-template-columns: 1fr; }
   .practical-card { min-height: auto; }
+  .venue-media { grid-template-columns: 1fr; }
+  .venue-photo, .photo-pending { border-right: 0; border-bottom: 1px solid var(--line); min-height: 210px; }
 }
 
 @media (max-width: 760px) {
@@ -269,8 +307,15 @@ footer > a:last-child svg { width: 12px; height: 12px; transform: rotate(180deg)
   .document-placeholders { grid-template-columns: 1fr; }
   .maps-layout { grid-template-columns: 1fr; }
   .location-selector { border-right: 0; border-bottom: 1px solid var(--line); }
-  .map-frame iframe { min-height: 380px; }
-  .map-frame > div { align-items: flex-start; flex-direction: column; }
+  .venue-media iframe { min-height: 300px; }
+  .venue-details { padding: 22px 20px 24px; }
+  .venue-facts { grid-template-columns: 1fr; }
+  /* Duas por linha onde couberem: quatro botões de largura cheia custam
+     um quinto de tela num telefone. */
+  .venue-actions a { flex: 1 1 130px; justify-content: center; }
+  /* O espaço da foto continua visível — o vazio é a informação — mas não
+     paga 210px enquanto não houver foto. */
+  .photo-pending { min-height: 128px; padding: 20px; }
   footer { grid-template-columns: 1fr auto; }
   footer > p { display: none; }
 }
@@ -390,7 +435,7 @@ footer > a:last-child svg { width: 12px; height: 12px; transform: rotate(180deg)
   .day-tabs,
   .agenda-panel,
   .materials,
-  .map-frame,
+  .venue-panel,
   .split-title > span,
   footer > a,
   footer > .brand { display: none !important; }
