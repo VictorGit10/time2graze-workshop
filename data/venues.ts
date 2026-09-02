@@ -48,6 +48,13 @@ export type Venue = {
    * place the day-5 bus already covers.
    */
   organisedTransport?: boolean;
+  /**
+   * A ride link may be offered. Set only where the destination itself is
+   * confirmed — both the pin and the address — because a ride link carries a
+   * reader to a point rather than to a name they can re-read. Absent means no
+   * ride link, however good the sourced pin looks.
+   */
+  ride?: boolean;
   /** Absent until an authorised photograph exists. */
   photo?: VenuePhoto;
   website?: string;
@@ -87,6 +94,8 @@ export const VENUES = {
     address: 'Av. das Indústrias, 75 — Goiânia, GO, 74670-600',
     /** From the place record the hotel's own site links to. */
     coords: { lat: -16.6412156, lon: -49.2401076 },
+    /** The only venue whose address, pin and phone the source itself confirms. */
+    ride: true,
     pending: 'Booking route, rate, check-in and check-out times to be confirmed.',
     website: 'https://goldenlishoteis.com.br/',
     phone: '+55 62 3639-1003',
@@ -99,6 +108,8 @@ export const VENUES = {
     locality: 'Campus Samambaia · Universidade Federal de Goiás, Goiânia',
     address: 'Av. Esperança, s/n — Vila Itatiaia, Goiânia, GO, 74690-612',
     coords: { lat: -16.6040384, lon: -49.2589823 },
+    /** From public place records only — no ride link until the venue confirms. */
+    pending: 'Address, pin and phone are from the venue\'s public place record; confirmation with the venue is still pending.',
     website: 'https://centrodeeventos.ufg.br/',
     phone: '+55 62 3521-1900',
     onMap: true,
@@ -110,6 +121,8 @@ export const VENUES = {
     locality: 'Setor Sul, Goiânia',
     address: 'R. 87, 127 — Setor Sul, Goiânia, GO, 74080-295',
     coords: { lat: -16.6904676, lon: -49.2552251 },
+    /** Which house hosts the reception is an open question — no ride link. */
+    pending: 'Address, pin and phone are from the restaurant\'s public place record; which house hosts the closing reception is still to be confirmed.',
     phone: '+55 62 3541-5555',
     onMap: true,
   },

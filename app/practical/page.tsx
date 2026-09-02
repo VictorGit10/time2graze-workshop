@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import { MAP_VENUES, VENUES } from '@/data/venues';
 import { withBasePath } from '@/lib/base-path';
-import { formatCoordinates, osmEmbedSrc, osmLink, uberLink } from '@/lib/places';
+import { formatCoordinates, osmEmbedSrc, osmLink, straightLineKm, uberLink } from '@/lib/places';
 import { useTabKeys } from '@/hooks/use-tab-keys';
 
 const hotel = VENUES.hotel;
@@ -30,8 +30,12 @@ export default function PracticalPage() {
   const venue = MAP_VENUES[activeMap];
   /** Locals rather than property reads: narrowing survives into the handlers. */
   const { address, coords, phone, photo, website } = venue;
-  /** Reached by the workshop bus, so a ride link would be the wrong offer. */
-  const ridable = !venue.organisedTransport;
+  /**
+   * Only a venue whose destination is itself confirmed carries a ride link —
+   * it takes a reader to a point, so a candidate pin must never produce one.
+   * Reached-by-bus venues never produce one either, for the obvious reason.
+   */
+  const ridable = venue.ride === true && !venue.organisedTransport;
 
   async function copy(field: string, value: string) {
     try {
@@ -53,7 +57,10 @@ export default function PracticalPage() {
             <p><strong>{hotel.name}</strong><br />{hotel.address}</p>
             <ul>
               <li><strong>Contact</strong><span><a href={telHref(hotel.phone)}>{hotel.phone}</a></span></li>
-              <li><strong>Distance</strong><span>Between the airport district and Campus Samambaia</span></li>
+              <li><strong>Position</strong><span>Between the airport district and Campus Samambaia</span></li>
+              {/* Straight line from the sourced pins, not a travel time — the
+                  driving time in morning traffic is for the team to supply. */}
+              <li><strong>Distance</strong><span>{straightLineKm(hotel.coords, VENUES.lapig.coords)} from LAPIG · UFG, straight line</span></li>
             </ul>
             <div className="empty-detail">
               <CircleAlert aria-hidden="true" />
@@ -184,7 +191,11 @@ export default function PracticalPage() {
 
               <p className="venue-note">
                 Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap</a> contributors.
-                {ridable ? ' The ride link opens Uber; other apps accept the coordinates above.' : ' The workshop provides transport to this location.'}
+                {venue.organisedTransport
+                  ? ' The workshop provides transport to this location.'
+                  : ridable
+                    ? ' The ride link opens Uber; other apps accept the coordinates above.'
+                    : ' The location is still to be confirmed, so no ride link is offered; the coordinates above serve any app.'}
               </p>
             </div>
           </div>

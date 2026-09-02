@@ -444,11 +444,15 @@ building it, and that are easy to break:
   slot. Wikimedia Commons holds CC BY-SA 4.0 photographs of the campus if an
   interim image is ever wanted; candidates are listed in `research/venues.md`,
   and every published photograph carries its credit.
-- **The ride link is Uber's documented universal link**, built from the
+- **The ride link is Uber's documented universal link** (`m.uber.com/looking`,
+  with `pickup` and `drop[0]` as encoded location objects), built from the
   coordinate: no key, no account. 99 has no documented equivalent, so the panel
   says the link opens Uber and offers the address and coordinates for every
   other app. Never generate a ride link for a pin that is not right — it
-  carries someone to a point, not to a name they can re-read.
+  carries someone to a point, not to a name they can re-read. In the registry
+  this gate is the `ride` flag, set only where the destination itself is
+  confirmed: Golden Lis carries it; LAPIG, Centro de Eventos and Favo de Mel
+  do not yet, and the panel says plainly why no ride is offered.
 - **A venue the workshop drives people to carries `organisedTransport: true`
   and gets no ride link.** Cidade de Goiás is reached by the 06:30 bus on day
   5; offering a ride there would propose a 130 km taxi for a journey that is

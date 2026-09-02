@@ -162,9 +162,13 @@ publish as travel times.
 | Golden Lis | Goiânia airport (Santa Genoveva, runway centre) | 2.26 km |
 
 The hotel sits in the airport district and the campus is north-west of it, so
-the daily commute crosses the city. **Real driving time in Goiânia morning
-traffic is the number participants need, and only the team can supply it.**
-That number, not the distance, is what decides when the bus leaves.
+the daily commute crosses the city. The accommodation card publishes the
+Golden Lis → LAPIG figure, computed from the two registry pins and labelled
+"straight line" so it cannot be read as a travel time.
+
+**Real driving time in Goiânia morning traffic is the number participants
+need, and only the team can supply it.** That number, not the distance, is
+what decides when the bus leaves.
 
 ---
 
@@ -222,22 +226,37 @@ UFG photograph is preferable because it shows the LAPIG building itself.
 
 **Uber works without an account, a key or a contract.** The documented
 universal deep link opens the app if installed and falls back to the mobile
-site otherwise:
+site otherwise. The current form is the ride-request path, with the pickup and
+the first stop as encoded location objects:
 
 ```
-https://m.uber.com/ul/?action=setPickup
-  &pickup=my_location
-  &dropoff[latitude]=-16.6022387
-  &dropoff[longitude]=-49.2649118
-  &dropoff[nickname]=LAPIG%20UFG
+https://m.uber.com/looking
+  ?pickup=my_location
+  &drop[0]={"latitude":-16.6412156,"longitude":-49.2401076,
+            "addressLine1":"Golden Lis Hotel Boutique",
+            "addressLine2":"Av. das Indústrias, 75 — Goiânia, GO, 74670-600"}
 ```
 
-`action`, latitude and longitude are required, plus either `nickname` or
-`formatted_address`. Source: https://developer.uber.com/docs/deep-linking.
+In a location object, `addressLine1` is the dropoff's name and `addressLine2`
+the address a driver reads; `pickup` accepts the same object form, or
+`my_location` for the reader's current position. Source:
+https://developer.uber.com/docs/riders/ride-requests/tutorials/deep-links/introduction
+(previously the same parameters were documented under `m.uber.com/ul/` with
+`action=setPickup` and flat `dropoff[…]` fields; the site moved to the
+`/looking` form in September 2026).
 
-**It is gated on the coordinates being right.** A deep link carries the
+**It is gated on the destination being confirmed.** A deep link carries the
 participant to a point, not to a name they can re-read — a wrong pin is worse
-here than anywhere else on the site.
+here than anywhere else on the site. The registry marks this with `ride`, set
+only where both the pin and the address are confirmed:
+
+| Venue | Ride link | Why |
+| --- | --- | --- |
+| Golden Lis | **Yes** | Address, pin and phone confirmed by the hotel itself |
+| LAPIG · UFG | No | Pin is a candidate awaiting LAPIG confirmation |
+| Centro de Eventos | No | Pin, address and phone from public place records only |
+| Churrascaria Favo de Mel | No | Which house hosts the reception is unconfirmed |
+| Cidade de Goiás | No | Organised transport — the day-5 bus already covers it |
 
 **99 has no public deep-link documentation.** 99 is the larger service for many
 riders in Brazil, and no URL format for it could be verified. Do not invent

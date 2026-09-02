@@ -34,27 +34,48 @@ export function osmLink({ lat, lon }: Coordinates, zoom = 17): string {
 }
 
 /**
- * Uber's documented universal link: it opens the app when installed and falls
- * back to m.uber.com otherwise, with no API key and no account on our side.
- * https://developer.uber.com/docs/deep-linking
+ * Uber's documented universal link, in its current form: the ride-request
+ * path, with the pickup and the first stop as encoded location objects. It
+ * opens the app when installed and falls back to the mobile site otherwise,
+ * with no API key and no account on our side.
+ * https://developer.uber.com/docs/riders/ride-requests/tutorials/deep-links/introduction
  *
  * It carries the reader to a point, not to a name they can re-read, so it is
- * only ever built from a coordinate we are willing to stand behind.
+ * only ever built for a venue marked `ride` in the registry — a coordinate and
+ * an address we are willing to stand behind.
  */
 export function uberLink({ lat, lon }: Coordinates, nickname: string, address?: string): string {
+  /* `addressLine1` is the dropoff's name and `addressLine2` the address a
+     driver reads, in the location object the link parameters specify. */
+  const dropoff: Record<string, string | number> = {
+    latitude: lat,
+    longitude: lon,
+    addressLine1: nickname,
+  };
+  if (address) dropoff.addressLine2 = address;
   const query = new URLSearchParams({
-    action: 'setPickup',
     pickup: 'my_location',
-    'dropoff[latitude]': String(lat),
-    'dropoff[longitude]': String(lon),
-    'dropoff[nickname]': nickname,
+    'drop[0]': JSON.stringify(dropoff),
   });
-  /* The nickname alone satisfies Uber, but a driver reads the address. */
-  if (address) query.set('dropoff[formatted_address]', address);
-  return `https://m.uber.com/ul/?${query}`;
+  return `https://m.uber.com/looking?${query}`;
 }
 
 /** Six decimals is about 0.1 m — precise enough to paste into any app. */
 export function formatCoordinates({ lat, lon }: Coordinates): string {
   return `${lat.toFixed(6)}, ${lon.toFixed(6)}`;
+}
+
+/**
+ * Straight-line distance between two pins. Indicative only: it is not a
+ * driving distance and must never be published as a travel time — see
+ * `research/venues.md`.
+ */
+export function straightLineKm(from: Coordinates, to: Coordinates): string {
+  const R = 6371; // Mean Earth radius, km.
+  const rad = (d: number) => (d * Math.PI) / 180;
+  const dLat = rad(to.lat - from.lat);
+  const dLon = rad(to.lon - from.lon);
+  const a = Math.sin(dLat / 2) ** 2
+    + Math.cos(rad(from.lat)) * Math.cos(rad(to.lat)) * Math.sin(dLon / 2) ** 2;
+  return `${(2 * R * Math.asin(Math.sqrt(a))).toFixed(1)} km`;
 }
