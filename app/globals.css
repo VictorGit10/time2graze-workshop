@@ -168,6 +168,25 @@ button { color: inherit; font: inherit; }
 .day-summary h3 { margin: 0; font-family: var(--font-serif), Georgia, serif; font-size: 42px; font-weight: 600; }
 .day-summary small { display: block; margin-top: 12px; color: var(--muted); font-size: var(--t-meta); }
 
+/* Calendário: a barra fica abaixo do painel do dia. Entre as abas e o painel
+   ela romperia a emenda de bordas que une os dois. Os rótulos "Download" e
+   "Subscribe" é que dizem o que cada grupo faz — não um parágrafo. */
+.calendar-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px clamp(20px, 3vw, 40px); margin-top: 26px; padding: 20px clamp(20px, 2.5vw, 30px); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+.calendar-actions-title { display: flex; align-items: center; gap: 9px; margin: 0; color: var(--forest); font-size: var(--t-label); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.calendar-actions-title svg { width: 15px; height: 15px; }
+.calendar-group { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.calendar-group-label { margin: 0; color: var(--muted); font-size: var(--t-label); font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+.calendar-actions ul { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.calendar-actions a { display: inline-flex; align-items: center; min-height: 40px; padding: 0 14px; color: var(--forest); background: var(--surface-soft); border: 1px solid var(--line); border-radius: var(--radius); font-size: var(--t-meta-lg); font-weight: 700; }
+.calendar-actions a:hover { border-color: var(--forest); }
+.calendar-actions .calendar-group:first-of-type li:first-child a { color: #fff; background: var(--forest); border-color: var(--forest); }
+.calendar-note { flex-basis: 100%; margin: 0; color: var(--muted); font-size: var(--t-meta); font-variant-numeric: tabular-nums; }
+
+/* Enquanto a programação não é aprovada não há arquivo nenhum: a página diz
+   isso, como um material ainda não publicado diz "To be published". */
+.calendar-pending { display: flex; align-items: center; gap: 9px; margin: 26px 0 0; padding: 14px 16px; color: var(--warning); background: var(--warning-bg); font-size: var(--t-meta-lg); }
+.calendar-pending svg { flex: 0 0 auto; width: 15px; height: 15px; }
+
 .materials { background: var(--paper); }
 .materials-notice { display: flex; gap: 14px; max-width: 780px; margin: -20px 0 52px; padding: 18px 20px; color: var(--text); background: var(--surface-soft); border-left: 3px solid var(--forest); }
 .materials-notice svg { flex: 0 0 auto; width: 17px; height: 17px; }
@@ -461,6 +480,8 @@ footer > a:last-child svg { width: 12px; height: 12px; transform: rotate(180deg)
   .day-tabs,
   .agenda-panel,
   .materials-notice,
+  .calendar-actions,
+  .calendar-pending,
   .venue-panel,
   .split-title > span,
   footer > a,

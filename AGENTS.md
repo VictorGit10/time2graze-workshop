@@ -245,7 +245,53 @@ the panel opens on Day 1.
   Section backgrounds are forced white — tinted bands spend ink and say
   nothing on paper.
 
-### Deep links
+### Calendar
+
+`.ics` files and the links that hand them to Google Calendar and Apple
+Calendar. Decisions that came out of building it:
+
+- **One flag gates the whole feature.** `AGENDA_APPROVED` in `data/agenda.ts`
+  is false while the programme is a draft: no file is generated, and the page
+  says the action is coming rather than showing a dead control. A calendar
+  entry is read once, days later, away from the page that qualified it — the
+  visible pending note is the honest state, not a placeholder to be filled.
+- **The files are generated, never committed.** `scripts/build-calendar.mjs`
+  runs from `prebuild` and `predev` and writes `public/calendar/`, which is
+  git-ignored. There is no hand-maintained copy of the agenda to keep in step,
+  and the script deletes the directory when the flag is off, so a file from an
+  earlier build cannot survive as a live URL.
+- **The build proves what it wrote.** The script counts `VEVENT`s against the
+  scheduled items in the days it was given and fails the build on a mismatch.
+  A short calendar is the same class of failure as a silent 404.
+- **`lib/calendar.ts` keeps every import type-only** and takes the venue
+  registry as an argument. Node loads it directly for the build script,
+  stripping the types but not resolving the `@/` alias; a value import would
+  break the build. This is the one module in `lib/` under that constraint.
+- **An item with no recorded end gets no `DTEND`.** RFC 5545 allows it. The
+  same rule as the point markers on the axis: 20 of the 45 items have no end
+  time, and a guessed one would be a duration nobody set, sitting in a phone.
+  The description says so in words as well.
+- **The `VTIMEZONE` component is written out**, as a single fixed −03:00
+  observance. Brazil abolished daylight saving in 2019, so that describes the
+  workshop week exactly, and Outlook reads the file correctly instead of
+  guessing at the zone name.
+- **A split session is one `VEVENT`**, its two activities in the summary. This
+  is the one place they are not two entries, and it mirrors the single block
+  the programme draws: at 10:00 the reader is in one building choosing between
+  two courses, not attending two overlapping events.
+- **`UID` is the session id.** Ids are hand-written and stable, so re-importing
+  a corrected file updates the entries a reader already has rather than
+  duplicating them.
+- **Download and subscribe are separate groups, and the labels say which is
+  which.** Downloading is a one-time copy that opens on any device and needs no
+  account; subscribing points the reader's calendar at the file, so a
+  correction reaches them on Google's or Apple's own refresh schedule — slow,
+  and not a promise. Both are offered because the choice belongs to the reader.
+- **Subscription needs the site's public address**, which `npm run dev` does
+  not have. Without `NEXT_PUBLIC_SITE_URL` the subscribe group does not render
+  and the downloads still do. Do not hardcode the address to fill the gap.
+
+## Deep links
 
 `#day-3` opens that day; a session id opens its day and scrolls to it.
 
@@ -279,10 +325,11 @@ Refinement here means utility executed well, not features added:
   the selected tab. Printing the active panel alone would be a bug.
 - **Requirements, stated early.** Day 1 includes a Google Earth Engine course;
   participants need a laptop and a registered account before Monday morning.
-- **Add to calendar** (`.ics`, per day and per session). High value, but **only
-  after times, venues and timezone are confirmed.** Generating calendar files
-  from provisional data pushes wrong times into thirty people's phones, which
-  is worse than not offering it.
+- **Add to calendar**, built and held behind one flag — see
+  [Calendar](#calendar). High value, but **only after times, venues and
+  timezone are confirmed.** Generating calendar files from provisional data
+  pushes wrong times into thirty people's phones, which is worse than not
+  offering it.
 - **Accessibility section**, with a route to ask for support.
 
 ## Data model
@@ -350,7 +397,8 @@ Extract the data with no visual change at all, as its own step.
 4. `#day-3` links and per-session IDs.
 5. Print output covering all five days.
 6. "Today / Now / Next" state in `America/Sao_Paulo`.
-7. `.ics` files — once times are confirmed.
+7. `.ics` files and the calendar links — written, and released by
+   `AGENDA_APPROVED` once times are confirmed.
 8. Materials linked to their sessions.
 9. Hotel, meals, transport and accessibility, as data is confirmed.
 10. Toolchain migration to Next.js, so that routes actually emit HTML.
@@ -386,12 +434,14 @@ components/site-header.tsx   Persistent navigation, with the current page marked
 components/site-footer.tsx   Footer, shared by every page.
 components/now-next.tsx      The home page's "happening now", workshop week only.
 components/programme.tsx     Proportional, chronological and print programmes.
+components/add-to-calendar.tsx  Download and subscribe actions under the programme.
 hooks/use-tab-keys.ts        Arrow-key movement for the day and location tablists.
 data/agenda.ts               The five days, sessions, tracks and materials.
 data/types.ts                Content contracts.
 data/venues.ts               The single venue registry: names, pins, addresses.
 hooks/use-workshop-clock.ts  Client clock with a null server snapshot.
 lib/base-path.ts             The one place a raw path gets the Pages basePath.
+lib/calendar.ts              `.ics` text, and the Google/Apple subscribe links.
 lib/deep-link.ts             Day/session hash resolution and scrolling.
 lib/materials.ts             Materials view derived from the agenda.
 lib/now.ts                   Goiânia clock and Today/Now/Next rules.
@@ -399,6 +449,7 @@ lib/places.ts                Map embed, map link and ride link, from coordinates
 lib/practical.ts             Meals and transport lines, derived from the agenda.
 lib/schedule.ts              Time, duration and programme-axis helpers.
 next.config.ts               Static export, trailing slash and the Pages basePath.
+scripts/build-calendar.mjs   Writes public/calendar/*.ics before every build.
 postcss.config.mjs           Tailwind, imported by globals.css for its reset only.
 public/                      Hero, social preview, favicon and candidate logos.
 research/logos/              Logo provenance and previous-site references.
@@ -535,8 +586,16 @@ Know what it does and does not cover:
 - `basePath` in `next.config.ts` prefixes `next/link` hrefs and everything
   under `_next/` automatically. Route with `next/link`, and give it the path
   from the site root: `href="/programme/"`, not `href="programme/"`.
-- It does **not** touch a plain `<img src>`, a raw `<a href>` or a metadata
-  icon. Those go through `withBasePath` in `lib/base-path.ts` — the hero image,
+- `npm run build` and `npm run dev` are preceded by
+  `scripts/build-calendar.mjs`, which writes the `.ics` files into
+  `public/calendar/` — see [Calendar](#calendar).
+- `NEXT_PUBLIC_SITE_URL`, also set by the workflow, is the site's public
+  address. It reaches the pages through `absoluteUrl` in `lib/base-path.ts`,
+  for the two things a relative path cannot serve: the social preview image
+  and a calendar subscription, which Google and Apple fetch from their own
+  servers.
+- `basePath` does **not** touch a plain `<img src>`, a raw `<a href>` or a
+  metadata icon. Those go through `withBasePath` in `lib/base-path.ts` — the hero image,
   the favicon, the material downloads and the venue photographs all call it.
   Add a new raw path to that helper rather than reading the environment
   variable again.
@@ -575,7 +634,8 @@ summary aligned.
 - Accessibility arrangements and a contact route for support
 - Final partner matrix beyond the publicly documented funder, project leads
   and workshop hosts already grouped on the home page
-- Final approval of the agenda, required before `.ics` files are generated
+- Final approval of the agenda. Everything the calendar needs is written and
+  waiting on one flag: `AGENDA_APPROVED` in `data/agenda.ts`
 - The 22 expected presentation/document files, the shared-folder route and the
   final programme PDF
 - Field checklist, weather guidance and local participant recommendations

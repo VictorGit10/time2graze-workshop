@@ -109,7 +109,14 @@ GitHub Pages.
 
 Asset URLs must respect `NEXT_PUBLIC_BASE_PATH`; do not hardcode root-relative
 paths. `NEXT_PUBLIC_SITE_URL` is supplied during deployment for absolute social
-metadata.
+metadata and for the calendar subscription links, which Google and Apple fetch
+from their own servers.
+
+`npm run build` and `npm run dev` first run `scripts/build-calendar.mjs`, which
+writes the programme's `.ics` files into `public/calendar/`. Those files are
+generated, git-ignored, and produced only once `AGENDA_APPROVED` in
+`data/agenda.ts` is true — until then the programme shows the calendar action
+as pending rather than publishing provisional times.
 
 GitHub Pages is the current delivery target, not a permanent hosting decision.
 

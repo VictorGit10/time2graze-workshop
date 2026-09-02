@@ -37,6 +37,9 @@ next-env.d.ts
 /outputs/
 /work/
 
+# .ics gerados a partir de data/agenda.ts por scripts/build-calendar.mjs
+/public/calendar/
+
 # build info
 tsconfig.tsbuildinfo
 

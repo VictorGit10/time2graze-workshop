@@ -2,13 +2,16 @@ import type { Metadata } from 'next';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
 import { Cormorant_Garamond, Manrope } from 'next/font/google';
-import { withBasePath } from '@/lib/base-path';
+import { absoluteUrl, withBasePath } from '@/lib/base-path';
 import './globals.css';
 
 const sans = Manrope({ variable: '--font-sans', subsets: ['latin'] });
 const serif = Cormorant_Garamond({
   variable: '--font-serif', subsets: ['latin'], weight: ['500', '600'], style: ['normal', 'italic'],
 });
+
+/** Absent under `npm run dev`, where the site has no public address. */
+const og = absoluteUrl('/og.png');
 
 export const metadata: Metadata = {
   title: 'Time2Graze Brazil Workshop · 14–18 September 2026',
@@ -20,13 +23,13 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     siteName: 'Time2Graze Brazil Workshop',
-    images: process.env.NEXT_PUBLIC_SITE_URL ? [`${process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, '')}/og.png`] : [],
+    images: og ? [og] : [],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Time2Graze Brazil Workshop',
     description: '14–18 September 2026 · Goiânia, Brazil',
-    images: process.env.NEXT_PUBLIC_SITE_URL ? [`${process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, '')}/og.png`] : [],
+    images: og ? [og] : [],
   },
 };
 

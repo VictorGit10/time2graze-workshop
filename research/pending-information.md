@@ -9,7 +9,9 @@ an estimate. Venue evidence and candidate values are recorded separately in
 
 - [ ] Approve the five-day agenda: dates, start/end times, session titles,
   presenters, venues and the `America/Sao_Paulo` timezone.
-- [ ] Generate per-day and per-session `.ics` files only after that approval.
+- [ ] Release the calendar once that approval lands: set `AGENDA_APPROVED` to
+  `true` in `data/agenda.ts`. The `.ics` files, the download links and the
+  Google/Apple subscription links are built and wait on nothing else.
 - [ ] Supply the 22 expected presentation/document files declared in the
   agenda. Until each file exists, its link remains “To be published”.
 - [ ] Confirm the participant-access route for the shared workshop folder.

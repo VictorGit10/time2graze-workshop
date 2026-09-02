@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import { AddToCalendar } from '@/components/add-to-calendar';
 import { Programme, ProgrammeForPrint } from '@/components/programme';
 import { AGENDA } from '@/data/agenda';
 import { useTabKeys } from '@/hooks/use-tab-keys';
@@ -99,6 +100,8 @@ export default function ProgrammePage() {
         <aside className="day-summary"><span>{dayShort(day)}</span><p>{dayLabel(day.date)}</p><h3>{day.label}</h3><small>{day.sessions.length} scheduled items</small></aside>
         <Programme day={day} clock={clock} />
       </div>
+
+      <AddToCalendar day={day} />
 
       <ProgrammeForPrint />
     </section>

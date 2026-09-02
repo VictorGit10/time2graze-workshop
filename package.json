@@ -6,7 +6,9 @@
     "node": ">=22.13.0"
   },
   "scripts": {
+    "predev": "node scripts/build-calendar.mjs",
     "dev": "next dev",
+    "prebuild": "node scripts/build-calendar.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "oxlint",

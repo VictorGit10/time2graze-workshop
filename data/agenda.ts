@@ -8,6 +8,19 @@ import type { Day } from './types';
  * 20 of the 45 scheduled items carry a start alone, and no duration may be
  * inferred for them.
  */
+/**
+ * Whether the team has signed the five days off.
+ *
+ * While this is false no `.ics` file is generated and the programme offers no
+ * calendar action — it says the action is coming instead. Times, venues and
+ * the timezone reach thirty phones the moment it is true, and a calendar
+ * entry is not something a reader goes back to check. Flip it here once the
+ * programme is approved; nothing else has to change.
+ *
+ * See `research/pending-information.md`.
+ */
+export const AGENDA_APPROVED = false;
+
 export const AGENDA: Day[] = [
   {
     index: 1,
