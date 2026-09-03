@@ -84,9 +84,10 @@ button { color: inherit; font: inherit; }
 }
 
 /* --- Home -------------------------------------------------------------------
-   The selected landscape frame. The card meets the directory through an inset
-   two-colour plinth: pale lime first, forest second, repeating the established
-   wordmark/eyebrow sequence instead of adding a new decorative device. */
+   The selected landscape frame. The title card and date sit on the same lower
+   baseline, then release into a narrow band of paper before the directory.
+   Space and alignment make the transition; no connector is drawn between
+   elements that do not share a grid. */
 @media screen {
   .landscape-hero { position: relative; min-height: 680px; max-width: var(--wide); margin: 0 auto; padding: 0 var(--gutter) 72px; background: var(--paper); }
   .landscape-photo { position: relative; height: 540px; overflow: hidden; border-right: 1px solid var(--line); border-left: 1px solid var(--line); animation: enter-fade var(--m-enter) var(--m-ease) both; }
@@ -94,8 +95,7 @@ button { color: inherit; font: inherit; }
   .landscape-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 48%; filter: saturate(.92) contrast(1.08); transform: scale(1.015); }
   .landscape-photo p { position: absolute; z-index: 1; top: 26px; right: 30px; margin: 0; padding: 9px 12px; color: #fff; background: rgba(16,56,43,.84); font-size: var(--t-label); font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
 
-  .landscape-card { position: absolute; z-index: 2; bottom: 0; left: calc(var(--gutter) + clamp(32px, 5vw, 78px)); width: min(650px, calc(100% - 2 * var(--gutter) - 150px)); padding: 43px clamp(32px, 4vw, 58px) 42px; background: var(--surface); border: 1px solid var(--line); box-shadow: 0 22px 46px -38px rgba(16,56,43,.45); animation: enter-up var(--m-enter) var(--m-ease) .08s both; }
-  .landscape-card::after { content: ''; position: absolute; right: clamp(32px, 4vw, 58px); bottom: -9px; left: clamp(32px, 4vw, 58px); height: 9px; background: linear-gradient(90deg, var(--accent) 0 28%, var(--forest) 28% 100%); box-shadow: 0 1px 0 rgba(16,56,43,.16); transform-origin: left center; animation: rule-in var(--m-enter) var(--m-ease) .2s both; }
+  .landscape-card { position: absolute; z-index: 2; bottom: 28px; left: calc(var(--gutter) + clamp(32px, 5vw, 78px)); width: min(650px, calc(100% - 2 * var(--gutter) - 150px)); padding: 43px clamp(32px, 4vw, 58px) 42px; background: var(--surface); border: 1px solid var(--line); box-shadow: 0 18px 40px -34px rgba(16,56,43,.4); animation: enter-up var(--m-enter) var(--m-ease) .08s both; }
   .landscape-eyebrow { display: flex; align-items: center; gap: 12px; margin: 0 0 24px; color: var(--forest); font-size: var(--t-label); font-weight: 800; letter-spacing: .08em; line-height: 1.35; text-transform: uppercase; }
   .landscape-eyebrow::before { content: ''; flex: 0 0 30px; height: 2px; background: var(--accent); box-shadow: 0 1px 0 var(--forest); }
   .landscape-card h1 { margin: 0; font-family: var(--font-serif), Georgia, serif; font-size: clamp(57px, 5.4vw, 84px); font-weight: 600; line-height: .82; letter-spacing: -.045em; }
@@ -108,12 +108,12 @@ button { color: inherit; font: inherit; }
   .landscape-action:hover { color: var(--forest-dark); background: var(--accent); transform: translateY(-2px); }
   .landscape-action svg { width: 16px; height: 16px; }
 
-  .landscape-date { position: absolute; z-index: 2; right: calc(var(--gutter) + clamp(28px, 4vw, 62px)); bottom: 25px; display: flex; align-items: center; gap: 16px; padding: 16px 20px; color: var(--forest-dark); background: var(--accent); border-bottom: 1px solid var(--forest); animation: enter-up var(--m-enter) var(--m-ease) .14s both; }
+  .landscape-date { position: absolute; z-index: 2; right: calc(var(--gutter) + clamp(28px, 4vw, 62px)); bottom: 28px; display: flex; align-items: center; gap: 16px; padding: 16px 20px; color: var(--forest-dark); background: var(--accent); border: 1px solid rgba(16,56,43,.18); animation: enter-up var(--m-enter) var(--m-ease) .14s both; }
   .landscape-date strong { font-family: var(--font-serif), Georgia, serif; font-size: 34px; font-weight: 600; line-height: 1; }
   .landscape-date span { font-size: var(--t-label); font-weight: 800; line-height: 1.2; letter-spacing: .055em; text-transform: uppercase; }
 
   .home-directory { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(3, 1fr); max-width: var(--wide); margin: 0 auto; padding: 0 var(--gutter); background: var(--paper); }
-  .home-directory a { display: grid; grid-template-columns: 34px 1fr 18px; align-items: start; gap: 14px; min-height: 145px; padding: 25px 22px; background: var(--surface); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); transition: background var(--m-quick) var(--m-ease); }
+  .home-directory a { display: grid; grid-template-columns: 34px 1fr 18px; align-items: start; gap: 14px; min-height: 145px; padding: 25px 22px; background: var(--surface); border-top: 1px solid var(--line); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); transition: background var(--m-quick) var(--m-ease); }
   .home-directory a:first-child { border-left: 1px solid var(--line); }
   .home-directory a:hover { background: #f7f9f3; }
   .home-directory-index { padding-top: 3px; color: var(--forest); font-size: var(--t-label); font-weight: 800; font-variant-numeric: tabular-nums; }
@@ -143,7 +143,6 @@ button { color: inherit; font: inherit; }
 @media screen and (max-width: 760px) {
   .landscape-hero { display: flex; flex-direction: column; min-height: 0; padding: 0; }
   .landscape-card { position: static; order: 1; width: 100%; padding: 58px 24px 50px; border: 0; box-shadow: none; }
-  .landscape-card::after { display: none; }
   .landscape-card h1 { font-size: clamp(54px, 16.5vw, 68px); }
   .landscape-meta { display: grid; font-size: var(--t-meta-lg); }
   .landscape-photo { order: 2; height: 300px; border-right: 0; border-bottom: 1px solid var(--line); border-left: 0; }
@@ -157,7 +156,7 @@ button { color: inherit; font: inherit; }
   .landscape-photo, .landscape-date, .home-directory { display: none !important; }
   .landscape-hero { display: block; min-height: 0; padding: 0; }
   .landscape-card { position: static; display: block; width: 100%; padding: 0; color: #000; background: #fff; border: 0; box-shadow: none; }
-  .landscape-card::after, .landscape-action { display: none !important; }
+  .landscape-action { display: none !important; }
   .landscape-intro, .landscape-eyebrow { color: #000; }
 }
 
