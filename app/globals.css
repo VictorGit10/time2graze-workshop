@@ -235,12 +235,6 @@ button { color: inherit; font: inherit; }
 .practical-status-line strong { color: var(--muted); font-size: var(--t-label); letter-spacing: .07em; text-transform: uppercase; }
 .practical-status-line span { color: var(--forest); font-size: var(--t-meta-lg); font-weight: 800; }
 .practical-status-line em { padding-left: 24px; color: var(--warning); border-left: 1px solid var(--line); font-size: var(--t-meta); font-style: normal; line-height: 1.5; }
-.practical-jump-nav { display: flex; align-items: center; gap: 0; margin: 0 0 22px; overflow-x: auto; border-bottom: 1px solid var(--line); scrollbar-width: none; }
-.practical-jump-nav::-webkit-scrollbar { display: none; }
-.practical-jump-nav span, .practical-jump-nav a { flex: 0 0 auto; padding: 12px 16px; font-size: var(--t-label); font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
-.practical-jump-nav span { padding-left: 0; color: var(--muted); }
-.practical-jump-nav a { color: var(--forest); border-left: 1px solid var(--line); }
-.practical-jump-nav a:hover { background: var(--surface-soft); }
 .practical-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 14px; }
 .practical-card { min-height: 0; padding: 28px 30px 32px; background: var(--paper); border: 1px solid var(--line); border-top: 5px solid var(--forest); }
 #stay, #meals, #transport, #maps, #recommendations, #map-panel, [id^='venue-'] { scroll-margin-top: 112px; }
@@ -443,7 +437,6 @@ footer > a:last-child svg { width: 14px; height: 14px; }
   .practical-status-line em { padding: 8px 0 0; border-top: 1px solid var(--line); border-left: 0; }
   .practical-card { padding: 24px 20px 27px; }
   .practical-card h3 { font-size: 32px; }
-  .practical-jump-nav { margin-right: -24px; }
   .maps-layout { grid-template-columns: 1fr; }
   .location-selector { border-right: 0; border-bottom: 1px solid var(--line); }
   .venue-media iframe { min-height: 300px; }
@@ -591,7 +584,6 @@ footer > a:last-child svg { width: 14px; height: 14px; }
   .programme-facts,
   .materials-notice,
   .practical-status-line,
-  .practical-jump-nav,
   .venue-panel,
   .split-title > span,
   footer > a,

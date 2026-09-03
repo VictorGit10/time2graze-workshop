@@ -78,15 +78,6 @@ export default function PracticalPage() {
           <em>Confirm the hotel coverage and the 08:00 Monday–Thursday departure time</em>
         </div>
 
-        <nav className="practical-jump-nav" aria-label="On this page">
-          <span>On this page</span>
-          <a href="#stay">Stay</a>
-          <a href="#meals">Meals</a>
-          <a href="#transport">Transport</a>
-          <a href="#maps">Locations</a>
-          <a href="#recommendations">Local guide</a>
-        </nav>
-
         <div className="practical-grid">
           <article className="practical-card" id="stay">
             <header className="practical-card-head"><Hotel aria-hidden="true" /><em className="status confirmed">Arranged · confirm</em></header>
