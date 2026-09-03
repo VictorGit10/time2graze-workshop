@@ -273,8 +273,8 @@ a padded section is allowed to reach.
 
 There are two shapes, and they must not be mixed:
 
-- **A band** (`.institutional-hero`, `.now-band`, `.week-index`,
-  `.information-nav`) is the element itself: `max-width: var(--wide)`,
+- **A band** (`.institutional-hero`, `.now-band`, `.information-nav`) is the
+  element itself: `max-width: var(--wide)`,
   `margin: 0 auto`, `padding-inline: var(--gutter)`.
 - **A section** (`.section-pad`) keeps its background full-bleed and pads
   itself by `var(--gutter)`; its children are capped at `var(--rail)` and
@@ -295,9 +295,8 @@ around it stays centred, which is invisible until the viewport is wider than
 
 ### The home page
 
-The home page carries four bands before the overview, in this order, and the
-order is the argument: what is happening now, what this is, which day, where to
-go next.
+The home page carries three bands before the overview, in this order, and the
+order is the argument: what is happening now, what this is, where to go next.
 
 - **`NowNext` comes first, above the hero.** During the workshop week it is the
   most useful thing on the site, and it renders nothing on the other 360 days,
@@ -316,8 +315,13 @@ go next.
   reaches the printer, because the docket is hidden there. Deleting
   `.hero-meta` because it looks redundant on a desktop would drop the date and
   the location from both the phone and the paper.
-- **The week index links to `/programme/#day-1…5`** and becomes a scroll-snap
-  row on a phone. The day numbers are real: they are the workshop's own days.
+- **There is one navigation block, not two.** A strip of five day links to
+  `/programme/#day-1…5` sat here until September 2026 and was removed: it put
+  eight links in two stacked rows before any content, and it offered a second
+  route to the page the `Programme` card already leads to. `#day-3` is still a
+  public deep link — the programme rewrites the hash as the reader changes day,
+  and arriving on one scrolls to the day tabs — it just is not advertised as a
+  menu of its own.
 - **The directory carries a status per destination**, `data-status="neutral"`
   or `"pending"`. `Draft programme` is neutral because a draft is a normal
   state, not an outstanding item; only genuinely missing information is amber.
@@ -438,7 +442,7 @@ and do not fill them with invented detail in the meantime.
 
 ```
 app/layout.tsx               Fonts, metadata, and the header/footer every page gets.
-app/page.tsx                 Home: today's session, hero, week index, directory, overview.
+app/page.tsx                 Home: today's session, hero, directory, overview.
 app/programme/layout.tsx     Route metadata. The page is a client component.
 app/programme/page.tsx       Day tabs, deep links and the printable programme.
 app/materials/page.tsx       Materials by day. A server component: no state.

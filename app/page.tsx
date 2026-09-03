@@ -7,7 +7,6 @@ import { AGENDA } from '@/data/agenda';
 import { INSTITUTION_GROUPS, INSTITUTION_ROLE_SOURCE, type Institution } from '@/data/institutions';
 import { withBasePath } from '@/lib/base-path';
 import { materialsByDay } from '@/lib/materials';
-import { dayLabel } from '@/lib/schedule';
 
 const SCHEDULED_ITEMS = AGENDA.reduce((total, day) => total + day.sessions.length, 0);
 const EXPECTED_FILES = materialsByDay().reduce((total, group) => total + group.entries.length, 0);
@@ -80,19 +79,6 @@ export default function Home() {
           </figure>
         </div>
       </section>
-
-      <nav className="week-index" aria-label="Five-day programme">
-        <p><span>Workshop week</span><strong>14–18 September</strong></p>
-        <div>
-          {AGENDA.map((day) => (
-            <Link href={`/programme/#day-${day.index}`} key={day.date}>
-              <span>{String(day.index).padStart(2, '0')}</span>
-              <strong>{dayLabel(day.date)}</strong>
-              <small>{day.label}</small>
-            </Link>
-          ))}
-        </div>
-      </nav>
 
       <nav className="information-nav" aria-label="Workshop information">
         {DESTINATIONS.map(({ href, title, detail, status, tone }, index) => (
