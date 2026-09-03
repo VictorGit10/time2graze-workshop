@@ -48,15 +48,14 @@ export function todayIndex(days: Day[], clock: Clock | null) {
 export type SessionState = 'running' | 'next' | null;
 
 /**
- * Only a session with a recorded end can be called running: a start alone
- * would mean guessing when it finishes, which is the one thing this site does
- * not do. Items without an end can still be the next thing due.
+ * Only a session with a confirmed end can be called running. Provisional ends
+ * exist to make the programme readable, not to claim live certainty.
  */
 export function stateOf(session: Session, clock: Clock | null): SessionState {
   if (!clock || session.date !== clock.date) return null;
 
   const start = toMinutes(session.start);
-  if (session.end) {
+  if (session.end && session.endStatus !== 'provisional') {
     const end = toMinutes(session.end);
     if (clock.minutes >= start && clock.minutes < end) return 'running';
   }

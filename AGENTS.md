@@ -162,23 +162,22 @@ the height of a forty-five minute country presentation and the shape of a day
 is visible at a glance. Parallel activities sit in adjacent columns, because
 that is what they are.
 
-**The constraint that governs this: 20 of the 45 items have no end time.**
-Lunches, coffee breaks, check-ins, daily summaries, dinners and both Day 5
-transfers carry only a start. Drawing them to a guessed height would invent
-duration for 44% of the schedule and break the site's central rule. So the
-grid renders four distinct states:
+**Twenty of the 45 end times are provisional.** The organiser explicitly chose
+logical display intervals for lunches, coffee breaks, check-ins, summaries,
+dinners and Day 5 transfers so every item has the same visual grammar. These
+ends remain visibly labelled “End time to confirm”; they must not drive the
+live `Now` state or calendar files. The grid renders five distinct states:
 
 | State | Rendering |
 |---|---|
 | Confirmed interval (`start` + `end`) | Block, height proportional to duration |
-| Start only | Point marker on the axis, no implied height |
+| Provisional interval (`endStatus: 'provisional'`) | Proportional block, visibly labelled |
+| Start only (fallback) | Point marker on the axis, no implied height |
 | Parallel activities | Separate blocks in adjacent columns, same interval |
 | Unconfirmed item (`status: 'tbd'`) | Visibly marked as not yet fixed |
 
-Two of those — a genuinely instantaneous check-in and a lunch whose end nobody
-recorded — render identically as point markers. Do not add a field to tell them
-apart; it would change nothing on screen. If the team later confirms that lunch
-runs 12:00–14:00, it simply becomes an interval.
+Removing `endStatus` after approval promotes the interval to confirmed. Until
+then, visual continuity is not operational certainty.
 
 **Do not force this diagram onto a phone.** Below the desktop breakpoint, and
 in print, use a compact chronological list — very well composed, carrying time,
@@ -223,8 +222,8 @@ the panel opens on Day 1.
   the week the panel follows the clock on its own; a link or a reader's choice
   sets `picked` and outranks it from then on. Syncing this in an effect was the
   first attempt and it was wrong.
-- **Only a session with a recorded end can be "running".** A start alone would
-  mean guessing when it finishes. Items without an end can still be "next".
+- **Only a session with a confirmed end can be "running".** Provisional ends
+  are layout data until approved. Start-only items can still be "next".
 - The now line sits behind the blocks, so it does not strike through their
   text, and its label lives in the axis gutter showing the actual time rather
   than repeating the word.
@@ -364,7 +363,8 @@ type WorkshopSession = {
   id: string;                  // hand-written, stable, never derived from the title
   date: string;                // full ISO date, not "Day 3"
   start: string;
-  end?: string;                // absent = point marker, never a guessed duration
+  end?: string;                // display interval; inspect endStatus before operational use
+  endStatus?: 'provisional';   // visibly provisional; never drives Now or .ics
   title: string;
   speakers?: Speaker[];
   venueId?: string;            // into the single venue registry
@@ -382,7 +382,8 @@ type WorkshopSession = {
 - Parallel activities are two entries sharing an interval — never one combined
   title. Day 1 at 10:00 is currently a single string holding two courses; that
   is a modelling error to fix, not a formatting choice.
-- Unknown fields stay absent or `tbd`. Never filled with a plausible value.
+- Unknown fields stay absent or `tbd`. The only exception is the 20 explicitly
+  authorised provisional end times, all carrying `endStatus: 'provisional'`.
 - **Materials is an aggregated view of files attached to sessions**, not a
   second list maintained by hand. `lib/materials.ts` reads the agenda; there is
   nothing to keep in step.
@@ -460,6 +461,7 @@ hooks/use-tab-keys.ts        Arrow-key movement for a tablist, horizontal or ver
 data/agenda.ts               The five days, sessions, tracks and materials.
 data/types.ts                Content contracts.
 data/venues.ts               The single venue registry: names, pins, addresses.
+data/practical.ts            Accommodation, contracted shuttle and selected guide links.
 hooks/use-workshop-clock.ts  Client clock with a null server snapshot.
 lib/base-path.ts             The one place a raw path gets the Pages basePath.
 lib/deep-link.ts             Day/session hash resolution and scrolling.
@@ -630,16 +632,17 @@ is the highest-value work available on this project. The complete, dated
 checklist is in `research/pending-information.md`; keep that file and this
 summary aligned.
 
-- Hotel: the Golden Lis is named and pinned; still missing are the booking
-  route and deadline, what the rate covers, and check-in/check-out times
+- Hotel: accommodation is reported paid and organised for 13–18 September;
+  confirm that coverage, what it includes, and check-in/check-out times
 - Confirmation of the LAPIG pin, its street address and its CEP — the address
   LAPIG publishes carries a probable typo and a Caixa Postal CEP. See
   `research/venues.md`
 - Confirmation of the Centro de Eventos details and the exact Favo de Mel unit
 - Authorised photographs of the hotel, Centro de Eventos and Favo de Mel, with
   credit lines
-- Airport transfers: who arranges them, pickup times
-- Daily transport between hotel and campus
+- Confirm that participants arrange their own airport-to-hotel Uber/taxi
+- Confirm the contracted shuttle's 08:00 Monday–Thursday departure, pickup
+  points and returns; Friday leaves at 06:30
 - Dietary requirements: how participants report them, and by when
 - Day 5: the two grazing livestock farms are still "TBD"
 - Workshop emergency contact and nearest hospital
@@ -649,9 +652,9 @@ summary aligned.
 - Final approval of the agenda, required before `.ics` files are generated
 - The 22 expected presentation/document files, the shared-folder route and the
   final programme PDF
-- Field checklist, weather guidance and local participant recommendations
+- Field checklist, weather guidance and workshop-specific local contacts
 
-The hotel blocks everyone — participants from seven countries are booking
+The hotel coverage confirmation remains urgent for participants booking
 international flights.
 
 ## Known technical debt

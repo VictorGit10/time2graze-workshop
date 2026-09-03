@@ -52,8 +52,8 @@ function TrackCard({ track }: { track: Track }) {
 }
 
 /**
- * A session whose start and end are both recorded: drawn as a block whose
- * height is its real duration.
+ * A session with a display interval, drawn to scale. Provisional ends are
+ * visibly marked and do not count as confirmed operational times.
  */
 function Block(
   { session, from, state }: { session: Session; from: number; state: SessionMark },
@@ -96,10 +96,11 @@ function Block(
           </>
         )}
 
-        {(venue || session.status === 'tbd') && (
+        {(venue || session.status === 'tbd' || session.endStatus === 'provisional') && (
           <p className="tl-block-meta">
             {venue && <span className="tl-where">{venue}</span>}
             {session.status === 'tbd' && <em className="tl-tbd">To be confirmed</em>}
+            {session.endStatus === 'provisional' && <em className="tl-estimated">End time to confirm</em>}
           </p>
         )}
       </div>
@@ -236,6 +237,7 @@ function List(
               <p className="session-meta">
                 {venue && <span className="tl-where">{venue}</span>}
                 {session.status === 'tbd' && <em className="tl-tbd">To be confirmed</em>}
+                {session.endStatus === 'provisional' && <em className="tl-estimated">End time to confirm</em>}
                 <Mark state={marks?.(session) ?? null} />
               </p>
             </div>
@@ -264,6 +266,7 @@ export function Programme({ day, clock }: { day: Day; clock: Clock | null }) {
               <p key={s.id} data-session={s.id} data-state={marks(s) ?? undefined}>
                 <span className="tl-time">{timeLabel(s)}</span>
                 {sessionTitle(s)}
+                {s.endStatus === 'provisional' && <em className="tl-estimated">End time to confirm</em>}
                 <Mark state={marks(s)} />
               </p>
             ))}

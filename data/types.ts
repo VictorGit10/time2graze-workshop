@@ -50,12 +50,10 @@ export type Session = {
   /** Full ISO date. All times are America/Sao_Paulo. */
   date: string;
   start: string;
-  /**
-   * Absent means no end time has been recorded — 20 of the 45 items are in
-   * this state. Render those as a point on the axis, never as a guessed
-   * duration.
-   */
+  /** End of the display interval. See `endStatus` before treating it as confirmed. */
   end?: string;
+  /** A provisional end keeps the programme legible but must not drive "Now" or calendar files. */
+  endStatus?: 'provisional';
   title: string;
   speakers?: Speaker[];
   venueId?: VenueId;

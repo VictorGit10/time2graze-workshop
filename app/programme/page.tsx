@@ -10,8 +10,12 @@ import { todayIndex } from '@/lib/now';
 import { dayLabel, dayShort } from '@/lib/schedule';
 
 const SCHEDULED_ITEMS = AGENDA.reduce((total, day) => total + day.sessions.length, 0);
-const ITEMS_WITH_END_TIME = AGENDA.reduce(
-  (total, day) => total + day.sessions.filter((session) => session.end).length,
+const CONFIRMED_INTERVALS = AGENDA.reduce(
+  (total, day) => total + day.sessions.filter((session) => session.end && session.endStatus !== 'provisional').length,
+  0,
+);
+const PROVISIONAL_INTERVALS = AGENDA.reduce(
+  (total, day) => total + day.sessions.filter((session) => session.endStatus === 'provisional').length,
   0,
 );
 
@@ -92,7 +96,7 @@ export default function ProgrammePage() {
 
       <dl className="programme-facts">
         <div><dt>Schedule</dt><dd>{SCHEDULED_ITEMS} items across {AGENDA.length} days</dd></div>
-        <div><dt>With end time</dt><dd>{ITEMS_WITH_END_TIME} items with confirmed duration</dd></div>
+        <div><dt>Time blocks</dt><dd>{CONFIRMED_INTERVALS} confirmed · {PROVISIONAL_INTERVALS} provisional</dd></div>
         <div><dt>Official time</dt><dd>Goiânia · America/Sao_Paulo</dd></div>
         <div><dt>Status</dt><dd><em>Draft programme</em></dd></div>
       </dl>

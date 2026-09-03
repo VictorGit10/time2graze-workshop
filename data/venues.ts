@@ -9,7 +9,7 @@
  * page what is still missing. A plausible address is worse than a blank one
  * for someone reading this in an arrivals hall.
  *
- * `short` is how a venue appears inside an agenda line ("Lunch @ Samauma");
+ * `short` is how a venue appears inside an agenda line;
  * `name` is its full form. `onMap` selects — and orders — the venues offered
  * in the location panel.
  */
@@ -29,7 +29,7 @@ export type VenuePhoto = {
 export type Venue = {
   /** Full form, used on the location panel. */
   name: string;
-  /** Short form, as it appears inside an agenda line ("Lunch @ Samauma"). */
+  /** Short form, as it appears inside an agenda line. */
   short: string;
   use: string;
   /** Where the place is, in words. Safe to print before the address is fixed. */
@@ -91,12 +91,12 @@ export const VENUES = {
     short: 'Golden Lis',
     use: 'Accommodation and evening meals',
     locality: 'Setor Santa Genoveva, Goiânia',
-    address: 'Av. das Indústrias, 75 — Goiânia, GO, 74670-600',
+    address: 'Av. das Indústrias, 75 — Setor Santa Genoveva, Goiânia — GO, 74670-600, Brazil',
     /** From the place record the hotel's own site links to. */
     coords: { lat: -16.6412156, lon: -49.2401076 },
     /** The only venue whose address, pin and phone the source itself confirms. */
     ride: true,
-    pending: 'Booking route, rate, check-in and check-out times to be confirmed.',
+    pending: 'Confirm that workshop payment and accommodation cover 13–18 September; check-in and check-out times are still to be confirmed.',
     website: 'https://goldenlishoteis.com.br/',
     phone: '+55 62 3639-1003',
     onMap: true,
@@ -146,13 +146,6 @@ export const VENUES = {
     short: 'FUNAPE',
     use: 'Coffee breaks during the retreat',
     locality: 'Campus Samambaia · Universidade Federal de Goiás, Goiânia',
-    onMap: false,
-  },
-  samauma: {
-    name: 'Samauma',
-    short: 'Samauma',
-    use: 'Lunch on day 1',
-    pending: 'Address to be confirmed.',
     onMap: false,
   },
   t2gArea: {

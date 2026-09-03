@@ -7,7 +7,7 @@ const MONTHS = [
   'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
 ];
 
-/** Kinds that carry their venue inside the agenda line, as "Lunch @ Samauma". */
+/** Kinds that carry their venue inside the agenda line, as "Lunch @ Centro de Eventos". */
 const VENUE_IN_LINE = new Set(['meal', 'break', 'social']);
 
 /** Parses an ISO date in UTC, so the weekday never shifts with the local zone. */
@@ -81,7 +81,7 @@ export function toMinutes(hhmm: string) {
   return h * 60 + m;
 }
 
-/** Minutes, or null when no end time has been recorded. */
+/** Display duration in minutes, including visibly provisional intervals. */
 export function durationOf(session: Session) {
   return session.end ? toMinutes(session.end) - toMinutes(session.start) : null;
 }
@@ -92,8 +92,8 @@ export function isEvening(session: Session) {
 
 /**
  * The span the time axis has to cover: from the first start to the last
- * recorded moment, ignoring the evening block. Point markers contribute their
- * start only — an unknown end never stretches the axis.
+ * recorded moment, ignoring the evening block. A start-only fallback contributes
+ * its start only.
  */
 export function axisBounds(day: Day) {
   const daytime = day.sessions.filter((s) => !isEvening(s));

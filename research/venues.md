@@ -7,9 +7,9 @@ and phone numbers remain in this research file until the Time2Graze/LAPIG team
 confirms them. Someone will follow these instructions from an arrivals hall.
 
 Survey opened 2 September 2026. Five venues carry a pin: LAPIG, the hotel,
-Centro de Eventos, the reception restaurant and Cidade de Goiás. FUNAPE,
-Samauma and the T2G experimental area do not, and stay off the location panel
-until they do.
+Centro de Eventos, the reception restaurant and Cidade de Goiás. FUNAPE and
+the T2G experimental area do not, and stay off the location panel until they
+do. Samauma was removed from the participant-facing agenda on 3 September.
 
 ## Method
 
@@ -71,7 +71,7 @@ not mapped in OpenStreetMap under any name.
 | Field | Value | Source | Status |
 | --- | --- | --- | --- |
 | Full name | Golden Lis Hotel Boutique | https://goldenlishoteis.com.br/ | Confirmed by the hotel |
-| Address | `Av. das Indústrias, 75, Goiania, CEP: 74670600 - GO` | https://goldenlishoteis.com.br/ | Neighbourhood not stated by the hotel; listings place it in Setor Santa Genoveva |
+| Address | `Av. das Indústrias, 75 - Santa Genoveva, Goiânia - GO, 74670-600` | https://goldenlishoteis.com.br/localizacao/ | Confirmed by the hotel’s own location-map panel |
 | CEP | 74670-600 | Hotel site | OpenStreetMap records 74670-040 for that stretch of the avenue — see below |
 | Coordinates | `-16.6412156, -49.2401076` | Google place record **linked from the hotel's own site** | Strong: the hotel endorses this pin |
 | Waze venue | `venue_id=203687522.2036613072.15291590` | Hotel site | Hotel-published |
@@ -91,13 +91,16 @@ lists (breakfast included, check-in/check-out times, free parking, transfer,
 pet policy) are exactly the fields the site needs, so they should come from the
 booking agreement rather than from the public site anyway.
 
-**Not yet known, and needed before anything is published:**
+**Operational status supplied by the organiser on 3 September 2026:** the hotel
+is reported paid and organised for 13–18 September. The live site publishes
+that statement with a visible reminder to confirm both the coverage and dates.
+
+**Still to confirm:**
 
 - Check-in and check-out times
 - Whether breakfast is inside the workshop rate
-- What the rate covers, and whether there is a room block or individual booking
-- The booking route participants should use, and the deadline
-- Whether the hotel runs an airport transfer, and on what terms
+- What the workshop payment covers
+- Whether participants arrange their own airport ride, as the site currently advises
 - Whether dinners on 15, 16 and 18 September are at the hotel restaurant, as
   the programme currently implies
 
@@ -156,7 +159,7 @@ not the town — are the locations participants will actually need.
 
 ### Not pinned
 
-FUNAPE, Samauma and the T2G Biomass Experimental Area have no sourced
+FUNAPE and the T2G Biomass Experimental Area have no sourced
 coordinate. They stay out of the location panel rather than being given an
 approximate pin, and their entries carry a visible `pending` note instead.
 
@@ -173,10 +176,9 @@ publish as travel times.
 | Golden Lis | Goiânia airport (Santa Genoveva, runway centre) | 2.26 km |
 
 The hotel sits in the airport district and the campus is north-west of it, so
-the daily commute crosses the city. The accommodation card publishes the
-Golden Lis → LAPIG figure, computed from the two registry pins and labelled
-"straight line" so it cannot be read as a travel time. The LAPIG pin is still
-provisional, so the number must be treated as approximate until it is confirmed.
+the daily commute crosses the city. These figures remain research context. The
+accommodation card no longer publishes position or straight-line distance; it
+gives the participant the arrival action instead.
 
 **Real driving time in Goiânia morning traffic is the number participants
 need, and only the team can supply it.** That number, not the distance, is
@@ -247,7 +249,8 @@ https://m.uber.com/looking
   ?pickup=my_location
   &drop[0]={"latitude":-16.6412156,"longitude":-49.2401076,
             "addressLine1":"Golden Lis Hotel Boutique",
-            "addressLine2":"Av. das Indústrias, 75 — Goiânia, GO, 74670-600"}
+            "addressLine2":"Av. das Indústrias, 75 — Setor Santa Genoveva,
+            Goiânia — GO, 74670-600, Brazil"}
 ```
 
 In a location object, `addressLine1` is the dropoff's name and `addressLine2`
@@ -323,8 +326,8 @@ Blocking, and not answerable by guessing:
    74690-900 (campus street)?
 5. Which entrance and gate should participants use, and is campus access
    controlled?
-6. Hotel: check-in/check-out, what the rate covers, booking route and deadline,
-   and whether an airport transfer exists.
+6. Hotel: confirm the reported 13–18 September paid stay, check-in/check-out,
+   what payment covers and whether participants arrange their own airport ride.
 7. Realistic hotel → campus travel time in morning traffic.
 8. Permission to publish the hotel's photographs, or a hotel-supplied image.
 9. Resolve the Centro de Eventos address conflict and confirm its visitor pin;
@@ -334,5 +337,5 @@ Blocking, and not answerable by guessing:
     and with which credit lines?
 12. Do participants walk from LAPIG to Centro de Eventos for lunch, or are they
     driven?
-13. Addresses for FUNAPE, Samauma and the T2G Biomass Experimental Area, so
+13. Addresses for FUNAPE and the T2G Biomass Experimental Area, so
     they can join the location panel.

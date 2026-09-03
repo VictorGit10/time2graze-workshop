@@ -1,14 +1,17 @@
 # Pending information
 
-Operational checklist for the Time2Graze/LAPIG team. Last reviewed 2 September
-2026. A missing fact stays visibly pending on the site; it is never replaced by
-an estimate. Venue evidence and candidate values are recorded separately in
+Operational checklist for the Time2Graze/LAPIG team. Last reviewed 3 September
+2026. Missing facts stay visibly pending. Twenty end times requested for visual
+programme continuity are explicitly marked provisional and cannot drive the
+live state or calendar files until approved. Venue evidence is recorded in
 `research/venues.md`, and logo provenance in `research/logos/README.md`.
 
 ## Programme, calendar and materials
 
 - [ ] Approve the five-day agenda: dates, start/end times, session titles,
   presenters, venues and the `America/Sao_Paulo` timezone.
+- [ ] Confirm or correct the 20 end times currently labelled “End time to
+  confirm”; these were inferred from the next activity or the day’s structure.
 - [ ] Generate per-day and per-session `.ics` files only after that approval.
 - [ ] Supply the 22 expected presentation/document files declared in the
   agenda. Until each file exists, its link remains “To be published”.
@@ -17,8 +20,9 @@ an estimate. Venue evidence and candidate values are recorded separately in
 
 ## Accommodation and meals
 
-- [ ] Confirm the Golden Lis booking route and deadline.
-- [ ] Confirm the workshop rate and what it covers, including breakfast.
+- [ ] Confirm that the workshop has paid and organised accommodation at Golden
+  Lis for the complete 13–18 September stay.
+- [ ] Confirm what the workshop payment covers, including breakfast.
 - [ ] Confirm check-in and check-out times.
 - [ ] Check the hotel-published CEP `74670-600` against the booking confirmation;
   OpenStreetMap records a different CEP for that stretch of the avenue.
@@ -29,9 +33,11 @@ an estimate. Venue evidence and candidate values are recorded separately in
 
 ## Transfers, daily transport and venues
 
-- [ ] Confirm who arranges airport transfers and the pickup procedure/times.
-- [ ] Confirm daily transport between the hotel and Campus Samambaia, including
-  lobby departure times and realistic travel time in morning traffic.
+- [ ] Confirm that participants should arrange their own Uber/taxi from the
+  airport to Golden Lis; the site currently recommends Uber.
+- [ ] Confirm the contracted shuttle's 08:00 hotel departure from Monday to
+  Thursday, plus daily pickup points and return times. Friday's 06:30 departure
+  to Cidade de Goiás is already stated in the programme.
 - [ ] Confirm the LAPIG pin, visitor entrance, street name and visitor-facing
   CEP; state whether campus access is controlled and which full name for the
   laboratory should appear on first mention.
@@ -40,7 +46,7 @@ an estimate. Venue evidence and candidate values are recorded separately in
   site already confirms the phone shown on the page.
 - [ ] Confirm the exact Favo de Mel unit for the closing reception.
 - [ ] Confirm the Day 5 boarding and return points in Goiânia.
-- [ ] Supply confirmed addresses/pins for FUNAPE, Samauma and the T2G Biomass
+- [ ] Supply confirmed addresses/pins for FUNAPE and the T2G Biomass
   Experimental Area.
 - [ ] Confirm the two Day 5 grazing livestock farms.
 - [ ] Obtain authorised photographs and credit lines for Centro de Eventos and

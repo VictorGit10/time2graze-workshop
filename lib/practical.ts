@@ -1,18 +1,20 @@
 import { AGENDA } from '@/data/agenda';
 import type { Session, SessionKind } from '@/data/types';
+import type { VenueId } from '@/data/venues';
 import { sessionTitle, shortDate, timeLabel } from './schedule';
 
 /**
  * The meals and movements the practical page lists, read out of the agenda.
  *
  * There is no second list to keep in step: the agenda is the single source,
- * and these lines change when it changes. Meals carry their venue inside the
- * agenda line ("Lunch @ Samauma"); movements carry their time, because a
- * participant catches a bus, not a session.
+ * and these lines change when it changes. Movements carry their time, because
+ * a participant catches a bus, not a session. Venue ids remain structured so
+ * place names can link to details without parsing display text.
  */
 
 /** One row of the list: the days it covers, and what happens on each of them. */
-export type DayLines = { day: string; lines: string[] };
+export type PracticalLine = { label: string; venueId?: VenueId };
+export type DayLines = { day: string; lines: PracticalLine[] };
 
 const MEAL_KINDS = new Set<SessionKind>(['meal', 'social']);
 const MOVEMENT_KINDS = new Set<SessionKind>(['transport', 'field']);
@@ -27,12 +29,15 @@ function linesOf(kinds: Set<SessionKind>, withTime: boolean): DayLines[] {
     date: day.date,
     lines: day.sessions
       .filter((s): s is Session => kinds.has(s.kind))
-      .map((s) => (withTime ? `${timeLabel(s)} · ${sessionTitle(s)}` : sessionTitle(s))),
+      .map((s) => ({
+        label: withTime ? `${timeLabel(s)} · ${sessionTitle(s)}` : sessionTitle(s),
+        venueId: s.venueId,
+      })),
   })).filter((d) => d.lines.length > 0);
 
   // Consecutive days with identical lines share one row ("15–16 Sep"), which
   // is the compact form a hand-written list would have used anyway.
-  const rows: { dates: string[]; lines: string[] }[] = [];
+  const rows: { dates: string[]; lines: PracticalLine[] }[] = [];
   for (const day of days) {
     const last = rows.at(-1);
     if (
