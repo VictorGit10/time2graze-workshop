@@ -10,6 +10,14 @@ const serif = Cormorant_Garamond({
   variable: '--font-serif', subsets: ['latin'], weight: ['500', '600'], style: ['normal', 'italic'],
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '');
+const socialImage = siteUrl ? {
+  url: `${siteUrl}/og.png`,
+  width: 1200,
+  height: 630,
+  alt: 'Time2Graze Brazil Workshop · 14–18 September 2026 · Goiânia, Brazil',
+} : null;
+
 export const metadata: Metadata = {
   title: 'Time2Graze Brazil Workshop · 14–18 September 2026',
   description: 'Internal Time2Graze technical workshop in Goiânia, Brazil, focused on data development, decision support and grazing management.',
@@ -20,13 +28,13 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     siteName: 'Time2Graze Brazil Workshop',
-    images: process.env.NEXT_PUBLIC_SITE_URL ? [`${process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, '')}/og.png`] : [],
+    images: socialImage ? [socialImage] : [],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Time2Graze Brazil Workshop',
     description: '14–18 September 2026 · Goiânia, Brazil',
-    images: process.env.NEXT_PUBLIC_SITE_URL ? [`${process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, '')}/og.png`] : [],
+    images: socialImage ? [{ url: socialImage.url, alt: socialImage.alt }] : [],
   },
 };
 

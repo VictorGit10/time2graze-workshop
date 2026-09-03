@@ -611,7 +611,8 @@ building it, and that are easy to break:
 **The hero is now real photography.** `public/time2graze-hero.webp` is a crop of
 an aerial pasture photograph owned by LAPIG. The site owner confirmed on 3
 September 2026 that it requires no visible attribution. `public/og.png` uses
-the same source, and the provenance is recorded in `research/venues.md`.
+the same source in an editorial social-preview card with the confirmed event
+name, date and location; the provenance is recorded in `research/venues.md`.
 
 The practical page also carries sourced photographs of the LAPIG façade and
 the historic centre of Cidade de Goiás. The latter is contextual — it does not
