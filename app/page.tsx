@@ -48,35 +48,19 @@ export default function Home() {
             </div>
             <div className="hero-actions">
               <Link href="/programme/">View programme <ArrowRight aria-hidden="true" /></Link>
-              <Link href="/practical/">Practical information <ArrowRight aria-hidden="true" /></Link>
             </div>
           </div>
 
-          <aside className="hero-docket" aria-label="Workshop facts">
-            <p className="docket-date"><span>14–18</span><strong>September<br />2026</strong></p>
-            <dl>
-              <div><dt>Location</dt><dd>Goiânia, Goiás · Brazil</dd></div>
-              <div><dt>Duration</dt><dd>{AGENDA.length} working days</dd></div>
-              <div><dt>Programme</dt><dd>{SCHEDULED_ITEMS} scheduled items</dd></div>
-              <div><dt>Format</dt><dd>In person</dd></div>
-              <div><dt>Host</dt><dd>LAPIG · UFG</dd></div>
-            </dl>
-          </aside>
-
-          <figure className="event-visual">
+          <div className="event-visual">
             <Image
               src={withBasePath('/time2graze-hero.webp')}
-              alt="Aerial view of pastureland documented by LAPIG"
+              alt="Aerial view of green pastureland"
               width={1440}
               height={1080}
               loading="eager"
               fetchPriority="high"
             />
-            <figcaption>
-              <span>Pastureland documented by LAPIG</span>
-              <a className="image-credit" href="https://jornal.ufg.br/n/80658-radiografia-das-pastagens-do-brasil" target="_blank" rel="noreferrer">Photo: LAPIG · Jornal UFG</a>
-            </figcaption>
-          </figure>
+          </div>
         </div>
       </section>
 

@@ -302,19 +302,22 @@ order is the argument: what is happening now, what this is, where to go next.
   most useful thing on the site, and it renders nothing on the other 360 days,
   so it costs no space when it has nothing to say. It is not sticky: it is an
   announcement, not a control.
-- **The hero is a three-column grid** — summary, docket, photograph — capped at
-  `--wide` and collapsing to two columns with the photograph as a full-width
-  band below 1050px.
-- **The docket carries operational facts, derived from the agenda.** Location,
-  duration, scheduled item count, format and host. The count comes from
-  `AGENDA`, never from a written number.
-- **`.hero-meta` and the docket are the same facts at two widths, and exactly
-  one of them is visible.** Above 760px the docket shows the date and location
-  and `.hero-meta` is `display: none`; at 760px and below they swap, and the
-  docket hides `.docket-date` and its `Location` row. `.hero-meta` is also what
-  reaches the printer, because the docket is hidden there. Deleting
-  `.hero-meta` because it looks redundant on a desktop would drop the date and
-  the location from both the phone and the paper.
+- **The hero is a two-column grid** — summary and photograph — capped at
+  `--wide`. It remains side by side through wide tablets and stacks below
+  960px; stacking it at 1050px made the opening nearly a screen taller at the
+  exact width where space was already scarce.
+- **Operational facts are distributed without a separate docket.** Date and
+  location stay in `.hero-meta` at every width; duration and scheduled-item
+  count live in the Programme card; format and host live in the overview. The
+  same facts must not be restated in a third visual panel.
+- **The hero has one primary action: `View programme`.** It remains available
+  before the photograph on a phone, while Materials and Practical information
+  belong to the directory immediately below. Repeating both Programme and
+  Practical information as buttons and cards weakened the hierarchy.
+- **The hero closes with one continuous ink rule.** The directory touches that
+  rule and completes the same editorial frame. Do not restore a caption strip
+  on the photograph or leave the rule drawn under only one column; either one
+  recreates the visual step this composition removed.
 - **There is one navigation block, not two.** A strip of five day links to
   `/programme/#day-1…5` sat here until September 2026 and was removed: it put
   eight links in two stacked rows before any content, and it offered a second
@@ -521,8 +524,9 @@ building it, and that are easy to break:
   third-party copyright and cannot be republished — a screenshot does not
   create a licence. Until a venue supplies one, the panel shows a visibly empty
   slot. Wikimedia Commons holds CC BY-SA 4.0 photographs of the campus if an
-  interim image is ever wanted; candidates are listed in `research/venues.md`,
-  and every published photograph carries its credit.
+  interim image is ever wanted; candidates are listed in `research/venues.md`.
+  Every published photograph follows its recorded permission terms; the
+  LAPIG-owned hero is explicitly cleared for use without visible attribution.
 - **The ride link is Uber's documented universal link** (`m.uber.com/looking`,
   with `pickup=my_location` and `drop[0]` as an encoded location object), built
   from the coordinate and confirmed address: the site needs no API key or Uber
@@ -542,9 +546,9 @@ building it, and that are easy to break:
 ## Images
 
 **The hero is now real photography.** `public/time2graze-hero.webp` is a crop of
-an aerial pasture photograph by LAPIG, reproduced through Jornal UFG under its
-credit policy. `public/og.png` uses the same source. The visible credit links to
-the article, and full provenance is recorded in `research/venues.md`.
+an aerial pasture photograph owned by LAPIG. The site owner confirmed on 3
+September 2026 that it requires no visible attribution. `public/og.png` uses
+the same source, and the provenance is recorded in `research/venues.md`.
 
 The practical page also carries sourced photographs of the LAPIG façade and
 the historic centre of Cidade de Goiás. The latter is contextual — it does not
