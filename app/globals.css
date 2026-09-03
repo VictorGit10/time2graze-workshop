@@ -15,7 +15,11 @@
   --warning: #7c6327;
   --radius: 3px;
   --wide: 1600px;
-  --content: 1380px;
+  /* A calha e o trilho. Toda faixa da página mede a partir daqui: sem isso,
+     uma que limita o elemento e outra que limita o filho começam em x
+     diferentes assim que a tela passa de --wide, e a página desalinha. */
+  --gutter: clamp(18px, 3vw, 44px);
+  --rail: calc(var(--wide) - 2 * var(--gutter));
 
   /* Escala tipográfica. 12px é piso, e só para metadado: rótulos em caixa
      alta, índices e etiquetas. Texto funcional fica de 14 a 17px. */
@@ -82,11 +86,11 @@ button { color: inherit; font: inherit; }
 .header-date { justify-self: end; font-size: var(--t-body); font-weight: 800; }
 .header-date span { margin-left: 4px; color: var(--muted); }
 
-.institutional-hero { padding: 0 clamp(18px, 3vw, 44px); background: var(--paper); }
+.institutional-hero { max-width: var(--wide); margin: 0 auto; padding: 0 var(--gutter); background: var(--paper); }
 /* A coluna da fotografia é larga o bastante para o recorte continuar sendo uma
    fotografia: com `cover`, uma coluna estreita num quadro 4:3 mostra uma tira
    vertical de textura. A altura acompanha, pela mesma razão. */
-.hero-grid { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(250px, .54fr) minmax(400px, .92fr); max-width: var(--wide); min-height: 580px; margin: 0 auto; background: var(--surface); border-right: 1px solid var(--line); border-left: 1px solid var(--line); }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(250px, .54fr) minmax(400px, .92fr); min-height: 580px; background: var(--surface); border-right: 1px solid var(--line); border-left: 1px solid var(--line); }
 .event-summary { display: flex; flex-direction: column; justify-content: center; min-width: 0; padding: clamp(70px, 7vw, 106px) clamp(34px, 5vw, 78px); }
 .event-label, .section-title > p, .section-title > div > p { margin: 0 0 23px; color: var(--forest); font-size: var(--t-label); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .event-label { display: flex; align-items: center; gap: 12px; margin-bottom: 30px; }
@@ -122,7 +126,7 @@ button { color: inherit; font: inherit; }
 .image-credit:hover { color: #fff; text-decoration: underline; text-underline-offset: 2px; }
 
 /* O que está acontecendo agora. Só existe durante a semana do workshop. */
-.now-band { display: grid; grid-template-columns: minmax(150px, .7fr) minmax(0, 4.3fr); align-items: center; gap: 24px; max-width: var(--wide); margin: 0 auto; padding: 20px clamp(24px, 5vw, 72px); color: #fff; background: var(--forest-dark); border-top: 4px solid var(--accent); }
+.now-band { display: grid; grid-template-columns: minmax(150px, .7fr) minmax(0, 4.3fr); align-items: center; gap: 24px; max-width: var(--wide); margin: 0 auto; padding: 20px var(--gutter); color: #fff; background: var(--forest-dark); border-top: 4px solid var(--accent); }
 .now-band-day { margin: 0; color: var(--accent); font-size: var(--t-label); font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
 .now-band-item { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px; margin: 0; font-size: 16px; }
 .now-band-time { color: rgba(255,255,255,.72); font-variant-numeric: tabular-nums; }
@@ -131,7 +135,7 @@ button { color: inherit; font: inherit; }
 .now-band .tl-mark { margin-left: 0; color: var(--forest-dark); background: var(--accent); }
 .now-band .tl-mark--next { color: #fff; background: transparent; box-shadow: inset 0 0 0 1px var(--accent); }
 
-.week-index { display: grid; grid-template-columns: minmax(190px, .8fr) minmax(0, 4.2fr); max-width: var(--wide); margin: 0 auto; padding: 0 clamp(18px, 3vw, 44px); }
+.week-index { display: grid; grid-template-columns: minmax(190px, .8fr) minmax(0, 4.2fr); max-width: var(--wide); margin: 0 auto; padding: 0 var(--gutter); }
 .week-index > p { display: grid; align-content: center; margin: 0; padding: 22px 26px; color: #fff; background: var(--forest-dark); }
 .week-index > p span { color: var(--accent); font-size: var(--t-label); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .week-index > p strong { margin-top: 6px; font-size: var(--t-meta-lg); font-variant-numeric: tabular-nums; }
@@ -143,7 +147,7 @@ button { color: inherit; font: inherit; }
 .week-index a strong { margin-top: 7px; font-family: var(--font-serif), Georgia, serif; font-size: 20px; font-weight: 600; }
 .week-index a small { margin-top: 5px; color: var(--muted); font-size: var(--t-label); font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
 
-.information-nav { display: grid; grid-template-columns: repeat(3, 1fr); max-width: var(--wide); margin: 0 auto; padding: 0 clamp(18px, 3vw, 44px); background: var(--paper); }
+.information-nav { display: grid; grid-template-columns: repeat(3, 1fr); max-width: var(--wide); margin: 0 auto; padding: 0 var(--gutter); background: var(--paper); }
 .information-nav a { display: grid; grid-template-columns: 34px 1fr 18px; align-items: start; gap: 15px; min-height: 150px; padding: 27px 24px; background: var(--surface); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .information-nav a:first-child { border-left: 1px solid var(--line); }
 .information-nav > a > span { padding-top: 3px; color: var(--forest); font-size: var(--t-label); font-weight: 800; font-variant-numeric: tabular-nums; }
@@ -156,8 +160,8 @@ button { color: inherit; font: inherit; }
 .information-nav a:hover { background: #f7f9f3; }
 .information-nav a:hover svg { color: var(--forest); transform: translateX(3px); }
 
-.section-pad { padding: clamp(90px, 10vw, 145px) clamp(24px, 7.5vw, 118px); }
-.section-pad > * { width: min(100%, var(--content)); margin-right: auto; margin-left: auto; }
+.section-pad { padding: clamp(90px, 10vw, 145px) var(--gutter); }
+.section-pad > * { width: min(100%, var(--rail)); margin-right: auto; margin-left: auto; }
 .section-title { margin-bottom: clamp(52px, 6vw, 80px); }
 /* O título de abertura de cada página interna é um h1; as seções da home, h2. */
 .section-title h1, .section-title h2 { margin: 0; font-family: var(--font-serif), Georgia, serif; font-size: clamp(43px, 5.2vw, 70px); font-weight: 600; line-height: .95; letter-spacing: -.04em; }
@@ -193,7 +197,7 @@ button { color: inherit; font: inherit; }
 .institution-source a { color: var(--forest); text-decoration: underline; text-underline-offset: 2px; }
 
 .agenda-section { background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-.programme-facts { display: grid; grid-template-columns: repeat(4, 1fr); margin: -18px 0 30px; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--line); }
+.programme-facts { display: grid; grid-template-columns: repeat(4, 1fr); margin: -18px auto 30px; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--line); }
 .programme-facts > div { padding: 18px 20px; border-left: 1px solid var(--line); }
 .programme-facts > div:first-child { border-left: 0; }
 .programme-facts dt { color: var(--muted); font-size: var(--t-label); font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }

@@ -5,7 +5,7 @@ import { Programme, ProgrammeForPrint } from '@/components/programme';
 import { AGENDA } from '@/data/agenda';
 import { useTabKeys } from '@/hooks/use-tab-keys';
 import { useWorkshopClock } from '@/hooks/use-workshop-clock';
-import { dayFromHash, dayFromSessionHash, scrollToSession } from '@/lib/deep-link';
+import { dayFromHash, dayFromSessionHash, scrollToDayPanel, scrollToSession } from '@/lib/deep-link';
 import { todayIndex } from '@/lib/now';
 import { dayLabel, dayShort } from '@/lib/schedule';
 
@@ -16,8 +16,8 @@ const ITEMS_WITH_END_TIME = AGENDA.reduce(
 );
 
 export default function ProgrammePage() {
-  /** A session waiting to be scrolled to, once its day has actually rendered. */
-  const [pending, setPending] = useState<{ id: string } | null>(null);
+  /** What is waiting to be scrolled to, once the day it names has rendered. */
+  const [pending, setPending] = useState<{ session: string } | { day: true } | null>(null);
   const clock = useWorkshopClock();
   const today = todayIndex(AGENDA, clock);
 
@@ -47,7 +47,9 @@ export default function ProgrammePage() {
       const hash = location.hash;
       const day = dayFromHash(hash);
       if (day !== null) {
+        history.scrollRestoration = 'manual';
         setPicked(day);
+        setPending({ day: true });
         return;
       }
       const owner = dayFromSessionHash(hash);
@@ -56,7 +58,7 @@ export default function ProgrammePage() {
         // would land on top of ours. This link decides where the page goes.
         history.scrollRestoration = 'manual';
         setPicked(owner);
-        setPending({ id: hash.slice(1) });
+        setPending({ session: hash.slice(1) });
       }
     };
 
@@ -72,7 +74,8 @@ export default function ProgrammePage() {
    */
   useEffect(() => {
     if (!pending) return;
-    scrollToSession(pending.id);
+    if ('session' in pending) scrollToSession(pending.session);
+    else scrollToDayPanel();
     // Not cleared: every link produces a fresh object, and it is that identity
     // change that runs this again.
   }, [pending]);

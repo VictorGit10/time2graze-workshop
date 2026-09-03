@@ -264,6 +264,35 @@ the panel opens on Day 1.
 - `scrollIntoView` is called without `behavior`, letting the CSS decide; the
   `prefers-reduced-motion` rule already switches it to instant.
 
+### One rail
+
+Every full-width band on the site measures from the same two vertical lines,
+and the tokens exist so that stays true: `--gutter` is the calha, `--wide` caps
+the band, and `--rail` is `--wide` minus two gutters — the width the content of
+a padded section is allowed to reach.
+
+There are two shapes, and they must not be mixed:
+
+- **A band** (`.institutional-hero`, `.now-band`, `.week-index`,
+  `.information-nav`) is the element itself: `max-width: var(--wide)`,
+  `margin: 0 auto`, `padding-inline: var(--gutter)`.
+- **A section** (`.section-pad`) keeps its background full-bleed and pads
+  itself by `var(--gutter)`; its children are capped at `var(--rail)` and
+  centred.
+
+Both put the content edge in the same place at every width. Padding the outer
+element in one and the inner element in the other does not: below `--wide` the
+two agree, and above it they diverge by exactly one gutter, so the page looks
+correct on a laptop and comes apart on a wide monitor. That is how it broke the
+first time.
+
+The same trap has a second form. `.section-pad > *` centres with
+`margin-inline: auto`, so any child that later sets the `margin` shorthand —
+`.programme-facts` needed a negative top margin — has to write `auto` for the
+inline sides. Writing `0` silently left-aligns that one band while everything
+around it stays centred, which is invisible until the viewport is wider than
+`--rail`.
+
 ### The home page
 
 The home page carries four bands before the overview, in this order, and the

@@ -25,6 +25,22 @@ export function dayFromSessionHash(hash: string) {
  * disputa com esta rolagem — no desktop ele mirava o item recortado de um
  * pixel e parava no lugar errado.
  */
+/**
+ * Um link `#day-3` trocava o dia e deixava o leitor no topo da página, com o
+ * painel abaixo da dobra e nenhum sinal de que algo aconteceu — vindo do
+ * índice da semana, a chegada parecia uma troca de página qualquer. Rola até
+ * as abas, que mostram qual dia está aberto logo acima do painel.
+ */
+export function scrollToDayPanel() {
+  if (document.readyState !== 'complete') {
+    addEventListener('load', () => scrollToDayPanel(), { once: true });
+    return;
+  }
+
+  // `scroll-padding-top` no html já desconta o cabeçalho fixo.
+  document.querySelector('.day-tabs')?.scrollIntoView({ block: 'start' });
+}
+
 export function scrollToSession(id: string) {
   // Rolar antes de a página terminar de carregar erra o alvo: a imagem do
   // hero ainda vai deslocar o layout abaixo dela.
