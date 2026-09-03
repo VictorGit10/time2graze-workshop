@@ -264,6 +264,40 @@ the panel opens on Day 1.
 - `scrollIntoView` is called without `behavior`, letting the CSS decide; the
   `prefers-reduced-motion` rule already switches it to instant.
 
+### The home page
+
+The home page carries four bands before the overview, in this order, and the
+order is the argument: what is happening now, what this is, which day, where to
+go next.
+
+- **`NowNext` comes first, above the hero.** During the workshop week it is the
+  most useful thing on the site, and it renders nothing on the other 360 days,
+  so it costs no space when it has nothing to say. It is not sticky: it is an
+  announcement, not a control.
+- **The hero is a three-column grid** — summary, docket, photograph — capped at
+  `--wide` and collapsing to two columns with the photograph as a full-width
+  band below 1050px.
+- **The docket carries operational facts, derived from the agenda.** Location,
+  duration, scheduled item count, format and host. The count comes from
+  `AGENDA`, never from a written number.
+- **`.hero-meta` and the docket are the same facts at two widths, and exactly
+  one of them is visible.** Above 760px the docket shows the date and location
+  and `.hero-meta` is `display: none`; at 760px and below they swap, and the
+  docket hides `.docket-date` and its `Location` row. `.hero-meta` is also what
+  reaches the printer, because the docket is hidden there. Deleting
+  `.hero-meta` because it looks redundant on a desktop would drop the date and
+  the location from both the phone and the paper.
+- **The week index links to `/programme/#day-1…5`** and becomes a scroll-snap
+  row on a phone. The day numbers are real: they are the workshop's own days.
+- **The directory carries a status per destination**, `data-status="neutral"`
+  or `"pending"`. `Draft programme` is neutral because a draft is a normal
+  state, not an outstanding item; only genuinely missing information is amber.
+
+`/programme/` and `/practical/` each carry one band of the same kind —
+`.programme-facts` and `.practical-status-line`. The programme's includes the
+official timezone, which is the one fact a reader in another country cannot
+infer. All four bands are hidden in print.
+
 ## Functional standard
 
 Refinement here means utility executed well, not features added:
@@ -375,7 +409,7 @@ and do not fill them with invented detail in the meantime.
 
 ```
 app/layout.tsx               Fonts, metadata, and the header/footer every page gets.
-app/page.tsx                 Home: hero, today's session, directory, overview.
+app/page.tsx                 Home: today's session, hero, week index, directory, overview.
 app/programme/layout.tsx     Route metadata. The page is a client component.
 app/programme/page.tsx       Day tabs, deep links and the printable programme.
 app/materials/page.tsx       Materials by day. A server component: no state.
@@ -386,7 +420,7 @@ components/site-header.tsx   Persistent navigation, with the current page marked
 components/site-footer.tsx   Footer, shared by every page.
 components/now-next.tsx      The home page's "happening now", workshop week only.
 components/programme.tsx     Proportional, chronological and print programmes.
-hooks/use-tab-keys.ts        Arrow-key movement for the day and location tablists.
+hooks/use-tab-keys.ts        Arrow-key movement for a tablist, horizontal or vertical.
 data/agenda.ts               The five days, sessions, tracks and materials.
 data/types.ts                Content contracts.
 data/venues.ts               The single venue registry: names, pins, addresses.
@@ -588,12 +622,17 @@ international flights.
 - `components/ui/` contains 60 generated shadcn components that the site does
   not import, along with dependencies used only by that scaffold. Remove them
   as one mechanical cleanup commit, not mixed into feature or content work.
-- Global `npm run lint` currently reports accessibility/compiler findings in
-  those unused components and `next/no-img-element` for the two raw `<img>`
-  tags. The hero already carries intrinsic dimensions and high fetch priority;
-  venue photographs are lazy-loaded inside a size-constrained panel. Static
-  export requires unoptimised output, but `next/image` could still provide
-  intrinsic sizing and loading semantics, so switching remains a valid small
-  cleanup rather than an impossible one. Targeted TypeScript checks pass; the
-  repository should return to a clean global lint when the scaffold cleanup is
-  done.
+- Global `npm run lint` currently reports accessibility and compiler findings
+  in those unused components and in `hooks/use-mobile.ts`, which only the
+  scaffold uses. Nothing in `app/` or in the site's own components reports, and
+  the repository returns to a clean global lint once the scaffold goes.
+
+**The two raw `<img>` tags are gone.** Both the hero and the venue photographs
+render through `next/image` under `images: { unoptimized: true }`, which is what
+static export requires. Two attributes carry decisions and must not be dropped:
+the hero is `loading="eager"` with `fetchPriority="high"` because it is the LCP
+— `next/image` defaults to `loading="lazy"`, and `fetchPriority` alone does not
+undo that — and the venue photograph uses `fill` with `sizes`, which works only
+because `.venue-photo` is already `position: relative`. `withBasePath` still has
+to prefix both sources: `next/image` does not apply `basePath` to a string
+`src` when images are unoptimised.

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import {
   BusFront, Camera, Car, Check, ChevronRight, CircleAlert, Copy, ExternalLink, Globe,
   Hotel, MapPin, Phone, UtensilsCrossed,
@@ -27,7 +28,7 @@ export default function PracticalPage() {
     setActiveMap(index);
     setCopied(null);
   };
-  const onMapKeys = useTabKeys(MAP_VENUES.length, activeMap, selectVenue);
+  const onMapKeys = useTabKeys(MAP_VENUES.length, activeMap, selectVenue, 'vertical');
   const venue = MAP_VENUES[activeMap];
   /** Locals rather than property reads: narrowing survives into the handlers. */
   const { address, coords, phone, photo, website } = venue;
@@ -51,10 +52,19 @@ export default function PracticalPage() {
   return (
     <>
       <section className="practical section-pad" id="practical">
-        <div className="section-title"><p>Practical information</p><h1>Stay, meals and transport</h1></div>
+        <div className="section-title split-title">
+          <div><p>Practical information</p><h1>Stay, meals and transport</h1></div>
+          <span>Operational details for travelling participants</span>
+        </div>
+        <div className="practical-status-line">
+          <strong>Current status</strong>
+          <span>Hotel identified</span>
+          <em>Booking, airport transfers and daily transport pending confirmation</em>
+        </div>
         <div className="practical-grid">
           <article className="practical-card">
-            <Hotel aria-hidden="true" /><span className="status">Booking pending</span><h3>Accommodation</h3>
+            <header className="practical-card-head"><Hotel aria-hidden="true" /><em className="status">Booking pending</em></header>
+            <h3>Accommodation</h3>
             <p><strong>{hotel.name}</strong><br />{hotel.address}</p>
             <ul>
               <li><strong>Contact</strong><span><a href={telHref(hotel.phone)}>{hotel.phone}</a></span></li>
@@ -69,7 +79,8 @@ export default function PracticalPage() {
             </div>
           </article>
           <article className="practical-card">
-            <UtensilsCrossed aria-hidden="true" /><span className="status confirmed">From the programme</span><h3>Meals</h3>
+            <header className="practical-card-head"><UtensilsCrossed aria-hidden="true" /><em className="status confirmed">From the programme</em></header>
+            <h3>Meals</h3>
             <ul>
               {mealsByDay().map((row) => (
                 <li key={row.day}><strong>{row.day}</strong><span>{row.lines.join(' · ')}</span></li>
@@ -78,7 +89,8 @@ export default function PracticalPage() {
             <p className="card-note">Dietary requirement instructions and meal details are still to be confirmed.</p>
           </article>
           <article className="practical-card">
-            <BusFront aria-hidden="true" /><span className="status confirmed">From the programme</span><h3>Transport</h3>
+            <header className="practical-card-head"><BusFront aria-hidden="true" /><em className="status confirmed">From the programme</em></header>
+            <h3>Transport</h3>
             <ul>
               {movementsByDay().map((row) => (
                 <li key={row.day}><strong>{row.day}</strong><span>{row.lines.join(' · ')}</span></li>
@@ -92,7 +104,7 @@ export default function PracticalPage() {
       <section className="maps section-pad" id="maps">
         <div className="section-title split-title"><div><p>Maps and venues</p><h2>Workshop locations</h2></div><span>Confirmed and provisional locations</span></div>
         <div className="maps-layout">
-          <div className="location-selector" role="tablist" aria-label="Workshop locations" tabIndex={-1} onKeyDown={onMapKeys}>
+          <div className="location-selector" role="tablist" aria-orientation="vertical" aria-label="Workshop locations" tabIndex={-1} onKeyDown={onMapKeys}>
             {MAP_VENUES.map((location, index) => (
               <button key={location.id} type="button" role="tab" aria-selected={activeMap === index} aria-controls="map-panel" id={`map-tab-${index}`} tabIndex={activeMap === index ? 0 : -1} onClick={() => selectVenue(index)}>
                 <MapPin aria-hidden="true" /><span><strong>{location.name}</strong><small>{location.use}</small></span><ChevronRight aria-hidden="true" />
@@ -105,7 +117,13 @@ export default function PracticalPage() {
               {photo
                 ? (
                   <figure className="venue-photo">
-                    <img src={withBasePath(photo.src)} alt={photo.alt} loading="lazy" />
+                    <Image
+                      src={withBasePath(photo.src)}
+                      alt={photo.alt}
+                      fill
+                      sizes="(max-width: 760px) 100vw, (max-width: 1050px) 45vw, 28vw"
+                      loading="lazy"
+                    />
                     <figcaption>
                       {photo.creditHref
                         ? <a href={photo.creditHref} target="_blank" rel="noreferrer">{photo.credit}</a>

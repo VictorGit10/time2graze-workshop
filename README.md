@@ -97,9 +97,8 @@ npm run format  # oxfmt
 
 The generated scaffold still contains 60 unused shadcn components and several
 unused dependencies. Global lint currently reports issues inside that unused
-scaffold, plus the two intentional plain `<img>` elements used for the hero and
-venue photographs. Removing the scaffold is a separate cleanup task and should
-not be mixed with content changes.
+scaffold and nowhere else. Removing the scaffold is a separate cleanup task and
+should not be mixed with content changes.
 
 ## Deployment
 

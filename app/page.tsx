@@ -3,14 +3,20 @@ import type { CSSProperties } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { NowNext } from '@/components/now-next';
+import { AGENDA } from '@/data/agenda';
 import { INSTITUTION_GROUPS, INSTITUTION_ROLE_SOURCE, type Institution } from '@/data/institutions';
 import { withBasePath } from '@/lib/base-path';
+import { materialsByDay } from '@/lib/materials';
+import { dayLabel } from '@/lib/schedule';
+
+const SCHEDULED_ITEMS = AGENDA.reduce((total, day) => total + day.sessions.length, 0);
+const EXPECTED_FILES = materialsByDay().reduce((total, group) => total + group.entries.length, 0);
 
 /** The three destinations, as a directory rather than a shortcut bar. */
 const DESTINATIONS = [
-  { href: '/programme/', title: 'Programme', detail: 'Sessions and daily schedule' },
-  { href: '/materials/', title: 'Materials', detail: 'Presentations and documents' },
-  { href: '/practical/', title: 'Practical information', detail: 'Stay, meals, transport and maps' },
+  { href: '/programme/', title: 'Programme', detail: `${AGENDA.length} days · ${SCHEDULED_ITEMS} scheduled items`, status: 'Draft programme', tone: 'neutral' },
+  { href: '/materials/', title: 'Materials', detail: `${EXPECTED_FILES} expected files linked to sessions`, status: 'Publication pending', tone: 'pending' },
+  { href: '/practical/', title: 'Practical information', detail: 'Stay, meals, transport and venue maps', status: 'Key details pending', tone: 'pending' },
 ] as const;
 
 /**
@@ -29,43 +35,70 @@ function markHeight({ width, height }: Institution) {
 export default function Home() {
   return (
     <>
-      <section className="institutional-hero" id="top">
-        <div className="event-summary">
-          <p className="event-label">Time2Graze Project · Internal technical workshop</p>
-          <h1>Time2Graze<br />Brazil Workshop</h1>
-          <p className="event-objective">Strengthening collaboration across partner teams by connecting data development and decision support for improved grazing management.</p>
-          <div className="hero-meta" aria-label="Event information">
-            <span><CalendarDays aria-hidden="true" />14–18 September 2026</span>
-            <span><MapPin aria-hidden="true" />Goiânia, Goiás · Brazil</span>
+      <NowNext />
+
+      <section className="institutional-hero">
+        <div className="hero-grid">
+          <div className="event-summary">
+            <p className="event-label">Time2Graze Project · Internal technical workshop</p>
+            <h1><span>Time2Graze</span>{' '}<span>Brazil Workshop</span></h1>
+            <p className="event-objective">Strengthening collaboration across partner teams by connecting data development and decision support for improved grazing management.</p>
+            <div className="hero-meta" aria-label="Event information">
+              <span><CalendarDays aria-hidden="true" />14–18 September 2026</span>
+              <span><MapPin aria-hidden="true" />Goiânia, Goiás · Brazil</span>
+            </div>
+            <div className="hero-actions">
+              <Link href="/programme/">View programme <ArrowRight aria-hidden="true" /></Link>
+              <Link href="/practical/">Practical information <ArrowRight aria-hidden="true" /></Link>
+            </div>
           </div>
-          <div className="hero-actions">
-            <Link href="/programme/">View programme <ArrowRight aria-hidden="true" /></Link>
-            <Link href="/practical/">Practical information <ArrowRight aria-hidden="true" /></Link>
-          </div>
-        </div>
-        <div className="event-visual">
-          {/* basePath does not reach a plain img; it has to be prefixed here.
-              The intrinsic 1440×1080 lets the browser reserve the box before
-              the file arrives, and the hero is the largest thing on the page. */}
-          <img
-            src={withBasePath('/time2graze-hero.webp')}
-            alt="Aerial view of pastureland documented by LAPIG"
-            width={1440}
-            height={1080}
-            fetchPriority="high"
-          />
-          <a className="image-credit" href="https://jornal.ufg.br/n/80658-radiografia-das-pastagens-do-brasil" target="_blank" rel="noreferrer">Photo: LAPIG · Jornal UFG</a>
-          <p><strong>In person</strong><span>Hosted by LAPIG · UFG</span></p>
+
+          <aside className="hero-docket" aria-label="Workshop facts">
+            <p className="docket-date"><span>14–18</span><strong>September<br />2026</strong></p>
+            <dl>
+              <div><dt>Location</dt><dd>Goiânia, Goiás · Brazil</dd></div>
+              <div><dt>Duration</dt><dd>{AGENDA.length} working days</dd></div>
+              <div><dt>Programme</dt><dd>{SCHEDULED_ITEMS} scheduled items</dd></div>
+              <div><dt>Format</dt><dd>In person</dd></div>
+              <div><dt>Host</dt><dd>LAPIG · UFG</dd></div>
+            </dl>
+          </aside>
+
+          <figure className="event-visual">
+            <Image
+              src={withBasePath('/time2graze-hero.webp')}
+              alt="Aerial view of pastureland documented by LAPIG"
+              width={1440}
+              height={1080}
+              loading="eager"
+              fetchPriority="high"
+            />
+            <figcaption>
+              <span>Pastureland documented by LAPIG</span>
+              <a className="image-credit" href="https://jornal.ufg.br/n/80658-radiografia-das-pastagens-do-brasil" target="_blank" rel="noreferrer">Photo: LAPIG · Jornal UFG</a>
+            </figcaption>
+          </figure>
         </div>
       </section>
 
-      <NowNext />
+      <nav className="week-index" aria-label="Five-day programme">
+        <p><span>Workshop week</span><strong>14–18 September</strong></p>
+        <div>
+          {AGENDA.map((day) => (
+            <Link href={`/programme/#day-${day.index}`} key={day.date}>
+              <span>{String(day.index).padStart(2, '0')}</span>
+              <strong>{dayLabel(day.date)}</strong>
+              <small>{day.label}</small>
+            </Link>
+          ))}
+        </div>
+      </nav>
 
       <nav className="information-nav" aria-label="Workshop information">
-        {DESTINATIONS.map(({ href, title, detail }, index) => (
-          <Link key={href} href={href}>
+        {DESTINATIONS.map(({ href, title, detail, status, tone }, index) => (
+          <Link key={href} href={href} data-status={tone}>
             <span>{String(index + 1).padStart(2, '0')}</span>
-            <div><strong>{title}</strong><small>{detail}</small></div>
+            <div><strong>{title}</strong><small>{detail}</small><em>{status}</em></div>
             <ChevronRight aria-hidden="true" />
           </Link>
         ))}

@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import type { MaterialKind } from '@/data/types';
 import { materialDetail, materialsByDay } from '@/lib/materials';
 import { withBasePath } from '@/lib/base-path';
+import { dayLabel } from '@/lib/schedule';
 
 /** The file's own icon, not one for everything: the model already knows the kind. */
 const KIND_ICON: Record<MaterialKind, LucideIcon> = {
@@ -20,22 +21,32 @@ export const metadata: Metadata = {
 /** No state and no clock: this page is a read of the agenda, so it stays a
  *  server component and ships no JavaScript of its own. */
 export default function MaterialsPage() {
+  const groups = materialsByDay();
+  const total = groups.reduce((count, group) => count + group.entries.length, 0);
+
   return (
     <section className="materials section-pad" id="materials">
       <div className="section-title split-title">
         <div><p>Workshop materials</p><h1>Presentations and documents</h1></div>
-        <span>Materials will be added as they are approved</span>
+        <span>{total} expected files · linked to the sessions that produce them</span>
       </div>
 
       <div className="materials-notice">
         <Info aria-hidden="true" />
-        <p>This area is prepared to receive presentations, reading materials, protocols and supporting documents. Some files may be restricted to workshop participants.</p>
+        <p><strong>Publication status</strong> Files will be added after approval. Some may be restricted to workshop participants.</p>
       </div>
 
       <div className="resource-groups">
-        {materialsByDay().map(({ day, entries }) => (
-          <section className="resource-group" key={day.date}>
-            <h3>Day {day.index} · {day.label}</h3>
+        {groups.map(({ day, entries }) => (
+          <section className="resource-group" key={day.date} aria-labelledby={`materials-day-${day.index}`}>
+            <header>
+              <span aria-hidden="true">{String(day.index).padStart(2, '0')}</span>
+              <div>
+                <p>{dayLabel(day.date)}</p>
+                <h2 id={`materials-day-${day.index}`}>Day {day.index} · {day.label}</h2>
+                <small>{entries.length} {entries.length === 1 ? 'file' : 'files'} expected</small>
+              </div>
+            </header>
             <div>
               {entries.map((entry, index) => {
                 const KindIcon = KIND_ICON[entry.material.kind];
@@ -68,8 +79,8 @@ export default function MaterialsPage() {
       </div>
 
       <div className="document-placeholders">
-        <article><FileText aria-hidden="true" /><div><strong>Full programme</strong><span>PDF version</span></div><small>Pending</small></article>
-        <article><FolderOpen aria-hidden="true" /><div><strong>Shared workshop folder</strong><span>Participant access</span></div><small>Pending</small></article>
+        <article><span>PDF</span><FileText aria-hidden="true" /><div><strong>Full programme</strong><small>Printable reference copy</small></div><em>Pending</em></article>
+        <article><span>Folder</span><FolderOpen aria-hidden="true" /><div><strong>Shared workshop folder</strong><small>Participant access</small></div><em>Pending</em></article>
       </div>
     </section>
   );

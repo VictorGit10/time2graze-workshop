@@ -2,14 +2,21 @@
 
 /**
  * Arrow-key navigation between tabs, which `role="tab"` requires and the
- * browser does not provide. Left/right move, Home/End jump to the ends, and
- * focus follows selection.
+ * browser does not provide. The arrow keys follow the tablist orientation,
+ * Home/End jump to the ends, and focus follows selection.
  */
-export function useTabKeys(count: number, active: number, setActive: (i: number) => void) {
+export function useTabKeys(
+  count: number,
+  active: number,
+  setActive: (i: number) => void,
+  orientation: 'horizontal' | 'vertical' = 'horizontal',
+) {
   return (event: React.KeyboardEvent<HTMLDivElement>) => {
+    const previous = orientation === 'vertical' ? 'ArrowUp' : 'ArrowLeft';
+    const following = orientation === 'vertical' ? 'ArrowDown' : 'ArrowRight';
     const keys: Record<string, number> = {
-      ArrowLeft: (active - 1 + count) % count,
-      ArrowRight: (active + 1) % count,
+      [previous]: (active - 1 + count) % count,
+      [following]: (active + 1) % count,
       Home: 0,
       End: count - 1,
     };

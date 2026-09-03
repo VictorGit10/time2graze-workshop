@@ -9,6 +9,12 @@ import { dayFromHash, dayFromSessionHash, scrollToSession } from '@/lib/deep-lin
 import { todayIndex } from '@/lib/now';
 import { dayLabel, dayShort } from '@/lib/schedule';
 
+const SCHEDULED_ITEMS = AGENDA.reduce((total, day) => total + day.sessions.length, 0);
+const ITEMS_WITH_END_TIME = AGENDA.reduce(
+  (total, day) => total + day.sessions.filter((session) => session.end).length,
+  0,
+);
+
 export default function ProgrammePage() {
   /** A session waiting to be scrolled to, once its day has actually rendered. */
   const [pending, setPending] = useState<{ id: string } | null>(null);
@@ -80,6 +86,13 @@ export default function ProgrammePage() {
         <div><p>Programme</p><h1>Daily schedule</h1></div>
         <span>Draft programme · Five working days</span>
       </div>
+
+      <dl className="programme-facts">
+        <div><dt>Schedule</dt><dd>{SCHEDULED_ITEMS} items across {AGENDA.length} days</dd></div>
+        <div><dt>With end time</dt><dd>{ITEMS_WITH_END_TIME} items with confirmed duration</dd></div>
+        <div><dt>Official time</dt><dd>Goiânia · America/Sao_Paulo</dd></div>
+        <div><dt>Status</dt><dd><em>Draft programme</em></dd></div>
+      </dl>
 
       {/* Paper loses the header and the day tabs, so the printed agenda has to
           say for itself which workshop it belongs to. */}
