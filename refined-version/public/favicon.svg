@@ -1,6 +1,0 @@
-<!-- Um marcador de aba, nao uma marca: o workshop nao tem logo, entao o icone
-     e so o monograma do nome nas cores do site. Sem anel, sem emblema. -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" fill="#10382b"/>
-  <text x="32" y="40" text-anchor="middle" fill="#f5f6f2" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" letter-spacing="-0.5">T2G</text>
-</svg>
