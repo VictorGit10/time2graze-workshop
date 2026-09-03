@@ -12,9 +12,10 @@ const serif = Cormorant_Garamond({
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '');
 const socialImage = siteUrl ? {
-  url: `${siteUrl}/og.png?v=20260903`,
-  width: 1200,
-  height: 630,
+  url: `${siteUrl}/og.png?v=20260903-2`,
+  width: 600,
+  height: 315,
+  type: 'image/png',
   alt: 'Time2Graze Brazil Workshop · 14–18 September 2026 · Goiânia, Brazil',
 } : null;
 
@@ -25,6 +26,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Time2Graze Brazil Workshop',
     description: 'Internal technical workshop · 14–18 September 2026 · Goiânia, Brazil.',
+    url: siteUrl,
     type: 'website',
     locale: 'en_US',
     siteName: 'Time2Graze Brazil Workshop',

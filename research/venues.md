@@ -208,7 +208,7 @@ place.
 | Use | Source | Credit and permission |
 | --- | --- | --- |
 | Home hero | `BHRV_2013_2_VANT.jpg`, published in *Radiografia das Pastagens do Brasil* | LAPIG-owned photograph. The site owner confirmed on 3 September 2026 that visible attribution is not required. The local WebP is a crop of the source photograph. |
-| Social preview | `BHRV_2013_2_VANT.jpg`, via the home hero crop | Editorial 1200 × 630 treatment of the same cleared LAPIG-owned photograph, carrying only the confirmed event name, date and location. |
+| Social preview | `BHRV_2013_2_VANT.jpg`, via the home hero crop | Editorial treatment of the same cleared LAPIG-owned photograph, carrying only the confirmed event name, date and location. The published PNG is optimised for reliable messaging-app previews. |
 | LAPIG venue | `lapig_sede.png`, published in *Nos seus 30 anos, Lapig é referência nacional na área de geotecnologias* | Photo: LAPIG, via Jornal UFG. The photograph shows the current LAPIG façade and sign. |
 | Cidade de Goiás | `Rua do Conjunto Arquitetônico da Cidade de Goiás, Goiás, Brasil.jpg` | Adelano Lázaro, CC BY-SA 4.0, via Wikimedia Commons. The local WebP is a resized derivative distributed under the same licence. It represents the historic centre, not either Day 5 farm. |
 
