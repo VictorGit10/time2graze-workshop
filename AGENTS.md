@@ -612,7 +612,8 @@ building it, and that are easy to break:
 an aerial pasture photograph owned by LAPIG. The site owner confirmed on 3
 September 2026 that it requires no visible attribution. `public/og.png` uses
 the same source in an editorial social-preview card with the confirmed event
-name, date and location; the provenance is recorded in `research/venues.md`.
+name, date and location; `public/time2graze-whatsapp-card.png` is its published,
+cache-independent copy. The provenance is recorded in `research/venues.md`.
 
 The practical page also carries sourced photographs of the LAPIG façade and
 the historic centre of Cidade de Goiás. The latter is contextual — it does not
