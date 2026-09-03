@@ -91,8 +91,10 @@ button { color: inherit; font: inherit; }
 @keyframes enter-up { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 @keyframes enter-down { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
 @keyframes enter-fade { from { opacity: 0; } to { opacity: 1; } }
-/* O fio parte do zero na ponta esquerda: e a mesma direcao da leitura. */
+/* Cada fio parte do zero na sua propria origem: o deitado cresce da ponta
+   esquerda, na direcao da leitura; o em pe desce a partir do alto. */
 @keyframes rule-in { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes rule-in-y { from { transform: scaleY(0); } to { transform: scaleY(1); } }
 
 .site-header { position: sticky; z-index: 30; top: 0; background: var(--surface); border-bottom: 1px solid var(--line); }
 .header-bar { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; height: 84px; padding: 0 clamp(24px, 5vw, 72px); }
@@ -101,23 +103,27 @@ button { color: inherit; font: inherit; }
 .brand strong { font-size: 17px; font-weight: 800; letter-spacing: -.015em; }
 .brand small { margin-top: 7px; color: var(--muted); font-size: var(--t-label); font-weight: 700; letter-spacing: .09em; text-transform: uppercase; }
 
-/* O mesmo fio de duas cores que abre o olho do hero — verde claro com o
-   verde escuro por baixo — posto à esquerda do nome e na horizontal, medindo
-   a altura das duas linhas do logotipo. Vale só no cabeçalho: o rodapé repete
-   o nome, não a abertura, e um segundo fio ali seria enfeite.
-   As três células são declaradas: com posicionamento automático o ::before
-   tomaria a primeira célula e empurraria BRAZIL WORKSHOP para debaixo dele. */
+/* O mesmo fio de duas cores do olho do hero — verde claro com o verde escuro
+   ao lado —, aqui em pe a esquerda do nome. Deitado no hero, onde abre uma
+   linha de texto; em pe aqui, onde marca um logotipo de duas linhas.
+   A ordem das cores segue a leitura, como la: primeiro o claro, depois o
+   escuro. La isso e de cima para baixo, aqui da esquerda para a direita, e o
+   escuro fica encostado no nome.
+   Sem altura declarada: o ::before cobre as duas linhas da grade e o `stretch`
+   lhe da exatamente a altura do logotipo, seja qual for o corpo do texto.
+   Vale so no cabecalho: o rodape repete o nome, nao a abertura.
+   As tres celulas sao declaradas porque, no automatico, o ::before tomaria a
+   primeira e empurraria BRAZIL WORKSHOP para debaixo dele. */
 .site-header .brand { grid-template-columns: auto auto; column-gap: 13px; }
 .site-header .brand::before {
   content: '';
   grid-area: 1 / 1 / 3 / 2;
-  align-self: center;
-  width: 26px;
-  height: 2px;
+  align-self: stretch;
+  width: 2px;
   background: var(--accent);
-  box-shadow: 0 1px 0 var(--forest);
-  transform-origin: left center;
-  animation: rule-in var(--m-enter) var(--m-ease) both;
+  box-shadow: 1px 0 0 var(--forest);
+  transform-origin: center top;
+  animation: rule-in-y var(--m-enter) var(--m-ease) both;
 }
 .site-header .brand strong { grid-area: 1 / 2; }
 .site-header .brand small { grid-area: 2 / 2; }

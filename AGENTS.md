@@ -360,9 +360,14 @@ under the cursor), `--m-move` (a change the reader asked for) and `--m-enter`
 in loose seconds re-forks the vocabulary the tokens exist to hold together.
 
 The wordmark in the header carries the hero eyebrow's two-colour rule — pale
-lime over dark forest — to its left, horizontal, drawn from the left on load.
-It is the same device in both places on purpose. The footer repeats the name
-but not the rule: the footer is not an opening.
+lime and dark forest — to its left, and it stands upright: the eyebrow lies
+down because it opens a line of text, this one stands because it marks a
+two-line wordmark. The colours keep their reading order in both — pale first,
+forest second, which is top-to-bottom in the hero and left-to-right here, so
+the darker line is the one touching the name. It takes no declared height;
+spanning both grid rows with `align-self: stretch` makes it exactly as tall as
+the lockup whatever the type size. The footer repeats the name but not the
+rule: the footer is not an opening.
 
 Four decisions here are easy to undo by accident:
 
