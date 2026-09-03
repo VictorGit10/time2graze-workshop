@@ -61,6 +61,11 @@ live state or calendar files until approved. Venue evidence is recorded in
 - [ ] Supply the final field checklist, clothing and safety guidance.
 - [ ] Approve weather guidance, useful local contacts, nearby services and any
   recommendations for free time.
+- [ ] State in writing which areas of Goiânia participants can move around on
+  their own, and how. The self-guided Art Deco route through the central
+  district was removed from the local guide on 3 September 2026 because the
+  organiser judged the area unsafe for visitors; the site now says nothing
+  about it either way. See `research/local-guide.md`.
 
 ## Institutions
 

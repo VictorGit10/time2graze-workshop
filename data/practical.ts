@@ -22,13 +22,6 @@ export const SHUTTLE_PLAN = [
 
 export const LOCAL_GUIDES = [
   {
-    label: 'Explore Goiânia',
-    title: 'A self-guided Art Deco route',
-    description: 'Eight central landmarks selected by Visit Brasil, including Praça Cívica, Teatro Goiânia and the railway station.',
-    href: 'https://visitbrasil.com/en/places-to-be-enchanted-by-the-art-deco-collection-in-goiania/',
-    source: 'Visit Brasil · English',
-  },
-  {
     label: 'Settle in',
     title: 'UFG guide for international students',
     description: 'An English-language reference to university services and practical information for international visitors.',

@@ -333,6 +333,44 @@ order is the argument: what is happening now, what this is, where to go next.
 official timezone, which is the one fact a reader in another country cannot
 infer. All four bands are hidden in print.
 
+### Motion
+
+Movement was added in September 2026 and is deliberately small. One curve and
+three durations live in `:root` as `--m-ease`, `--m-quick` (a state returning
+under the cursor), `--m-move` (a change the reader asked for) and `--m-enter`
+(the page opening). Every transition on the site uses them; a new one written
+in loose seconds re-forks the vocabulary the tokens exist to hold together.
+
+The wordmark in the header carries the hero eyebrow's two-colour rule — pale
+lime over dark forest — to its left, horizontal, drawn from the left on load.
+It is the same device in both places on purpose. The footer repeats the name
+but not the rule: the footer is not an opening.
+
+Four decisions here are easy to undo by accident:
+
+- **Nothing animates in print.** `@media print` nulls `animation` on
+  everything. An entrance using `both` that a print renderer does not run would
+  freeze on its first frame, and the first frame is opacity zero — a blank
+  agenda on paper.
+- **The scroll entrances are CSS, not JavaScript**, via `animation-timeline:
+  view()` behind `@supports`. A browser without it drops the rule and opens the
+  page fully visible, which is the correct state and not a fallback. An
+  IntersectionObserver has no such exit, and `/materials/` is a server
+  component that must keep shipping no script of its own.
+- **They are also inside `prefers-reduced-motion: no-preference`.** The global
+  rule at the top of the stylesheet zeroes durations, and a scroll timeline
+  ignores duration entirely — without that media query, a reader who asked for
+  less movement would get exactly the effect they asked not to see.
+- **Only blocks shorter than the viewport get a scroll entrance.** The `entry`
+  phase lasts the element's own height, so a tall one — a day of materials, a
+  card on the practical page — would still be fading while it is being read.
+  `.resource-group` and `.practical-card` are excluded for that reason.
+
+The day panel on `/programme/` fades on a day change because the panel is
+keyed by the active day and remounts. That animation is opacity only, and must
+stay that way: `scrollToSession` measures the same commit, and a transform
+would move the target under it.
+
 ## Functional standard
 
 Refinement here means utility executed well, not features added:
@@ -653,6 +691,11 @@ summary aligned.
 - The 22 expected presentation/document files, the shared-folder route and the
   final programme PDF
 - Field checklist, weather guidance and workshop-specific local contacts
+- Written guidance on where in Goiânia participants can move around on
+  their own. The self-guided Art Deco route was removed from the local
+  guide on 3 September 2026 because the organiser judged the central
+  district unsafe for visitors; nothing replaced it, so the site is now
+  silent on the question rather than reassuring or warning
 
 The hotel coverage confirmation remains urgent for participants booking
 international flights.

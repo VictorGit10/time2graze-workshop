@@ -115,7 +115,11 @@ export default function ProgrammePage() {
         ))}
       </div>
 
-      <div className="agenda-panel" id="day-panel" role="tabpanel" aria-labelledby={`day-tab-${activeDay}`}>
+      {/* A chave remonta o painel a cada troca de dia, e e a montagem que dispara
+          a passagem em .agenda-panel. Programme nao guarda estado proprio, e a
+          animacao e so de opacidade: a rolagem de um link de sessao mede este
+          mesmo commit e nao pode encontrar o alvo deslocado. */}
+      <div className="agenda-panel" key={activeDay} id="day-panel" role="tabpanel" aria-labelledby={`day-tab-${activeDay}`}>
         <aside className="day-summary"><span>{dayShort(day)}</span><p>{dayLabel(day.date)}</p><h3>{day.label}</h3><small>{day.sessions.length} scheduled items</small></aside>
         <Programme day={day} clock={clock} />
       </div>

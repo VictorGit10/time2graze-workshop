@@ -27,6 +27,16 @@
   --t-meta: 13px;
   --t-meta-lg: 14px;
   --t-body: 15px;
+
+  /* Movimento. Uma curva e três durações para o site inteiro, para que nada
+     ande em ritmo próprio: --m-quick para o retorno de um estado sob o
+     cursor, --m-move para uma troca que o leitor pediu, --m-enter para a
+     abertura da página. A curva desacelera e não passa do ponto — nada aqui
+     deve quicar. A regra de prefers-reduced-motion acima zera as três. */
+  --m-ease: cubic-bezier(.22, .61, .36, 1);
+  --m-quick: .16s;
+  --m-move: .28s;
+  --m-enter: .6s;
 }
 
 * { box-sizing: border-box; }
@@ -60,6 +70,7 @@ button { color: inherit; font: inherit; }
   font-size: var(--t-body);
   font-weight: 700;
   transform: translateY(-160%);
+  transition: transform var(--m-move) var(--m-ease);
 }
 
 .skip-link:focus-visible { transform: none; }
@@ -72,18 +83,58 @@ button { color: inherit; font: inherit; }
   }
 }
 
+/* --- Movimento --------------------------------------------------------------
+   Três gestos, e só três: um elemento assenta no lugar, uma faixa desce, um
+   fio se desenha da esquerda para a direita. Amplitude baixa de propósito —
+   o que se move aqui confirma alguma coisa, não chama atenção para si. */
+
+@keyframes enter-up { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes enter-down { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+@keyframes enter-fade { from { opacity: 0; } to { opacity: 1; } }
+/* O fio parte do zero na ponta esquerda: e a mesma direcao da leitura. */
+@keyframes rule-in { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
 .site-header { position: sticky; z-index: 30; top: 0; background: var(--surface); border-bottom: 1px solid var(--line); }
 .header-bar { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; height: 84px; padding: 0 clamp(24px, 5vw, 72px); }
 /* O workshop nao tem marca propria: o nome e a marca e carrega o peso sozinho. */
 .brand { display: grid; width: max-content; line-height: 1; }
 .brand strong { font-size: 17px; font-weight: 800; letter-spacing: -.015em; }
 .brand small { margin-top: 7px; color: var(--muted); font-size: var(--t-label); font-weight: 700; letter-spacing: .09em; text-transform: uppercase; }
+
+/* O mesmo fio de duas cores que abre o olho do hero — verde claro com o
+   verde escuro por baixo — posto à esquerda do nome e na horizontal, medindo
+   a altura das duas linhas do logotipo. Vale só no cabeçalho: o rodapé repete
+   o nome, não a abertura, e um segundo fio ali seria enfeite.
+   As três células são declaradas: com posicionamento automático o ::before
+   tomaria a primeira célula e empurraria BRAZIL WORKSHOP para debaixo dele. */
+.site-header .brand { grid-template-columns: auto auto; column-gap: 13px; }
+.site-header .brand::before {
+  content: '';
+  grid-area: 1 / 1 / 3 / 2;
+  align-self: center;
+  width: 26px;
+  height: 2px;
+  background: var(--accent);
+  box-shadow: 0 1px 0 var(--forest);
+  transform-origin: left center;
+  animation: rule-in var(--m-enter) var(--m-ease) both;
+}
+.site-header .brand strong { grid-area: 1 / 2; }
+.site-header .brand small { grid-area: 2 / 2; }
+
 .site-nav { display: flex; gap: 30px; font-size: var(--t-body); font-weight: 700; }
-.site-nav a { padding: 9px 0; border-bottom: 1px solid transparent; white-space: nowrap; }
-.site-nav a:hover { border-color: var(--forest); }
+/* O sublinhado cresce da esquerda em vez de aparecer inteiro. E um ::after, e
+   nao a borda de antes, porque uma borda nao tem o que animar: ela so troca
+   de cor. A pagina atual entra com ele ja desenhado. */
+.site-nav a { position: relative; padding: 9px 0; white-space: nowrap; transition: color var(--m-quick) var(--m-ease); }
+.site-nav a::after { content: ''; position: absolute; right: 0; bottom: 0; left: 0; height: 1px; background: var(--forest); transform: scaleX(0); transform-origin: left center; transition: transform var(--m-move) var(--m-ease); }
+.site-nav a:hover { color: var(--forest); }
+.site-nav a:hover::after { transform: scaleX(1); }
 /* A página atual fica marcada, não só disponível. */
-.site-nav a[aria-current='page'] { color: var(--forest); border-bottom-width: 2px; border-color: var(--forest); }
-.header-date { justify-self: end; font-size: var(--t-body); font-weight: 800; }
+.site-nav a[aria-current='page'] { color: var(--forest); }
+.site-nav a[aria-current='page']::after { height: 2px; transform: scaleX(1); }
+.header-date { justify-self: end; font-size: var(--t-body); font-weight: 800; transition: color var(--m-quick) var(--m-ease); }
+.header-date:hover { color: var(--forest); }
 .header-date span { margin-left: 4px; color: var(--muted); }
 
 .institutional-hero { max-width: var(--wide); margin: 0 auto; padding: 0 var(--gutter); background: var(--paper); }
@@ -98,7 +149,7 @@ button { color: inherit; font: inherit; }
 .event-summary { display: flex; flex-direction: column; justify-content: center; min-width: 0; padding: clamp(70px, 7vw, 106px) clamp(34px, 5vw, 78px); }
 .event-label, .section-title > p, .section-title > div > p { margin: 0 0 23px; color: var(--forest); font-size: var(--t-label); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .event-label { display: flex; align-items: center; gap: 12px; margin-bottom: 30px; }
-.event-label::before { content: ''; flex: 0 0 34px; height: 2px; background: var(--accent); box-shadow: 0 1px 0 var(--forest); }
+.event-label::before { content: ''; flex: 0 0 34px; height: 2px; background: var(--accent); box-shadow: 0 1px 0 var(--forest); transform-origin: left center; animation: rule-in var(--m-enter) var(--m-ease) both; }
 .event-summary h1 { display: grid; margin: 0; font-family: var(--font-serif), Georgia, serif; font-size: clamp(62px, 6.2vw, 98px); font-weight: 600; line-height: .8; letter-spacing: -.05em; }
 .event-summary h1 span:last-child { margin-top: 18px; font-size: .62em; letter-spacing: -.035em; }
 .event-objective { max-width: 58ch; margin: 36px 0 0; color: var(--text); font-size: clamp(16px, 1.25vw, 18px); line-height: 1.65; }
@@ -106,25 +157,40 @@ button { color: inherit; font: inherit; }
 .hero-meta span { display: flex; align-items: center; gap: 8px; }
 .hero-meta svg { width: 16px; height: 16px; color: var(--forest); }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 32px; }
-.hero-actions a { display: inline-flex; align-items: center; justify-content: space-between; gap: 26px; min-width: 190px; padding: 14px 16px; color: #fff; background: var(--forest); border: 1px solid var(--forest); border-radius: var(--radius); font-size: var(--t-label); font-weight: 800; letter-spacing: .06em; transition: color .16s ease, background .16s ease, transform .16s ease; }
+.hero-actions a { display: inline-flex; align-items: center; justify-content: space-between; gap: 26px; min-width: 190px; padding: 14px 16px; color: #fff; background: var(--forest); border: 1px solid var(--forest); border-radius: var(--radius); font-size: var(--t-label); font-weight: 800; letter-spacing: .06em; transition: color var(--m-quick) var(--m-ease), background var(--m-quick) var(--m-ease), transform var(--m-quick) var(--m-ease); }
 .hero-actions a:hover { color: var(--forest-dark); background: var(--accent); transform: translateY(-2px); }
 .hero-actions svg { width: 15px; height: 15px; }
+
+/* A abertura da home, uma vez só, no carregamento. O texto assenta na ordem
+   em que se lê — olho, nome, objetivo, fatos, ação — em dez pixels e menos de
+   um segundo no total: o suficiente para a página parecer se compor, e pouco
+   demais para virar espera. A fotografia não entra na sequência: ela é o LCP,
+   e atrasá-la por gosto seria pagar desempenho por enfeite. */
+.event-label { animation: enter-up var(--m-enter) var(--m-ease) both; }
+.event-summary h1 span:first-child { animation: enter-up var(--m-enter) var(--m-ease) .07s both; }
+.event-summary h1 span:last-child { animation: enter-up var(--m-enter) var(--m-ease) .13s both; }
+.event-objective { animation: enter-up var(--m-enter) var(--m-ease) .21s both; }
+.hero-meta { animation: enter-up var(--m-enter) var(--m-ease) .27s both; }
+.hero-actions { animation: enter-up var(--m-enter) var(--m-ease) .33s both; }
 
 .event-visual { position: relative; min-width: 0; margin: 0; overflow: hidden; border-left: 1px solid var(--line); }
 .event-visual img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
 /* O que está acontecendo agora. Só existe durante a semana do workshop. */
-.now-band { display: grid; grid-template-columns: minmax(150px, .7fr) minmax(0, 4.3fr); align-items: center; gap: 24px; max-width: var(--wide); margin: 0 auto; padding: 20px var(--gutter); color: #fff; background: var(--forest-dark); border-top: 4px solid var(--accent); }
+/* A faixa nao esta no HTML gerado: o relogio so chega depois da hidratacao, e
+   ela aparece com a pagina ja desenhada. Descer oito pixels diz que ela chegou
+   agora, em vez de ter piscado no lugar sem explicacao. */
+.now-band { display: grid; grid-template-columns: minmax(150px, .7fr) minmax(0, 4.3fr); align-items: center; gap: 24px; max-width: var(--wide); margin: 0 auto; padding: 20px var(--gutter); color: #fff; background: var(--forest-dark); border-top: 4px solid var(--accent); animation: enter-down var(--m-enter) var(--m-ease) both; }
 .now-band-day { margin: 0; color: var(--accent); font-size: var(--t-label); font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
 .now-band-item { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px; margin: 0; font-size: 16px; }
 .now-band-time { color: rgba(255,255,255,.72); font-variant-numeric: tabular-nums; }
-.now-band-item a { font-weight: 700; border-bottom: 1px solid rgba(255,255,255,.38); }
+.now-band-item a { font-weight: 700; border-bottom: 1px solid rgba(255,255,255,.38); transition: border-color var(--m-quick) var(--m-ease); }
 .now-band-item a:hover { border-color: var(--accent); }
 .now-band .tl-mark { margin-left: 0; color: var(--forest-dark); background: var(--accent); }
 .now-band .tl-mark--next { color: #fff; background: transparent; box-shadow: inset 0 0 0 1px var(--accent); }
 
 .information-nav { display: grid; grid-template-columns: repeat(3, 1fr); max-width: var(--wide); margin: 0 auto; padding: 0 var(--gutter); background: var(--paper); }
-.information-nav a { display: grid; grid-template-columns: 34px 1fr 18px; align-items: start; gap: 15px; min-height: 150px; padding: 27px 24px; background: var(--surface); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.information-nav a { display: grid; grid-template-columns: 34px 1fr 18px; align-items: start; gap: 15px; min-height: 150px; padding: 27px 24px; background: var(--surface); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); transition: background var(--m-quick) var(--m-ease); }
 .information-nav a:first-child { border-left: 1px solid var(--line); }
 .information-nav > a > span { padding-top: 3px; color: var(--forest); font-size: var(--t-label); font-weight: 800; font-variant-numeric: tabular-nums; }
 .information-nav div { display: grid; }
@@ -132,7 +198,7 @@ button { color: inherit; font: inherit; }
 .information-nav small { max-width: 34ch; margin-top: 10px; color: var(--muted); font-size: var(--t-meta-lg); line-height: 1.4; }
 .information-nav em { margin-top: 15px; color: var(--warning); font-size: var(--t-label); font-style: normal; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
 .information-nav a[data-status='neutral'] em { color: var(--forest); }
-.information-nav svg { align-self: center; width: 16px; height: 16px; color: var(--muted); transition: color .16s ease, transform .16s ease; }
+.information-nav svg { align-self: center; width: 16px; height: 16px; color: var(--muted); transition: color var(--m-quick) var(--m-ease), transform var(--m-quick) var(--m-ease); }
 .information-nav a:hover { background: #f7f9f3; }
 .information-nav a:hover svg { color: var(--forest); transform: translateX(3px); }
 
@@ -164,7 +230,7 @@ button { color: inherit; font: inherit; }
 .institution-group:last-child { padding-right: 0; }
 .institution-group h3 { margin: 0 0 22px; color: var(--muted); font-size: var(--t-label); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .institution-list { display: flex; flex-wrap: wrap; align-items: center; gap: 28px 36px; }
-.institution-mark { display: flex; align-items: center; max-width: 100%; transition: opacity .18s ease; }
+.institution-mark { display: flex; align-items: center; max-width: 100%; transition: opacity var(--m-quick) var(--m-ease); }
 .institution-mark:hover { opacity: .55; }
 /* --mark-h vem da pagina: cada marca e desenhada na mesma area optica, e a
    largura sai da proporcao propria do arquivo. */
@@ -180,9 +246,10 @@ button { color: inherit; font: inherit; }
 .programme-facts dd { margin: 8px 0 0; overflow-wrap: anywhere; font-size: var(--t-meta-lg); font-weight: 750; line-height: 1.4; }
 .programme-facts em { color: var(--forest); font-style: normal; }
 .day-tabs { display: grid; grid-template-columns: repeat(5, 1fr); border: 1px solid var(--line); }
-.day-tabs button { min-width: 0; padding: 23px clamp(15px, 2vw, 28px); text-align: left; background: transparent; border: 0; border-right: 1px solid var(--line); cursor: pointer; }
+.day-tabs button { min-width: 0; padding: 23px clamp(15px, 2vw, 28px); text-align: left; background: transparent; border: 0; border-right: 1px solid var(--line); cursor: pointer; transition: background var(--m-move) var(--m-ease), color var(--m-move) var(--m-ease); }
+.day-tabs button:hover:not([aria-selected='true']) { background: var(--surface-soft); }
 .day-tabs button:last-child { border-right: 0; }
-.day-tabs span, .day-tabs small { display: block; color: var(--muted); font-size: var(--t-label); font-style: normal; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+.day-tabs span, .day-tabs small { display: block; color: var(--muted); font-size: var(--t-label); font-style: normal; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; transition: color var(--m-move) var(--m-ease); }
 .day-tabs strong { display: block; margin: 13px 0 6px; font-family: var(--font-serif), Georgia, serif; font-size: clamp(20px, 2vw, 27px); font-weight: 600; }
 .day-tabs button[aria-selected='true'] { color: #fff; background: var(--forest); }
 .day-tabs button[aria-selected='true'] span, .day-tabs button[aria-selected='true'] small { color: var(--accent); }
@@ -191,7 +258,7 @@ button { color: inherit; font: inherit; }
    duas grades (era .62fr de 3) desloca o painel da aba em alguns pixels, e o
    desvio cresce com a largura da tela. O recuo do texto tambem acompanha o
    das abas, senao os dois "Day 1" nao caem na mesma vertical. */
-.agenda-panel { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 4fr); border: 1px solid var(--line); border-top: 0; }
+.agenda-panel { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 4fr); border: 1px solid var(--line); border-top: 0; animation: enter-fade var(--m-move) var(--m-ease) both; }
 .day-summary { padding: 38px clamp(15px, 2vw, 28px); background: var(--surface-soft); border-right: 1px solid var(--line); }
 .day-summary > span { color: var(--forest); font-size: var(--t-label); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .day-summary p { margin: 100px 0 8px; color: var(--muted); font-size: var(--t-meta); font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
@@ -213,7 +280,7 @@ button { color: inherit; font: inherit; }
 .resource-group > header h2 { margin: 5px 0 0; font-family: var(--font-serif), Georgia, serif; font-size: 27px; font-weight: 600; letter-spacing: -.02em; }
 .resource-group > header small { display: block; margin-top: 9px; color: var(--muted); font-size: var(--t-meta); }
 .resource-group > div { display: grid; gap: 0; border-top: 1px solid var(--line); }
-.resource-item { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; align-items: center; gap: 14px; min-height: 78px; padding: 15px 10px; background: transparent; border-bottom: 1px solid var(--line); }
+.resource-item { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; align-items: center; gap: 14px; min-height: 78px; padding: 15px 10px; background: transparent; border-bottom: 1px solid var(--line); transition: background var(--m-quick) var(--m-ease); }
 .resource-item:hover { background: rgba(255,255,255,.55); }
 .resource-item > svg { width: 19px; height: 19px; color: var(--forest); }
 .resource-item > span { display: grid; }
@@ -258,9 +325,10 @@ button { color: inherit; font: inherit; }
 .arrival-advice > svg { width: 20px; height: 20px; margin: 2px auto 0; color: var(--forest); }
 .arrival-advice p { margin: 0; color: var(--text); font-size: var(--t-meta-lg); line-height: 1.6; }
 .arrival-advice strong { display: block; margin-bottom: 2px; color: var(--ink); }
-.place-link { display: inline-flex; align-items: center; gap: 3px; color: var(--forest); font-weight: 750; text-decoration: underline; text-decoration-color: #9dac9f; text-underline-offset: 3px; }
+.place-link { display: inline-flex; align-items: center; gap: 3px; color: var(--forest); font-weight: 750; text-decoration: underline; text-decoration-color: #9dac9f; text-underline-offset: 3px; transition: text-decoration-color var(--m-quick) var(--m-ease); }
 .place-link:hover { text-decoration-color: var(--forest); }
-.place-link > svg { flex: none; width: 13px; height: 13px; }
+.place-link > svg { flex: none; width: 13px; height: 13px; transition: transform var(--m-quick) var(--m-ease); }
+.place-link:hover > svg { transform: translateX(2px); }
 .practical-card > .place-link { margin-top: 17px; font-size: var(--t-meta-lg); }
 .practical-lines, .practical-lines > span { display: inline; }
 .practical-lines i { color: var(--muted); font-style: normal; }
@@ -275,7 +343,8 @@ button { color: inherit; font: inherit; }
 .maps { background: var(--paper); border-top: 1px solid var(--line); }
 .maps-layout { display: grid; grid-template-columns: minmax(270px, .72fr) minmax(0, 1.28fr); min-height: 540px; border: 1px solid var(--line); }
 .location-selector { background: var(--surface); border-right: 1px solid var(--line); }
-.location-selector button { display: grid; grid-template-columns: 24px 1fr 16px; align-items: center; gap: 14px; width: 100%; min-height: 105px; padding: 20px 22px; text-align: left; background: transparent; border: 0; border-bottom: 1px solid var(--line); cursor: pointer; }
+.location-selector button { display: grid; grid-template-columns: 24px 1fr 16px; align-items: center; gap: 14px; width: 100%; min-height: 105px; padding: 20px 22px; text-align: left; background: transparent; border: 0; border-bottom: 1px solid var(--line); cursor: pointer; transition: background var(--m-move) var(--m-ease), color var(--m-move) var(--m-ease); }
+.location-selector button:hover:not([aria-selected='true']) { background: var(--surface-soft); }
 .location-selector button:last-child { border-bottom: 0; }
 .location-selector button[aria-selected='true'] { background: var(--forest); color: #fff; }
 .location-selector > button > svg:first-child { width: 18px; }
@@ -314,15 +383,18 @@ button { color: inherit; font: inherit; }
 .venue-facts dd { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 0; font-size: var(--t-meta-lg); line-height: 1.5; }
 .venue-facts em { color: var(--warning); font-style: normal; }
 .venue-coords { font-variant-numeric: tabular-nums; }
-.venue-facts button { display: inline-flex; align-items: center; gap: 6px; padding: 5px 9px; color: var(--forest); background: var(--surface-soft); border: 1px solid var(--line); border-radius: var(--radius); font-size: var(--t-label); font-weight: 800; letter-spacing: .04em; text-transform: uppercase; cursor: pointer; }
+.venue-facts button { display: inline-flex; align-items: center; gap: 6px; padding: 5px 9px; color: var(--forest); background: var(--surface-soft); border: 1px solid var(--line); border-radius: var(--radius); font-size: var(--t-label); font-weight: 800; letter-spacing: .04em; text-transform: uppercase; cursor: pointer; transition: background var(--m-quick) var(--m-ease), border-color var(--m-quick) var(--m-ease); }
+.venue-facts button:hover { background: var(--accent); border-color: var(--forest); }
 .venue-facts button svg { width: 12px; height: 12px; }
 
 .venue-pending { display: flex; gap: 9px; margin: 0; padding: 13px 14px; color: var(--warning); background: var(--warning-bg); font-size: var(--t-meta-lg); line-height: 1.5; }
 .venue-pending svg { flex: 0 0 auto; width: 14px; height: 14px; margin-top: 3px; }
 
 .venue-actions { display: flex; flex-wrap: wrap; gap: 10px; }
-.venue-actions a { display: inline-flex; align-items: center; gap: 9px; min-height: 42px; padding: 0 15px; border: 1px solid var(--line); border-radius: var(--radius); font-size: var(--t-label); font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
+.venue-actions a { display: inline-flex; align-items: center; gap: 9px; min-height: 42px; padding: 0 15px; border: 1px solid var(--line); border-radius: var(--radius); font-size: var(--t-label); font-weight: 800; letter-spacing: .05em; text-transform: uppercase; transition: color var(--m-quick) var(--m-ease), background var(--m-quick) var(--m-ease), border-color var(--m-quick) var(--m-ease); }
 .venue-actions a:first-child { color: #fff; background: var(--forest); border-color: var(--forest); }
+.venue-actions a:hover { border-color: var(--forest); }
+.venue-actions a:first-child:hover { color: var(--forest-dark); background: var(--accent); }
 .venue-actions a svg { width: 13px; height: 13px; }
 .venue-actions a svg:last-child { width: 11px; height: 11px; opacity: .55; }
 .venue-note { margin: 0; color: var(--muted); font-size: var(--t-meta); line-height: 1.6; }
@@ -338,11 +410,12 @@ button { color: inherit; font: inherit; }
 
 .recommendations { background: var(--surface); border-top: 1px solid var(--line); }
 .recommendation-list { border-top: 1px solid var(--line); }
-.recommendation-list > a { display: grid; grid-template-columns: 48px 24px minmax(0, 1fr) 20px; align-items: start; gap: 18px; padding: 28px 18px; border-bottom: 1px solid var(--line); transition: background .18s ease; }
+.recommendation-list > a { display: grid; grid-template-columns: 48px 24px minmax(0, 1fr) 20px; align-items: start; gap: 18px; padding: 28px 18px; border-bottom: 1px solid var(--line); transition: background var(--m-quick) var(--m-ease); }
 .recommendation-list > a:hover { background: var(--surface-soft); }
 .recommendation-list > a > span { color: var(--muted); font-size: var(--t-label); font-weight: 800; }
 .recommendation-list > a > svg { width: 18px; color: var(--forest); }
-.recommendation-list > a > svg:last-child { width: 14px; color: var(--muted); }
+.recommendation-list > a > svg:last-child { width: 14px; color: var(--muted); transition: color var(--m-quick) var(--m-ease), transform var(--m-quick) var(--m-ease); }
+.recommendation-list > a:hover > svg:last-child { color: var(--forest); transform: translate(2px, -2px); }
 .recommendation-list small { display: block; margin-bottom: 6px; color: var(--forest); font-size: var(--t-label); font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
 .recommendation-list h3 { margin: 0 0 10px; font-family: var(--font-serif), Georgia, serif; font-size: 25px; font-weight: 600; }
 .recommendation-list p { max-width: 780px; margin: 0; color: var(--text); font-size: var(--t-body); line-height: 1.7; }
@@ -354,7 +427,8 @@ footer { display: grid; grid-template-columns: 1fr 1.3fr 1fr; align-items: cente
 .footer-brand small { color: rgba(255,255,255,.55); }
 footer > p { margin: 0; color: rgba(255,255,255,.62); font-size: var(--t-meta-lg); line-height: 1.6; text-align: center; }
 footer > a:last-child { justify-self: end; display: inline-flex; align-items: center; gap: 8px; font-size: var(--t-label); font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
-footer > a:last-child svg { width: 14px; height: 14px; }
+footer > a:last-child svg { width: 14px; height: 14px; transition: transform var(--m-move) var(--m-ease); }
+footer > a:last-child:hover svg { transform: translateY(-3px); }
 
 @media (max-width: 1050px) {
   .overview-layout { grid-template-columns: 1fr; gap: 65px; }
@@ -565,6 +639,11 @@ footer > a:last-child svg { width: 14px; height: 14px; }
 
   body { background: #fff; font-size: 10pt; }
 
+  /* Nada anima no papel. Uma entrada com `both` que a impressao nao execute
+     congelaria no primeiro quadro, e o primeiro quadro e opacidade zero:
+     anular a propriedade devolve o estilo base, que ja e o estado final. */
+  *, *::before, *::after { animation: none !important; }
+
   /* Bandas tonalizadas gastam tinta e não informam nada no papel. */
   .overview, .materials, .practical, .maps, .agenda-section, footer,
   .practical-card, .location-selector, .fact-list, .objective-block,
@@ -653,6 +732,44 @@ footer > a:last-child svg { width: 14px; height: 14px; }
 .tl-evening-items p[data-state='next'] { padding-left: 10px; border-left: 3px solid var(--accent); margin-left: -13px; }
 
 /* Cada material aponta para a sessão que o produz. */
-.resource-session { font-size: var(--t-body); font-weight: 700; line-height: 1.4; text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
+.resource-session { font-size: var(--t-body); font-weight: 700; line-height: 1.4; text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; transition: text-decoration-color var(--m-quick) var(--m-ease); }
 .resource-session:hover { text-decoration-color: var(--forest); }
 .resource-file { padding: 5px 12px; color: #fff; background: var(--forest); border-radius: 99px; font-size: var(--t-label); font-weight: 800; letter-spacing: .05em; text-transform: uppercase; white-space: nowrap; }
+
+/* --- Entrada por rolagem ----------------------------------------------------
+   Sem JavaScript nenhum: `animation-timeline: view()` amarra o progresso da
+   animacao a posicao do elemento na tela. O @supports importa mais do que
+   parece — em um navegador sem a propriedade a regra inteira e descartada e a
+   pagina abre com tudo visivel, que e o estado correto e nao um remendo. Um
+   observador em JavaScript nao teria essa saida, e /materials/ e um componente
+   de servidor que nao manda script proprio: tem de continuar assim.
+
+   Fica de fora de prefers-reduced-motion de proposito. A regra global no topo
+   zera duracoes, e aqui duracao nao governa nada: quem move a animacao e a
+   rolagem. Sem este @media, quem pediu menos movimento receberia exatamente o
+   efeito que pediu para nao ver.
+
+   So entram blocos de altura modesta. A fase `entry` dura a altura do proprio
+   elemento, entao em um bloco mais alto que a tela — um dia de materiais, um
+   cartao da pagina pratica — a leitura comecaria antes de a opacidade fechar. */
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .section-title,
+    .information-nav > a,
+    .objective-block,
+    .fact-list,
+    .institution-group,
+    .recommendation-list > a {
+      animation: enter-up var(--m-enter) var(--m-ease) both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 38%;
+    }
+
+    /* Os tres destinos assentam na ordem em que sao lidos. O atraso e escrito
+       em fracao de percurso, nao em segundos: num timeline de rolagem quem
+       corre e a tela, e animation-delay nao tem a que se referir. */
+    .information-nav > a:nth-child(2) { animation-range: entry 6% entry 44%; }
+    .information-nav > a:nth-child(3) { animation-range: entry 12% entry 50%; }
+  }
+}
