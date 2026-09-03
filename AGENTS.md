@@ -292,6 +292,24 @@ inline sides. Writing `0` silently left-aligns that one band while everything
 around it stays centred, which is invisible until the viewport is wider than
 `--rail`.
 
+**The first band on a page takes less padding above it.** `.section-pad`'s
+`clamp(90px, 10vw, 145px)` is the distance between two bands, and mid-page
+there are two things to hold apart. At the top of a page there are not: the
+header has just closed with its own rule. Measured on a 1680px monitor, the
+inner pages opened with 146px of blank between the header and the word
+`Programme` — that is not breathing room, it is a wait before the page says
+what it is. `main > .section-pad:first-child` takes `clamp(46px, 5.2vw, 88px)`
+instead.
+
+Two things about that rule are load-bearing. It is keyed on
+`:first-child` of `main`, so it reaches `/programme/`, `/materials/` and
+`/practical/`, which open straight into a band, and not the home page, which
+opens with the hero — the hero's whitespace is inside a drawn frame and reads
+as composition rather than as a gap, which is why the home never felt empty.
+And it sits inside `@media screen`: the selector outranks the `.section-pad`
+in the print block, so without that fence it would win on paper too and swap
+the printed `14pt` for screen pixels.
+
 ### The home page
 
 The home page carries three bands before the overview, in this order, and the

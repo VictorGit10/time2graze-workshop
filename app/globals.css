@@ -204,6 +204,24 @@ button { color: inherit; font: inherit; }
 
 .section-pad { padding: clamp(90px, 10vw, 145px) var(--gutter); }
 .section-pad > * { width: min(100%, var(--rail)); margin-right: auto; margin-left: auto; }
+
+/* A calha de cima da primeira faixa e menor, e nao por economia de espaco: o
+   valor de .section-pad separa duas faixas no meio da pagina, onde ha de fato
+   duas coisas para separar. No alto nao ha — o cabecalho ja fechou com o seu
+   fio e a pagina acabou de comecar —, e os mesmos 145px deixam de ser respiro
+   e viram espera antes de a pagina dizer o que e. Em 1680px eram 146px de
+   branco entre o cabecalho e a palavra "Programme".
+
+   Vale so para /programme/, /materials/ e /practical/, que abrem direto numa
+   .section-pad. A home nao entra: ela abre pelo hero, cujo respiro e interno a
+   um quadro desenhado, e por isso nunca pareceu vazia.
+
+   Dentro de @media screen de proposito. O seletor e mais especifico que o
+   .section-pad do bloco de impressao, entao sem esta cerca ele venceria la
+   tambem e trocaria os 14pt do papel por pixels de tela. */
+@media screen {
+  main > .section-pad:first-child { padding-top: clamp(46px, 5.2vw, 88px); }
+}
 .section-title { margin-bottom: clamp(52px, 6vw, 80px); }
 /* O título de abertura de cada página interna é um h1; as seções da home, h2. */
 .section-title h1, .section-title h2 { margin: 0; font-family: var(--font-serif), Georgia, serif; font-size: clamp(43px, 5.2vw, 70px); font-weight: 600; line-height: .95; letter-spacing: -.04em; }
