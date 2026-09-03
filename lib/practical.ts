@@ -13,7 +13,7 @@ import { sessionTitle, shortDate, timeLabel } from './schedule';
  */
 
 /** One row of the list: the days it covers, and what happens on each of them. */
-export type PracticalLine = { label: string; venueId?: VenueId };
+export type PracticalLine = { label: string; venueId: VenueId | null };
 export type DayLines = { day: string; lines: PracticalLine[] };
 
 const MEAL_KINDS = new Set<SessionKind>(['meal', 'social']);

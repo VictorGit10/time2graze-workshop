@@ -4,8 +4,8 @@ import type { Day, Session, Track } from '@/data/types';
 import { VENUES } from '@/data/venues';
 import { type Clock, nextSessionId, stateOf } from '@/lib/now';
 import {
-  axisBounds, axisTicks, dayLabel, durationOf, fromMinutes, isEvening, sessionTitle,
-  timeLabel, toMinutes,
+  axisBounds, axisTicks, dayLabel, durationOf, fromMinutes, isEvening, timeLabel,
+  toMinutes,
 } from '@/lib/schedule';
 
 type SessionMark = 'running' | 'next' | null;
@@ -38,7 +38,34 @@ function venueOf(session: Session) {
 
 function speakerOf(item: Session | Track) {
   if (!item.speakers) return null;
-  return item.speakers.map((s) => (s.org ? `${s.name}/${s.org}` : s.name)).join(' and ');
+  return item.speakers
+    .map((s) => (s.org ? `${s.name} · ${s.org}` : s.name))
+    .join('; ');
+}
+
+function PresenterLine(
+  { item, compact = false }: { item: Session | Track; compact?: boolean },
+) {
+  const presenter = speakerOf(item);
+  if (!presenter) return null;
+
+  return (
+    <p className="tl-who">
+      <span className="tl-meta-label">{compact ? 'By' : 'Presenter / institution'}</span>
+      <span>{presenter}</span>
+    </p>
+  );
+}
+
+function VenueLine({ session }: { session: Session }) {
+  const venue = venueOf(session);
+
+  return (
+    <span className="tl-where" data-pending={venue ? undefined : true}>
+      <span className="tl-meta-label">Venue</span>
+      <span>{venue ?? 'Pending confirmation'}</span>
+    </span>
+  );
 }
 
 /** One activity inside a split session. */
@@ -46,7 +73,7 @@ function TrackCard({ track }: { track: Track }) {
   return (
     <div className="tl-track">
       <p className="tl-track-title">{track.title}</p>
-      {speakerOf(track) && <p className="tl-who">{speakerOf(track)}</p>}
+      <PresenterLine item={track} />
     </div>
   );
 }
@@ -58,11 +85,9 @@ function TrackCard({ track }: { track: Track }) {
 function Block(
   { session, from, state }: { session: Session; from: number; state: SessionMark },
 ) {
-  const venue = venueOf(session);
-  const who = speakerOf(session);
   /* Under 45 minutes there is no room to stack time, title and venue, so the
      block lays them out on one row instead of clipping them. */
-  const compact = (durationOf(session) ?? 0) < 45;
+  const compact = (durationOf(session) ?? 0) <= 45;
 
   return (
     <article
@@ -92,17 +117,21 @@ function Block(
               {session.title}
               <Mark state={state} />
             </h4>
-            {who && <p className="tl-who">{who}</p>}
+            <PresenterLine item={session} compact={compact} />
           </>
         )}
 
-        {(venue || session.status === 'tbd' || session.endStatus === 'provisional') && (
-          <p className="tl-block-meta">
-            {venue && <span className="tl-where">{venue}</span>}
-            {session.status === 'tbd' && <em className="tl-tbd">To be confirmed</em>}
-            {session.endStatus === 'provisional' && <em className="tl-estimated">End time to confirm</em>}
-          </p>
-        )}
+        <p className="tl-block-meta">
+          <VenueLine session={session} />
+          {session.venueNote && (
+            <span className="tl-note">
+              <span className="tl-meta-label">Note</span>
+              <span>{session.venueNote}</span>
+            </span>
+          )}
+          {session.status === 'tbd' && <em className="tl-tbd">To be confirmed</em>}
+          {session.endStatus === 'provisional' && <em className="tl-estimated">End time to confirm</em>}
+        </p>
       </div>
     </article>
   );
@@ -115,7 +144,7 @@ function Block(
 function Point(
   { session, from, state }: { session: Session; from: number; state: SessionMark },
 ) {
-  const venue = venueOf(session);
+  const presenter = speakerOf(session);
 
   return (
     <div
@@ -127,11 +156,21 @@ function Point(
     >
       <span className="tl-dot" aria-hidden="true" />
       <p className="tl-time">{session.start}</p>
-      <p className="tl-point-title">
-        {session.title}
-        {venue && <span className="tl-where"> · {venue}</span>}
-        <Mark state={state} />
-      </p>
+      <div className="tl-point-copy">
+        <p className="tl-point-title">
+          {session.title}
+          <Mark state={state} />
+        </p>
+        <p className="tl-point-meta">
+          {presenter && (
+            <span className="tl-who">
+              <span className="tl-meta-label">Presenter / institution</span>
+              <span>{presenter}</span>
+            </span>
+          )}
+          <VenueLine session={session} />
+        </p>
+      </div>
     </div>
   );
 }
@@ -204,9 +243,6 @@ function List(
   return (
     <ol className="session-list">
       {sessions.map((session) => {
-        const venue = venueOf(session);
-        const who = speakerOf(session);
-
         return (
           <li className="session" key={session.id} data-session={anchors ? session.id : undefined}>
             <p className="session-time">
@@ -222,7 +258,7 @@ function List(
                     {session.tracks.map((t) => (
                       <li key={t.id}>
                         <strong>{t.title}</strong>
-                        {speakerOf(t) && <span className="tl-who">{speakerOf(t)}</span>}
+                        <PresenterLine item={t} />
                       </li>
                     ))}
                   </ul>
@@ -230,12 +266,18 @@ function List(
               ) : (
                 <>
                   <h4>{session.title}</h4>
-                  {who && <p className="tl-who">{who}</p>}
+                  <PresenterLine item={session} />
                 </>
               )}
 
               <p className="session-meta">
-                {venue && <span className="tl-where">{venue}</span>}
+                <VenueLine session={session} />
+                {session.venueNote && (
+                  <span className="tl-note">
+                    <span className="tl-meta-label">Note</span>
+                    <span>{session.venueNote}</span>
+                  </span>
+                )}
                 {session.status === 'tbd' && <em className="tl-tbd">To be confirmed</em>}
                 {session.endStatus === 'provisional' && <em className="tl-estimated">End time to confirm</em>}
                 <Mark state={marks?.(session) ?? null} />
@@ -263,12 +305,33 @@ export function Programme({ day, clock }: { day: Day; clock: Clock | null }) {
           <h4 className="tl-evening-title">Evening</h4>
           <div className="tl-evening-items">
             {evening.map((s) => (
-              <p key={s.id} data-session={s.id} data-state={marks(s) ?? undefined}>
-                <span className="tl-time">{timeLabel(s)}</span>
-                {sessionTitle(s)}
-                {s.endStatus === 'provisional' && <em className="tl-estimated">End time to confirm</em>}
-                <Mark state={marks(s)} />
-              </p>
+              <article
+                className="tl-evening-card"
+                key={s.id}
+                data-session={s.id}
+                data-kind={s.kind}
+                data-state={marks(s) ?? undefined}
+              >
+                <p className="tl-time">{timeLabel(s)}</p>
+                <div className="tl-evening-body">
+                  <h4 className="tl-title">
+                    {s.title}
+                    <Mark state={marks(s)} />
+                  </h4>
+                  <PresenterLine item={s} />
+                  <p className="tl-block-meta">
+                    <VenueLine session={s} />
+                    {s.venueNote && (
+                      <span className="tl-note">
+                        <span className="tl-meta-label">Note</span>
+                        <span>{s.venueNote}</span>
+                      </span>
+                    )}
+                    {s.status === 'tbd' && <em className="tl-tbd">To be confirmed</em>}
+                    {s.endStatus === 'provisional' && <em className="tl-estimated">End time to confirm</em>}
+                  </p>
+                </div>
+              </article>
             ))}
           </div>
         </section>

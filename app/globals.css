@@ -657,8 +657,10 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
 .tl-block-body { min-width: 0; }
 .tl-block-meta { display: flex; flex-wrap: wrap; gap: 9px; align-items: center; margin: 4px 0 0; }
 .tl-title { margin: 0; font-size: var(--t-meta-lg); font-weight: 700; line-height: 1.3; }
-.tl-who { margin: 2px 0 0; color: var(--muted); font-size: var(--t-meta); }
-.tl-where { color: var(--muted); font-size: var(--t-meta); }
+.tl-who, .tl-where, .tl-note { display: inline-flex; flex-wrap: wrap; gap: 4px 7px; align-items: baseline; color: var(--muted); font-size: var(--t-meta); }
+.tl-who { margin: 3px 0 0; }
+.tl-meta-label { color: var(--forest); font-size: var(--t-label); font-weight: 800; letter-spacing: .045em; text-transform: uppercase; }
+.tl-where[data-pending] > span:last-child { color: var(--warning); font-style: italic; }
 
 /* Refeições, cafés e deslocamentos ocupam o mesmo tempo, com menos peso. */
 .tl-block[data-kind='meal'], .tl-block[data-kind='break'], .tl-block[data-kind='transport'], .tl-block[data-kind='social'] { border-left-color: var(--line); background: var(--surface-soft); }
@@ -685,20 +687,24 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
 .tl-point .tl-time { margin: 0; color: var(--muted); font-size: var(--t-label); font-weight: 700; font-variant-numeric: tabular-nums; }
 /* Título de sessão é texto funcional: 14px, não 13. */
 .tl-point-title { margin: 0; font-size: var(--t-meta-lg); font-weight: 700; line-height: 1.3; }
-.tl-point-title .tl-where { font-weight: 400; }
+.tl-point-copy { min-width: 0; }
+.tl-point-meta { display: flex; flex-wrap: wrap; gap: 5px 14px; margin: 3px 0 0; }
 
-.tl-evening { display: grid; grid-template-columns: 62px 1fr; gap: 18px; margin-top: 26px; padding-top: 20px; border-top: 1px solid var(--ink); }
-.tl-evening-title { margin: 0; color: var(--muted); font-size: var(--t-label); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
-.tl-evening-items { display: grid; gap: 8px; }
-.tl-evening-items p { display: flex; gap: 14px; margin: 0; font-size: var(--t-meta-lg); }
-.tl-evening-items .tl-time { flex: none; min-width: 96px; color: var(--muted); font-weight: 700; font-variant-numeric: tabular-nums; }
+/* O período noturno continua fora da escala vertical, mas usa o mesmo cartão,
+   colunas e hierarquia de dados dos blocos acima. */
+.tl-evening { display: grid; grid-template-columns: 62px 1fr; gap: 18px; margin-top: 30px; padding-top: 18px; border-top: 1px solid var(--line); }
+.tl-evening-title { margin: 13px 0 0; color: var(--forest); font-size: var(--t-label); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.tl-evening-items { display: grid; gap: 10px; }
+.tl-evening-card { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 14px; align-items: start; padding: 13px 14px; background: var(--surface-soft); border: 1px solid var(--line); border-left: 3px solid var(--line); border-radius: var(--radius); }
+.tl-evening-card .tl-time { margin: 1px 0 0; color: var(--muted); font-size: var(--t-label); font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.35; }
+.tl-evening-body { min-width: 0; }
 
 /* A lista. No desktop sai de vista sem sair da árvore de acessibilidade. */
-@media (min-width: 1000px) {
+@media (min-width: 1280px) {
   .programme > .session-list { position: absolute; overflow: hidden; clip-path: inset(50%); width: 1px; height: 1px; white-space: nowrap; }
 }
 
-@media (max-width: 999px) {
+@media (max-width: 1279px) {
   .timeline, .tl-evening { display: none; }
 }
 
@@ -711,8 +717,7 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
 .session-tracks { display: grid; gap: 7px; margin: 0; padding: 0; list-style: none; }
 .session-tracks li { padding-left: 12px; border-left: 2px solid var(--line); }
 .session-tracks strong { display: block; font-size: var(--t-meta-lg); }
-.session-meta { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 5px 0 0; }
-.session-meta:empty { display: none; }
+.session-meta { display: flex; flex-wrap: wrap; gap: 7px 14px; align-items: center; margin: 7px 0 0; }
 
 @media (max-width: 620px) {
   .session-list .session { grid-template-columns: 1fr; gap: 6px; }
@@ -723,6 +728,7 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
 .tl-block[data-compact] .tl-block-body { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; }
 .tl-block[data-compact] .tl-title { font-size: var(--t-meta); }
 .tl-block[data-compact] .tl-block-meta { margin: 0; }
+.tl-block[data-compact] .tl-who { margin: 0; }
 
 /* Os títulos de sessão são dado funcional, não display: Manrope nas duas
    representações. A serifada fica para os títulos de seção e os nomes dos dias. */
@@ -829,8 +835,8 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
 
 /* O bloco noturno fica fora do eixo, então a sessão em curso ali precisa de
    um destaque próprio: a linha do agora não chega até ele. */
-.tl-evening-items p[data-state='running'] { padding-left: 10px; border-left: 3px solid var(--forest); margin-left: -13px; }
-.tl-evening-items p[data-state='next'] { padding-left: 10px; border-left: 3px solid var(--accent); margin-left: -13px; }
+.tl-evening-card[data-state='running'] { border-color: var(--forest); border-left-width: 5px; box-shadow: 0 0 0 1px var(--forest); }
+.tl-evening-card[data-state='next'] { border-left-color: var(--accent); border-left-width: 5px; }
 
 /* Cada material aponta para a sessão que o produz. */
 .resource-session { font-size: var(--t-body); font-weight: 700; line-height: 1.4; text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; transition: text-decoration-color var(--m-quick) var(--m-ease); }

@@ -201,8 +201,8 @@ Decisions that came out of building it, and that are easy to break:
 - **The time sits in a column inside each block, not stacked above the title.**
   Stacking costs about 20px of height, which a 45-minute block at 76px/hour
   does not have — that alone clipped 11 of the blocks.
-- **Blocks under 45 minutes lay out on one row** (`data-compact`), because
-  three stacked lines do not fit in 38px.
+- **Blocks of 45 minutes or less lay out on one row** (`data-compact`), because
+  the labelled presenter and venue fields do not fit as three stacked lines.
 - **Session titles are Manrope in both representations.** They are functional
   data, and Cormorant Garamond loses legibility at 13–14px in a narrow block.
   The serif stays for section titles and day names.
@@ -428,7 +428,7 @@ type WorkshopSession = {
   endStatus?: 'provisional';   // visibly provisional; never drives Now or .ics
   title: string;
   speakers?: Speaker[];
-  venueId?: string;            // into the single venue registry
+  venueId: string | null;      // registry id; null means visibly pending
   kind: 'technical' | 'meal' | 'break' | 'transport' | 'field' | 'social';
   tracks?: ParallelTrack[];    // parallel activities modelled explicitly
   materials?: Material[];
@@ -443,8 +443,10 @@ type WorkshopSession = {
 - Parallel activities are two entries sharing an interval — never one combined
   title. Day 1 at 10:00 is currently a single string holding two courses; that
   is a modelling error to fix, not a formatting choice.
-- Unknown fields stay absent or `tbd`. The only exception is the 20 explicitly
-  authorised provisional end times, all carrying `endStatus: 'provisional'`.
+- Unknown fields stay absent or `tbd`. Venue is the explicit exception: every
+  session carries `venueId`, with `null` rendered as “Pending confirmation”.
+  The other exception is the 20 explicitly authorised provisional end times,
+  all carrying `endStatus: 'provisional'`.
 - **Materials is an aggregated view of files attached to sessions**, not a
   second list maintained by hand. `lib/materials.ts` reads the agenda; there is
   nothing to keep in step.

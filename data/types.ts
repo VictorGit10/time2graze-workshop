@@ -56,7 +56,8 @@ export type Session = {
   endStatus?: 'provisional';
   title: string;
   speakers?: Speaker[];
-  venueId?: VenueId;
+  /** Explicit for every item. `null` means the venue is still pending confirmation. */
+  venueId: VenueId | null;
   /** Parenthetical after the venue, e.g. "Pizza" in "Welcome Dinner @ LAPIG (Pizza)". */
   venueNote?: string;
   kind: SessionKind;
