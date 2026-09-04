@@ -206,6 +206,6 @@ export function icsCalendar(
   return `${rows.join(CRLF)}${CRLF}`;
 }
 
-export function googleCalendarUrl(icsUrl: string) {
-  return `https://calendar.google.com/calendar/r?cid=${encodeURIComponent(icsUrl)}`;
+export function webcalUrl(icsUrl: string) {
+  return icsUrl.replace(/^https?:\/\//, 'webcal://');
 }
