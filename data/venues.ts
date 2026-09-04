@@ -121,6 +121,11 @@ export const VENUES = {
     coords: { lat: -16.6904676, lon: -49.2552251 },
     /** Which house hosts the reception is an open question — no ride link. */
     pending: 'The restaurant unit, address and pin for the closing reception are awaiting confirmation. The map pin is shown for reference only.',
+    photo: {
+      src: '/images/venues/favo-de-mel.webp',
+      alt: 'Entrance to Churrascaria Favo de Mel at night',
+      credit: 'Photo supplied by the workshop organiser',
+    },
     onMap: true,
   },
   cidadeDeGoias: {

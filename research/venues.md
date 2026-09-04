@@ -210,6 +210,7 @@ place.
 | Home hero | `BHRV_2013_2_VANT.jpg`, published in *Radiografia das Pastagens do Brasil* | LAPIG-owned photograph. The site owner confirmed on 3 September 2026 that visible attribution is not required. The local WebP is a crop of the source photograph. |
 | Social preview | `BHRV_2013_2_VANT.jpg`, via the home hero crop | Editorial treatment of the same cleared LAPIG-owned photograph, carrying only the confirmed event name, date and location. The published PNG is optimised for reliable messaging-app previews. |
 | LAPIG venue | `lapig_sede.png`, published in *Nos seus 30 anos, Lapig é referência nacional na área de geotecnologias* | Photo: LAPIG, via Jornal UFG. The photograph shows the current LAPIG façade and sign. |
+| Churrascaria Favo de Mel | Image supplied directly for the site on 3 September 2026 | The site owner explicitly requested its publication. The local WebP is an optimised copy; the visible credit records that it was supplied by the workshop organiser. |
 | Cidade de Goiás | `Rua do Conjunto Arquitetônico da Cidade de Goiás, Goiás, Brasil.jpg` | Adelano Lázaro, CC BY-SA 4.0, via Wikimedia Commons. The local WebP is a resized derivative distributed under the same licence. It represents the historic centre, not either Day 5 farm. |
 
 Sources:
@@ -334,8 +335,8 @@ Blocking, and not answerable by guessing:
 9. Resolve the Centro de Eventos address conflict and confirm its visitor pin;
    the official site already supplies the phone.
 10. Which Favo de Mel address hosts the closing reception on 17 September.
-11. May the workshop publish photographs of Centro de Eventos and Favo de Mel,
-    and with which credit lines?
+11. May the workshop publish a photograph of Centro de Eventos, and with which
+    credit line?
 12. Do participants walk from LAPIG to Centro de Eventos for lunch, or are they
     driven?
 13. Addresses for FUNAPE and the T2G Biomass Experimental Area, so
