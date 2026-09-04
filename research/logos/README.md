@@ -51,22 +51,13 @@ already filled their canvas and were left alone.
 band is white for that reason; moving it onto the cream paper would show the
 mark's plate.
 
-## Roles currently shown
+## Marks currently shown
 
-The home page groups marks by role instead of presenting an undifferentiated
-logo wall. Global Methane Hub's public Time2Graze announcement identifies the
-funder and the organisations leading the remote-sensing data system and the
-three regional decision-support tools. LAPIG and UFG are identified in the
-event brief as workshop hosts.
-
-**Land & Carbon Lab is shown alongside WRI in "Data and decision-support
-leads", on the client's instruction (2 September 2026).** The announcement
-above names WRI, not Land & Carbon Lab, so this placement is not sourced from
-it; Land & Carbon Lab is a WRI initiative and the consortium's parent brand.
-The LAPIG team still has to confirm the role, as it does for the rest of the
-matrix.
-
-Source: https://www.globalmethanehub.org/2025/09/10/the-global-methane-hub-launches-international-project-to-develop-satellite-guided-grazing-to-cut-livestock-emissions/
+The home page displays only Land & Carbon Lab, UFG and LAPIG, following the
+client's instruction on 4 September 2026. They appear in one neutral
+institutional row, without unconfirmed public-role labels. Every other asset in
+the candidate set remains unpublished until the relevant institution approves
+its use and the Time2Graze/LAPIG team confirms its inclusion.
 
 ## Previous GPW workshop references
 
@@ -96,7 +87,5 @@ logo use.
   asset if it is confirmed as a displayed partner.
 - INTA, UNMdP, IIASA, GLAD and Cornell: confirm whether these are partners for
   this event rather than institutions mentioned only in programme content.
-- Confirm the final partner matrix beyond the publicly documented funder,
-  project leads and workshop hosts now displayed.
-- Confirm Land & Carbon Lab's role, and whether "Data and decision-support
-  leads" is the right group for it.
+- Obtain approval before displaying any institutional mark beyond Land & Carbon
+  Lab, UFG and LAPIG, and confirm its role and order before adding it.

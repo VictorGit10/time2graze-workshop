@@ -322,22 +322,13 @@ button { color: inherit; font: inherit; }
 .fact-list dd { margin: 0; font-size: 12px; font-weight: 700; line-height: 1.5; }
 
 .institutions { background: var(--surface); border-top: 1px solid var(--line); }
-/* Tres papeis separados por um fio. As marcas assentam sobre a propria secao:
-   uma placa branca com borda sobre fundo branco desenhava um quadrado em volta
-   de cada logo e nao dizia nada sobre ele. */
-.institution-groups { display: grid; grid-template-columns: minmax(150px, .75fr) minmax(430px, 2.1fr) minmax(190px, .95fr); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-.institution-group { min-width: 0; padding: 32px 44px 34px; border-left: 1px solid var(--line); }
-.institution-group:first-child { padding-left: 0; border-left: 0; }
-.institution-group:last-child { padding-right: 0; }
-.institution-group h3 { margin: 0 0 22px; color: var(--muted); font-size: var(--t-label); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
-.institution-list { display: flex; flex-wrap: wrap; align-items: center; gap: 28px 36px; }
+.institution-list { display: flex; flex-wrap: wrap; align-items: center; gap: 34px clamp(44px, 7vw, 96px); padding: 34px 0 36px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .institution-mark { display: flex; align-items: center; max-width: 100%; transition: opacity var(--m-quick) var(--m-ease); }
 .institution-mark:hover { opacity: .55; }
 /* --mark-h vem da pagina: cada marca e desenhada na mesma area optica, e a
    largura sai da proporcao propria do arquivo. */
 .institution-mark img { display: block; width: auto; height: var(--mark-h); }
 .institution-source { margin: 18px 0 0; color: var(--muted); font-size: var(--t-meta); line-height: 1.6; }
-.institution-source a { color: var(--forest); text-decoration: underline; text-underline-offset: 2px; }
 
 .agenda-section { background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .programme-facts { display: grid; grid-template-columns: repeat(4, 1fr); margin: -18px auto 30px; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--line); }
@@ -539,9 +530,6 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
 
 @media (max-width: 1050px) {
   .overview-layout { grid-template-columns: 1fr; gap: 65px; }
-  .institution-groups { grid-template-columns: 1fr; }
-  .institution-group { padding: 28px 0 30px; border-top: 1px solid var(--line); border-left: 0; }
-  .institution-group:first-child { border-top: 0; }
   .agenda-panel { grid-template-columns: 1fr; }
   /* Empilhado, o resumo ocupa a faixa inteira: o recuo estreito das abas nao
      serve mais, e o titulo cabe no tamanho cheio. */
@@ -872,7 +860,7 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
     .information-nav > a,
     .objective-block,
     .fact-list,
-    .institution-group,
+    .institution-list,
     .recommendation-list > a {
       animation: enter-up var(--m-enter) var(--m-ease) both;
       animation-timeline: view();

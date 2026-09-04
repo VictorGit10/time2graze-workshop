@@ -146,14 +146,14 @@ it. What keeps the site from reading as generated is not the colour — it is
 structure and detail. Do not try to fix "it looks AI-made" by changing the
 palette; fix it by making the structure specific to this content.
 
-**The thesis is measured time.** Five days, 45 scheduled items, a strict clock,
+**The thesis is measured time.** Five days, 44 scheduled items, a strict clock,
 people arriving from seven time zones. The programme is not one section among
 others — it is why the site exists. Everything else is reference material.
 
 In one line: **an international operational document, with editorial finish and
 temporal behaviour.**
 
-Count carefully. "45 sessions" is wrong — the 45 includes meals, coffee breaks,
+Count carefully. "44 sessions" is wrong — the 44 includes meals, coffee breaks,
 transfers and receptions. Say *scheduled items*.
 
 **The signature is the programme, drawn to scale — on large screens only.**
@@ -496,7 +496,7 @@ Extract the data with no visual change at all, as its own step.
 The empty-looking sections are **deliberate stubs**, not clutter to remove.
 The site is meant to grow into a full workshop hub and will receive:
 
-- the actual files for the 22 materials already declared on their sessions
+- the actual files for the 21 materials already declared on their sessions
 - hotel details, booking and check-in information
 - meals and dietary arrangements
 - detailed maps of the venues and the region
@@ -715,7 +715,7 @@ summary aligned.
 - Final partner matrix beyond the publicly documented funder, project leads
   and workshop hosts already grouped on the home page
 - Final approval of the agenda, required before `.ics` files are generated
-- The 22 expected presentation/document files, the shared-folder route and the
+- The 21 expected presentation/document files, the shared-folder route and the
   final programme PDF
 - Field checklist, weather guidance and workshop-specific local contacts
 - Written guidance on where in Goiânia participants can move around on

@@ -189,17 +189,6 @@ export const AGENDA: Day[] = [
         materials: [{ kind: 'slides' }],
       },
       {
-        id: 'd2-biomass-decision-making',
-        date: '2026-09-15',
-        start: '16:45',
-        end: '17:30',
-        title: 'Biomass Data for Management and Decision Making',
-        speakers: [{ name: 'Prof. Wilton Ladeira' }],
-        venueId: null,
-        kind: 'technical',
-        materials: [{ kind: 'slides' }],
-      },
-      {
         id: 'd2-daily-summary',
         date: '2026-09-15',
         start: '17:30',

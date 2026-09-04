@@ -35,7 +35,7 @@ Waiting for confirmed information:
 - dietary-requirement instructions;
 - the two Day 5 farm locations;
 - accessibility arrangements, emergency contact and nearest hospital;
-- the final partner matrix and logo hierarchy;
+- approval for any institutional marks beyond Land & Carbon Lab, UFG and LAPIG;
 - the expected presentation files, shared folder and final programme PDF.
 
 See [AGENTS.md](AGENTS.md) for the complete product, design and implementation
@@ -72,8 +72,10 @@ assets extracted from the previous Global Pasture Watch workshop are research
 references only. Sources, restrictions and unresolved permissions are recorded
 in [research/logos/README.md](research/logos/README.md).
 
-Having a logo file does not confirm partner status. The final selection,
-grouping and order require approval from the Time2Graze/LAPIG team.
+Having a logo file does not confirm permission to display it or partner status.
+The page currently shows only Land & Carbon Lab, UFG and LAPIG. Any additional
+mark requires approval from the relevant institution and the Time2Graze/LAPIG
+team.
 
 ## Development
 

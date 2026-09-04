@@ -4,8 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { AGENDA } from '@/data/agenda';
 import {
-  INSTITUTION_GROUPS,
-  INSTITUTION_ROLE_SOURCE,
+  DISPLAYED_INSTITUTIONS,
   type Institution,
 } from '@/data/institutions';
 import { withBasePath } from '@/lib/base-path';
@@ -97,50 +96,35 @@ function Institutions() {
     >
       <div className="section-title">
         <p>Institutions</p>
-        <h2 id="institutions-title">Project leadership and workshop host</h2>
+        <h2 id="institutions-title">Institutional affiliations</h2>
       </div>
-      <div className="institution-groups">
-        {INSTITUTION_GROUPS.map((group) => (
-          <section className="institution-group" key={group.label}>
-            <h3>{group.label}</h3>
-            <div className="institution-list">
-              {group.institutions.map((institution) => (
-                <a
-                  className="institution-mark"
-                  href={institution.href}
-                  key={institution.name}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label={`${institution.name} website`}
-                  style={
-                    {
-                      '--mark-h': `${markHeight(institution)}px`,
-                    } as CSSProperties
-                  }
-                >
-                  <Image
-                    src={withBasePath(institution.logo)}
-                    alt={institution.name}
-                    width={institution.width}
-                    height={institution.height}
-                    loading="lazy"
-                  />
-                </a>
-              ))}
-            </div>
-          </section>
+      <div className="institution-list">
+        {DISPLAYED_INSTITUTIONS.map((institution) => (
+          <a
+            className="institution-mark"
+            href={institution.href}
+            key={institution.name}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`${institution.name} website`}
+            style={
+              {
+                '--mark-h': `${markHeight(institution)}px`,
+              } as CSSProperties
+            }
+          >
+            <Image
+              src={withBasePath(institution.logo)}
+              alt={institution.name}
+              width={institution.width}
+              height={institution.height}
+              loading="lazy"
+            />
+          </a>
         ))}
       </div>
       <p className="institution-source">
-        Roles follow the{' '}
-        <a
-          href={INSTITUTION_ROLE_SOURCE}
-          target="_blank"
-          rel="noreferrer"
-        >
-          public Time2Graze project announcement
-        </a>{' '}
-        and the event brief. The final partner list is pending confirmation.
+        Additional institutional marks will be included only after approval.
       </p>
     </section>
   );

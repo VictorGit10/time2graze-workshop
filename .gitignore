@@ -45,3 +45,6 @@ tsconfig.tsbuildinfo
 
 # snapshot pré-restauração da versão cartográfica (rede de segurança local)
 /recovery-backup/
+
+# local scratch
+/tmp/

@@ -13,7 +13,7 @@ live state or calendar files until approved. Venue evidence is recorded in
 - [ ] Confirm or correct the 20 end times currently labelled “End time to
   confirm”; these were inferred from the next activity or the day’s structure.
 - [ ] Generate per-day and per-session `.ics` files only after that approval.
-- [ ] Supply the 22 expected presentation/document files declared in the
+- [ ] Supply the 21 expected presentation/document files declared in the
   agenda. Until each file exists, its link remains “To be published”.
 - [ ] Confirm the participant-access route for the shared workshop folder.
 - [ ] Decide whether to publish a dated final programme PDF for offline use.
@@ -69,12 +69,9 @@ live state or calendar files until approved. Venue evidence is recorded in
 
 ## Institutions
 
-- [ ] Approve the final institution matrix: which organisations appear, their
-  roles, order, official links and permission to display their marks.
-- [ ] Confirm whether any institution beyond the publicly documented funder,
-  project leads and workshop hosts must be added or removed.
-- [ ] Confirm Land & Carbon Lab's role and whether it belongs in “Data and
-  decision-support leads”.
+- [ ] Obtain approval before displaying any institutional mark beyond Land &
+  Carbon Lab, UFG and LAPIG; confirm its public role, order and official link at
+  the same time.
 - [ ] If OpenGeoHub is displayed, obtain an official production-resolution
   mark; the current 200 × 200 file is research-only.
 - [ ] Confirm the preferred INIA Uruguay lockup against its current brand manual.
