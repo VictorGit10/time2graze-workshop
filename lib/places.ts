@@ -28,9 +28,17 @@ export function osmEmbedSrc({ lat, lon }: Coordinates, span = DEFAULT_SPAN): str
   return `https://www.openstreetmap.org/export/embed.html?bbox=${encodeURIComponent(bbox)}&layer=mapnik&marker=${lat},${lon}`;
 }
 
-/** The same pin on the full OpenStreetMap site, for directions and detail. */
-export function osmLink({ lat, lon }: Coordinates, zoom = 17): string {
-  return `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lon}#map=${zoom}/${lat}/${lon}`;
+/**
+ * The recorded pin in Google Maps. Maps URLs are universal links, so they open
+ * the Google Maps app where supported and its website otherwise. Coordinates
+ * keep the destination exact without asking Google's search to resolve a name.
+ */
+export function googleMapsLink({ lat, lon }: Coordinates): string {
+  const query = new URLSearchParams({
+    api: '1',
+    query: `${lat},${lon}`,
+  });
+  return `https://www.google.com/maps/search/?${query}`;
 }
 
 /**

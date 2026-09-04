@@ -11,7 +11,7 @@ import { MAP_VENUES, VENUES, type VenueId } from '@/data/venues';
 import { useTabKeys } from '@/hooks/use-tab-keys';
 import { withBasePath } from '@/lib/base-path';
 import { mealsByDay } from '@/lib/practical';
-import { formatCoordinates, osmEmbedSrc, osmLink, uberLink } from '@/lib/places';
+import { formatCoordinates, googleMapsLink, osmEmbedSrc, uberLink } from '@/lib/places';
 
 const hotel = VENUES.hotel;
 const ADDITIONAL_VENUES: VenueId[] = ['funape', 't2gArea'];
@@ -19,6 +19,16 @@ const ADDITIONAL_VENUES: VenueId[] = ['funape', 't2gArea'];
 /** `tel:` wants digits and a plus, not the spacing a reader needs. */
 function telHref(phone: string) {
   return `tel:${phone.replace(/[^+\d]/g, '')}`;
+}
+
+/** Compact brand cue for the ride-request action. */
+function UberIcon() {
+  return (
+    <svg className="uber-mark" viewBox="0 0 36 20" aria-hidden="true">
+      <rect width="36" height="20" rx="3" />
+      <text x="18" y="13.5" textAnchor="middle">Uber</text>
+    </svg>
+  );
 }
 
 function PlaceLink({
@@ -204,8 +214,8 @@ export default function PracticalPage() {
               {venue.pending ? <p className="venue-pending"><CircleAlert aria-hidden="true" />{venue.pending}</p> : null}
 
               <div className="venue-actions">
-                <a href={osmLink(coords)} target="_blank" rel="noreferrer"><MapPin aria-hidden="true" />Open map<ExternalLink aria-hidden="true" /></a>
-                {ridable ? <a href={uberLink(coords, venue.name, address)} target="_blank" rel="noreferrer"><Car aria-hidden="true" />Ride to here<ExternalLink aria-hidden="true" /></a> : null}
+                <a href={googleMapsLink(coords)} target="_blank" rel="noreferrer"><MapPin aria-hidden="true" />Open in Google Maps<ExternalLink aria-hidden="true" /></a>
+                {ridable ? <a className="uber-action" href={uberLink(coords, venue.name, address)} target="_blank" rel="noreferrer"><UberIcon />Open ride in Uber<ExternalLink aria-hidden="true" /></a> : null}
                 {website ? <a href={website} target="_blank" rel="noreferrer"><Globe aria-hidden="true" />Website<ExternalLink aria-hidden="true" /></a> : null}
                 {phone ? <a href={telHref(phone)}><Phone aria-hidden="true" />{phone}</a> : null}
               </div>
@@ -215,7 +225,7 @@ export default function PracticalPage() {
                 {venue.organisedTransport
                   ? ' The workshop provides transport to this location.'
                   : ridable
-                    ? ' The ride link opens Uber; other apps accept the address and coordinates above.'
+                    ? ` The Uber button opens a ride request with ${venue.name} already filled in as the destination. If the app is unavailable, Uber opens in the browser.`
                     : ' The pin is shown for reference while the location is confirmed; no ride link is offered.'}
               </p>
             </div>

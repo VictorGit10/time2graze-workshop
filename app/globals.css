@@ -496,8 +496,14 @@ button { color: inherit; font: inherit; }
 .venue-actions a:first-child { color: #fff; background: var(--forest); border-color: var(--forest); }
 .venue-actions a:hover { border-color: var(--forest); }
 .venue-actions a:first-child:hover { color: var(--forest-dark); background: var(--accent); }
+.venue-actions a.uber-action { color: #fff; background: #000; border-color: #000; }
+.venue-actions a.uber-action:hover { color: #fff; background: #333; border-color: #333; }
 .venue-actions a svg { width: 13px; height: 13px; }
 .venue-actions a svg:last-child { width: 11px; height: 11px; opacity: .55; }
+.venue-actions a .uber-mark { width: 27px; height: 15px; overflow: visible; }
+.uber-mark rect { fill: currentColor; }
+.uber-action .uber-mark rect { fill: #fff; }
+.uber-mark text { fill: #000; font: 700 10px/1 Arial, sans-serif; letter-spacing: -.45px; text-transform: none; }
 .venue-note { margin: 0; color: var(--muted); font-size: var(--t-meta); line-height: 1.6; }
 .venue-note a { text-decoration: underline; text-underline-offset: 2px; }
 
