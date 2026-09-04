@@ -43,8 +43,8 @@ const DESTINATIONS = [
   },
 ] as const;
 
-const MARK_AREA = 3200;
-const MARK_MAX_HEIGHT = 56;
+const MARK_AREA = 7200;
+const MARK_MAX_HEIGHT = 64;
 
 function markHeight({ width, height }: Institution) {
   return Math.min(

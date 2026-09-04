@@ -322,13 +322,13 @@ button { color: inherit; font: inherit; }
 .fact-list dd { margin: 0; font-size: 12px; font-weight: 700; line-height: 1.5; }
 
 .institutions { background: var(--surface); border-top: 1px solid var(--line); }
-.institution-list { display: flex; flex-wrap: wrap; align-items: center; gap: 34px clamp(44px, 7vw, 96px); padding: 34px 0 36px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-.institution-mark { display: flex; align-items: center; max-width: 100%; transition: opacity var(--m-quick) var(--m-ease); }
+.institution-list { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 34px clamp(44px, 7vw, 96px); padding: 42px 0 44px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.institution-mark { display: flex; flex: 0 1 clamp(140px, 15vw, 210px); justify-content: center; align-items: center; max-width: 100%; transition: opacity var(--m-quick) var(--m-ease); }
 .institution-mark:hover { opacity: .55; }
 /* --mark-h vem da pagina: cada marca e desenhada na mesma area optica, e a
    largura sai da proporcao propria do arquivo. */
-.institution-mark img { display: block; width: auto; height: var(--mark-h); }
-.institution-source { margin: 18px 0 0; color: var(--muted); font-size: var(--t-meta); line-height: 1.6; }
+.institution-mark img { display: block; width: auto; max-width: 100%; height: var(--mark-h); }
+.institution-source { margin: 18px auto 0; color: var(--muted); font-size: var(--t-meta); line-height: 1.6; }
 
 .agenda-section { background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .programme-facts { display: grid; grid-template-columns: repeat(4, 1fr); margin: -18px auto 30px; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--line); }
