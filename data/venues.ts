@@ -96,6 +96,11 @@ export const VENUES = {
     coords: { lat: -16.6412156, lon: -49.2401076 },
     /** The only venue whose address, pin and phone the source itself confirms. */
     ride: true,
+    photo: {
+      src: '/images/venues/golden-lis.webp',
+      alt: 'Front entrance of Golden Lis Hotel Boutique in Goiânia',
+      credit: 'Photo supplied for this website',
+    },
     pending: 'Confirm that workshop payment and accommodation cover 13–18 September; check-in and check-out times are still to be confirmed.',
     website: 'https://goldenlishoteis.com.br/',
     phone: '+55 62 3639-1003',
@@ -107,6 +112,11 @@ export const VENUES = {
     use: 'Lunches during the retreat',
     locality: 'Campus Samambaia · Universidade Federal de Goiás, Goiânia',
     coords: { lat: -16.6040384, lon: -49.2589823 },
+    photo: {
+      src: '/images/venues/centro-de-eventos.webp',
+      alt: 'Centro de Eventos da Universidade Federal de Goiás on Campus Samambaia',
+      credit: 'Photo supplied for this website',
+    },
     /** Candidate facts stay in research/venues.md, not in operational fields. */
     pending: 'The visitor address and map pin are awaiting confirmation from UFG. The pin is shown for reference only.',
     website: 'https://centrodeeventos.ufg.br/',
