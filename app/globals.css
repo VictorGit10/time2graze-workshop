@@ -331,12 +331,11 @@ button { color: inherit; font: inherit; }
 .institution-source { margin: 18px auto 0; color: var(--muted); font-size: var(--t-meta); line-height: 1.6; }
 
 .agenda-section { background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-.programme-facts { display: grid; grid-template-columns: repeat(4, 1fr); margin: -18px auto 30px; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--line); }
-.programme-facts > div { padding: 18px 20px; border-left: 1px solid var(--line); }
-.programme-facts > div:first-child { border-left: 0; }
-.programme-facts dt { color: var(--muted); font-size: var(--t-label); font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
-.programme-facts dd { margin: 8px 0 0; overflow-wrap: anywhere; font-size: var(--t-meta-lg); font-weight: 750; line-height: 1.4; }
-.programme-facts em { color: var(--forest); font-style: normal; }
+.programme-title { display: flex; justify-content: space-between; align-items: end; gap: 32px; margin-bottom: clamp(32px, 4vw, 52px); }
+.programme-clock { display: flex; align-items: baseline; gap: 18px; margin: 0 0 5px; padding-left: 18px; border-left: 1px solid var(--line); }
+.programme-clock > span { color: var(--muted); font-size: var(--t-label); font-weight: 750; letter-spacing: .06em; text-transform: uppercase; }
+.programme-clock time { min-width: 72px; color: var(--forest); font-size: 20px; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1; }
+.programme-clock small { margin-right: 7px; color: var(--muted); font-size: var(--t-label); font-weight: 750; letter-spacing: .06em; text-transform: uppercase; }
 .day-tabs { display: grid; grid-template-columns: repeat(5, 1fr); border: 1px solid var(--line); }
 .day-tabs button { min-width: 0; padding: 23px clamp(15px, 2vw, 28px); text-align: left; background: transparent; border: 0; border-right: 1px solid var(--line); cursor: pointer; transition: background var(--m-move) var(--m-ease), color var(--m-move) var(--m-ease); }
 .day-tabs button:hover:not([aria-selected='true']) { background: var(--surface-soft); }
@@ -536,9 +535,6 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
   .day-summary { padding: 30px 24px; border-right: 0; border-bottom: 1px solid var(--line); }
   .day-summary h3 { font-size: 42px; }
   .day-summary p { margin-top: 40px; }
-  .programme-facts { grid-template-columns: repeat(2, 1fr); }
-  .programme-facts > div:nth-child(3) { border-top: 1px solid var(--line); border-left: 0; }
-  .programme-facts > div:nth-child(4) { border-top: 1px solid var(--line); }
   .practical-grid { grid-template-columns: 1fr; }
   .practical-card:nth-child(n) { grid-column: auto; grid-row: auto; }
   .practical-card:nth-child(3) ul { grid-template-columns: 1fr; }
@@ -590,12 +586,10 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
   .institution-list { gap: 24px 32px; }
   .split-title { align-items: flex-start; flex-direction: column; }
   .split-title > span { text-align: left; }
+  .programme-title { align-items: flex-start; flex-direction: column; gap: 22px; margin-bottom: 32px; }
+  .programme-clock { justify-content: space-between; width: 100%; margin: 0; padding: 14px 0 0; border-top: 1px solid var(--line); border-left: 0; }
   .day-tabs { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; }
   .day-tabs button { min-width: 160px; scroll-snap-align: start; }
-  .programme-facts { grid-template-columns: repeat(2, 1fr); }
-  .programme-facts > div:nth-child(-n+2) { display: none; }
-  .programme-facts > div:nth-child(3) { border-top: 0; border-left: 0; }
-  .programme-facts > div:nth-child(4) { border-top: 0; }
   .resource-group { grid-template-columns: 1fr; gap: 26px; }
   .resource-item { grid-template-columns: 26px 1fr; }
   .resource-item em { grid-column: 2; justify-self: start; }
@@ -761,7 +755,6 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
   .skip-link,
   .day-tabs,
   .agenda-panel,
-  .programme-facts,
   .materials-notice,
   .practical-status-line,
   .venue-panel,
@@ -774,6 +767,9 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
   .print-programme { display: block; }
   /* O título da seção já anuncia a programação; o respiro de tela é excesso. */
   .agenda-section .section-title { margin-bottom: 10pt; }
+  .programme-title { display: block; }
+  .programme-clock { margin: 4pt 0 0; padding: 0; border: 0; }
+  .programme-clock time { display: none; }
 
   .institutional-hero { display: block; min-height: 0; border: 0; }
   .hero-grid { display: block; min-height: 0; border: 0; }

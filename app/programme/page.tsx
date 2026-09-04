@@ -9,15 +9,11 @@ import { dayFromHash, dayFromSessionHash, scrollToDayPanel, scrollToSession } fr
 import { todayIndex } from '@/lib/now';
 import { dayLabel, dayShort } from '@/lib/schedule';
 
-const SCHEDULED_ITEMS = AGENDA.reduce((total, day) => total + day.sessions.length, 0);
-const CONFIRMED_INTERVALS = AGENDA.reduce(
-  (total, day) => total + day.sessions.filter((session) => session.end && session.endStatus !== 'provisional').length,
-  0,
-);
-const PROVISIONAL_INTERVALS = AGENDA.reduce(
-  (total, day) => total + day.sessions.filter((session) => session.endStatus === 'provisional').length,
-  0,
-);
+function clockLabel(minutes: number) {
+  const hour = Math.floor(minutes / 60).toString().padStart(2, '0');
+  const minute = (minutes % 60).toString().padStart(2, '0');
+  return `${hour}:${minute}`;
+}
 
 export default function ProgrammePage() {
   /** What is waiting to be scrolled to, once the day it names has rendered. */
@@ -86,25 +82,28 @@ export default function ProgrammePage() {
 
   const onDayKeys = useTabKeys(AGENDA.length, activeDay, selectDay);
   const day = AGENDA[activeDay];
+  const currentTime = clock ? clockLabel(clock.minutes) : '—:—';
 
   return (
     <section className="agenda-section section-pad" id="agenda">
-      <div className="section-title split-title">
-        <div><p>Programme</p><h1>Daily schedule</h1></div>
-        <span>Draft programme · Five working days</span>
+      <div className="section-title programme-title">
+        <h1>Daily schedule</h1>
+        <p className="programme-clock">
+          <span>All times · Brasília Time (UTC−3)</span>
+          <time
+            dateTime={clock ? `${clock.date}T${currentTime}-03:00` : undefined}
+            aria-label={clock ? `Current Brasília time: ${currentTime}` : 'Loading current Brasília time'}
+          >
+            <small>Now</small>
+            {currentTime}
+          </time>
+        </p>
       </div>
-
-      <dl className="programme-facts">
-        <div><dt>Schedule</dt><dd>{SCHEDULED_ITEMS} items across {AGENDA.length} days</dd></div>
-        <div><dt>Time blocks</dt><dd>{CONFIRMED_INTERVALS} confirmed · {PROVISIONAL_INTERVALS} provisional</dd></div>
-        <div><dt>Official time</dt><dd>Goiânia · America/Sao_Paulo</dd></div>
-        <div><dt>Status</dt><dd><em>Draft programme</em></dd></div>
-      </dl>
 
       {/* Paper loses the header and the day tabs, so the printed agenda has to
           say for itself which workshop it belongs to. */}
       <p className="print-only print-heading">
-        Time2Graze Brazil Workshop · 14–18 September 2026 · Goiânia, Goiás, Brazil
+        Time2Graze Brazil Workshop · 14–18 September 2026 · Goiânia, Goiás, Brazil · Brasília Time (UTC−3)
       </p>
 
       <div className="day-tabs" role="tablist" aria-label="Workshop days" tabIndex={-1} onKeyDown={onDayKeys}>
