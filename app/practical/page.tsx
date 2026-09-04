@@ -1,14 +1,13 @@
 'use client';
 
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import Image from 'next/image';
 import {
-  BookOpen, BusFront, Camera, Car, Check, ChevronRight, CircleAlert, Copy,
+  BookOpen, BusFront, Camera, Car, Check, ChevronDown, ChevronRight, CircleAlert, Copy,
   ExternalLink, Globe, Hotel, MapPin, Phone, UtensilsCrossed,
 } from 'lucide-react';
 import { ACCOMMODATION_PLAN, LOCAL_GUIDES, SHUTTLE_PLAN } from '@/data/practical';
 import { MAP_VENUES, VENUES, type VenueId } from '@/data/venues';
-import { useIsMobile } from '@/hooks/use-mobile';
 import { useTabKeys } from '@/hooks/use-tab-keys';
 import { withBasePath } from '@/lib/base-path';
 import { mealsByDay } from '@/lib/practical';
@@ -53,29 +52,17 @@ function PlaceLink({
 export default function PracticalPage() {
   const [activeMap, setActiveMap] = useState(0);
   const [copied, setCopied] = useState<string | null>(null);
-  const mapSelectorRef = useRef<HTMLDivElement>(null);
-  const isMobile = useIsMobile();
 
   /** Selecting another venue drops the copy confirmation with it. */
   const selectVenue = (index: number) => {
     setActiveMap(index);
     setCopied(null);
   };
-  const onMapKeys = useTabKeys(MAP_VENUES.length, activeMap, selectVenue, isMobile ? 'horizontal' : 'vertical');
+  const onMapKeys = useTabKeys(MAP_VENUES.length, activeMap, selectVenue, 'vertical');
   const venue = MAP_VENUES[activeMap];
   /** Locals rather than property reads: narrowing survives into the handlers. */
   const { address, coords, phone, photo, website } = venue;
   const ridable = venue.ride === true && !venue.organisedTransport && address !== undefined;
-
-  useEffect(() => {
-    if (!isMobile) return;
-    const selector = mapSelectorRef.current;
-    const activeTab = selector?.querySelector<HTMLButtonElement>('[aria-selected="true"]');
-    if (!selector || !activeTab) return;
-    selector.scrollTo({
-      left: activeTab.offsetLeft - (selector.clientWidth - activeTab.offsetWidth) / 2,
-    });
-  }, [activeMap, isMobile]);
 
   async function copy(field: string, value: string) {
     try {
@@ -167,7 +154,7 @@ export default function PracticalPage() {
       <section className="maps section-pad" id="maps">
         <div className="section-title split-title"><div><p>Maps and venues</p><h2>Workshop locations</h2></div><span>Select a place for its operational details</span></div>
         <div className="maps-layout">
-          <div ref={mapSelectorRef} className="location-selector" role="tablist" aria-orientation={isMobile ? 'horizontal' : 'vertical'} aria-label="Workshop locations" tabIndex={-1} onKeyDown={onMapKeys}>
+          <div className="location-selector" role="tablist" aria-orientation="vertical" aria-label="Workshop locations" tabIndex={-1} onKeyDown={onMapKeys}>
             {MAP_VENUES.map((location, index) => (
               <button key={location.id} type="button" role="tab" aria-selected={activeMap === index} aria-controls="map-panel" id={`map-tab-${index}`} tabIndex={activeMap === index ? 0 : -1} onClick={() => selectVenue(index)}>
                 <MapPin aria-hidden="true" /><span><strong>{location.name}</strong><small>{location.use}</small></span><ChevronRight aria-hidden="true" />
@@ -176,6 +163,19 @@ export default function PracticalPage() {
           </div>
 
           <div className="venue-panel" id="map-panel" role="tabpanel" aria-labelledby={`map-tab-${activeMap}`}>
+            <div className="mobile-location-picker">
+              <label htmlFor="mobile-location">Choose a location</label>
+              <div>
+                <MapPin aria-hidden="true" />
+                <select id="mobile-location" value={activeMap} onChange={(event) => selectVenue(Number(event.target.value))}>
+                  {MAP_VENUES.map((location, index) => (
+                    <option key={location.id} value={index}>{location.name}</option>
+                  ))}
+                </select>
+                <ChevronDown aria-hidden="true" />
+              </div>
+            </div>
+
             <div className="venue-media">
               {photo
                 ? (

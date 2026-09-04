@@ -462,6 +462,7 @@ button { color: inherit; font: inherit; }
 .location-selector strong { font-size: var(--t-body); }
 .location-selector small { margin-top: 7px; color: var(--muted); font-size: var(--t-meta); line-height: 1.5; }
 .location-selector button[aria-selected='true'] small { color: rgba(255,255,255,.7); }
+.mobile-location-picker { display: none; }
 /* Painel de um local: foto e mapa lado a lado, depois os dados operacionais.
    O pino vem de coordenada, não de string de busca — ver lib/places.ts. */
 .venue-panel { display: grid; grid-template-rows: auto minmax(0, 1fr); min-width: 0; background: var(--surface); }
@@ -623,42 +624,26 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
   .practical-card h3 { font-size: 32px; }
   .practical { padding-bottom: 48px; }
   .maps { padding-top: 48px; }
-  .maps-layout { grid-template-columns: 1fr; }
-  .location-selector {
-    position: sticky;
-    z-index: 5;
-    top: 102px;
-    display: flex;
-    align-self: start;
-    overflow-x: auto;
-    background: var(--surface);
-    border-right: 0;
-    border-bottom: 1px solid var(--line);
-    box-shadow: 0 8px 18px -18px rgba(16,56,43,.8);
-    scroll-snap-type: x proximity;
-    scrollbar-width: thin;
-  }
-  .location-selector button {
-    flex: 0 0 min(78vw, 285px);
-    grid-template-columns: 22px minmax(0, 1fr);
-    min-height: 78px;
-    padding: 14px 18px;
-    border-right: 1px solid var(--line);
-    border-bottom: 0;
-    scroll-snap-align: center;
-  }
-  .location-selector button:last-child { border-right: 0; }
-  .location-selector > button > svg:last-child { display: none; }
-  .location-selector small { margin-top: 4px; }
-  .venue-media iframe { min-height: 300px; }
-  .venue-details { padding: 22px 20px 24px; }
-  .venue-facts { grid-template-columns: 1fr; }
-  /* Duas por linha onde couberem: quatro botões de largura cheia custam
-     um quinto de tela num telefone. */
-  .venue-actions a { flex: 1 1 130px; justify-content: center; }
-  /* O espaço da foto continua visível — o vazio é a informação — mas não
-     paga 210px enquanto não houver foto. */
-  .photo-pending { min-height: 128px; padding: 20px; }
+  .maps-layout { grid-template-columns: 1fr; min-height: 0; }
+  .location-selector { display: none; }
+  .mobile-location-picker { order: 0; display: grid; gap: 9px; padding: 18px 20px; background: var(--surface-soft); border-bottom: 1px solid var(--line); }
+  .mobile-location-picker label { color: var(--forest); font-size: var(--t-label); font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
+  .mobile-location-picker > div { position: relative; display: grid; grid-template-columns: 20px minmax(0, 1fr) 18px; align-items: center; gap: 10px; min-height: 50px; padding: 0 14px; background: var(--surface); border: 1px solid var(--forest); border-radius: var(--radius); }
+  .mobile-location-picker svg { width: 17px; height: 17px; color: var(--forest); pointer-events: none; }
+  .mobile-location-picker select { width: 100%; height: 48px; padding: 0; color: var(--ink); background: transparent; border: 0; outline: 0; appearance: none; font-size: var(--t-body); font-weight: 750; }
+  .mobile-location-picker > div:focus-within { outline: 2px solid var(--forest); outline-offset: 3px; }
+  .venue-panel { grid-template-rows: auto; }
+  .venue-details { order: 1; gap: 16px; padding: 22px 20px 24px; }
+  .venue-identity { order: 0; }
+  .venue-actions { order: 1; }
+  .venue-pending { order: 2; }
+  .venue-facts { order: 3; grid-template-columns: 1fr; }
+  .venue-note { order: 4; }
+  .venue-media { order: 2; }
+  .venue-media iframe { order: 1; min-height: 270px; }
+  .venue-photo { order: 2; min-height: 170px; max-height: 190px; border-top: 1px solid var(--line); border-bottom: 0; }
+  .venue-actions a { flex: 1 1 calc(50% - 5px); justify-content: center; min-height: 48px; padding-inline: 10px; text-align: center; }
+  .photo-pending { min-height: 116px; padding: 18px; }
   .additional-locations { grid-template-columns: 1fr; }
   .additional-locations article { border-top: 1px solid var(--line); border-left: 0; }
   .additional-locations article:first-child { border-top: 0; }
