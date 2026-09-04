@@ -89,7 +89,7 @@ export const VENUES = {
   hotel: {
     name: 'Golden Lis Hotel Boutique',
     short: 'Golden Lis',
-    use: 'Accommodation and evening meals',
+    use: 'Accommodation',
     locality: 'Setor Santa Genoveva, Goiânia',
     address: 'Av. das Indústrias, 75 — Setor Santa Genoveva, Goiânia — GO, 74670-600, Brazil',
     /** From the place record the hotel's own site links to. */
@@ -104,38 +104,6 @@ export const VENUES = {
     pending: 'Confirm that workshop payment and accommodation cover 13–18 September; check-in and check-out times are still to be confirmed.',
     website: 'https://goldenlishoteis.com.br/',
     phone: '+55 62 3639-1003',
-    onMap: true,
-  },
-  centroEventos: {
-    name: 'Centro de Eventos · UFG',
-    short: 'Centro de Eventos',
-    use: 'Lunches during the retreat',
-    locality: 'Campus Samambaia · Universidade Federal de Goiás, Goiânia',
-    coords: { lat: -16.6040384, lon: -49.2589823 },
-    photo: {
-      src: '/images/venues/centro-de-eventos.webp',
-      alt: 'Centro de Eventos da Universidade Federal de Goiás on Campus Samambaia',
-      credit: 'Photo supplied for this website',
-    },
-    /** Candidate facts stay in research/venues.md, not in operational fields. */
-    pending: 'The visitor address and map pin are awaiting confirmation from UFG. The pin is shown for reference only.',
-    website: 'https://centrodeeventos.ufg.br/',
-    phone: '+55 62 3521-1900',
-    onMap: true,
-  },
-  favoDeMel: {
-    name: 'Churrascaria Favo de Mel',
-    short: 'Churrascaria Favo de Mel',
-    use: 'Closing reception · 17 September',
-    locality: 'Setor Sul, Goiânia',
-    coords: { lat: -16.6904676, lon: -49.2552251 },
-    /** Which house hosts the reception is an open question — no ride link. */
-    pending: 'The restaurant unit, address and pin for the closing reception are awaiting confirmation. The map pin is shown for reference only.',
-    photo: {
-      src: '/images/venues/favo-de-mel.webp',
-      alt: 'Entrance to Churrascaria Favo de Mel at night',
-      credit: 'Photo supplied by the workshop organiser',
-    },
     onMap: true,
   },
   cidadeDeGoias: {
@@ -155,20 +123,6 @@ export const VENUES = {
       creditHref: 'https://commons.wikimedia.org/wiki/File:Rua_do_Conjunto_Arquitet%C3%B4nico_da_Cidade_de_Goi%C3%A1s,_Goi%C3%A1s,_Brasil.jpg',
     },
     onMap: true,
-  },
-  funape: {
-    name: 'FUNAPE · UFG',
-    short: 'FUNAPE',
-    use: 'Coffee breaks during the retreat',
-    locality: 'Campus Samambaia · Universidade Federal de Goiás, Goiânia',
-    onMap: false,
-  },
-  t2gArea: {
-    name: 'T2G Biomass Experimental Area',
-    short: 'T2G Biomass Experimental Area',
-    use: 'Field visit on day 1',
-    pending: 'Location to be confirmed.',
-    onMap: false,
   },
 } satisfies Record<string, Venue>;
 

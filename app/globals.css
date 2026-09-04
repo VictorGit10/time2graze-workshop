@@ -367,12 +367,21 @@ button { color: inherit; font: inherit; }
 .calendar-intro p em { padding: 3px 7px; color: var(--warning); background: var(--warning-bg); border-radius: 99px; font-size: var(--t-label); font-style: normal; letter-spacing: .06em; text-transform: uppercase; }
 .calendar-intro span { display: block; margin-top: 4px; color: var(--muted); font-size: var(--t-meta); line-height: 1.45; }
 .calendar-links { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
-.calendar-links a, .calendar-links button { display: inline-flex; align-items: center; justify-content: center; min-height: 42px; padding: 0 14px; color: var(--forest); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); font-size: var(--t-meta-lg); font-weight: 750; cursor: pointer; transition: color var(--m-quick) var(--m-ease), background var(--m-quick) var(--m-ease), border-color var(--m-quick) var(--m-ease); }
-.calendar-links a:hover, .calendar-links button:hover { border-color: var(--forest); }
+.calendar-links a, .calendar-links button, .calendar-share-field button { display: inline-flex; align-items: center; justify-content: center; min-height: 42px; padding: 0 14px; color: var(--forest); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); font-size: var(--t-meta-lg); font-weight: 750; cursor: pointer; transition: color var(--m-quick) var(--m-ease), background var(--m-quick) var(--m-ease), border-color var(--m-quick) var(--m-ease); }
+.calendar-links a:hover, .calendar-links button:hover, .calendar-share-field button:not(:disabled):hover { border-color: var(--forest); }
 .calendar-links .calendar-primary { color: #fff; background: var(--forest); border-color: var(--forest); }
 .calendar-links .calendar-primary:hover { color: var(--forest-dark); background: var(--accent); }
 .calendar-note { grid-column: 1 / -1; margin: 0; padding-top: 13px; color: var(--muted); border-top: 1px solid var(--line); font-size: var(--t-meta); line-height: 1.5; }
 .calendar-help { grid-column: 1 / -1; margin: -7px 0 0; color: var(--text); font-size: var(--t-meta); line-height: 1.5; }
+/* The share request mirrors the intro/links rhythm: explanation on the left,
+   the field on the right, the outcome across the full band. */
+.calendar-share { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(270px, 1fr) auto; gap: 8px 32px; align-items: center; margin-top: 8px; padding-top: 15px; border-top: 1px solid var(--line); }
+.calendar-share > div:first-child > p { margin: 0; font-size: var(--t-body); font-weight: 800; }
+.calendar-share > div:first-child > span { display: block; margin-top: 4px; color: var(--muted); font-size: var(--t-meta); line-height: 1.45; }
+.calendar-share-field { display: flex; gap: 8px; justify-self: end; }
+.calendar-share-field input { min-width: 210px; min-height: 42px; padding: 0 14px; color: var(--text); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); font-size: var(--t-meta-lg); }
+.calendar-share-field button:disabled { opacity: .6; cursor: default; }
+.calendar-share-status { grid-column: 1 / -1; margin: 0; color: var(--muted); font-size: var(--t-meta); line-height: 1.5; }
 
 .materials { background: var(--paper); }
 .materials-notice { display: flex; align-items: center; gap: 14px; max-width: none; margin: -18px auto 46px; padding: 14px 18px; color: var(--text); background: transparent; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 5px solid var(--forest); }
@@ -411,10 +420,8 @@ button { color: inherit; font: inherit; }
 .practical-status-line em { padding-left: 24px; color: var(--warning); border-left: 1px solid var(--line); font-size: var(--t-meta); font-style: normal; line-height: 1.5; }
 .practical-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 14px; }
 .practical-card { min-height: 0; padding: 28px 30px 32px; background: var(--paper); border: 1px solid var(--line); border-top: 5px solid var(--forest); }
-#stay, #meals, #transport, #maps, #recommendations, #map-panel, [id^='venue-'] { scroll-margin-top: 112px; }
-.practical-card:nth-child(1) { grid-column: span 7; }
-.practical-card:nth-child(2) { grid-column: span 5; }
-.practical-card:nth-child(3) { grid-column: 1 / -1; }
+#stay, #transport, #maps, #recommendations, #map-panel { scroll-margin-top: 112px; }
+#stay, #transport { grid-column: span 6; }
 .practical-card-head { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
 .practical-card-head > svg { flex: 0 0 auto; width: 38px; height: 38px; padding: 8px; color: var(--forest); background: var(--surface); border: 1px solid var(--line); }
 .practical-card .status { padding: 5px 8px; color: var(--warning); background: var(--warning-bg); border-radius: 99px; font-size: var(--t-label); font-style: normal; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
@@ -437,15 +444,13 @@ button { color: inherit; font: inherit; }
 .place-link > svg { flex: none; width: 13px; height: 13px; transition: transform var(--m-quick) var(--m-ease); }
 .place-link:hover > svg { transform: translateX(2px); }
 .practical-card > .place-link { margin-top: 17px; font-size: var(--t-meta-lg); }
-.practical-lines, .practical-lines > span { display: inline; }
-.practical-lines i { color: var(--muted); font-style: normal; }
 .transport-intro { margin-bottom: 20px !important; }
 .transport-intro .place-link { display: inline-flex; }
 .inline-confirm { display: inline-block; margin-left: 9px; padding: 2px 7px; color: var(--warning); background: var(--warning-bg); border-radius: 99px; font-size: var(--t-label); font-style: normal; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
-.practical-card:nth-child(3) ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-bottom: 1px solid var(--line); }
-.practical-card:nth-child(3) li { display: block; padding: 16px 20px; border-right: 1px solid var(--line); border-bottom: 0; }
-.practical-card:nth-child(3) li:last-child { border-right: 0; }
-.practical-card:nth-child(3) li span { display: block; margin-top: 8px; }
+#transport ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-bottom: 1px solid var(--line); }
+#transport li { display: block; padding: 16px 20px; border-right: 1px solid var(--line); border-bottom: 0; }
+#transport li:last-child { border-right: 0; }
+#transport li span { display: block; margin-top: 8px; }
 
 .practical { padding-bottom: clamp(54px, 6vw, 88px); }
 .maps { padding-top: clamp(54px, 6vw, 88px); background: var(--paper); border-top: 1px solid var(--line); }
@@ -514,14 +519,6 @@ button { color: inherit; font: inherit; }
 .venue-note { margin: 0; color: var(--muted); font-size: var(--t-meta); line-height: 1.6; }
 .venue-note a { text-decoration: underline; text-underline-offset: 2px; }
 
-.additional-locations { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 18px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-.additional-locations article { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 12px 16px; padding: 20px; border-left: 1px solid var(--line); }
-.additional-locations article:first-child { border-left: 0; }
-.additional-locations article > svg { width: 18px; color: var(--forest); }
-.additional-locations h3 { margin: 0; font-size: var(--t-body); }
-.additional-locations p { margin: 5px 0 0; color: var(--muted); font-size: var(--t-meta); line-height: 1.5; }
-.additional-locations em { grid-column: 2; color: var(--warning); font-size: var(--t-meta); font-style: normal; line-height: 1.5; }
-
 .recommendations { background: var(--surface); border-top: 1px solid var(--line); }
 .recommendation-list { border-top: 1px solid var(--line); }
 .recommendation-list > a { display: grid; grid-template-columns: 48px 24px minmax(0, 1fr) 20px; align-items: start; gap: 18px; padding: 28px 18px; border-bottom: 1px solid var(--line); transition: background var(--m-quick) var(--m-ease); }
@@ -555,10 +552,13 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
   .calendar-actions { grid-template-columns: 1fr; }
   .calendar-links { justify-content: flex-start; }
   .calendar-note, .calendar-help { grid-column: 1; }
+  .calendar-share { grid-template-columns: 1fr; }
+  .calendar-share-field { justify-self: start; flex-wrap: wrap; }
+  .calendar-share-status { grid-column: 1; }
   .practical-grid { grid-template-columns: 1fr; }
   .practical-card:nth-child(n) { grid-column: auto; grid-row: auto; }
-  .practical-card:nth-child(3) ul { grid-template-columns: 1fr; }
-  .practical-card:nth-child(3) li { border-right: 0; border-bottom: 1px solid var(--line); }
+  #transport ul { grid-template-columns: 1fr; }
+  #transport li { border-right: 0; border-bottom: 1px solid var(--line); }
   .practical-card { min-height: auto; }
   .venue-media { grid-template-columns: 1fr; }
   .venue-photo, .photo-pending { border-right: 0; border-bottom: 1px solid var(--line); min-height: 210px; }
@@ -644,9 +644,6 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
   .venue-photo { order: 2; min-height: 170px; max-height: 190px; border-top: 1px solid var(--line); border-bottom: 0; }
   .venue-actions a { flex: 1 1 calc(50% - 5px); justify-content: center; min-height: 48px; padding-inline: 10px; text-align: center; }
   .photo-pending { min-height: 116px; padding: 18px; }
-  .additional-locations { grid-template-columns: 1fr; }
-  .additional-locations article { border-top: 1px solid var(--line); border-left: 0; }
-  .additional-locations article:first-child { border-top: 0; }
   .recommendation-list > a { grid-template-columns: 30px 20px minmax(0, 1fr); gap: 12px; padding-inline: 0; }
   .recommendation-list > a > svg:last-child { display: none; }
   footer { grid-template-columns: 1fr auto; }
@@ -678,10 +675,9 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
 .tl-block-body { min-width: 0; }
 .tl-block-meta { display: flex; flex-wrap: wrap; gap: 9px; align-items: center; margin: 4px 0 0; }
 .tl-title { margin: 0; font-size: var(--t-meta-lg); font-weight: 700; line-height: 1.3; }
-.tl-who, .tl-where, .tl-note { display: inline-flex; flex-wrap: wrap; gap: 4px 7px; align-items: baseline; color: var(--muted); font-size: var(--t-meta); }
+.tl-who, .tl-note { display: inline-flex; flex-wrap: wrap; gap: 4px 7px; align-items: baseline; color: var(--muted); font-size: var(--t-meta); }
 .tl-who { margin: 3px 0 0; }
 .tl-meta-label { color: var(--forest); font-size: var(--t-label); font-weight: 800; letter-spacing: .045em; text-transform: uppercase; }
-.tl-where[data-pending] > span:last-child { color: var(--warning); font-style: italic; }
 
 /* Refeições, cafés e deslocamentos ocupam o mesmo tempo, com menos peso. */
 .tl-block[data-kind='meal'], .tl-block[data-kind='break'], .tl-block[data-kind='transport'], .tl-block[data-kind='social'] { border-left-color: var(--line); background: var(--surface-soft); }

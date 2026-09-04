@@ -123,7 +123,6 @@ function description(session: Session, options: CalendarOptions) {
       'The displayed end time is provisional and is not included in this calendar entry.',
     );
   }
-  if (!session.venueId) lines.push('Venue: pending confirmation.');
   if (session.status === 'tbd')
     lines.push('This activity is still to be confirmed.');
   lines.push(`All times follow Brasília Time (${CALENDAR_TIMEZONE}, UTC−3).`);

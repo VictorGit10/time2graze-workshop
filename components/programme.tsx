@@ -1,7 +1,6 @@
 import { Clock3 } from 'lucide-react';
 import { AGENDA } from '@/data/agenda';
 import type { Day, Session, Track } from '@/data/types';
-import { VENUES } from '@/data/venues';
 import { type Clock, nextSessionId, stateOf } from '@/lib/now';
 import {
   axisBounds, axisTicks, dayLabel, durationOf, fromMinutes, isEvening, timeLabel,
@@ -32,10 +31,6 @@ function span(session: Session, from: number) {
   } as React.CSSProperties;
 }
 
-function venueOf(session: Session) {
-  return session.venueId ? VENUES[session.venueId].short : null;
-}
-
 function speakerOf(item: Session | Track) {
   if (!item.speakers) return null;
   return item.speakers
@@ -57,17 +52,6 @@ function PresenterLine(
   );
 }
 
-function VenueLine({ session }: { session: Session }) {
-  const venue = venueOf(session);
-
-  return (
-    <span className="tl-where" data-pending={venue ? undefined : true}>
-      <span className="tl-meta-label">Venue</span>
-      <span>{venue ?? 'Pending confirmation'}</span>
-    </span>
-  );
-}
-
 /** One activity inside a split session. */
 function TrackCard({ track }: { track: Track }) {
   return (
@@ -85,7 +69,7 @@ function TrackCard({ track }: { track: Track }) {
 function Block(
   { session, from, state }: { session: Session; from: number; state: SessionMark },
 ) {
-  /* Under 45 minutes there is no room to stack time, title and venue, so the
+  /* Under 45 minutes there is no room to stack time, title and metadata, so the
      block lays them out on one row instead of clipping them. */
   const compact = (durationOf(session) ?? 0) <= 45;
 
@@ -122,7 +106,6 @@ function Block(
         )}
 
         <p className="tl-block-meta">
-          <VenueLine session={session} />
           {session.venueNote && (
             <span className="tl-note">
               <span className="tl-meta-label">Note</span>
@@ -168,7 +151,6 @@ function Point(
               <span>{presenter}</span>
             </span>
           )}
-          <VenueLine session={session} />
         </p>
       </div>
     </div>
@@ -271,7 +253,6 @@ function List(
               )}
 
               <p className="session-meta">
-                <VenueLine session={session} />
                 {session.venueNote && (
                   <span className="tl-note">
                     <span className="tl-meta-label">Note</span>
@@ -320,7 +301,6 @@ export function Programme({ day, clock }: { day: Day; clock: Clock | null }) {
                   </h4>
                   <PresenterLine item={s} />
                   <p className="tl-block-meta">
-                    <VenueLine session={s} />
                     {s.venueNote && (
                       <span className="tl-note">
                         <span className="tl-meta-label">Note</span>

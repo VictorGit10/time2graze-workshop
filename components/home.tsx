@@ -37,7 +37,7 @@ const DESTINATIONS = [
   {
     href: '/practical/',
     title: 'Practical information',
-    detail: 'Stay, meals, transport and venue maps',
+    detail: 'Stay, transport and location maps',
     status: 'Key details pending',
     tone: 'pending',
   },

@@ -7,7 +7,7 @@ const MONTHS = [
   'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
 ];
 
-/** Kinds that carry their venue inside the agenda line, as "Lunch @ Centro de Eventos". */
+/** Kinds that may carry their venue in compact derived labels. */
 const VENUE_IN_LINE = new Set(['meal', 'break', 'social']);
 
 /** Parses an ISO date in UTC, so the weekday never shifts with the local zone. */

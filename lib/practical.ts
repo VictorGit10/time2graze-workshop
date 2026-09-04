@@ -4,7 +4,7 @@ import type { VenueId } from '@/data/venues';
 import { sessionTitle, shortDate, timeLabel } from './schedule';
 
 /**
- * The meals and movements the practical page lists, read out of the agenda.
+ * The movements the practical page can list, read out of the agenda.
  *
  * There is no second list to keep in step: the agenda is the single source,
  * and these lines change when it changes. Movements carry their time, because
@@ -16,7 +16,6 @@ import { sessionTitle, shortDate, timeLabel } from './schedule';
 export type PracticalLine = { label: string; venueId: VenueId | null };
 export type DayLines = { day: string; lines: PracticalLine[] };
 
-const MEAL_KINDS = new Set<SessionKind>(['meal', 'social']);
 const MOVEMENT_KINDS = new Set<SessionKind>(['transport', 'field']);
 
 function isFollowingDay(previous: string, current: string) {
@@ -58,11 +57,6 @@ function linesOf(kinds: Set<SessionKind>, withTime: boolean): DayLines[] {
       : `${shortDate(row.dates[0]).split(' ')[0]}–${shortDate(row.dates.at(-1) ?? row.dates[0])}`,
     lines: row.lines,
   }));
-}
-
-/** Where participants eat and raise a glass, by day. */
-export function mealsByDay(): DayLines[] {
-  return linesOf(MEAL_KINDS, false);
 }
 
 /** Where the workshop takes them, by day — with the times that catch a bus. */

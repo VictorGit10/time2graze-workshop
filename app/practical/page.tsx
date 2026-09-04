@@ -4,17 +4,15 @@ import { useState, type ReactNode } from 'react';
 import Image from 'next/image';
 import {
   BookOpen, BusFront, Camera, Car, Check, ChevronDown, ChevronRight, CircleAlert, Copy,
-  ExternalLink, Globe, Hotel, MapPin, Phone, UtensilsCrossed,
+  ExternalLink, Globe, Hotel, MapPin, Phone,
 } from 'lucide-react';
 import { ACCOMMODATION_PLAN, LOCAL_GUIDES, SHUTTLE_PLAN } from '@/data/practical';
 import { MAP_VENUES, VENUES, type VenueId } from '@/data/venues';
 import { useTabKeys } from '@/hooks/use-tab-keys';
 import { withBasePath } from '@/lib/base-path';
-import { mealsByDay } from '@/lib/practical';
 import { googleMapsLink, osmEmbedSrc, uberLink } from '@/lib/places';
 
 const hotel = VENUES.hotel;
-const ADDITIONAL_VENUES: VenueId[] = ['funape', 't2gArea'];
 
 /** `tel:` wants digits and a plus, not the spacing a reader needs. */
 function telHref(phone: string) {
@@ -78,7 +76,7 @@ export default function PracticalPage() {
     <>
       <section className="practical section-pad" id="practical">
         <div className="section-title split-title">
-          <div><p>Practical information</p><h1>Stay, meals and transport</h1></div>
+          <div><p>Practical information</p><h1>Stay and transport</h1></div>
           <span>Operational details for travelling participants</span>
         </div>
 
@@ -107,29 +105,6 @@ export default function PracticalPage() {
               <CircleAlert aria-hidden="true" />
               {ACCOMMODATION_PLAN.confirmation}
             </div>
-          </article>
-
-          <article className="practical-card" id="meals">
-            <header className="practical-card-head"><UtensilsCrossed aria-hidden="true" /><em className="status confirmed">From the programme</em></header>
-            <h3>Meals</h3>
-            <ul>
-              {mealsByDay().map((row) => (
-                <li key={row.day}>
-                  <strong>{row.day}</strong>
-                  <span className="practical-lines">
-                    {row.lines.map((line, index) => (
-                      <span key={`${row.day}-${line.label}`}>
-                        {index > 0 ? <i aria-hidden="true"> · </i> : null}
-                        {line.venueId
-                          ? <PlaceLink venueId={line.venueId} onSelect={selectVenue}>{line.label}</PlaceLink>
-                          : line.label}
-                      </span>
-                    ))}
-                  </span>
-                </li>
-              ))}
-            </ul>
-            <p className="card-note">Dietary requirement instructions and remaining meal details are still to be confirmed.</p>
           </article>
 
           <article className="practical-card" id="transport">
@@ -236,19 +211,6 @@ export default function PracticalPage() {
               </p>
             </div>
           </div>
-        </div>
-
-        <div className="additional-locations" aria-label="Locations awaiting map details">
-          {ADDITIONAL_VENUES.map((venueId) => {
-            const item = VENUES[venueId];
-            return (
-              <article key={venueId} id={`venue-${venueId}`}>
-                <MapPin aria-hidden="true" />
-                <div><h3>{item.name}</h3><p>{item.use}</p></div>
-                <em>{'pending' in item ? item.pending : 'Address and map pin to be confirmed.'}</em>
-              </article>
-            );
-          })}
         </div>
       </section>
 

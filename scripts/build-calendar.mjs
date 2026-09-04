@@ -19,8 +19,7 @@ if (CALENDAR_RELEASE === 'final') {
     (session) =>
       !session.end ||
       session.endStatus === 'provisional' ||
-      session.status === 'tbd' ||
-      session.venueId === null,
+      session.status === 'tbd',
   );
 
   if (unresolved.length) {

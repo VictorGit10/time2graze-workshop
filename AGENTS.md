@@ -412,7 +412,9 @@ Refinement here means utility executed well, not features added:
 - **Add to calendar** (`.ics`, per day and per session). High value, but **only
   after times, venues and timezone are confirmed.** Generating calendar files
   from provisional data pushes wrong times into thirty people's phones, which
-  is worse than not offering it.
+  is worse than not offering it. The live Google Calendar is generated from
+  the same files and inherits this gate — see
+  [The live Google Calendar](#the-live-google-calendar).
 - **Accessibility section**, with a route to ask for support.
 
 ## Data model
@@ -539,6 +541,8 @@ public/                      Hero, social preview, favicon and candidate logos.
 research/logos/              Logo provenance and previous-site references.
 research/venues.md           Where every address, pin and photo licence came from.
 components/ui/               60 unused shadcn components. Nothing imports them.
+apps-script/                clasp project: live calendar sharing + daily .ics sync.
+lib/calendar-sharing.ts     JSONP request to the Apps Script web app.
 ```
 
 Only the pages that need the browser are client components: `/programme/`
@@ -689,6 +693,46 @@ renders in a plain `<a href>`, so a file under `public/` would 404 on Pages
 without the prefix. `withBasePath` handles it, for site-rooted paths only;
 external URLs pass through untouched. Keep material files out of
 `public/materials/`, which collides with the `/materials/` route.
+
+## The live Google Calendar
+
+`apps-script/` is a Google Apps Script project, pushed with `clasp` (installed
+and authenticated on the working machine). It owns one dedicated calendar —
+*Time2Graze Brazil Workshop*, never the organiser's own — and does two jobs:
+
+- **Sharing.** The deployed web app receives `?action=share&email=…` and shares
+  that calendar with the address as a reader, `sendNotifications: true`, so
+  Google sends the invitation and the participant accepts it. An account
+  cannot be subscribed silently. The address is checked against the calendar's
+  ACL list first, so a repeat request answers "already" and sends nothing.
+  A soft daily cap (`DAILY_SHARE_LIMIT` in `apps-script/code.gs`) keeps this
+  public endpoint from being used to mass-mail invitations.
+- **Sync.** `syncFromSite()` fetches the published
+  `/calendar/time2graze-workshop.ics` and makes the Google Calendar match it:
+  events are matched by UID, patched only where a content hash changed, and
+  deleted when they leave the feed. A daily trigger (armed once by `setup()`)
+  keeps it current. **The published .ics is the single source of truth** — the
+  script holds no second copy of the programme, and a feed with fewer than
+  five events is refused rather than wiping the calendar. Changing the agenda
+  and pushing the site is the whole update procedure; the script is not
+  touched again.
+
+**Why JSONP and not fetch.** Apps Script responses carry no CORS headers: a
+POST from the site is unreadable and a plain GET fails. The site loads a
+`<script>` tag with a validated callback name (`lib/calendar-sharing.ts`) and
+the endpoint answers `callback({...});` as JavaScript. The address is visible
+in the URL — accepted because it is a single field for a workshop of thirty,
+not a credential.
+
+**Deploying the script.** Only when the endpoint logic changes — never for a
+programme change. `cd apps-script && clasp push`. The first deployment is a
+web app: script.google.com → Deploy → New deployment → Web app, "Execute as
+me", access "Anyone" — `appsscript.json` already carries these defaults and
+the scopes, and running `setup` once in the editor accepts the authorisation
+prompt on the owner's side. The `/exec` URL goes into `SHARE_ENDPOINT` in
+`lib/calendar-sharing.ts`; while that constant is empty the form is not
+rendered and the site behaves exactly as before. Never put the organiser's
+main calendar's ID in `getWorkshopCalendarId`.
 
 ## Waiting on the LAPIG team
 

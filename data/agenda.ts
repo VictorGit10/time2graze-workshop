@@ -10,9 +10,9 @@ import type { Day } from './types';
  */
 /**
  * Calendar publication state. The beta is deliberately tentative: provisional
- * end times are omitted from its events and pending venues are identified in
- * their descriptions. Change this to `final` only after the organiser approves
- * the complete programme; the calendar build then rejects unresolved items.
+ * end times are omitted from its events. Change this to `final` only after the
+ * organiser approves the complete programme; the calendar build then rejects
+ * unresolved items.
  */
 export const CALENDAR_RELEASE: 'beta' | 'final' = 'beta';
 
@@ -90,7 +90,7 @@ export const AGENDA: Day[] = [
         start: '16:00',
         end: '18:00',
         title: 'Field Visit — T2G Biomass Experimental Area',
-        venueId: 't2gArea',
+        venueId: null,
         kind: 'field',
       },
       {
@@ -99,7 +99,7 @@ export const AGENDA: Day[] = [
         start: '18:00',
         end: '22:00',
         title: 'Welcome Dinner',
-        venueId: 'lapig',
+        venueId: null,
         venueNote: 'Pizza',
         kind: 'social',
       },
@@ -158,7 +158,7 @@ export const AGENDA: Day[] = [
         end: '14:00',
         endStatus: 'provisional',
         title: 'Lunch',
-        venueId: 'centroEventos',
+        venueId: null,
         kind: 'meal',
       },
       {
@@ -179,7 +179,7 @@ export const AGENDA: Day[] = [
         end: '16:00',
         endStatus: 'provisional',
         title: 'Coffee Break',
-        venueId: 'funape',
+        venueId: null,
         kind: 'break',
       },
       {
@@ -287,7 +287,7 @@ export const AGENDA: Day[] = [
         end: '14:00',
         endStatus: 'provisional',
         title: 'Lunch',
-        venueId: 'centroEventos',
+        venueId: null,
         kind: 'meal',
       },
       {
@@ -316,7 +316,7 @@ export const AGENDA: Day[] = [
         start: '15:30',
         end: '16:00',
         title: 'Coffee Break',
-        venueId: 'funape',
+        venueId: null,
         kind: 'break',
       },
       {
@@ -394,7 +394,7 @@ export const AGENDA: Day[] = [
         end: '14:00',
         endStatus: 'provisional',
         title: 'Lunch',
-        venueId: 'centroEventos',
+        venueId: null,
         kind: 'meal',
       },
       {
@@ -426,7 +426,7 @@ export const AGENDA: Day[] = [
         end: '16:00',
         endStatus: 'provisional',
         title: 'Coffee Break',
-        venueId: 'funape',
+        venueId: null,
         kind: 'break',
       },
       {
@@ -462,7 +462,7 @@ export const AGENDA: Day[] = [
         end: '21:30',
         endStatus: 'provisional',
         title: 'Closing Reception',
-        venueId: 'favoDeMel',
+        venueId: null,
         kind: 'social',
       },
     ],

@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Practical information · Time2Graze Brazil Workshop',
   description:
-    'Accommodation, meals, transport, workshop venues and maps for participants of the Time2Graze Brazil Workshop.',
+    'Accommodation, transport, workshop locations and maps for participants of the Time2Graze Brazil Workshop.',
 };
 
 export default function PracticalLayout({ children }: Readonly<{ children: React.ReactNode }>) {
