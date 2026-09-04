@@ -37,6 +37,9 @@ next-env.d.ts
 /outputs/
 /work/
 
+# Generated from data/agenda.ts by scripts/build-calendar.mjs
+/public/calendar/
+
 # build info
 tsconfig.tsbuildinfo
 

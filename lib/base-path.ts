@@ -9,5 +9,17 @@
  * dev` and any move to a host serving the site from its root.
  */
 export function withBasePath(path: string): string {
-  return path.startsWith('/') ? `${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}${path}` : path;
+  return path.startsWith('/')
+    ? `${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}${path}`
+    : path;
+}
+
+/**
+ * Calendar subscriptions are fetched by the calendar provider, not by the
+ * reader's browser, so they need the deployed absolute address. The deploy
+ * environment already includes the repository base path in this value.
+ */
+export function absoluteUrl(path: string): string | null {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '');
+  return siteUrl ? `${siteUrl}${path}` : null;
 }

@@ -20,6 +20,7 @@ Implemented:
 - deep links to each day and scheduled item;
 - print layout containing all five days;
 - `Today`, `Now` and `Next` states in `America/Sao_Paulo`;
+- beta `.ics` calendar export for all five days or the selected day;
 - materials generated from the sessions and tracks that produce them;
 - venue maps with candidate pins visibly marked and ride links restricted to
   confirmed destinations;
@@ -27,7 +28,7 @@ Implemented:
 
 Waiting for confirmed information:
 
-- `.ics` calendar files: blocked until times, venues and timezone are approved;
+- final calendar release: beta entries remain tentative and omit provisional end times;
 - hotel, booking, check-in and check-out details;
 - confirmation of the LAPIG and Centro de Eventos pins and the exact Favo de
   Mel unit;

@@ -8,6 +8,14 @@ import type { Day } from './types';
  * programme item or the rhythm of the day. They are visible as such and must
  * not drive the live "Now" state or calendar files until approved.
  */
+/**
+ * Calendar publication state. The beta is deliberately tentative: provisional
+ * end times are omitted from its events and pending venues are identified in
+ * their descriptions. Change this to `final` only after the organiser approves
+ * the complete programme; the calendar build then rejects unresolved items.
+ */
+export const CALENDAR_RELEASE: 'beta' | 'final' = 'beta';
+
 export const AGENDA: Day[] = [
   {
     index: 1,

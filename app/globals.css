@@ -358,6 +358,21 @@ button { color: inherit; font: inherit; }
 .day-summary h3 { margin: 0; font-family: var(--font-serif), Georgia, serif; font-size: clamp(30px, 3.4vw, 42px); font-weight: 600; }
 .day-summary small { display: block; margin-top: 12px; color: var(--muted); font-size: var(--t-meta); }
 
+/* Calendar export follows the selected day but sits after the joined tab and
+   panel frame. In beta, the copy states uncertainty where the action happens. */
+.calendar-actions { display: grid; grid-template-columns: minmax(270px, 1fr) auto; gap: 16px 32px; align-items: center; margin-top: 24px; padding: 20px 22px; background: var(--surface-soft); border: 1px solid var(--line); border-left: 3px solid var(--forest); }
+.calendar-intro { display: flex; align-items: center; gap: 13px; min-width: 0; }
+.calendar-intro > svg { flex: 0 0 auto; width: 19px; height: 19px; color: var(--forest); }
+.calendar-intro p { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; margin: 0; font-size: var(--t-body); font-weight: 800; }
+.calendar-intro p em { padding: 3px 7px; color: var(--warning); background: var(--warning-bg); border-radius: 99px; font-size: var(--t-label); font-style: normal; letter-spacing: .06em; text-transform: uppercase; }
+.calendar-intro span { display: block; margin-top: 4px; color: var(--muted); font-size: var(--t-meta); line-height: 1.45; }
+.calendar-links { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+.calendar-links a { display: inline-flex; align-items: center; justify-content: center; min-height: 42px; padding: 0 14px; color: var(--forest); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); font-size: var(--t-meta-lg); font-weight: 750; transition: color var(--m-quick) var(--m-ease), background var(--m-quick) var(--m-ease), border-color var(--m-quick) var(--m-ease); }
+.calendar-links a:hover { border-color: var(--forest); }
+.calendar-links .calendar-primary { color: #fff; background: var(--forest); border-color: var(--forest); }
+.calendar-links .calendar-primary:hover { color: var(--forest-dark); background: var(--accent); }
+.calendar-note { grid-column: 1 / -1; margin: 0; padding-top: 13px; color: var(--muted); border-top: 1px solid var(--line); font-size: var(--t-meta); line-height: 1.5; }
+
 .materials { background: var(--paper); }
 .materials-notice { display: flex; align-items: center; gap: 14px; max-width: none; margin: -18px auto 46px; padding: 14px 18px; color: var(--text); background: transparent; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 5px solid var(--forest); }
 .materials-notice svg { flex: 0 0 auto; width: 17px; height: 17px; }
@@ -535,6 +550,9 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
   .day-summary { padding: 30px 24px; border-right: 0; border-bottom: 1px solid var(--line); }
   .day-summary h3 { font-size: 42px; }
   .day-summary p { margin-top: 40px; }
+  .calendar-actions { grid-template-columns: 1fr; }
+  .calendar-links { justify-content: flex-start; }
+  .calendar-note { grid-column: 1; }
   .practical-grid { grid-template-columns: 1fr; }
   .practical-card:nth-child(n) { grid-column: auto; grid-row: auto; }
   .practical-card:nth-child(3) ul { grid-template-columns: 1fr; }
@@ -588,6 +606,8 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
   .split-title > span { text-align: left; }
   .programme-title { align-items: flex-start; flex-direction: column; gap: 22px; margin-bottom: 32px; }
   .programme-clock { justify-content: space-between; width: 100%; margin: 0; padding: 14px 0 0; border-top: 1px solid var(--line); border-left: 0; }
+  .calendar-actions { padding: 18px; }
+  .calendar-links a { flex: 1 1 180px; }
   .day-tabs { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; }
   .day-tabs button { min-width: 160px; scroll-snap-align: start; }
   .resource-group { grid-template-columns: 1fr; gap: 26px; }
@@ -755,6 +775,7 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
   .skip-link,
   .day-tabs,
   .agenda-panel,
+  .calendar-actions,
   .materials-notice,
   .practical-status-line,
   .venue-panel,

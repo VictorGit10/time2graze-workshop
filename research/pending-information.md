@@ -12,7 +12,9 @@ live state or calendar files until approved. Venue evidence is recorded in
   presenters, venues and the `America/Sao_Paulo` timezone.
 - [ ] Confirm or correct the 20 end times currently labelled “End time to
   confirm”; these were inferred from the next activity or the day’s structure.
-- [ ] Generate per-day and per-session `.ics` files only after that approval.
+- [ ] Promote the beta calendar to final by changing `CALENDAR_RELEASE` in
+  `data/agenda.ts` only after all dates, intervals and venues are approved.
+  The final calendar build deliberately fails while unresolved items remain.
 - [ ] Supply the 21 expected presentation/document files declared in the
   agenda. Until each file exists, its link remains “To be published”.
 - [ ] Confirm the participant-access route for the shared workshop folder.
