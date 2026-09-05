@@ -1,9 +1,7 @@
 import type { Day, Session, Track } from '@/data/types';
-import type { Venue, VenueId } from '@/data/venues';
 
 export const CALENDAR_TIMEZONE = 'America/Sao_Paulo';
 
-type VenueRegistry = Record<VenueId, Venue>;
 type CalendarRelease = 'beta' | 'final';
 
 type CalendarOptions = {
@@ -86,16 +84,10 @@ function summary(session: Session, release: CalendarRelease) {
   return value;
 }
 
-function location(session: Session, venues: VenueRegistry) {
-  if (!session.venueId) return null;
-  const venue = venues[session.venueId];
-  const address = venue.address ?? venue.locality;
-  return address ? `${venue.name} — ${address}` : venue.name;
-}
-
 function description(session: Session, options: CalendarOptions) {
   const lines = [
-    'Time2Graze Brazil Workshop · LAPIG, Universidade Federal de Goiás.',
+    'Time2Graze Brazil Workshop.',
+    'Daily transport is organised by the workshop. See Travel & stay on the workshop website for shuttle departures.',
   ];
   const speakers = speakerLine(session);
 
@@ -116,8 +108,6 @@ function description(session: Session, options: CalendarOptions) {
       );
     }
   }
-  if (session.requirements?.length)
-    lines.push(`Bring: ${session.requirements.join(' ')}`);
   if (session.endStatus === 'provisional') {
     lines.push(
       'The displayed end time is provisional and is not included in this calendar entry.',
@@ -134,7 +124,6 @@ function description(session: Session, options: CalendarOptions) {
 
 function event(
   session: Session,
-  venues: VenueRegistry,
   options: CalendarOptions,
 ) {
   const generated = utcStamp(options.stamp);
@@ -162,8 +151,8 @@ function event(
   rows.push(text('SUMMARY', summary(session, options.release)));
   rows.push(text('DESCRIPTION', description(session, options)));
 
-  const eventLocation = location(session, venues);
-  if (eventLocation) rows.push(text('LOCATION', eventLocation));
+  // Participants take the organised shuttle. Do not add a destination field
+  // that encourages independent travel from a calendar notification.
 
   rows.push(raw('CATEGORIES', session.kind.toUpperCase()));
   rows.push(
@@ -182,7 +171,6 @@ function event(
 
 export function icsCalendar(
   days: Day[],
-  venues: VenueRegistry,
   options: CalendarOptions,
 ) {
   const rows = [
@@ -197,7 +185,7 @@ export function icsCalendar(
     'X-PUBLISHED-TTL:PT12H',
     ...VTIMEZONE,
     ...days.flatMap((day) =>
-      day.sessions.flatMap((session) => event(session, venues, options)),
+      day.sessions.flatMap((session) => event(session, options)),
     ),
     'END:VCALENDAR',
   ];

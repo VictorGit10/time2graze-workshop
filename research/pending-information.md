@@ -1,6 +1,6 @@
 # Pending information
 
-Operational checklist for the Time2Graze/LAPIG team. Last reviewed 3 September
+Operational checklist for the Time2Graze/LAPIG team. Last reviewed 5 September
 2026. Missing facts stay visibly pending. Twenty end times requested for visual
 programme continuity are explicitly marked provisional and cannot drive the
 live state or calendar files until approved. Venue evidence is recorded in
@@ -20,18 +20,16 @@ live state or calendar files until approved. Venue evidence is recorded in
 - [ ] Confirm the participant-access route for the shared workshop folder.
 - [ ] Decide whether to publish a dated final programme PDF for offline use.
 
-## Accommodation and meals
+## Accommodation
 
 - [ ] Confirm that the workshop has paid and organised accommodation at Golden
   Lis for the complete 13–18 September stay.
 - [ ] Confirm what the workshop payment covers, including breakfast.
-- [ ] Confirm check-in and check-out times.
 - [ ] Check the hotel-published CEP `74670-600` against the booking confirmation;
   OpenStreetMap records a different CEP for that stretch of the avenue.
 - [ ] Confirm whether dinners on 15, 16 and 18 September are at the hotel
   restaurant, as the current agenda implies.
 - [ ] Obtain an authorised hotel photograph and its required credit line.
-- [ ] Define how and by when participants report dietary requirements.
 
 ## Transfers, daily transport and venues
 
@@ -55,14 +53,17 @@ live state or calendar files until approved. Venue evidence is recorded in
   Favo de Mel if the team wants photographs in their venue panels.
 - [ ] Test the Golden Lis Uber link on a physical Android or iPhone with the app
   installed. The desktop web fallback has already been verified.
+- [ ] Test the LAPIG Uber link on a physical Android or iPhone. The organiser
+  authorised this link to the existing sourced pin on 5 September 2026;
+  postal address and entrance confirmation remain separate.
 
 ## Participant support
 
-- [ ] Provide the workshop emergency contact and nearest appropriate hospital.
-- [ ] Provide accessibility arrangements and a contact route for support.
-- [ ] Supply the final field checklist, clothing and safety guidance.
-- [ ] Approve weather guidance, useful local contacts, nearby services and any
-  recommendations for free time.
+The Meals section and the Participant support placeholders (emergency
+contact, accessibility contact, field checklist & weather) were removed from
+the site at the organiser's request on 5 September 2026; there are no longer
+sections waiting on these facts. Still open:
+
 - [ ] State in writing which areas of Goiânia participants can move around on
   their own, and how. The self-guided Art Deco route through the central
   district was removed from the local guide on 3 September 2026 because the

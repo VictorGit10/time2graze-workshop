@@ -49,8 +49,14 @@ export function scrollToSession(id: string) {
     return;
   }
 
-  const grid = document.querySelector('.timeline');
-  const gridVisible = grid !== null && getComputedStyle(grid).display !== 'none';
+  /**
+   * Which representation is shown is decided by the breakpoint, so read the
+   * viewport rather than the computed style of the grid: a scroll fired before
+   * `load` (as a session link does) can measure the grid before the stylesheet
+   * applies, find it `display: block`, and roll to the hidden desktop block
+   * instead of the mobile list.
+   */
+  const gridVisible = window.innerWidth >= 1280;
 
   // A sessão aparece em dois lugares. No desktop vale a que não está na lista
   // — pode ser um bloco da grade ou uma linha do bloco noturno, que fica fora

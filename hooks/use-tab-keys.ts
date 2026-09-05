@@ -24,7 +24,8 @@ export function useTabKeys(
     if (next === undefined) return;
     event.preventDefault();
     setActive(next);
-    const list = event.currentTarget.querySelectorAll<HTMLButtonElement>('[role="tab"]');
+    // Anchors or buttons, whichever the tablist renders: focus follows selection.
+    const list = event.currentTarget.querySelectorAll<HTMLElement>('[role="tab"]');
     list[next]?.focus();
   };
 }

@@ -49,10 +49,9 @@ export type Venue = {
    */
   organisedTransport?: boolean;
   /**
-   * A ride link may be offered. Set only where the destination itself is
-   * confirmed — both the pin and the address — because a ride link carries a
-   * reader to a point rather than to a name they can re-read. Absent means no
-   * ride link, however good the sourced pin looks.
+   * Organiser authorisation to offer a ride to the recorded coordinate.
+   * This does not confirm a postal address or entrance. LAPIG was explicitly
+   * authorised on 5 September 2026; its address remains pending.
    */
   ride?: boolean;
   /** Absent until an authorised photograph exists. */
@@ -75,6 +74,7 @@ export const VENUES = {
      * against the IESA building in OpenStreetMap, 222 m away.
      */
     coords: { lat: -16.6022387, lon: -49.2649118 },
+    ride: true,
     pending: 'Postal address, building entrance and campus access to be confirmed by LAPIG.',
     photo: {
       src: '/images/venues/lapig.webp',
@@ -101,7 +101,7 @@ export const VENUES = {
       alt: 'Front entrance of Golden Lis Hotel Boutique in Goiânia',
       credit: 'Photo supplied for this website',
     },
-    pending: 'Confirm that workshop payment and accommodation cover 13–18 September; check-in and check-out times are still to be confirmed.',
+    pending: 'Coverage of the full 13–18 September stay is pending confirmation.',
     website: 'https://goldenlishoteis.com.br/',
     phone: '+55 62 3639-1003',
     onMap: true,

@@ -86,9 +86,9 @@ Four pages, literal names:
 | Path          | Holds |
 | ------------- | ----- |
 | `/`           | What, when and where; the overview; partners; and during the week, the session running now and the one due next. |
-| `/programme/` | The five days, the proportional grid, requirements, print, and `.ics` once times are approved. |
+| `/programme/` | The five days, the proportional grid, print, and `.ics` once times are approved. |
 | `/materials/` | Presentations and documents by day, each linked to the session that produces it. |
-| `/practical/` | Hotel, meals, transfers, daily transport, maps, recommendations, accessibility, emergency contact. |
+| `/practical/` | Hotel, transfers, daily transport, maps and recommendations. |
 
 The same navigation appears on every page: `Home`, `Programme`, `Materials`,
 `Practical information`. On small screens it stays in the sticky header as a
@@ -181,7 +181,7 @@ then, visual continuity is not operational certainty.
 
 **Do not force this diagram onto a phone.** Below the desktop breakpoint, and
 in print, use a compact chronological list — very well composed, carrying time,
-duration, presenter and institution, venue, materials, requirements, calendar
+duration, presenter and institution, venue, materials, calendar
 action, and parallel activities grouped under their shared start. Making the
 signature work at 375px would turn it into an obstacle. Responsive adaptation
 here is correct, not a compromise.
@@ -262,6 +262,14 @@ the panel opens on Day 1.
   `.session-list`.
 - `scrollIntoView` is called without `behavior`, letting the CSS decide; the
   `prefers-reduced-motion` rule already switches it to instant.
+- **The day tabs are anchors, not buttons** — `<a role="tab" href="#day-N">`
+  with the click intercepted, so modifier-click, open-in-new-tab and copy-link
+  all work while the tab semantics (roving tabindex, arrow keys) stay intact.
+- **A hash that resolves to nothing is announced** (`role="status"`), not
+  silently dropped — a stale session link landing on Day 1 now says so.
+- **`[data-session]` carries `scroll-margin-top: 160px`** so a deep-linked
+  session clears the sticky header. The session scroll uses `block: center`,
+  which ignores scroll-margin — 160px covers the header plus half a block.
 
 ### One rail
 
@@ -272,7 +280,7 @@ a padded section is allowed to reach.
 
 There are two shapes, and they must not be mixed:
 
-- **A band** (`.institutional-hero`, `.now-band`, `.information-nav`) is the
+- **A band** (`.now-band`, the home hero, the footer) is the
   element itself: `max-width: var(--wide)`,
   `margin: 0 auto`, `padding-inline: var(--gutter)`.
 - **A section** (`.section-pad`) keeps its background full-bleed and pads
@@ -407,15 +415,12 @@ Refinement here means utility executed well, not features added:
 - **Print.** People print agendas. All five days in sequence, one per page
   where possible — which means every day must reach the print output, not only
   the selected tab. Printing the active panel alone would be a bug.
-- **Requirements, stated early.** Day 1 includes a Google Earth Engine course;
-  participants need a laptop and a registered account before Monday morning.
 - **Add to calendar** (`.ics`, per day and per session). High value, but **only
   after times, venues and timezone are confirmed.** Generating calendar files
   from provisional data pushes wrong times into thirty people's phones, which
   is worse than not offering it. The live Google Calendar is generated from
   the same files and inherits this gate — see
   [The live Google Calendar](#the-live-google-calendar).
-- **Accessibility section**, with a route to ask for support.
 
 ## Data model
 
@@ -434,7 +439,6 @@ type WorkshopSession = {
   kind: 'technical' | 'meal' | 'break' | 'transport' | 'field' | 'social';
   tracks?: ParallelTrack[];    // parallel activities modelled explicitly
   materials?: Material[];
-  requirements?: string[];
   status?: 'confirmed' | 'tbd';
 };
 ```
@@ -488,7 +492,7 @@ Extract the data with no visual change at all, as its own step.
 6. "Today / Now / Next" state in `America/Sao_Paulo`.
 7. `.ics` files — once times are confirmed.
 8. Materials linked to their sessions.
-9. Hotel, meals, transport and accessibility, as data is confirmed.
+9. Hotel and transport, as data is confirmed.
 10. Toolchain migration to Next.js, so that routes actually emit HTML.
 11. The four-page split and its persistent navigation.
 12. Offline: a service worker or a downloadable PDF — decide, do not assume.
@@ -500,9 +504,8 @@ The site is meant to grow into a full workshop hub and will receive:
 
 - the actual files for the 21 materials already declared on their sessions
 - hotel details, booking and check-in information
-- meals and dietary arrangements
 - detailed maps of the venues and the region
-- participant recommendations: arrival, weather, local guidance
+- participant recommendations: arrival and local guidance
 
 Build these out as the real content arrives. Do not delete the placeholders,
 and do not fill them with invented detail in the meantime.
@@ -516,7 +519,7 @@ app/programme/layout.tsx     Route metadata. The page is a client component.
 app/programme/page.tsx       Day tabs, deep links and the printable programme.
 app/materials/page.tsx       Materials by day. A server component: no state.
 app/practical/layout.tsx     Route metadata. The page is a client component.
-app/practical/page.tsx       Stay, meals, transport, maps and recommendations.
+app/practical/page.tsx       Stay, transport, maps and recommendations.
 app/globals.css              Shared tokens, screen, responsive and print styles.
 components/site-header.tsx   Persistent navigation, with the current page marked.
 components/site-footer.tsx   Footer, shared by every page.
@@ -533,7 +536,7 @@ lib/deep-link.ts             Day/session hash resolution and scrolling.
 lib/materials.ts             Materials view derived from the agenda.
 lib/now.ts                   Goiânia clock and Today/Now/Next rules.
 lib/places.ts                Map embed, map link and ride link, from coordinates.
-lib/practical.ts             Meals and transport lines, derived from the agenda.
+lib/practical.ts             Transport lines, derived from the agenda.
 lib/schedule.ts              Time, duration and programme-axis helpers.
 next.config.ts               Static export, trailing slash and the Pages basePath.
 postcss.config.mjs           Tailwind, imported by globals.css for its reset only.
@@ -553,9 +556,9 @@ declared inside a component.
 
 ## Where content lives
 
-- Edit `data/agenda.ts` to change a session, presenter, track, requirement or
-  expected material. It feeds `/programme/`, `/materials/`, the home page's
-  "happening now" band, and the meals and transport lines on `/practical/`
+- Edit `data/agenda.ts` to change a session, presenter, track or expected
+  material. It feeds `/programme/`, `/materials/`, the home page's
+  "happening now" band, and the transport lines on `/practical/`
   (`lib/practical.ts`) at once.
 - Edit `data/venues.ts` to change a venue, its pin or its address. The
   programme, the agenda lines and the location panel share this registry.
@@ -752,16 +755,12 @@ summary aligned.
 - Confirm that participants arrange their own airport-to-hotel Uber/taxi
 - Confirm the contracted shuttle's 08:00 Monday–Thursday departure, pickup
   points and returns; Friday leaves at 06:30
-- Dietary requirements: how participants report them, and by when
 - Day 5: the two grazing livestock farms are still "TBD"
-- Workshop emergency contact and nearest hospital
-- Accessibility arrangements and a contact route for support
 - Final partner matrix beyond the publicly documented funder, project leads
   and workshop hosts already grouped on the home page
 - Final approval of the agenda, required before `.ics` files are generated
 - The 21 expected presentation/document files, the shared-folder route and the
   final programme PDF
-- Field checklist, weather guidance and workshop-specific local contacts
 - Written guidance on where in Goiânia participants can move around on
   their own. The self-guided Art Deco route was removed from the local
   guide on 3 September 2026 because the organiser judged the central
@@ -790,3 +789,42 @@ undo that — and the venue photograph uses `fill` with `sizes`, which works onl
 because `.venue-photo` is already `position: relative`. `withBasePath` still has
 to prefix both sources: `next/image` does not apply `basePath` to a string
 `src` when images are unoptimised.
+
+## Current UX decisions — 5 September 2026
+
+These organiser-approved decisions supersede the earlier navigation and location
+presentation rules in this document:
+
+- Four routes remain; navigation is Home, Programme, Travel, Materials. Travel
+  uses the existing `/practical/` URL and is titled Travel & stay. All four
+  navigation links fit on a phone without horizontal scrolling.
+- Programme and ICS do not expose venue fields. Participants use the daily
+  workshop shuttle. Preserve session titles, speakers and times.
+- Hotel check-in/check-out confirmation has been removed from the site at the
+  organiser's request. Other unconfirmed operational facts remain pending.
+- The organiser explicitly authorised an Uber link to LAPIG's existing sourced
+  coordinates. `ride: true` records that authorisation, not a newly verified
+  street address or entrance; do not invent either. Golden Lis also offers Uber;
+  Cidade de Goiás continues to use organised transport.
+- Travel uses anchored venue blocks, with hotel actions in its opening screen.
+  Essential details precede optional map/photo disclosures. No venue selector.
+  Existing #stay, #transport, #maps and #map-panel links still resolve; new
+  destination links are #hotel, #lapig and #cidade-de-goias.
+- `components/venue-card.tsx` owns copy feedback and map disclosure. The Travel
+  page itself is a server component; its styles live in `app/travel.css`.
+- Mobile days are five compact visible choices. Materials has a day index,
+  stable file-entry anchors and explicit View session links. All five print
+  days remain available; no venue navigation is added to Programme.
+- The Meals section was removed from Travel & stay at the organiser's request
+  on 5 September 2026, together with the meals lines in `lib/practical.ts`.
+  Meal items remain in the programme as agenda sessions; the `#meals` anchor
+  no longer resolves.
+- The Participant support section (emergency contact, accessibility contact,
+  field checklist & weather) was removed at the organiser's request on
+  5 September 2026. `SUPPORT_DETAILS` is gone from `data/practical.ts` and the
+  `#help` anchor no longer resolves. Do not restore these placeholders.
+- The "Before you arrive" preparation block and the `requirements` session
+  field were removed at the organiser's request on 5 September 2026. The
+  `.ics` export no longer emits "Bring:" lines. If a session ever needs a
+  stated requirement again, reintroduce the field rather than writing it into
+  a title.

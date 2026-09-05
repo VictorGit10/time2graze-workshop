@@ -23,11 +23,11 @@ function isFollowingDay(previous: string, current: string) {
   return Date.parse(current) - Date.parse(previous) === oneDay;
 }
 
-function linesOf(kinds: Set<SessionKind>, withTime: boolean): DayLines[] {
+function linesOf(include: (session: Session) => boolean, withTime: boolean): DayLines[] {
   const days = AGENDA.map((day) => ({
     date: day.date,
     lines: day.sessions
-      .filter((s): s is Session => kinds.has(s.kind))
+      .filter(include)
       .map((s) => ({
         label: withTime ? `${timeLabel(s)} · ${sessionTitle(s)}` : sessionTitle(s),
         venueId: s.venueId,
@@ -61,5 +61,5 @@ function linesOf(kinds: Set<SessionKind>, withTime: boolean): DayLines[] {
 
 /** Where the workshop takes them, by day — with the times that catch a bus. */
 export function movementsByDay(): DayLines[] {
-  return linesOf(MOVEMENT_KINDS, true);
+  return linesOf((session) => MOVEMENT_KINDS.has(session.kind), true);
 }

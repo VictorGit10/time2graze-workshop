@@ -63,8 +63,6 @@ export type Session = {
   kind: SessionKind;
   /** Present only for split sessions; `title` then acts as the group label. */
   tracks?: Track[];
-  /** What a participant must bring or prepare beforehand. */
-  requirements?: string[];
   materials?: Material[];
   /** Omitted means confirmed. 'tbd' renders visibly as unresolved. */
   status?: 'tbd';

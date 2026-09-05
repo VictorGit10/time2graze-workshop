@@ -343,3 +343,13 @@ Blocking, and not answerable by guessing:
     driven?
 13. Addresses for FUNAPE and the T2G Biomass Experimental Area, so
     they can join the location panel.
+
+## 5 September 2026 — organiser authorisation for LAPIG rides
+
+The site owner explicitly requested an Uber button to LAPIG, using the existing
+sourced coordinate (-16.6022387, -49.2649118). `ride: true` now records this
+authorisation. This is not a new geospatial verification or approval of a postal
+address. The ride carries the laboratory name and published campus locality;
+street address, entrance and campus access remain visibly pending. No new pin
+or address was inferred. Hotel check-in/check-out confirmation was also removed
+from participant-facing content at the owner's request.

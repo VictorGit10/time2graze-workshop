@@ -6,7 +6,7 @@ held in Goiânia, Brazil, from 14 to 18 September 2026.
 Live site: https://victorgit10.github.io/time2graze-workshop/
 
 The site is intentionally operational rather than promotional. It brings the
-programme, presentation materials, venues, accommodation, meals, transport and
+programme, presentation materials, venues, accommodation, transport and
 participant guidance together under four plainly named pages. Unknown
 information remains visibly pending; it is never replaced by a plausible guess.
 
@@ -33,9 +33,7 @@ Waiting for confirmed information:
 - confirmation of the LAPIG and Centro de Eventos pins and the exact Favo de
   Mel unit;
 - airport transfers and daily transport;
-- dietary-requirement instructions;
 - the two Day 5 farm locations;
-- accessibility arrangements, emergency contact and nearest hospital;
 - approval for any institutional marks beyond Land & Carbon Lab, UFG and LAPIG;
 - the expected presentation files, shared folder and final programme PDF.
 
@@ -47,12 +45,11 @@ decisions. The complete operational checklist is in
 
 Content is kept out of the page markup:
 
-- `data/agenda.ts` — days, sessions, tracks, speakers, requirements and
-  expected materials;
+- `data/agenda.ts` — days, sessions, tracks, speakers and expected materials;
 - `data/venues.ts` — the single venue registry used by the programme and maps;
 - `data/types.ts` — the content contracts;
 - `lib/materials.ts` — derives the Materials section from the agenda;
-- `lib/practical.ts` — derives the meals and transport lines on `/practical/`
+- `lib/practical.ts` — derives the transport lines on `/practical/`
   from the agenda;
 - `components/programme.tsx` — proportional, chronological and print
   representations of the programme;

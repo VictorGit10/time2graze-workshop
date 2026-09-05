@@ -28,17 +28,17 @@ const DESTINATIONS = [
     tone: 'neutral',
   },
   {
+    href: '/practical/',
+    title: 'Travel & stay',
+    detail: 'Hotel, daily shuttle, maps and Uber',
+    status: 'Key details pending',
+    tone: 'pending',
+  },
+  {
     href: '/materials/',
     title: 'Materials',
     detail: `${EXPECTED_FILES} expected files linked to sessions`,
     status: 'Publication pending',
-    tone: 'pending',
-  },
-  {
-    href: '/practical/',
-    title: 'Practical information',
-    detail: 'Stay, transport and location maps',
-    status: 'Key details pending',
     tone: 'pending',
   },
 ] as const;

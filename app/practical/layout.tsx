@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 
-/** The page itself is a client component, so its metadata lives here. */
+/** Keep metadata next to the stable /practical/ route. */
 export const metadata: Metadata = {
-  title: 'Practical information · Time2Graze Brazil Workshop',
+  title: 'Travel & stay · Time2Graze Brazil Workshop',
   description:
     'Accommodation, transport, workshop locations and maps for participants of the Time2Graze Brazil Workshop.',
 };

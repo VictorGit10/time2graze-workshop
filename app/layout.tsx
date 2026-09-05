@@ -4,6 +4,7 @@ import { SiteHeader } from '@/components/site-header';
 import { Cormorant_Garamond, Manrope } from 'next/font/google';
 import { withBasePath } from '@/lib/base-path';
 import './globals.css';
+import './travel.css';
 
 const sans = Manrope({ variable: '--font-sans', subsets: ['latin'] });
 const serif = Cormorant_Garamond({

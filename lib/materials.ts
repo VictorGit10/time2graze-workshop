@@ -13,6 +13,7 @@ export function materialLabel(material: Material) {
 
 /** A file, and the thing it belongs to. */
 export type MaterialEntry = {
+  id: string;
   material: Material;
   /** The session or track title, or the file's own name for day-level files. */
   context: string;
@@ -34,17 +35,31 @@ export function materialsByDay(): DayMaterials[] {
   return AGENDA.map((day) => {
     const entries: MaterialEntry[] = [];
 
-    for (const material of day.materials ?? []) {
-      entries.push({ material, context: materialLabel(material) });
+    for (const [index, material] of (day.materials ?? []).entries()) {
+      entries.push({
+        id: `material-day-${day.index}-${index}`,
+        material,
+        context: materialLabel(material),
+      });
     }
 
     for (const session of day.sessions) {
-      for (const material of session.materials ?? []) {
-        entries.push({ material, context: session.title, sessionId: session.id });
+      for (const [index, material] of (session.materials ?? []).entries()) {
+        entries.push({
+          id: `material-${session.id}-${index}`,
+          material,
+          context: session.title,
+          sessionId: session.id,
+        });
       }
       for (const track of session.tracks ?? []) {
-        for (const material of track.materials ?? []) {
-          entries.push({ material, context: track.title, sessionId: session.id });
+        for (const [index, material] of (track.materials ?? []).entries()) {
+          entries.push({
+            id: `material-${track.id}-${index}`,
+            material,
+            context: track.title,
+            sessionId: session.id,
+          });
         }
       }
     }
@@ -55,7 +70,11 @@ export function materialsByDay(): DayMaterials[] {
 
 /** The line under the title: what the file is, and how it is reached. */
 export function materialDetail(entry: MaterialEntry) {
-  const parts = [entry.sessionId ? materialLabel(entry.material) : KIND_LABEL[entry.material.kind]];
+  const parts = [
+    entry.sessionId
+      ? materialLabel(entry.material)
+      : KIND_LABEL[entry.material.kind],
+  ];
   if (entry.material.format) parts.push(entry.material.format);
   if (entry.material.restricted) parts.push('Participants only');
   return parts.join(' · ');

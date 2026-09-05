@@ -11,14 +11,13 @@ import { usePathname } from 'next/navigation';
 const DESTINATIONS = [
   { href: '/', label: 'Home' },
   { href: '/programme/', label: 'Programme' },
+  { href: '/practical/', label: 'Travel' },
   { href: '/materials/', label: 'Materials' },
-  { href: '/practical/', label: 'Practical information' },
 ] as const;
 
 /**
  * The same navigation on every page. It stays in the sticky header on small
- * screens as a scrollable row rather than collapsing into a drawer: four
- * links are quicker to read than a button that hides them.
+ * screens with all four destinations visible, without a drawer or scroll.
  */
 export function SiteHeader() {
   const pathname = usePathname();

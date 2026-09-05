@@ -41,6 +41,11 @@ export function googleMapsLink({ lat, lon }: Coordinates): string {
   return `https://www.google.com/maps/search/?${query}`;
 }
 
+/** Directions to a confirmed destination, leaving the origin to Maps. */
+export function directionsLink({ lat, lon }: Coordinates): string {
+  return `https://www.google.com/maps/dir/?${new URLSearchParams({ api: '1', destination: `${lat},${lon}` })}`;
+}
+
 /**
  * Uber's documented universal link, in its current form: the ride-request
  * path, with `pickup=my_location` and the first stop as an encoded location
@@ -49,17 +54,18 @@ export function googleMapsLink({ lat, lon }: Coordinates): string {
  * https://developer.uber.com/docs/riders/ride-requests/tutorials/deep-links/introduction
  *
  * It carries the reader to a point, not to a name they can re-read, so it is
- * only ever built for a venue marked `ride` in the registry — a coordinate and
- * an address we are willing to stand behind.
+ * only built for a venue explicitly authorised with `ride` in the registry.
+ * LAPIG was authorised on 5 September 2026 with its existing sourced pin;
+ * the locality is used without inventing a postal address.
  */
-export function uberLink({ lat, lon }: Coordinates, nickname: string, address: string): string {
+export function uberLink({ lat, lon }: Coordinates, nickname: string, address?: string): string {
   /* `addressLine1` is the dropoff's name and `addressLine2` the address a
      driver reads, in the location object the link parameters specify. */
   const dropoff = {
     latitude: lat,
     longitude: lon,
     addressLine1: nickname,
-    addressLine2: address,
+    ...(address ? { addressLine2: address } : {}),
   };
   const query = new URLSearchParams({
     pickup: 'my_location',

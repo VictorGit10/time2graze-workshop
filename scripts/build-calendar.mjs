@@ -8,7 +8,6 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { AGENDA, CALENDAR_RELEASE } from '../data/agenda.ts';
-import { VENUES } from '../data/venues.ts';
 import { icsCalendar } from '../lib/calendar.ts';
 
 const projectRoot = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -49,7 +48,7 @@ const files = [
 ];
 
 for (const file of files) {
-  const contents = icsCalendar(file.days, VENUES, {
+  const contents = icsCalendar(file.days, {
     name: file.title,
     release: CALENDAR_RELEASE,
     stamp,

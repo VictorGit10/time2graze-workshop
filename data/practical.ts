@@ -1,8 +1,7 @@
 /** Operational arrangements supplied by the workshop organiser on 3 September 2026. */
 export const ACCOMMODATION_PLAN = {
   dates: '13–18 September 2026',
-  payment: 'Covered and organised by the workshop',
-  confirmation: 'Please confirm that payment and accommodation cover the full 13–18 September stay, and confirm check-in and check-out times.',
+  payment: 'Organised by the workshop',
 } as const;
 
 export const SHUTTLE_PLAN = [

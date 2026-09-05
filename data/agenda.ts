@@ -52,7 +52,6 @@ export const AGENDA: Day[] = [
             materials: [{ kind: 'slides' }],
           },
         ],
-        requirements: ['A laptop with a registered Google Earth Engine account.'],
       },
       {
         id: 'd1-lunch',

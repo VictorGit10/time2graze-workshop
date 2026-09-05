@@ -1,0 +1,89 @@
+/* Travel is an operational page: destinations and actions stay together. */
+.travel-page { background: var(--paper); }
+.travel-heading { margin-bottom: 24px; }
+.travel-heading h1 { margin: 0; font-family: var(--font-serif), Georgia, serif; font-size: clamp(38px, 4.5vw, 60px); font-weight: 600; letter-spacing: -.035em; }
+.travel-heading p { margin: 8px 0 0; color: var(--muted); font-size: 15px; }
+.page-index { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+.page-index a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 8px 18px; color: var(--forest); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); font-size: 14px; font-weight: 700; transition: background var(--m-quick) var(--m-ease), border-color var(--m-quick) var(--m-ease); }
+.page-index a:hover { background: var(--accent); border-color: var(--forest); }
+.travel-arrival, .travel-places, .travel-guides { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; align-items: start; }
+.travel-arrival > #stay, .travel-arrival > #transport { grid-column: auto; min-width: 0; }
+.travel-page :is(article[id], section[id], #stay, #map-panel), .materials [id] { scroll-margin-top: 20px; }
+.travel-place, .shuttle-card { padding: clamp(22px, 2.5vw, 36px); background: var(--surface); border: 1px solid var(--line); }
+.travel-hotel { border-top: 4px solid var(--forest); }
+.travel-page h2, .travel-place h3 { margin: 0 0 12px; font-family: var(--font-serif), Georgia, serif; font-size: clamp(28px, 3vw, 38px); font-weight: 600; line-height: 1.1; letter-spacing: -.02em; }
+.travel-eyebrow { display: flex; align-items: center; gap: 8px; margin: 0 0 16px; color: var(--forest); font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.travel-eyebrow svg { width: 17px; height: 17px; flex: none; }
+.travel-place-context, .shuttle-card > p:not(.travel-eyebrow), .travel-section-heading p { margin: 0 0 20px; color: var(--text); font-size: 15px; line-height: 1.6; }
+.travel-place-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 20px 0; }
+.travel-place-actions a, .travel-address button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 10px 12px; color: var(--forest); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); font-size: 14px; font-weight: 750; line-height: 1.4; cursor: pointer; transition: background var(--m-quick) var(--m-ease), border-color var(--m-quick) var(--m-ease); }
+.travel-place-actions a:hover, .travel-address button:hover { background: var(--surface-soft); border-color: var(--forest); }
+.travel-place-actions svg, .travel-address button svg { width: 17px; height: 17px; flex: none; margin: 0; }
+.travel-place-actions a.travel-uber { grid-column: 1 / -1; justify-content: flex-start; min-height: 50px; padding-inline: 16px; color: #fff; background: #161616; border-color: #161616; font-size: 16px; }
+.travel-place-actions a.travel-uber:hover { background: #333; }
+.travel-uber svg:last-child { margin-left: auto; }
+.travel-place-actions a[href^='tel:'] { text-decoration: none; }
+.travel-address { padding: 16px 0; border-top: 1px solid var(--line); }
+.travel-address p { margin: 0 0 8px; color: var(--text); font-size: 15px; line-height: 1.6; overflow-wrap: anywhere; }
+.travel-address button { padding-inline: 0; border: 0; min-height: 44px; background: transparent; text-decoration: underline; text-underline-offset: 4px; }
+.travel-copy-error { display: block; font-size: 14px; line-height: 1.5; color: var(--warning); }
+.hotel-stay, .shuttle-times { margin: 0; }
+.hotel-stay > div { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 14px; padding: 12px 0; border-top: 1px solid var(--line); }
+.hotel-stay dt { font-size: 14px; font-weight: 700; }
+.hotel-stay dd { margin: 0; font-size: 15px; line-height: 1.5; color: var(--text); }
+.travel-page .travel-pending { margin: 12px 0 20px; padding-left: 12px; border-left: 2px solid var(--warning); color: var(--warning); font-size: 14px; line-height: 1.6; }
+.travel-organised { margin: 16px 0; color: var(--forest); font-size: 15px; line-height: 1.6; font-weight: 650; }
+.place-map { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.place-map summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 52px; padding-block: 12px; color: var(--forest); font-size: 14px; font-weight: 750; cursor: pointer; list-style: none; }
+.place-map summary::-webkit-details-marker { display: none; }
+.place-map summary svg { width: 16px; height: 16px; transition: transform var(--m-move) var(--m-ease); }
+.place-map[open] summary svg { transform: rotate(180deg); }
+.place-map iframe { display: block; width: 100%; height: 260px; border: 0; background: var(--surface-soft); }
+.place-map figure { margin: 12px 0 0; }
+.place-map img { width: 100%; height: auto; max-height: 280px; object-fit: cover; }
+.place-map figcaption, .map-credit { margin: 8px 0 12px; color: var(--muted); font-size: 12px; line-height: 1.5; }
+.place-map a { text-decoration: underline; text-underline-offset: 3px; }
+.travel-text-link { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: 14px; font-weight: 700; color: var(--forest); text-decoration: underline; text-underline-offset: 4px; }
+.travel-text-link svg { width: 16px; height: 16px; }
+.place-website { margin-top: 8px; }
+.shuttle-card { background: var(--surface-soft); border-top: 4px solid var(--forest); }
+.shuttle-times > div { display: grid; grid-template-columns: 95px minmax(0, 1fr); gap: 16px; padding: 20px 0; border-top: 1px solid var(--line); }
+.shuttle-times dt { padding-top: 6px; font-size: 15px; font-weight: 750; }
+.shuttle-times dd { margin: 0; }
+.shuttle-times strong { display: block; color: var(--forest); font-size: 30px; line-height: 1.2; font-variant-numeric: tabular-nums; }
+.shuttle-times span { display: block; margin-top: 6px; color: var(--text); font-size: 14px; line-height: 1.5; }
+.travel-section { margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--line); }
+.travel-section-heading { margin-bottom: 24px; }
+.travel-guides { gap: 36px; }
+.travel-guides > a { display: grid; gap: 10px; padding-block: 16px; }
+.travel-guides strong { display: flex; justify-content: space-between; gap: 16px; color: var(--forest); font-size: 16px; }
+.travel-guides strong svg { width: 18px; height: 18px; flex: none; }
+.travel-guides span { color: var(--text); font-size: 15px; line-height: 1.6; }
+.travel-guides small { color: var(--muted); font-size: 13px; }
+.travel-guides a:hover strong { text-decoration: underline; text-underline-offset: 4px; }
+
+@media screen and (max-width: 760px) {
+  main > .travel-page.section-pad:first-child { padding: 28px 20px 48px; }
+  .travel-heading { margin-bottom: 18px; }
+  .travel-heading h1 { font-size: 38px; }
+  .travel-heading p { font-size: 14px; }
+  .travel-index { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; margin-bottom: 22px; }
+  .travel-index a { padding: 8px 2px; }
+  .travel-arrival, .travel-places, .travel-guides { grid-template-columns: 1fr; gap: 20px; }
+  .travel-place, .shuttle-card { padding: 22px 20px; }
+  .travel-page h2, .travel-place h3 { font-size: 30px; }
+  .travel-eyebrow { margin-bottom: 12px; }
+  .travel-place-context { margin-bottom: 16px; font-size: 14px; }
+  .travel-place-actions { margin-block: 16px; }
+  .travel-section { margin-top: 36px; padding-top: 26px; }
+  .hotel-stay > div { grid-template-columns: 85px minmax(0, 1fr); gap: 10px; }
+}
+@media print {
+  .travel-page, .travel-place, .shuttle-card { background: #fff; }
+  .travel-page.section-pad { padding: 14pt 0 0; }
+  .page-index, .travel-place-actions, .travel-address button, .travel-address output, .place-map, .place-website { display: none !important; }
+  .travel-arrival, .travel-places, .travel-guides { display: block; }
+  .travel-place, .shuttle-card, .travel-section { margin-top: 12pt; padding: 10pt 0; break-inside: avoid; border: 0; border-top: 1px solid #aaa; }
+  .travel-page h1 { font-size: 20pt; }
+  .travel-page h2, .travel-place h3 { font-size: 16pt; }
+}
