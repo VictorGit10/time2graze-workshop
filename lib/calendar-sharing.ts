@@ -8,9 +8,11 @@
  * response we can read, unlike an opaque `no-cors` POST.
  */
 
-// Web-app URL of the Apps Script project (apps-script/). Empty until the
-// deployment exists; the form is not rendered while it is.
-const SHARE_ENDPOINT = '';
+// Web-app URL of the Apps Script project (apps-script/), deployed 5 September
+// 2026 with "execute as owner" and anonymous access. Redeploy only when the
+// endpoint logic changes, and put the new /exec URL here.
+const SHARE_ENDPOINT: string =
+  'https://script.google.com/macros/s/AKfycbzpmYFJq7WFRxtnGHGZkW0FFhiit9441UHtfZnwfrNZI6Vuku1MY6Rb7JBBIcFwGcBi/exec';
 
 export const calendarShareEnabled = SHARE_ENDPOINT !== '';
 

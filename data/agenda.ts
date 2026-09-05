@@ -4,17 +4,17 @@ import type { Day } from './types';
  * The five workshop days. All times are America/Sao_Paulo.
  *
  * Session ids are hand-written and must not change once anything links to
- * them. Twenty end times are provisional intervals inferred from the next
- * programme item or the rhythm of the day. They are visible as such and must
- * not drive the live "Now" state or calendar files until approved.
+ * them. The twenty end times once inferred from the next programme item or
+ * the rhythm of the day were approved as real by the organiser on
+ * 5 September 2026; the two Day 5 farm visits keep their confirmed times
+ * while which farm hosts them stays pending on the venue field.
  */
 /**
- * Calendar publication state. The beta is deliberately tentative: provisional
- * end times are omitted from its events. Change this to `final` only after the
- * organiser approves the complete programme; the calendar build then rejects
- * unresolved items.
+ * Calendar publication state. `final` since 5 September 2026: the organiser
+ * approved every interval. The calendar build rejects unresolved items, so a
+ * new session without a confirmed end fails the build rather than shipping.
  */
-export const CALENDAR_RELEASE: 'beta' | 'final' = 'beta';
+export const CALENDAR_RELEASE: 'beta' | 'final' = 'final';
 
 export const AGENDA: Day[] = [
   {
@@ -58,7 +58,6 @@ export const AGENDA: Day[] = [
         date: '2026-09-14',
         start: '12:00',
         end: '14:00',
-        endStatus: 'provisional',
         title: 'Lunch',
         venueId: null,
         kind: 'meal',
@@ -78,7 +77,6 @@ export const AGENDA: Day[] = [
         date: '2026-09-14',
         start: '15:30',
         end: '16:00',
-        endStatus: 'provisional',
         title: 'Coffee Break',
         venueId: 'lapig',
         kind: 'break',
@@ -114,7 +112,6 @@ export const AGENDA: Day[] = [
         date: '2026-09-15',
         start: '08:30',
         end: '09:00',
-        endStatus: 'provisional',
         title: 'Brief check-in',
         venueId: null,
         kind: 'technical',
@@ -155,7 +152,6 @@ export const AGENDA: Day[] = [
         date: '2026-09-15',
         start: '12:00',
         end: '14:00',
-        endStatus: 'provisional',
         title: 'Lunch',
         venueId: null,
         kind: 'meal',
@@ -176,7 +172,6 @@ export const AGENDA: Day[] = [
         date: '2026-09-15',
         start: '15:30',
         end: '16:00',
-        endStatus: 'provisional',
         title: 'Coffee Break',
         venueId: null,
         kind: 'break',
@@ -200,7 +195,6 @@ export const AGENDA: Day[] = [
         date: '2026-09-15',
         start: '17:30',
         end: '18:00',
-        endStatus: 'provisional',
         title: 'Daily Summary',
         venueId: null,
         kind: 'technical',
@@ -210,7 +204,6 @@ export const AGENDA: Day[] = [
         date: '2026-09-15',
         start: '19:00',
         end: '21:00',
-        endStatus: 'provisional',
         title: 'Dinner',
         venueId: 'hotel',
         kind: 'meal',
@@ -227,7 +220,6 @@ export const AGENDA: Day[] = [
         date: '2026-09-16',
         start: '08:30',
         end: '09:00',
-        endStatus: 'provisional',
         title: 'Brief check-in',
         venueId: null,
         kind: 'technical',
@@ -284,7 +276,6 @@ export const AGENDA: Day[] = [
         date: '2026-09-16',
         start: '12:00',
         end: '14:00',
-        endStatus: 'provisional',
         title: 'Lunch',
         venueId: null,
         kind: 'meal',
@@ -343,7 +334,6 @@ export const AGENDA: Day[] = [
         date: '2026-09-16',
         start: '17:30',
         end: '18:00',
-        endStatus: 'provisional',
         title: 'Daily Summary',
         venueId: null,
         kind: 'technical',
@@ -353,7 +343,6 @@ export const AGENDA: Day[] = [
         date: '2026-09-16',
         start: '19:00',
         end: '21:00',
-        endStatus: 'provisional',
         title: 'Dinner',
         venueId: 'hotel',
         kind: 'meal',
@@ -370,7 +359,6 @@ export const AGENDA: Day[] = [
         date: '2026-09-17',
         start: '08:30',
         end: '09:00',
-        endStatus: 'provisional',
         title: 'Brief check-in',
         venueId: null,
         kind: 'technical',
@@ -391,7 +379,6 @@ export const AGENDA: Day[] = [
         date: '2026-09-17',
         start: '12:00',
         end: '14:00',
-        endStatus: 'provisional',
         title: 'Lunch',
         venueId: null,
         kind: 'meal',
@@ -423,7 +410,6 @@ export const AGENDA: Day[] = [
         date: '2026-09-17',
         start: '15:30',
         end: '16:00',
-        endStatus: 'provisional',
         title: 'Coffee Break',
         venueId: null,
         kind: 'break',
@@ -447,7 +433,6 @@ export const AGENDA: Day[] = [
         date: '2026-09-17',
         start: '17:30',
         end: '18:00',
-        endStatus: 'provisional',
         title: 'Wrap-up: Summary of Key Takeaways',
         speakers: [{ name: 'Laerte', org: 'LAPIG' }],
         venueId: null,
@@ -459,7 +444,6 @@ export const AGENDA: Day[] = [
         date: '2026-09-17',
         start: '18:30',
         end: '21:30',
-        endStatus: 'provisional',
         title: 'Closing Reception',
         venueId: null,
         kind: 'social',
@@ -477,7 +461,6 @@ export const AGENDA: Day[] = [
         date: '2026-09-18',
         start: '06:30',
         end: '09:30',
-        endStatus: 'provisional',
         title: 'Trip to Cidade de Goiás',
         venueId: 'cidadeDeGoias',
         kind: 'transport',
@@ -490,14 +473,12 @@ export const AGENDA: Day[] = [
         title: 'Field Visit: Grazing Livestock Farm',
         venueId: null,
         kind: 'field',
-        status: 'tbd',
       },
       {
         id: 'd5-lunch',
         date: '2026-09-18',
         start: '12:00',
         end: '14:00',
-        endStatus: 'provisional',
         title: 'Lunch',
         venueId: 'cidadeDeGoias',
         kind: 'meal',
@@ -510,14 +491,12 @@ export const AGENDA: Day[] = [
         title: 'Field Visit: Grazing Livestock Farm',
         venueId: null,
         kind: 'field',
-        status: 'tbd',
       },
       {
         id: 'd5-trip-back',
         date: '2026-09-18',
         start: '17:30',
         end: '19:00',
-        endStatus: 'provisional',
         title: 'Return trip to Goiânia',
         venueId: null,
         kind: 'transport',
@@ -527,7 +506,6 @@ export const AGENDA: Day[] = [
         date: '2026-09-18',
         start: '19:00',
         end: '21:00',
-        endStatus: 'provisional',
         title: 'Dinner',
         venueId: 'hotel',
         kind: 'meal',

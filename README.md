@@ -20,7 +20,8 @@ Implemented:
 - deep links to each day and scheduled item;
 - print layout containing all five days;
 - `Today`, `Now` and `Next` states in `America/Sao_Paulo`;
-- beta `.ics` calendar export for all five days or the selected day;
+- `.ics` calendar export for all five days or the selected day, and a live
+  shared Google Calendar participants can request by e-mail;
 - materials generated from the sessions and tracks that produce them;
 - venue maps with candidate pins visibly marked and ride links restricted to
   confirmed destinations;
@@ -28,7 +29,6 @@ Implemented:
 
 Waiting for confirmed information:
 
-- final calendar release: beta entries remain tentative and omit provisional end times;
 - hotel, booking, check-in and check-out details;
 - confirmation of the LAPIG street address, entrance and CEP;
 - airport transfers and daily transport;

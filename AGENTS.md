@@ -162,11 +162,13 @@ the height of a forty-five minute country presentation and the shape of a day
 is visible at a glance. Parallel activities sit in adjacent columns, because
 that is what they are.
 
-**Twenty of the 45 end times are provisional.** The organiser explicitly chose
-logical display intervals for lunches, coffee breaks, check-ins, summaries,
-dinners and Day 5 transfers so every item has the same visual grammar. These
-ends remain visibly labelled “End time to confirm”; they must not drive the
-live `Now` state or calendar files. The grid renders five distinct states:
+**All 45 end times are confirmed.** Twenty of them were logical display
+intervals for lunches, coffee breaks, check-ins, summaries, dinners and Day 5
+transfers, chosen so every item had the same visual grammar; the organiser
+approved them as real on 5 September 2026 and the `endStatus: 'provisional'`
+markers came off. The two Day 5 farm visits are confirmed as sessions — which
+farm hosts them stays pending on the venue field. The grid still renders the
+states below whenever a future item needs one:
 
 | State | Rendering |
 |---|---|
@@ -176,8 +178,9 @@ live `Now` state or calendar files. The grid renders five distinct states:
 | Parallel activities | Separate blocks in adjacent columns, same interval |
 | Unconfirmed item (`status: 'tbd'`) | Visibly marked as not yet fixed |
 
-Removing `endStatus` after approval promotes the interval to confirmed. Until
-then, visual continuity is not operational certainty.
+Removing `endStatus` after approval promotes the interval to confirmed — that
+is exactly what happened here. Until then, visual continuity is not
+operational certainty.
 
 **Do not force this diagram onto a phone.** Below the desktop breakpoint, and
 in print, use a compact chronological list — very well composed, carrying time,
@@ -429,10 +432,11 @@ Refinement here means utility executed well, not features added:
   where possible — which means every day must reach the print output, not only
   the selected tab. Printing the active panel alone would be a bug.
 - **Add to calendar** (`.ics`, per day and per session). High value, but **only
-  after times, venues and timezone are confirmed.** Generating calendar files
-  from provisional data pushes wrong times into thirty people's phones, which
-  is worse than not offering it. The live Google Calendar is generated from
-  the same files and inherits this gate — see
+  after times and timezone are confirmed** — venues are never exposed. The
+  calendar went final on 5 September 2026 once the organiser approved every
+  interval; generating files from provisional data pushes wrong times into
+  thirty people's phones. The live Google Calendar is generated from the same
+  files and inherits this gate — see
   [The live Google Calendar](#the-live-google-calendar).
 
 ## Data model
@@ -462,8 +466,9 @@ type WorkshopSession = {
 - Parallel activities are two entries sharing an interval — never one combined
   title. Day 1 at 10:00 is currently a single string holding two courses; that
   is a modelling error to fix, not a formatting choice.
-- Unknown fields stay absent or `tbd`. The exception is the 20 explicitly
-  authorised provisional end times, all carrying `endStatus: 'provisional'`.
+- Unknown fields stay absent or `tbd`. The calendar build fails while any
+  item carries a provisional end or `tbd` status, so a new unresolved session
+  breaks the build rather than shipping a wrong time.
 - **`venueId` is carried on every session and rendered nowhere.** It is
   required rather than optional so a place is recorded where one is known, but
   no surface reads it any more: the programme and the `.ics` dropped venues on
@@ -760,15 +765,30 @@ the endpoint answers `callback({...});` as JavaScript. The address is visible
 in the URL — accepted because it is a single field for a workshop of thirty,
 not a credential.
 
+**Never import the .ics into Google Calendar manually.** Importing creates a
+second, frozen workshop agenda that never syncs again. On 5 September 2026 a
+manual import of the beta feed ("Time2Graze Brazil Workshop · Beta",
+`…@import.calendar.google.com`) duplicated the agenda with stale locations
+next to the synced one; it was deleted with `removeImportedBetaCalendar()` in
+`apps-script/sync.gs`, which is guarded to only ever remove an @import
+calendar. `syncFromSite()` now ends with
+`warnOnDuplicateWorkshopCalendars()`, which logs a warning whenever another
+"Time2Graze…" calendar is visible to the account — a recurrence is seen in
+the next daily sync's log, not discovered by a participant. Participants
+importing the .ics into *their own* calendar apps is fine and intended; the
+damage is only a second calendar in the account that hosts the synced one.
+
 **Deploying the script.** Only when the endpoint logic changes — never for a
 programme change. `cd apps-script && clasp push`. The first deployment is a
 web app: script.google.com → Deploy → New deployment → Web app, "Execute as
 me", access "Anyone" — `appsscript.json` already carries these defaults and
 the scopes, and running `setup` once in the editor accepts the authorisation
 prompt on the owner's side. The `/exec` URL goes into `SHARE_ENDPOINT` in
-`lib/calendar-sharing.ts`; while that constant is empty the form is not
-rendered and the site behaves exactly as before. Never put the organiser's
-main calendar's ID in `getWorkshopCalendarId`.
+`lib/calendar-sharing.ts`; the first deployment went live on 5 September 2026
+(deployed with `clasp deploy`, version 1), so the share form on `/programme/`
+renders. Redeploy only when the endpoint logic changes, and update the constant
+to the new `/exec` URL. Never put the organiser's main calendar's ID in
+`getWorkshopCalendarId`.
 
 ## Waiting on the LAPIG team
 
@@ -787,10 +807,11 @@ summary aligned.
 - Confirm that participants arrange their own airport-to-hotel Uber/taxi
 - Confirm the contracted shuttle's 08:00 Monday–Thursday departure, pickup
   points and returns; Friday leaves at 06:30
-- Day 5: the two grazing livestock farms are still "TBD"
+- Day 5: which farms host the two grazing livestock visits — the sessions and
+  their times are confirmed since 5 September 2026; only the venue identity
+  is pending
 - Final partner matrix beyond the publicly documented funder, project leads
   and workshop hosts already grouped on the home page
-- Final approval of the agenda, required before `.ics` files are generated
 - The 21 expected presentation/document files, the shared-folder route and the
   final programme PDF
 - Written guidance on where in Goiânia participants can move around on
@@ -861,3 +882,13 @@ presentation rules in this document:
   `.ics` export no longer emits "Bring:" lines. If a session ever needs a
   stated requirement again, reintroduce the field rather than writing it into
   a title.
+- The organiser approved all twenty inferred end times and the two Day 5 farm
+  visit times on 5 September 2026. Every `endStatus: 'provisional'` and
+  `status: 'tbd'` marker came off `data/agenda.ts` and `CALENDAR_RELEASE` is
+  `final`: the `.ics` carries confirmed ends, events are CONFIRMED, and the
+  "· Beta" suffix is gone from titles. The build now fails on any new
+  unresolved item — keep it that way.
+- The calendar share web app is deployed (version 1, 5 September 2026) and
+  `SHARE_ENDPOINT` in `lib/calendar-sharing.ts` is live, so the
+  "get the live calendar by email" form on `/programme/` renders. It is
+  idempotent: a repeat request answers `already` and sends nothing.

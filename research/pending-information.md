@@ -8,13 +8,14 @@ live state or calendar files until approved. Venue evidence is recorded in
 
 ## Programme, calendar and materials
 
-- [ ] Approve the five-day agenda: dates, start/end times, session titles,
-  presenters, venues and the `America/Sao_Paulo` timezone.
-- [ ] Confirm or correct the 20 end times currently labelled “End time to
-  confirm”; these were inferred from the next activity or the day’s structure.
-- [ ] Promote the beta calendar to final by changing `CALENDAR_RELEASE` in
-  `data/agenda.ts` only after all dates, intervals and venues are approved.
-  The final calendar build deliberately fails while unresolved items remain.
+- [x] Approve the five-day agenda: dates, start/end times and session titles
+  approved by the organiser on 5 September 2026. Farm identities below stay
+  open; the calendar deliberately exposes no venues.
+- [x] Confirm or correct the 20 end times — done 5 September 2026: the
+  organiser approved every inferred interval as real.
+- [x] Promote the calendar to final — done 5 September 2026:
+  `CALENDAR_RELEASE` is `final` in `data/agenda.ts`; the build now fails on
+  any new unresolved item.
 - [ ] Supply the 21 expected presentation/document files declared in the
   agenda. Until each file exists, its link remains “To be published”.
 - [ ] Confirm the participant-access route for the shared workshop folder.
@@ -50,7 +51,8 @@ live state or calendar files until approved. Venue evidence is recorded in
 - [ ] Confirm the Day 5 boarding and return points in Goiânia.
 - [ ] Supply confirmed addresses/pins for FUNAPE and the T2G Biomass
   Experimental Area.
-- [ ] Confirm the two Day 5 grazing livestock farms.
+- [ ] Confirm the two Day 5 grazing livestock farms. *The visit times were
+  approved on 5 September 2026; only which farms host them is pending.*
 - [ ] Obtain authorised photographs and credit lines for Centro de Eventos and
   Favo de Mel if either venue returns to the registry and the team wants a
   photograph in its panel. Both images are already on file — see
