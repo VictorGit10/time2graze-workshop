@@ -217,7 +217,7 @@ button { color: inherit; font: inherit; }
 /* A página atual fica marcada, não só disponível. */
 .site-nav a[aria-current='page'] { color: var(--forest); }
 .site-nav a[aria-current='page']::after { height: 2px; transform: scaleX(1); }
-.header-date { justify-self: end; font-size: var(--t-body); font-weight: 800; transition: color var(--m-quick) var(--m-ease); }
+.header-date { justify-self: end; display: inline-flex; align-items: center; min-height: 24px; padding: 4px 0; font-size: var(--t-body); font-weight: 800; transition: color var(--m-quick) var(--m-ease); }
 .header-date:hover { color: var(--forest); }
 .header-date span { margin-left: 4px; color: var(--muted); }
 
@@ -274,6 +274,7 @@ button { color: inherit; font: inherit; }
 .fact-list { margin: 0; border-top: 1px solid var(--line); }
 .fact-list div { display: grid; grid-template-columns: 110px 1fr; gap: 22px; padding: 21px 0; border-bottom: 1px solid var(--line); }
 .fact-list dt { color: var(--muted); font-size: var(--t-label); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.fact-list dd { margin: 0; font-size: var(--t-meta-lg); font-weight: 700; line-height: 1.5; }
 /* --- 404 ------------------------------------------------------------------
    A wrong URL still carries the workshop's name and a route back. */
 .not-found { text-align: center; }
@@ -284,8 +285,6 @@ button { color: inherit; font: inherit; }
 .not-found-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; max-width: var(--rail); margin: 36px auto 0; }
 .not-found-nav a { display: inline-flex; align-items: center; min-height: 46px; padding: 10px 18px; color: var(--forest); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); font-size: var(--t-body); font-weight: 700; transition: background var(--m-quick) var(--m-ease), transform var(--m-quick) var(--m-ease); }
 .not-found-nav a:hover { background: var(--accent); transform: translateY(-1px); }
-
-.fact-list dd { margin: 0; font-size: 12px; font-weight: 700; line-height: 1.5; }
 
 .institutions { background: var(--surface); border-top: 1px solid var(--line); }
 .institution-list { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 34px clamp(44px, 7vw, 96px); padding: 42px 0 44px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
@@ -321,7 +320,7 @@ button { color: inherit; font: inherit; }
 .day-summary p { margin: 100px 0 8px; color: var(--muted-soft); font-size: var(--t-meta); font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
 /* Um quinto da faixa e estreito: em 42px fixos "Welcome" transborda a coluna
    abaixo de ~1280px. Escala com a largura ate chegar aos 42px. */
-.day-summary h3 { margin: 0; font-family: var(--font-serif), Georgia, serif; font-size: clamp(30px, 3.4vw, 42px); font-weight: 600; }
+.day-summary h2 { margin: 0; font-family: var(--font-serif), Georgia, serif; font-size: clamp(30px, 3.4vw, 42px); font-weight: 600; }
 .day-summary small { display: block; margin-top: 12px; color: var(--muted-soft); font-size: var(--t-meta); }
 
 /* Calendar export follows the selected day but sits after the joined tab and
@@ -386,7 +385,7 @@ a[href^='tel:'] svg { width: 13px; height: 13px; margin-right: 5px; }
 footer { display: grid; grid-template-columns: 1fr 1.3fr 1fr; align-items: center; gap: 35px; min-height: 155px; padding: 30px clamp(24px, 5vw, 72px); color: #fff; background: var(--forest-dark); }
 .footer-brand small { color: rgba(255,255,255,.75); }
 footer > p { margin: 0; color: rgba(255,255,255,.62); font-size: var(--t-meta-lg); line-height: 1.6; text-align: center; }
-footer > a:last-child { justify-self: end; display: inline-flex; align-items: center; gap: 8px; font-size: var(--t-label); font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
+footer > a:last-child { justify-self: end; display: inline-flex; align-items: center; min-height: 24px; padding: 4px 0; gap: 8px; font-size: var(--t-label); font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
 footer > a:last-child svg { width: 14px; height: 14px; transition: transform var(--m-move) var(--m-ease); }
 footer > a:last-child:hover svg { transform: translateY(-3px); }
 
@@ -396,7 +395,7 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
   /* Empilhado, o resumo ocupa a faixa inteira: o recuo estreito das abas nao
      serve mais, e o titulo cabe no tamanho cheio. */
   .day-summary { padding: 30px 24px; border-right: 0; border-bottom: 1px solid var(--line); }
-  .day-summary h3 { font-size: 42px; }
+  .day-summary h2 { font-size: 42px; }
   .day-summary p { margin-top: 40px; }
   .calendar-actions { grid-template-columns: 1fr; }
   .calendar-links { justify-content: flex-start; }
@@ -518,7 +517,7 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
 .session-list .session:first-child { border-top: 0; }
 .session-time { display: flex; gap: 8px; align-items: center; margin: 0; color: var(--muted); font-size: var(--t-meta); font-weight: 700; font-variant-numeric: tabular-nums; }
 .session-time svg { width: 14px; height: 14px; }
-.session-body h4 { margin: 0; font-size: var(--t-body); font-weight: 700; line-height: 1.35; }
+.session-body h3 { margin: 0; font-size: var(--t-body); font-weight: 700; line-height: 1.35; }
 .session-tracks { display: grid; gap: 7px; margin: 0; padding: 0; list-style: none; }
 .session-tracks li { padding-left: 12px; border-left: 2px solid var(--line); }
 .session-tracks strong { display: block; font-size: var(--t-meta-lg); }
@@ -537,7 +536,7 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
 
 /* Os títulos de sessão são dado funcional, não display: Manrope nas duas
    representações. A serifada fica para os títulos de seção e os nomes dos dias. */
-.tl-title, .tl-track-title, .session-body h4, .session-tracks strong { font-family: var(--font-sans), Arial, sans-serif; }
+.tl-title, .tl-track-title, .session-body h3, .session-tracks strong { font-family: var(--font-sans), Arial, sans-serif; }
 
 /* --- Impressão --------------------------------------------------------------
    O painel interativo guarda um dia por vez, então imprimi-lo entregaria um
@@ -579,8 +578,11 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
   /* O título da seção já anuncia a programação; o respiro de tela é excesso. */
   .agenda-section .section-title { margin-bottom: 10pt; }
   .programme-title { display: block; }
-  .programme-clock { margin: 4pt 0 0; padding: 0; border: 0; }
-  .programme-clock time { display: none; }
+  /* The whole clock band goes, timezone line included: there is no live clock
+     on paper, and .print-heading right below already carries the timezone.
+     Printed together they stated "Brasilia Time (UTC-3)" on two consecutive
+     lines. */
+  .programme-clock { display: none !important; }
 
   .section-pad { padding: 14pt 0 0; }
   .section-title h1, .section-title h2 { font-size: 16pt; }
@@ -689,7 +691,7 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
   .day-summary { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; padding: 18px 24px; border-right: 0; border-bottom: 1px solid var(--line); }
   .day-summary > span { display: none; }
   .day-summary p { margin: 0; font-size: 13px; letter-spacing: 0; }
-  .day-summary h3 { margin: 0; font-size: 28px; }
+  .day-summary h2 { margin: 0; font-size: 28px; }
   .day-summary small { margin: 0 0 0 auto; }
 }
 @media screen and (max-width: 760px) {
@@ -704,7 +706,7 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
   .day-tab-mobile b { display: block; margin-top: 4px; color: inherit; font-size: 20px; font-weight: 750; }
   .day-today-dot { display: block; width: 5px; height: 5px; margin: 5px auto -5px; background: currentColor; border-radius: 50%; }
   .day-summary { padding: 14px 18px; }
-  .day-summary h3 { font-size: 25px; }
+  .day-summary h2 { font-size: 25px; }
   .day-summary small { display: none; }
   .session-list { padding: 0 18px; }
   .session-time { font-size: 14px; }

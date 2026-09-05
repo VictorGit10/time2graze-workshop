@@ -214,7 +214,7 @@ export default function ProgrammePage() {
         <aside className="day-summary">
           <span>{dayShort(day)}</span>
           <p>{dayLabel(day.date)}</p>
-          <h3>{day.label}</h3>
+          <h2>{day.label}</h2>
           <small>{day.sessions.length} scheduled items</small>
         </aside>
         <Programme day={day} clock={clock} />
