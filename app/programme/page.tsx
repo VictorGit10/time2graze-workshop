@@ -200,10 +200,11 @@ export default function ProgrammePage() {
         </output>
       )}
 
-      {/* A chave remonta o painel a cada troca de dia, e e a montagem que dispara
-          a passagem em .agenda-panel. Programme nao guarda estado proprio, e a
-          animacao e so de opacidade: a rolagem de um link de sessao mede este
-          mesmo commit e nao pode encontrar o alvo deslocado. */}
+      {/* The key remounts the panel on every day change, and it is that mount
+          which triggers the transition on .agenda-panel. Programme holds no
+          state of its own, and the animation is opacity only: a session link's
+          scroll measures this same commit and must not find the target
+          moved. */}
       <div
         className="agenda-panel"
         key={activeDay}

@@ -1,6 +1,6 @@
 import { AGENDA } from '@/data/agenda';
 
-/** '#day-3' -> índice 2. Retorna null quando o hash não é um dia. */
+/** '#day-3' -> index 2. Null when the hash does not name a day. */
 export function dayFromHash(hash: string) {
   const match = /^#?day-(\d+)$/.exec(hash);
   if (!match) return null;
@@ -8,7 +8,7 @@ export function dayFromHash(hash: string) {
   return index >= 0 ? index : null;
 }
 
-/** '#d3-country-uruguay' -> índice do dia que contém a sessão. */
+/** '#d3-country-uruguay' -> index of the day holding that session. */
 export function dayFromSessionHash(hash: string) {
   const id = hash.replace(/^#/, '');
   if (!id) return null;
@@ -17,19 +17,10 @@ export function dayFromSessionHash(hash: string) {
 }
 
 /**
- * Leva à sessão na representação que está visível: a grade proporcional no
- * desktop, a lista no restante.
- *
- * Nenhuma das duas carrega `id`, e isso é deliberado: com um id o navegador
- * faz seu próprio salto para o elemento antes de o React trocar de dia, e
- * disputa com esta rolagem — no desktop ele mirava o item recortado de um
- * pixel e parava no lugar errado.
- */
-/**
- * Um link `#day-3` trocava o dia e deixava o leitor no topo da página, com o
- * painel abaixo da dobra e nenhum sinal de que algo aconteceu — vindo do
- * índice da semana, a chegada parecia uma troca de página qualquer. Rola até
- * as abas, que mostram qual dia está aberto logo acima do painel.
+ * A `#day-3` link used to switch the day and leave the reader at the top of
+ * the page, with the panel below the fold and no sign that anything had
+ * happened — arriving from the week index, it read like any other page change.
+ * This scrolls to the tabs, which show which day is open just above the panel.
  */
 export function scrollToDayPanel() {
   if (document.readyState !== 'complete') {
@@ -37,13 +28,22 @@ export function scrollToDayPanel() {
     return;
   }
 
-  // `scroll-padding-top` no html já desconta o cabeçalho fixo.
+  // `scroll-padding-top` on the html already clears the sticky header.
   document.querySelector('.day-tabs')?.scrollIntoView({ block: 'start' });
 }
 
+/**
+ * Scrolls to the session in whichever representation is on screen: the
+ * proportional grid on desktop, the list everywhere else.
+ *
+ * Neither carries an `id`, and that is deliberate: with one, the browser makes
+ * its own jump to the element before React has switched days and fights this
+ * scroll — on desktop it aimed at the one-pixel clipped copy and stopped in
+ * the wrong place.
+ */
 export function scrollToSession(id: string) {
-  // Rolar antes de a página terminar de carregar erra o alvo: a imagem do
-  // hero ainda vai deslocar o layout abaixo dela.
+  // Scrolling before the page has finished loading misses: the hero image is
+  // still going to shift everything below it.
   if (document.readyState !== 'complete') {
     addEventListener('load', () => scrollToSession(id), { once: true });
     return;
@@ -58,9 +58,9 @@ export function scrollToSession(id: string) {
    */
   const gridVisible = window.innerWidth >= 1280;
 
-  // A sessão aparece em dois lugares. No desktop vale a que não está na lista
-  // — pode ser um bloco da grade ou uma linha do bloco noturno, que fica fora
-  // do eixo; no restante, vale a da lista.
+  // The session appears in two places. On desktop the one that counts is the
+  // one not in the list — a grid block, or a row of the evening block, which
+  // sits outside the axis; everywhere else, the one in the list.
   const candidates = [...document.querySelectorAll(`[data-session="${CSS.escape(id)}"]`)];
   const inList = (el: Element) => el.closest('.session-list') !== null;
   const target = gridVisible
@@ -68,7 +68,7 @@ export function scrollToSession(id: string) {
     : candidates.find(inList);
   if (!target) return;
 
-  // Sem `behavior`: o CSS decide, e ele já troca para instantâneo sob
+  // No `behavior`: the CSS decides, and it already switches to instant under
   // prefers-reduced-motion.
   target.scrollIntoView({ block: 'center' });
 }

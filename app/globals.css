@@ -6,8 +6,8 @@
   --surface-soft: #edf1eb;
   --ink: #18362d;
   --text: #40574e;
-  --muted: #5f7169;         /* 4.8:1 sobre --paper; o valor anterior dava 3.9:1 */
-  --muted-soft: #57695f;    /* ~5.1:1 sobre --surface-soft, onde --muted fica no limite */
+  --muted: #5f7169;         /* 4.8:1 on --paper; the previous value gave 3.9:1 */
+  --muted-soft: #57695f;    /* ~5.1:1 on --surface-soft, where --muted sits at the limit */
   --forest: #184b39;
   --forest-dark: #10382b;
   --accent: #dce89b;
@@ -16,24 +16,25 @@
   --warning: #7c6327;
   --radius: 3px;
   --wide: 1600px;
-  /* A calha e o trilho. Toda faixa da página mede a partir daqui: sem isso,
-     uma que limita o elemento e outra que limita o filho começam em x
-     diferentes assim que a tela passa de --wide, e a página desalinha. */
+  /* The gutter and the rail. Every band on the page measures from here:
+     without it, one that caps the element and one that caps the child start
+     at different x the moment the screen passes --wide, and the page comes
+     apart. */
   --gutter: clamp(18px, 3vw, 44px);
   --rail: calc(var(--wide) - 2 * var(--gutter));
 
-  /* Escala tipográfica. 12px é piso, e só para metadado: rótulos em caixa
-     alta, índices e etiquetas. Texto funcional fica de 14 a 17px. */
+  /* Type scale. 12px is the floor, and only for metadata: uppercase labels,
+     indices and tags. Functional text belongs at 14-17px. */
   --t-label: 12px;
   --t-meta: 13px;
   --t-meta-lg: 14px;
   --t-body: 15px;
 
-  /* Movimento. Uma curva e três durações para o site inteiro, para que nada
-     ande em ritmo próprio: --m-quick para o retorno de um estado sob o
-     cursor, --m-move para uma troca que o leitor pediu, --m-enter para a
-     abertura da página. A curva desacelera e não passa do ponto — nada aqui
-     deve quicar. A regra de prefers-reduced-motion acima zera as três. */
+  /* Motion. One curve and three durations for the whole site, so nothing
+     moves to a rhythm of its own: --m-quick for a state returning under the
+     cursor, --m-move for a change the reader asked for, --m-enter for the
+     page opening. The curve decelerates and does not overshoot — nothing here
+     should bounce. The prefers-reduced-motion rule below zeroes all three. */
   --m-ease: cubic-bezier(.22, .61, .36, 1);
   --m-quick: .16s;
   --m-move: .28s;
@@ -53,10 +54,10 @@ button { color: inherit; font: inherit; }
   border-radius: 2px;
 }
 
-/* Só no papel: a página impressa perde o cabeçalho e precisa se identificar. */
+/* Paper only: the printed page loses the header and has to identify itself. */
 .print-only { display: none; }
 
-/* Atalho para o conteúdo: primeiro item do documento, visível só ao receber foco. */
+/* Skip to content: first item in the document, visible only on focus. */
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
 .skip-link {
@@ -161,37 +162,39 @@ button { color: inherit; font: inherit; }
   .landscape-intro, .landscape-eyebrow { color: #000; }
 }
 
-/* --- Movimento --------------------------------------------------------------
-   Três gestos, e só três: um elemento assenta no lugar, uma faixa desce, um
-   fio se desenha da esquerda para a direita. Amplitude baixa de propósito —
-   o que se move aqui confirma alguma coisa, não chama atenção para si. */
+/* --- Motion -----------------------------------------------------------------
+   Three gestures, and only three: an element settles into place, a band comes
+   down, a rule draws itself from left to right. Low amplitude on purpose —
+   what moves here confirms something, it does not ask to be looked at. */
 
 @keyframes enter-up { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 @keyframes enter-down { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
 @keyframes enter-fade { from { opacity: 0; } to { opacity: 1; } }
-/* Cada fio parte do zero na sua propria origem: o deitado cresce da ponta
-   esquerda, na direcao da leitura; o em pe desce a partir do alto. */
+/* Each rule grows from zero at its own origin: the horizontal one from its
+   left end, in the direction of reading; the upright one from the top down. */
 @keyframes rule-in { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 @keyframes rule-in-y { from { transform: scaleY(0); } to { transform: scaleY(1); } }
 
 .site-header { position: sticky; z-index: 30; top: 0; background: var(--surface); border-bottom: 1px solid var(--line); }
 .header-bar { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; height: 84px; padding: 0 clamp(24px, 5vw, 72px); }
-/* O workshop nao tem marca propria: o nome e a marca e carrega o peso sozinho. */
+/* The workshop has no mark of its own: the name is the brand and carries the
+   weight alone. */
 .brand { display: grid; width: max-content; line-height: 1; }
 .brand strong { font-size: 17px; font-weight: 800; letter-spacing: -.015em; }
 .brand small { margin-top: 7px; color: var(--muted); font-size: var(--t-label); font-weight: 700; letter-spacing: .09em; text-transform: uppercase; }
 
-/* O mesmo fio de duas cores do olho do hero — verde claro com o verde escuro
-   ao lado —, aqui em pe a esquerda do nome. Deitado no hero, onde abre uma
-   linha de texto; em pe aqui, onde marca um logotipo de duas linhas.
-   A ordem das cores segue a leitura, como la: primeiro o claro, depois o
-   escuro. La isso e de cima para baixo, aqui da esquerda para a direita, e o
-   escuro fica encostado no nome.
-   Sem altura declarada: o ::before cobre as duas linhas da grade e o `stretch`
-   lhe da exatamente a altura do logotipo, seja qual for o corpo do texto.
-   Vale so no cabecalho: o rodape repete o nome, nao a abertura.
-   As tres celulas sao declaradas porque, no automatico, o ::before tomaria a
-   primeira e empurraria BRAZIL WORKSHOP para debaixo dele. */
+/* The hero eyebrow's two-colour rule — pale lime with the dark forest beside
+   it — standing upright to the left of the name. It lies down in the hero,
+   where it opens a line of text; it stands here, where it marks a two-line
+   wordmark.
+   The colours keep their reading order in both: pale first, forest second.
+   There that is top to bottom, here left to right, and the darker line is the
+   one touching the name.
+   No declared height: the ::before spans both grid rows and `stretch` makes it
+   exactly as tall as the lockup, whatever the type size.
+   Header only: the footer repeats the name, not the opening.
+   The three cells are declared because, left automatic, the ::before would
+   take the first and push BRAZIL WORKSHOP underneath it. */
 .site-header .brand { grid-template-columns: auto auto; column-gap: 13px; }
 .site-header .brand::before {
   content: '';
@@ -207,24 +210,24 @@ button { color: inherit; font: inherit; }
 .site-header .brand small { grid-area: 2 / 2; }
 
 .site-nav { display: flex; gap: 30px; font-size: var(--t-body); font-weight: 700; }
-/* O sublinhado cresce da esquerda em vez de aparecer inteiro. E um ::after, e
-   nao a borda de antes, porque uma borda nao tem o que animar: ela so troca
-   de cor. A pagina atual entra com ele ja desenhado. */
+/* The underline grows from the left rather than appearing whole. It is an
+   ::after, not the border it used to be, because a border has nothing to
+   animate: it only changes colour. The current page opens with it drawn. */
 .site-nav a { position: relative; padding: 9px 0; white-space: nowrap; transition: color var(--m-quick) var(--m-ease); }
 .site-nav a::after { content: ''; position: absolute; right: 0; bottom: 0; left: 0; height: 1px; background: var(--forest); transform: scaleX(0); transform-origin: left center; transition: transform var(--m-move) var(--m-ease); }
 .site-nav a:hover { color: var(--forest); }
 .site-nav a:hover::after { transform: scaleX(1); }
-/* A página atual fica marcada, não só disponível. */
+/* The current page is marked, not merely available. */
 .site-nav a[aria-current='page'] { color: var(--forest); }
 .site-nav a[aria-current='page']::after { height: 2px; transform: scaleX(1); }
 .header-date { justify-self: end; display: inline-flex; align-items: center; min-height: 24px; padding: 4px 0; font-size: var(--t-body); font-weight: 800; transition: color var(--m-quick) var(--m-ease); }
 .header-date:hover { color: var(--forest); }
 .header-date span { margin-left: 4px; color: var(--muted); }
 
-/* O que está acontecendo agora. Só existe durante a semana do workshop.
-   A faixa nao esta no HTML gerado: o relogio so chega depois da hidratacao, e
-   ela aparece com a pagina ja desenhada. Descer oito pixels diz que ela chegou
-   agora, em vez de ter piscado no lugar sem explicacao. */
+/* What is happening now. It only exists during the workshop week.
+   The band is not in the build output: the clock arrives after hydration, so
+   it appears with the page already drawn. Coming down eight pixels says it
+   just arrived, rather than having blinked into place unexplained. */
 .now-band { display: grid; grid-template-columns: minmax(150px, .7fr) minmax(0, 4.3fr); align-items: center; gap: 24px; max-width: var(--wide); margin: 0 auto; padding: 20px var(--gutter); color: #fff; background: var(--forest-dark); border-top: 4px solid var(--accent); animation: enter-down var(--m-enter) var(--m-ease) both; }
 .now-band-day { margin: 0; color: var(--accent); font-size: var(--t-label); font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
 .now-band-item { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px; margin: 0; font-size: 16px; }
@@ -242,26 +245,27 @@ button { color: inherit; font: inherit; }
    the largest the header plus the half-block offset can need. */
 [data-session] { scroll-margin-top: 160px; }
 
-/* A calha de cima da primeira faixa e menor, e nao por economia de espaco: o
-   valor de .section-pad separa duas faixas no meio da pagina, onde ha de fato
-   duas coisas para separar. No alto nao ha — o cabecalho ja fechou com o seu
-   fio e a pagina acabou de comecar —, e os mesmos 145px deixam de ser respiro
-   e viram espera antes de a pagina dizer o que e. Em 1680px eram 146px de
-   branco entre o cabecalho e a palavra "Programme".
+/* The first band takes less padding above it, and not to save space:
+   .section-pad's value is the distance between two bands mid-page, where there
+   really are two things to hold apart. At the top of a page there are not —
+   the header has just closed with its own rule and the page has only started —
+   and the same 145px stop being breathing room and become a wait before the
+   page says what it is. Measured on a 1680px monitor, that was 146px of blank
+   between the header and the word "Programme".
 
-   Vale so para /programme/, /materials/ e /practical/, que abrem direto numa
-   .section-pad. A home nao entra: ela abre pelo hero, cujo respiro e interno a
-   um quadro desenhado, e por isso nunca pareceu vazia.
+   It reaches /programme/, /materials/ and /practical/, which open straight
+   into a .section-pad. Not the home page: that opens with the hero, whose
+   whitespace is inside a drawn frame, which is why it never read as empty.
 
-   Dentro de @media screen de proposito. O seletor e mais especifico que o
-   .section-pad do bloco de impressao, entao sem esta cerca ele venceria la
-   tambem e trocaria os 14pt do papel por pixels de tela. */
+   Inside @media screen on purpose. The selector outranks the .section-pad in
+   the print block, so without that fence it would win on paper too and swap
+   the printed 14pt for screen pixels. */
 @media screen {
   main > .section-pad:first-child { padding-top: clamp(46px, 5.2vw, 88px); }
 }
 .section-title { margin-bottom: clamp(52px, 6vw, 80px); }
 .section-title > p, .section-title > div > p { margin: 0 0 23px; color: var(--forest); font-size: var(--t-label); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
-/* O título de abertura de cada página interna é um h1; as seções da home, h2. */
+/* The opening title of each inner page is an h1; the home page's sections, h2. */
 .section-title h1, .section-title h2 { margin: 0; font-family: var(--font-serif), Georgia, serif; font-size: clamp(43px, 5.2vw, 70px); font-weight: 600; line-height: .95; letter-spacing: -.04em; }
 .split-title { display: flex; justify-content: space-between; align-items: end; gap: 35px; }
 .split-title > span { max-width: 340px; color: var(--muted); font-size: var(--t-label); font-weight: 700; line-height: 1.5; letter-spacing: .07em; text-align: right; text-transform: uppercase; }
@@ -290,8 +294,8 @@ button { color: inherit; font: inherit; }
 .institution-list { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 34px clamp(44px, 7vw, 96px); padding: 42px 0 44px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .institution-mark { display: flex; flex: 0 1 clamp(140px, 15vw, 210px); justify-content: center; align-items: center; max-width: 100%; transition: opacity var(--m-quick) var(--m-ease); }
 .institution-mark:hover { opacity: .55; }
-/* --mark-h vem da pagina: cada marca e desenhada na mesma area optica, e a
-   largura sai da proporcao propria do arquivo. */
+/* --mark-h comes from the page: every mark is drawn to the same optical area,
+   and the width follows the file's own proportion. */
 .institution-mark img { display: block; width: auto; max-width: 100%; height: var(--mark-h); }
 .institution-source { margin: 18px auto 0; color: var(--muted); font-size: var(--t-meta); line-height: 1.6; }
 
@@ -309,17 +313,18 @@ button { color: inherit; font: inherit; }
 .day-tabs strong { display: block; margin: 13px 0 6px; font-family: var(--font-serif), Georgia, serif; font-size: clamp(20px, 2vw, 27px); font-weight: 600; }
 .day-tabs [role='tab'][aria-selected='true'] { color: #fff; background: var(--forest); }
 .day-tabs [role='tab'][aria-selected='true'] span, .day-tabs [role='tab'][aria-selected='true'] small { color: var(--accent); }
-/* O resumo e a aba selecionada sao a mesma coluna, e tem de ser desenhados
-   como tal: 1fr de 5 aqui e 1fr de 5 em .day-tabs. Uma fracao diferente nas
-   duas grades (era .62fr de 3) desloca o painel da aba em alguns pixels, e o
-   desvio cresce com a largura da tela. O recuo do texto tambem acompanha o
-   das abas, senao os dois "Day 1" nao caem na mesma vertical. */
+/* The summary and the selected tab are the same column and have to be drawn
+   as one: 1fr of 5 here and 1fr of 5 in .day-tabs. A different fraction in the
+   two grids (it was .62fr of 3) offsets the panel from its tab by a few
+   pixels, and the drift grows with the width of the screen. The text indent
+   follows the tabs' as well, or the two "Day 1" do not fall on the same
+   vertical. */
 .agenda-panel { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 4fr); border: 1px solid var(--line); border-top: 0; animation: enter-fade var(--m-move) var(--m-ease) both; }
 .day-summary { padding: 38px clamp(15px, 2vw, 28px); background: var(--surface-soft); border-right: 1px solid var(--line); }
 .day-summary > span { color: var(--forest); font-size: var(--t-label); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .day-summary p { margin: 100px 0 8px; color: var(--muted-soft); font-size: var(--t-meta); font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
-/* Um quinto da faixa e estreito: em 42px fixos "Welcome" transborda a coluna
-   abaixo de ~1280px. Escala com a largura ate chegar aos 42px. */
+/* A fifth of the band is narrow: at a fixed 42px, "Welcome" overflows the
+   column below ~1280px. It scales with the width up to 42px. */
 .day-summary h2 { margin: 0; font-family: var(--font-serif), Georgia, serif; font-size: clamp(30px, 3.4vw, 42px); font-weight: 600; }
 .day-summary small { display: block; margin-top: 12px; color: var(--muted-soft); font-size: var(--t-meta); }
 
@@ -392,8 +397,8 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
 @media (max-width: 1050px) {
   .overview-layout { grid-template-columns: 1fr; gap: 65px; }
   .agenda-panel { grid-template-columns: 1fr; }
-  /* Empilhado, o resumo ocupa a faixa inteira: o recuo estreito das abas nao
-     serve mais, e o titulo cabe no tamanho cheio. */
+  /* Stacked, the summary takes the whole band: the tabs' narrow indent no
+     longer applies, and the title fits at full size. */
   .day-summary { padding: 30px 24px; border-right: 0; border-bottom: 1px solid var(--line); }
   .day-summary h2 { font-size: 42px; }
   .day-summary p { margin-top: 40px; }
@@ -437,20 +442,21 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
   footer > p { display: none; }
 }
 
-/* --- Programação -----------------------------------------------------------
-   Duas representações do mesmo dia. A grade proporcional desenha o tempo real
-   e vale só em telas largas; a lista cronológica carrega a mesma informação e
-   é o que aparece no celular, na impressão e para leitores de tela — a grade
-   é aria-hidden, porque um diagrama posicionado em absoluto lê muito mal. */
+/* --- Programme --------------------------------------------------------------
+   Two representations of the same day. The proportional grid draws real time
+   and applies on wide screens only; the chronological list carries the same
+   information and is what appears on a phone, in print and to screen readers —
+   the grid is aria-hidden, because an absolutely-positioned diagram reads very
+   badly. */
 
 .programme { --hour: 76px; }
 
-/* Converte minutos em pixels: a única regra da qual a proporção depende. */
+/* Minutes to pixels: the one rule the whole proportion depends on. */
 .timeline { display: grid; grid-template-columns: 62px 1fr; gap: 18px; margin-top: 8px; }
 .tl-axis { position: relative; height: calc(var(--span) * var(--hour) / 60); }
-/* +26px no fim: a última marca do dia (o retorno das 17:30 no dia 5, o
-   resumo diário no dia 3) começa exatamente onde o eixo acaba e precisa de
-   linha para existir. Não mexe na escala — é papel, não tempo. */
+/* +26px at the end: the day's last marker (the 17:30 return on day 5, the
+   daily summary on day 3) starts exactly where the axis ends and needs a line
+   to exist on. It does not touch the scale — it is paper, not time. */
 .tl-body { position: relative; height: calc(var(--span) * var(--hour) / 60 + 26px); }
 
 .tl-tick { position: absolute; top: calc(var(--start) * var(--hour) / 60); right: 0; color: var(--muted); font-size: var(--t-label); font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1; transform: translateY(-50%); }
@@ -466,7 +472,7 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
 .tl-who { margin: 3px 0 0; }
 .tl-meta-label { color: var(--forest); font-size: var(--t-label); font-weight: 800; letter-spacing: .045em; text-transform: uppercase; }
 
-/* Refeições, cafés e deslocamentos ocupam o mesmo tempo, com menos peso. */
+/* Meals, breaks and transfers take the same time, with less weight. */
 .tl-block[data-kind='meal'], .tl-block[data-kind='break'], .tl-block[data-kind='transport'], .tl-block[data-kind='social'] { border-left-color: var(--line); background: var(--surface-soft); }
 .tl-block[data-kind='field'] { border-left-color: var(--accent); }
 
@@ -477,25 +483,26 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
 .tl-track { padding: 8px 11px; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); }
 .tl-track-title { margin: 0; font-size: var(--t-meta-lg); font-weight: 700; line-height: 1.3; }
 
-/* Início sem término registrado: marca no eixo, sem altura.
-   Fica ABAIXO da linha, nunca centrada nela. Um bloco que termina às 12:00 e
-   um almoço que começa às 12:00 disputam o mesmo pixel: centrada, a marca
-   sumia atrás do bloco — que é opaco e tem z-index 2 — e a régua da hora
-   riscava o texto. O ponto vem por cima de tudo, e o texto desce. */
+/* A start with no recorded end: a marker on the axis, with no height.
+   It sits BELOW the line, never centred on it. A block ending at 12:00 and a
+   lunch starting at 12:00 contend for the same pixel: centred, the marker
+   disappeared behind the block — which is opaque and has z-index 2 — and the
+   hour rule struck through the text. The dot goes above everything, and the
+   text drops below. */
 .tl-point { position: absolute; z-index: 3; top: calc(var(--start) * var(--hour) / 60); right: 0; left: 0; display: flex; gap: 9px; align-items: baseline; padding: 5px 0 0 3px; }
 .tl-dot { flex: none; align-self: flex-start; width: 7px; height: 7px; margin-top: -8px; background: var(--forest); border-radius: 50%; }
-/* Refeição, café e deslocamento pesam menos, como nos blocos. */
+/* Meals, breaks and transfers weigh less, as in the blocks. */
 .tl-point[data-kind='meal'] .tl-dot,
 .tl-point[data-kind='break'] .tl-dot,
 .tl-point[data-kind='transport'] .tl-dot { background: var(--muted); }
 .tl-point .tl-time { margin: 0; color: var(--muted); font-size: var(--t-label); font-weight: 700; font-variant-numeric: tabular-nums; }
-/* Título de sessão é texto funcional: 14px, não 13. */
+/* A session title is functional text: 14px, not 13. */
 .tl-point-title { margin: 0; font-size: var(--t-meta-lg); font-weight: 700; line-height: 1.3; }
 .tl-point-copy { min-width: 0; }
 .tl-point-meta { display: flex; flex-wrap: wrap; gap: 5px 14px; margin: 3px 0 0; }
 
-/* O período noturno continua fora da escala vertical, mas usa o mesmo cartão,
-   colunas e hierarquia de dados dos blocos acima. */
+/* The evening stays outside the vertical scale, but uses the same card,
+   columns and data hierarchy as the blocks above. */
 .tl-evening { display: grid; grid-template-columns: 62px 1fr; gap: 18px; margin-top: 30px; padding-top: 18px; border-top: 1px solid var(--line); }
 .tl-evening-title { margin: 13px 0 0; color: var(--forest); font-size: var(--t-label); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .tl-evening-items { display: grid; gap: 10px; }
@@ -503,7 +510,8 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
 .tl-evening-card .tl-time { margin: 1px 0 0; color: var(--muted); font-size: var(--t-label); font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.35; }
 .tl-evening-body { min-width: 0; }
 
-/* A lista. No desktop sai de vista sem sair da árvore de acessibilidade. */
+/* The list. On desktop it leaves the view without leaving the accessibility
+   tree. */
 @media (min-width: 1280px) {
   .programme > .session-list { position: absolute; overflow: hidden; clip-path: inset(50%); width: 1px; height: 1px; white-space: nowrap; }
 }
@@ -527,21 +535,21 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
   .session-list .session { grid-template-columns: 1fr; gap: 6px; }
 }
 
-/* Blocos abaixo de 45 minutos: uma linha só, para nada ser cortado. */
+/* Blocks of 45 minutes or less: one row, so nothing gets clipped. */
 .tl-block[data-compact] { padding-block: 0; }
 .tl-block[data-compact] .tl-block-body { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; }
 .tl-block[data-compact] .tl-title { font-size: var(--t-meta); }
 .tl-block[data-compact] .tl-block-meta { margin: 0; }
 .tl-block[data-compact] .tl-who { margin: 0; }
 
-/* Os títulos de sessão são dado funcional, não display: Manrope nas duas
-   representações. A serifada fica para os títulos de seção e os nomes dos dias. */
+/* Session titles are functional data, not display: Manrope in both
+   representations. The serif stays for section titles and day names. */
 .tl-title, .tl-track-title, .session-body h3, .session-tracks strong { font-family: var(--font-sans), Arial, sans-serif; }
 
-/* --- Impressão --------------------------------------------------------------
-   O painel interativo guarda um dia por vez, então imprimi-lo entregaria um
-   dia só, em silêncio. O bloco .print-programme carrega os cinco e é ele que
-   aparece no papel. */
+/* --- Print ------------------------------------------------------------------
+   The interactive panel holds one day at a time, so printing it would quietly
+   produce a single day. The .print-programme block carries all five and is
+   what appears on paper. */
 
 .print-programme { display: none; }
 
@@ -550,16 +558,17 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
 
   body { background: #fff; font-size: 10pt; }
 
-  /* Nada anima no papel. Uma entrada com `both` que a impressao nao execute
-     congelaria no primeiro quadro, e o primeiro quadro e opacidade zero:
-     anular a propriedade devolve o estilo base, que ja e o estado final. */
+  /* Nothing animates on paper. An entrance using `both` that a print renderer
+     does not run would freeze on its first frame, and the first frame is
+     opacity zero: nulling the property returns the base style, which is
+     already the final state. */
   *, *::before, *::after { animation: none !important; }
 
-  /* Bandas tonalizadas gastam tinta e não informam nada no papel. */
+  /* Tinted bands spend ink and say nothing on paper. */
   .overview, .materials, .agenda-section, footer,
   .fact-list, .objective-block { background: #fff !important; }
 
-  /* Controles não têm sentido no papel; iframes de mapa, menos ainda. */
+  /* Controls make no sense on paper; map iframes even less. */
   .site-header,
   .now-band,
   .hash-notice,
@@ -575,7 +584,8 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
   .print-only { display: block; }
   .print-heading { clear: both; margin: 0 0 12pt; padding-bottom: 6pt; border-bottom: 1px solid #000; font-size: 10pt; font-weight: 700; }
   .print-programme { display: block; }
-  /* O título da seção já anuncia a programação; o respiro de tela é excesso. */
+  /* The section title already announces the programme; the screen's breathing
+     room is excess here. */
   .agenda-section .section-title { margin-bottom: 10pt; }
   .programme-title { display: block; }
   /* The whole clock band goes, timezone line included: there is no live clock
@@ -589,7 +599,7 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
   .objective-block p { font-size: 11pt; }
   .overview-layout { break-inside: avoid; }
 
-  /* Um dia por página, e nenhuma sessão partida ao meio. */
+  /* One day per page, and no session split down the middle. */
   .print-day { break-before: page; }
   .print-day:first-child { break-before: auto; }
   .print-day-title { margin: 0 0 8pt; padding-bottom: 5pt; border-bottom: 1px solid #000; font-size: 12pt; font-weight: 700; }
@@ -600,11 +610,13 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
   .tl-tbd, .tl-estimated, .resource-item em { border: 1px solid #000; }
 }
 
-/* --- Estado "agora" ---------------------------------------------------------
-   Só existe durante a semana do workshop. Antes e depois, nada é marcado. */
+/* --- The "now" state --------------------------------------------------------
+   It only exists during the workshop week. Before and after, nothing is
+   marked. */
 
-/* A linha atravessa o corpo; o rótulo fica na canaleta do eixo, para não
-   cobrir o texto do bloco em curso, e mostra a hora em vez de repetir "agora". */
+/* The line crosses the body; the label lives in the axis gutter so it does
+   not cover the running block's text, and shows the time rather than repeating
+   the word "now". */
 .tl-now { position: absolute; z-index: 1; top: calc(var(--start) * var(--hour) / 60); right: 0; left: 0; border-top: 2px solid var(--forest); pointer-events: none; }
 .tl-now-label { position: absolute; z-index: 4; right: calc(100% + 18px); padding: 2px 7px; color: #fff; background: var(--forest); border-radius: 99px; font-size: var(--t-label); font-weight: 800; font-variant-numeric: tabular-nums; transform: translateY(-50%); }
 
@@ -622,32 +634,33 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
   .tl-now, .tl-mark, .tab-today { display: none !important; }
 }
 
-/* O bloco noturno fica fora do eixo, então a sessão em curso ali precisa de
-   um destaque próprio: a linha do agora não chega até ele. */
+/* The evening block sits outside the axis, so a session running there needs a
+   highlight of its own: the now line does not reach it. */
 .tl-evening-card[data-state='running'] { border-color: var(--forest); border-left-width: 5px; box-shadow: 0 0 0 1px var(--forest); }
 .tl-evening-card[data-state='next'] { border-left-color: var(--accent); border-left-width: 5px; }
 
-/* Cada material aponta para a sessão que o produz. */
+/* Each material points at the session that produces it. */
 .resource-session { font-size: var(--t-body); font-weight: 700; line-height: 1.4; text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; transition: text-decoration-color var(--m-quick) var(--m-ease); }
 .resource-session:hover { text-decoration-color: var(--forest); }
 .resource-file { padding: 5px 12px; color: #fff; background: var(--forest); border-radius: 99px; font-size: var(--t-label); font-weight: 800; letter-spacing: .05em; text-transform: uppercase; white-space: nowrap; }
 
-/* --- Entrada por rolagem ----------------------------------------------------
-   Sem JavaScript nenhum: `animation-timeline: view()` amarra o progresso da
-   animacao a posicao do elemento na tela. O @supports importa mais do que
-   parece — em um navegador sem a propriedade a regra inteira e descartada e a
-   pagina abre com tudo visivel, que e o estado correto e nao um remendo. Um
-   observador em JavaScript nao teria essa saida, e /materials/ e um componente
-   de servidor que nao manda script proprio: tem de continuar assim.
+/* --- Scroll entrances -------------------------------------------------------
+   No JavaScript at all: `animation-timeline: view()` ties the animation's
+   progress to the element's position on screen. The @supports matters more
+   than it looks — in a browser without the property the whole rule is dropped
+   and the page opens fully visible, which is the correct state and not a
+   patch. An IntersectionObserver would have no such exit, and /materials/ is a
+   server component that ships no script of its own: it has to stay that way.
 
-   Fica de fora de prefers-reduced-motion de proposito. A regra global no topo
-   zera duracoes, e aqui duracao nao governa nada: quem move a animacao e a
-   rolagem. Sem este @media, quem pediu menos movimento receberia exatamente o
-   efeito que pediu para nao ver.
+   It sits inside prefers-reduced-motion: no-preference on purpose. The global
+   rule at the top zeroes durations, and duration governs nothing here: what
+   drives the animation is the scroll. Without this media query, a reader who
+   asked for less movement would get exactly the effect they asked not to see.
 
-   So entram blocos de altura modesta. A fase `entry` dura a altura do proprio
-   elemento, entao em um bloco mais alto que a tela — um dia de materiais, um
-   cartao da pagina pratica — a leitura comecaria antes de a opacidade fechar. */
+   Only blocks shorter than the viewport get one. The `entry` phase lasts the
+   element's own height, so on a block taller than the screen — a day of
+   materials, a card on the practical page — reading would begin before the
+   opacity finished. */
 
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
@@ -662,9 +675,10 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
       animation-range: entry 0% entry 38%;
     }
 
-    /* Os tres destinos assentam na ordem em que sao lidos. O atraso e escrito
-       em fracao de percurso, nao em segundos: num timeline de rolagem quem
-       corre e a tela, e animation-delay nao tem a que se referir. */
+    /* The three destinations settle in the order they are read. The delay is
+       written as a fraction of the range, not in seconds: on a scroll timeline
+       it is the screen that moves, and animation-delay has nothing to refer
+       to. */
     .home-directory > a:nth-child(2) { animation-range: entry 6% entry 44%; }
     .home-directory > a:nth-child(3) { animation-range: entry 12% entry 50%; }
   }

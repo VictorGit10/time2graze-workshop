@@ -2,22 +2,15 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { DESTINATIONS } from '@/data/navigation';
 
 /**
- * Every destination, home included. The wordmark also returns home, but a
- * reader deep in the programme should not have to know that: `Home` is the
- * affordance people look for, and it costs one slot in a row of four.
- */
-const DESTINATIONS = [
-  { href: '/', label: 'Home' },
-  { href: '/programme/', label: 'Programme' },
-  { href: '/practical/', label: 'Travel' },
-  { href: '/materials/', label: 'Materials' },
-] as const;
-
-/**
- * The same navigation on every page. It stays in the sticky header on small
- * screens with all four destinations visible, without a drawer or scroll.
+ * The same navigation on every page, staying in the sticky header on small
+ * screens with all four destinations visible — no drawer, no scroll.
+ *
+ * `Home` is a link of its own, not only the wordmark. The wordmark returns
+ * home as well, but a reader three pages deep should not have to know that,
+ * and it costs one slot in a row of four.
  */
 export function SiteHeader() {
   const pathname = usePathname();
