@@ -45,13 +45,11 @@ export function todayIndex(days: Day[], clock: Clock | null) {
   return index >= 0 ? index : null;
 }
 
-export type SessionState = 'running' | 'next' | null;
-
 /**
  * Only a session with a confirmed end can be called running. Provisional ends
  * exist to make the programme readable, not to claim live certainty.
  */
-export function stateOf(session: Session, clock: Clock | null): SessionState {
+export function stateOf(session: Session, clock: Clock | null): 'running' | null {
   if (!clock || session.date !== clock.date) return null;
 
   const start = toMinutes(session.start);

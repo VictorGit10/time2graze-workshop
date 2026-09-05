@@ -78,18 +78,3 @@ export function uberLink({ lat, lon }: Coordinates, nickname: string, address?: 
 export function formatCoordinates({ lat, lon }: Coordinates): string {
   return `${lat.toFixed(6)}, ${lon.toFixed(6)}`;
 }
-
-/**
- * Straight-line distance between two pins. Indicative only: it is not a
- * driving distance and must never be published as a travel time — see
- * `research/venues.md`.
- */
-export function straightLineKm(from: Coordinates, to: Coordinates): string {
-  const R = 6371; // Mean Earth radius, km.
-  const rad = (d: number) => (d * Math.PI) / 180;
-  const dLat = rad(to.lat - from.lat);
-  const dLon = rad(to.lon - from.lon);
-  const a = Math.sin(dLat / 2) ** 2
-    + Math.cos(rad(from.lat)) * Math.cos(rad(to.lat)) * Math.sin(dLon / 2) ** 2;
-  return `${(2 * R * Math.asin(Math.sqrt(a))).toFixed(1)} km`;
-}

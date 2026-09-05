@@ -56,9 +56,13 @@ export type Session = {
   endStatus?: 'provisional';
   title: string;
   speakers?: Speaker[];
-  /** Explicit for every item. `null` means no location is published for it. */
+  /**
+   * Recorded for every item, rendered by nothing: the programme, the `.ics`
+   * and the home band are all silent on venues. `null` means no location is
+   * known. See AGENTS.md, Data model.
+   */
   venueId: VenueId | null;
-  /** Parenthetical after the venue, e.g. "Pizza" in "Welcome Dinner @ LAPIG (Pizza)". */
+  /** Parenthetical on the agenda line, e.g. "Pizza" in "Welcome Dinner (Pizza)". */
   venueNote?: string;
   kind: SessionKind;
   /** Present only for split sessions; `title` then acts as the group label. */

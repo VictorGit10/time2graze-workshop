@@ -42,15 +42,19 @@ live state or calendar files until approved. Venue evidence is recorded in
   CEP; state whether campus access is controlled and which full name for the
   laboratory should appear on first mention.
 - [ ] Resolve the two Centro de Eventos address records, confirm the visitor
-  pin and state whether participants walk there or are driven. The official
-  site already confirms the phone shown on the page.
-- [ ] Confirm the exact Favo de Mel unit for the closing reception.
+  pin and state whether participants walk there or are driven. *Dormant: the
+  venue was taken out of `data/venues.ts` in September 2026 as unconfirmed and
+  is not on the site. Answering this is what would bring it back.*
+- [ ] Confirm the exact Favo de Mel unit for the closing reception. *Dormant on
+  the same grounds.*
 - [ ] Confirm the Day 5 boarding and return points in Goiânia.
 - [ ] Supply confirmed addresses/pins for FUNAPE and the T2G Biomass
   Experimental Area.
 - [ ] Confirm the two Day 5 grazing livestock farms.
 - [ ] Obtain authorised photographs and credit lines for Centro de Eventos and
-  Favo de Mel if the team wants photographs in their venue panels.
+  Favo de Mel if either venue returns to the registry and the team wants a
+  photograph in its panel. Both images are already on file — see
+  `research/venues.md`.
 - [ ] Test the Golden Lis Uber link on a physical Android or iPhone with the app
   installed. The desktop web fallback has already been verified.
 - [ ] Test the LAPIG Uber link on a physical Android or iPhone. The organiser

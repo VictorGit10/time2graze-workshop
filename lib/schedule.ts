@@ -1,14 +1,10 @@
 import type { Day, Session, Speaker, Track } from '@/data/types';
-import { VENUES } from '@/data/venues';
 
 const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MONTHS = [
   'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
   'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
 ];
-
-/** Kinds that may carry their venue in compact derived labels. */
-const VENUE_IN_LINE = new Set(['meal', 'break', 'social']);
 
 /** Parses an ISO date in UTC, so the weekday never shifts with the local zone. */
 function parseISO(date: string) {
@@ -44,8 +40,15 @@ function trackLabel(track: Track) {
 
 /**
  * The full agenda line. Composed from the parts rather than stored, so the
- * data stays queryable — a title is never a blob holding a venue and a
- * presenter that nothing else can read.
+ * data stays queryable — a title is never a blob holding a presenter that
+ * nothing else can read.
+ *
+ * No venue. Meals, breaks and social items used to carry one here (`Lunch @
+ * Cidade de Goiás`), which made the home band the only surface on the site
+ * naming a place: the programme and the `.ics` have been silent on venues
+ * since 5 September 2026. What a participant needs from the band is that the
+ * interval exists, not where to stand — daily movement is the workshop
+ * shuttle, and Travel & stay holds the places.
  */
 export function sessionTitle(session: Session) {
   let label = session.title;
@@ -58,10 +61,6 @@ export function sessionTitle(session: Session) {
 
   if (session.status === 'tbd') label = `${label} (TBD)`;
 
-  if (session.venueId && VENUE_IN_LINE.has(session.kind)) {
-    label = `${label} @ ${VENUES[session.venueId].short}`;
-  }
-
   if (session.venueNote) label = `${label} (${session.venueNote})`;
 
   return label;
@@ -73,7 +72,7 @@ export function dayShort(day: Day) {
 }
 
 /** Activities from this hour on move to the evening block, below the axis. */
-export const EVENING_FROM = 18 * 60;
+const EVENING_FROM = 18 * 60;
 
 /** '14:30' -> 870 */
 export function toMinutes(hhmm: string) {

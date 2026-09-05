@@ -97,10 +97,10 @@ function Block(
           </>
         ) : (
           <>
-            <h4 className="tl-title">
+            <h3 className="tl-title">
               {session.title}
               <Mark state={state} />
-            </h4>
+            </h3>
             <PresenterLine item={session} compact={compact} />
           </>
         )}
@@ -247,7 +247,7 @@ function List(
                 </>
               ) : (
                 <>
-                  <h4>{session.title}</h4>
+                  <h3>{session.title}</h3>
                   <PresenterLine item={session} />
                 </>
               )}
@@ -283,7 +283,7 @@ export function Programme({ day, clock }: { day: Day; clock: Clock | null }) {
 
       {evening.length > 0 && (
         <section className="tl-evening" aria-hidden="true">
-          <h4 className="tl-evening-title">Evening</h4>
+          <h3 className="tl-evening-title">Evening</h3>
           <div className="tl-evening-items">
             {evening.map((s) => (
               <article
@@ -295,10 +295,10 @@ export function Programme({ day, clock }: { day: Day; clock: Clock | null }) {
               >
                 <p className="tl-time">{timeLabel(s)}</p>
                 <div className="tl-evening-body">
-                  <h4 className="tl-title">
+                  <h3 className="tl-title">
                     {s.title}
                     <Mark state={marks(s)} />
-                  </h4>
+                  </h3>
                   <PresenterLine item={s} />
                   <p className="tl-block-meta">
                     {s.venueNote && (
@@ -334,9 +334,9 @@ export function ProgrammeForPrint() {
     <div className="print-programme" aria-hidden="true">
       {AGENDA.map((day) => (
         <section className="print-day" key={day.date}>
-          <h3 className="print-day-title">
+          <h2 className="print-day-title">
             Day {day.index} — {dayLabel(day.date)} — {day.label}
-          </h3>
+          </h2>
           <List sessions={day.sessions} anchors={false} />
         </section>
       ))}

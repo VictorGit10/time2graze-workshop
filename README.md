@@ -30,8 +30,7 @@ Waiting for confirmed information:
 
 - final calendar release: beta entries remain tentative and omit provisional end times;
 - hotel, booking, check-in and check-out details;
-- confirmation of the LAPIG and Centro de Eventos pins and the exact Favo de
-  Mel unit;
+- confirmation of the LAPIG street address, entrance and CEP;
 - airport transfers and daily transport;
 - the two Day 5 farm locations;
 - approval for any institutional marks beyond Land & Carbon Lab, UFG and LAPIG;
@@ -46,15 +45,16 @@ decisions. The complete operational checklist is in
 Content is kept out of the page markup:
 
 - `data/agenda.ts` — days, sessions, tracks, speakers and expected materials;
-- `data/venues.ts` — the single venue registry used by the programme and maps;
+- `data/venues.ts` — the single venue registry: hotel, LAPIG, Cidade de Goiás;
 - `data/types.ts` — the content contracts;
+- `data/practical.ts` — accommodation, the contracted shuttle and guide links;
+- `data/navigation.ts` — the four destinations, shared by the header and 404;
 - `lib/materials.ts` — derives the Materials section from the agenda;
-- `lib/practical.ts` — derives the transport lines on `/practical/`
-  from the agenda;
+- `lib/calendar.ts` — generates the `.ics` files from the same agenda;
 - `components/programme.tsx` — proportional, chronological and print
   representations of the programme;
-- `app/page.tsx` — home page composition. Day and map selection live in the
-  programme and practical pages.
+- `app/page.tsx` — home page composition. Day selection lives in the
+  programme page.
 
 Material files belong to a day, session or parallel track. Leave `href` absent
 until the file actually exists. The Materials section updates automatically;
