@@ -360,13 +360,12 @@ order is the argument: what is happening now, what this is, where to go next.
 - **The directory carries a status per destination**, `data-status="neutral"`
   or `"pending"`. `Draft programme` is neutral because a draft is a normal
   state, not an outstanding item; only genuinely missing information is amber.
-- **The band names the venue for meals, breaks and social items**, via
-  `sessionTitle`, and that is deliberate rather than drift. The 5 September
-  decision below takes venues out of the programme and the `.ics`; it does not
-  reach here, because for `Dinner` or `Lunch` the place is the operative fact
-  and the band is read at the moment someone has to go there. Technical
-  sessions never carry one. If the organiser wants the band silent on venues
-  too, the rule is the `VENUE_IN_LINE` set in `lib/schedule.ts`.
+- **The band names no venue.** It used to, for meals, breaks and social items
+  (`Lunch @ Cidade de Goiás`), which left it as the one surface on the site
+  naming a place after the programme and the `.ics` went silent on 5 September
+  2026. The organiser removed it: what a participant needs from the band is
+  that the interval exists, not where to stand. Daily movement is the workshop
+  shuttle, and Travel & stay holds the places.
 
 `/programme/` and `/practical/` each carry one band of the same kind —
 `.programme-facts` and `.practical-status-line`. The programme's includes the
@@ -449,7 +448,7 @@ type WorkshopSession = {
   endStatus?: 'provisional';   // visibly provisional; never drives Now or .ics
   title: string;
   speakers?: Speaker[];
-  venueId: string | null;      // registry id; null means visibly pending
+  venueId: string | null;      // registry id, recorded but not rendered — see below
   kind: 'technical' | 'meal' | 'break' | 'transport' | 'field' | 'social';
   tracks?: ParallelTrack[];    // parallel activities modelled explicitly
   materials?: Material[];
@@ -463,10 +462,16 @@ type WorkshopSession = {
 - Parallel activities are two entries sharing an interval — never one combined
   title. Day 1 at 10:00 is currently a single string holding two courses; that
   is a modelling error to fix, not a formatting choice.
-- Unknown fields stay absent or `tbd`. Venue is the explicit exception: every
-  session carries `venueId`, with `null` rendered as “Pending confirmation”.
-  The other exception is the 20 explicitly authorised provisional end times,
-  all carrying `endStatus: 'provisional'`.
+- Unknown fields stay absent or `tbd`. The exception is the 20 explicitly
+  authorised provisional end times, all carrying `endStatus: 'provisional'`.
+- **`venueId` is carried on every session and rendered nowhere.** It is
+  required rather than optional so a place is recorded where one is known, but
+  no surface reads it any more: the programme and the `.ics` dropped venues on
+  5 September 2026 and the home band followed. `data/venues.ts` still feeds
+  Travel & stay, keyed by its own ids. Do not read this as a field to revive
+  on a whim — putting a venue back on the agenda is an organiser's decision,
+  and the one place that would render it is `sessionTitle` in
+  `lib/schedule.ts`.
 - **Materials is an aggregated view of files attached to sessions**, not a
   second list maintained by hand. `lib/materials.ts` reads the agenda; there is
   nothing to keep in step.
