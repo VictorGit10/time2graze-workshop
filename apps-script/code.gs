@@ -37,6 +37,33 @@ function getWorkshopCalendarId() {
   return calendar.getId();
 }
 
+/** Diagnostic: where do the workshop-week events actually live? Lists every
+ * calendar the account can see — owned and subscribed — holding events
+ * between 13 and 20 September 2026, with how many carry a location. */
+function listWorkshopEventsByCalendar() {
+  const props = PropertiesService.getScriptProperties();
+  console.log('stored CALENDAR_ID: %s', props.getProperty('CALENDAR_ID'));
+  const start = new Date('2026-09-13T00:00:00');
+  const end = new Date('2026-09-20T00:00:00');
+  const calendars = CalendarApp.getAllCalendars();
+  let found = 0;
+  for (const cal of calendars) {
+    const events = cal.getEvents(start, end);
+    if (!events.length) continue;
+    found++;
+    const withLocation = events.filter((e) => e.getLocation()).length;
+    console.log(
+      '"%s" (%s): %s events, %s with location — e.g. "%s"',
+      cal.getName(),
+      cal.getId(),
+      events.length,
+      withLocation,
+      events[0].getTitle(),
+    );
+  }
+  if (!found) console.log('No owned calendar holds events in that week.');
+}
+
 /** Web-app entry point. `action` is `share` (default) or `ping`. */
 function doGet(e) {
   const action = String(e.parameter.action || 'share').toLowerCase();
