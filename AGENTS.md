@@ -206,6 +206,13 @@ Decisions that came out of building it, and that are easy to break:
 - **Session titles are Manrope in both representations.** They are functional
   data, and Cormorant Garamond loses legibility at 13–14px in a narrow block.
   The serif stays for section titles and day names.
+- **The heading levels are h1 → h2 → h3 and must stay contiguous.** The page
+  title is the h1, the day name in `.day-summary` and each printed day title
+  are h2, and every session title — grid, list and evening alike — is an h3.
+  Until September 2026 the day was an h3 and sessions h4, with no h2 anywhere:
+  the site's only axe violation, on the one page it exists for. The CSS is
+  keyed on those elements (`.day-summary h2`, `.session-body h3`), so changing
+  a level means changing the selector with it.
 - 76px per hour, half-hour rules, hours labelled.
 
 ### The "now" state
@@ -353,6 +360,13 @@ order is the argument: what is happening now, what this is, where to go next.
 - **The directory carries a status per destination**, `data-status="neutral"`
   or `"pending"`. `Draft programme` is neutral because a draft is a normal
   state, not an outstanding item; only genuinely missing information is amber.
+- **The band names the venue for meals, breaks and social items**, via
+  `sessionTitle`, and that is deliberate rather than drift. The 5 September
+  decision below takes venues out of the programme and the `.ics`; it does not
+  reach here, because for `Dinner` or `Lunch` the place is the operative fact
+  and the band is read at the moment someone has to go there. Technical
+  sessions never carry one. If the organiser wants the band silent on venues
+  too, the rule is the `VENUE_IN_LINE` set in `lib/schedule.ts`.
 
 `/programme/` and `/practical/` each carry one band of the same kind —
 `.programme-facts` and `.practical-status-line`. The programme's includes the
@@ -473,10 +487,14 @@ Extract the data with no visual change at all, as its own step.
 ## Type and detail rules
 
 - **12px is the floor for metadata only** — eyebrows, captions, labels.
-  Functional text belongs at **14–17px**. The current CSS bottoms out at 8px
-  for uppercase labels (`.event-label`, `.information-nav span`,
-  `.event-visual p`), which is both an accessibility failure and one of the
-  most recognisable tells of generated layout.
+  Functional text belongs at **14–17px**. This was written when the CSS bottomed
+  out at 8px for uppercase labels, which was both an accessibility failure and
+  one of the most recognisable tells of generated layout. The scale now lives in
+  `:root` as `--t-label` (12px), `--t-meta` (13px), `--t-meta-lg` (14px) and
+  `--t-body` (15px); reach for a token rather than a literal. `.fact-list dd`
+  was the last literal 12px on functional text and became `--t-meta-lg` in
+  September 2026 — the `dt` beside it keeps the floor, which is what the floor
+  is for.
 - **Tabular numerals for times** (`font-variant-numeric: tabular-nums`) so the
   time column aligns exactly.
 - **No third typeface.** Cormorant Garamond and Manrope are enough. Reach for
@@ -518,48 +536,55 @@ app/page.tsx                 Home: today's session, hero, directory, overview.
 app/programme/layout.tsx     Route metadata. The page is a client component.
 app/programme/page.tsx       Day tabs, deep links and the printable programme.
 app/materials/page.tsx       Materials by day. A server component: no state.
-app/practical/layout.tsx     Route metadata. The page is a client component.
-app/practical/page.tsx       Stay, transport, maps and recommendations.
+app/practical/layout.tsx     Route metadata for the stable /practical/ route.
+app/practical/page.tsx       Travel & stay: hotel, shuttle, venues. A server component.
+app/not-found.tsx            404, listing the same four destinations.
 app/globals.css              Shared tokens, screen, responsive and print styles.
+app/travel.css               Styles owned by Travel & stay.
 components/site-header.tsx   Persistent navigation, with the current page marked.
 components/site-footer.tsx   Footer, shared by every page.
 components/now-next.tsx      The home page's "happening now", workshop week only.
 components/programme.tsx     Proportional, chronological and print programmes.
-hooks/use-tab-keys.ts        Arrow-key movement for a tablist, horizontal or vertical.
+components/venue-card.tsx    One venue on Travel: actions, copy feedback, map disclosure.
+components/add-to-calendar.tsx  .ics downloads, subscription URL and the share form.
+hooks/use-tab-keys.ts        Arrow-key movement for the day tablist. Horizontal only.
 data/agenda.ts               The five days, sessions, tracks and materials.
 data/types.ts                Content contracts.
 data/venues.ts               The single venue registry: names, pins, addresses.
 data/practical.ts            Accommodation, contracted shuttle and selected guide links.
+data/institutions.ts         The marks cleared for display, with their artwork sizes.
+data/navigation.ts           The four destinations. The header and the 404 share it.
 hooks/use-workshop-clock.ts  Client clock with a null server snapshot.
 lib/base-path.ts             The one place a raw path gets the Pages basePath.
 lib/deep-link.ts             Day/session hash resolution and scrolling.
 lib/materials.ts             Materials view derived from the agenda.
 lib/now.ts                   Goiânia clock and Today/Now/Next rules.
 lib/places.ts                Map embed, map link and ride link, from coordinates.
-lib/practical.ts             Transport lines, derived from the agenda.
 lib/schedule.ts              Time, duration and programme-axis helpers.
+lib/calendar.ts              RFC 5545 .ics generation for the agenda.
+scripts/build-calendar.mjs   Writes public/calendar/ before dev and build.
 next.config.ts               Static export, trailing slash and the Pages basePath.
 postcss.config.mjs           Tailwind, imported by globals.css for its reset only.
-public/                      Hero, social preview, favicon and candidate logos.
+public/                      Hero, social preview, favicon, logos and calendar files.
 research/logos/              Logo provenance and previous-site references.
 research/venues.md           Where every address, pin and photo licence came from.
-components/ui/               60 unused shadcn components. Nothing imports them.
 apps-script/                clasp project: live calendar sharing + daily .ics sync.
 lib/calendar-sharing.ts     JSONP request to the Apps Script web app.
 ```
 
-Only the pages that need the browser are client components: `/programme/`
-(day selection, deep links, the clock) and `/practical/` (the map tablist).
-`/materials/` is a plain server component and ships no JavaScript of its own;
-keep it that way. Content stays in typed data modules rather than being
-declared inside a component.
+Only what needs the browser is a client component. `/programme/` is one, for
+day selection, deep links and the clock. `/practical/` is not: it became a
+server component when Travel was rebuilt around venue cards, and
+`components/venue-card.tsx` is the client part, owning the copy feedback and
+the map disclosure. `/materials/` is a plain server component and ships no
+JavaScript of its own; keep both that way. Content stays in typed data modules
+rather than being declared inside a component.
 
 ## Where content lives
 
 - Edit `data/agenda.ts` to change a session, presenter, track or expected
   material. It feeds `/programme/`, `/materials/`, the home page's
-  "happening now" band, and the transport lines on `/practical/`
-  (`lib/practical.ts`) at once.
+  "happening now" band and the calendar files at once.
 - Edit `data/venues.ts` to change a venue, its pin or its address. The
   programme, the agenda lines and the location panel share this registry.
   Record where a new fact came from in `research/venues.md` at the same time.
@@ -589,9 +614,10 @@ building it, and that are easy to break:
   LAPIG's published address carries a probable typo and a Caixa Postal CEP, so
   the panel shows its locality and a visible pending note instead. A plausible
   address is worse than a blank one for someone reading it out to a driver.
-  Candidate addresses and the candidate Favo de Mel phone stay in
-  `research/venues.md`, not in operational fields on the page. Centro de
-  Eventos' phone is published because its official UFG page supplies it.
+  Candidate addresses stay in `research/venues.md`, not in operational fields
+  on the page. Centro de Eventos and Favo de Mel were removed from the registry
+  in September 2026 as unconfirmed; their research notes remain in that file and
+  a venue returns to `data/venues.ts` only with a sourced pin.
 - **A photograph has to be authorised.** Google Maps and Places photographs are
   third-party copyright and cannot be republished — a screenshot does not
   create a licence. Until a venue supplies one, the panel shows a visibly empty
@@ -607,9 +633,11 @@ building it, and that are easy to break:
   Uber and offers the address and coordinates for every other app. Never
   generate a ride link for a pin that is not right — it
   carries someone to a point, not to a name they can re-read. In the registry
-  this gate is the `ride` flag, set only where the destination itself is
-  confirmed: Golden Lis carries it; LAPIG, Centro de Eventos and Favo de Mel
-  do not yet, and the panel says plainly why no ride is offered.
+  this gate is the `ride` flag. Golden Lis carries it because its own source
+  confirms address, pin and phone; LAPIG carries it by the organiser's explicit
+  authorisation of 5 September 2026 over its existing sourced pin, which is not
+  the same as a confirmed street address — the card still says so. Cidade de
+  Goiás gets no ride: see the next rule.
 - **A venue the workshop drives people to carries `organisedTransport: true`
   and gets no ride link.** Cidade de Goiás is reached by the 06:30 bus on day
   5; offering a ride there would propose a 130 km taxi for a journey that is
@@ -749,8 +777,7 @@ summary aligned.
 - Confirmation of the LAPIG pin, its street address and its CEP — the address
   LAPIG publishes carries a probable typo and a Caixa Postal CEP. See
   `research/venues.md`
-- Confirmation of the Centro de Eventos details and the exact Favo de Mel unit
-- Authorised photographs of the hotel, Centro de Eventos and Favo de Mel, with
+- Authorised photographs of any venue that returns to the registry, with
   credit lines
 - Confirm that participants arrange their own airport-to-hotel Uber/taxi
 - Confirm the contracted shuttle's 08:00 Monday–Thursday departure, pickup
@@ -772,13 +799,14 @@ international flights.
 
 ## Known technical debt
 
-- `components/ui/` contains 60 generated shadcn components that the site does
-  not import, along with dependencies used only by that scaffold. Remove them
-  as one mechanical cleanup commit, not mixed into feature or content work.
-- Global `npm run lint` currently reports accessibility and compiler findings
-  in those unused components and in `hooks/use-mobile.ts`, which only the
-  scaffold uses. Nothing in `app/` or in the site's own components reports, and
-  the repository returns to a clean global lint once the scaffold goes.
+**The shadcn scaffold is gone.** `components/ui/` held 60 generated components
+nothing imported, `lib/utils.ts` and `hooks/use-mobile.ts` served only them, and
+14 packages in `dependencies` were loaded by none of it. All of it was removed
+in September 2026 as the single mechanical commit this section had been asking
+for; the lockfile went from 541 packages to 155 and `npm run lint` now reports
+nothing at all. What ships is `next`, `react`, `react-dom` and `lucide-react`.
+Restoring the scaffold is `npx shadcn init`, not a revert. Adding a UI library
+back means arguing for it first.
 
 **The two raw `<img>` tags are gone.** Both the hero and the venue photographs
 render through `next/image` under `images: { unoptimized: true }`, which is what
