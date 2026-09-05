@@ -73,7 +73,7 @@ export function dayShort(day: Day) {
 }
 
 /** Activities from this hour on move to the evening block, below the axis. */
-export const EVENING_FROM = 18 * 60;
+const EVENING_FROM = 18 * 60;
 
 /** '14:30' -> 870 */
 export function toMinutes(hhmm: string) {

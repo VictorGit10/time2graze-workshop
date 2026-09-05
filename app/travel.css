@@ -52,6 +52,7 @@
 .shuttle-times dd { margin: 0; }
 .shuttle-times strong { display: block; color: var(--forest); font-size: 30px; line-height: 1.2; font-variant-numeric: tabular-nums; }
 .shuttle-times span { display: block; margin-top: 6px; color: var(--text); font-size: 14px; line-height: 1.5; }
+.shuttle-provisional { display: inline-block; margin-top: 8px; padding: 2px 7px; color: var(--warning); background: var(--warning-bg); border-radius: 99px; font-size: var(--t-label); font-style: normal; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
 .travel-section { margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--line); }
 .travel-section-heading { margin-bottom: 24px; }
 .travel-guides { gap: 36px; }

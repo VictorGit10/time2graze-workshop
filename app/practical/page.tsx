@@ -43,11 +43,12 @@ export default function PracticalPage() {
                 <dt>{item.days}</dt>
                 <dd>
                   <strong>{item.time}</strong>
-                  <span>
-                    {item.provisional
-                      ? 'Departure time to confirm'
-                      : 'Departure from Golden Lis'}
-                  </span>
+                  <span>{item.detail}</span>
+                  {item.provisional && (
+                    <em className="shuttle-provisional">
+                      Departure time to confirm
+                    </em>
+                  )}
                 </dd>
               </div>
             ))}

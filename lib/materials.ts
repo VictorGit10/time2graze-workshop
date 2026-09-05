@@ -7,7 +7,7 @@ const KIND_LABEL: Record<MaterialKind, string> = {
   protocol: 'Protocol',
 };
 
-export function materialLabel(material: Material) {
+function materialLabel(material: Material) {
   return material.title ?? KIND_LABEL[material.kind];
 }
 
