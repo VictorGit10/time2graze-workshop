@@ -21,6 +21,7 @@ export type ShareStatus =
   | 'already'
   | 'invalid'
   | 'limit'
+  | 'timeout'
   | 'error';
 
 type ShareResponse = { status?: string };
@@ -31,8 +32,8 @@ export function requestCalendarAccess(email: string): Promise<ShareStatus> {
     const script = document.createElement('script');
     const timer = window.setTimeout(() => {
       cleanup();
-      resolve('error');
-    }, 10000);
+      resolve('timeout');
+    }, 20000);
 
     const finish = (status: ShareStatus) => {
       window.clearTimeout(timer);

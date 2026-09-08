@@ -42,6 +42,8 @@ export type Venue = {
   mapSpan?: number;
   /** What is still missing about this place. Rendered visibly. */
   pending?: string;
+  /** Confirmed instructions supplied by the organiser. */
+  arrivalNote?: string;
   /**
    * The workshop takes participants here; they do not make their own way.
    * Suppresses the ride link, which would otherwise offer a 130 km taxi to a
@@ -75,7 +77,7 @@ export const VENUES = {
      */
     coords: { lat: -16.6022387, lon: -49.2649118 },
     ride: true,
-    pending: 'Postal address, building entrance and campus access to be confirmed by LAPIG.',
+    arrivalNote: 'If the gate is closed, ring the intercom for access.',
     photo: {
       src: '/images/venues/lapig.webp',
       alt: 'Entrance to the LAPIG building on the UFG Campus Samambaia',
@@ -101,7 +103,7 @@ export const VENUES = {
       alt: 'Front entrance of Golden Lis Hotel Boutique in Goiânia',
       credit: 'Photo supplied for this website',
     },
-    pending: 'Coverage of the full 13–18 September stay is pending confirmation.',
+    arrivalNote: 'Uber is recommended for travel from the airport to the hotel.',
     website: 'https://goldenlishoteis.com.br/',
     phone: '+55 62 3639-1003',
     onMap: true,
@@ -114,7 +116,6 @@ export const VENUES = {
     /** A town, not a building: the pin is the municipality, drawn wider. */
     coords: { lat: -15.9408902, lon: -50.1465398 },
     mapSpan: 0.08,
-    pending: 'The two grazing livestock farms visited on 18 September are still to be confirmed.',
     organisedTransport: true,
     photo: {
       src: '/images/venues/cidade-de-goias.webp',

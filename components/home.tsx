@@ -2,7 +2,7 @@ import { ArrowRight, CalendarDays, ChevronRight, MapPin } from 'lucide-react';
 import type { CSSProperties } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { AGENDA } from '@/data/agenda';
+import { AGENDA, CALENDAR_RELEASE } from '@/data/agenda';
 import {
   DISPLAYED_INSTITUTIONS,
   type Institution,
@@ -24,22 +24,22 @@ const DESTINATIONS = [
     href: '/programme/',
     title: 'Programme',
     detail: `${AGENDA.length} days · ${SCHEDULED_ITEMS} scheduled items`,
-    status: 'Draft programme',
+    status: CALENDAR_RELEASE === 'final' ? 'Confirmed programme' : 'Draft programme',
     tone: 'neutral',
   },
   {
     href: '/practical/',
     title: 'Travel & stay',
     detail: 'Hotel, daily shuttle, maps and Uber',
-    status: 'Key details pending',
-    tone: 'pending',
+    status: 'Arrival & daily transport',
+    tone: 'neutral',
   },
   {
     href: '/materials/',
     title: 'Materials',
     detail: `${EXPECTED_FILES} expected files linked to sessions`,
-    status: 'Publication pending',
-    tone: 'pending',
+    status: 'Files added as supplied',
+    tone: 'neutral',
   },
 ] as const;
 
@@ -123,9 +123,6 @@ function Institutions() {
           </a>
         ))}
       </div>
-      <p className="institution-source">
-        Additional institutional marks will be included only after approval.
-      </p>
     </section>
   );
 }

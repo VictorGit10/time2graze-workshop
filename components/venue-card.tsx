@@ -62,7 +62,7 @@ export function VenueCard({
       </p>
       <Heading id={`${anchor}-title`}>{venue.name}</Heading>
       <p className="travel-place-context">
-        {hotel ? 'From the airport or back to the hotel' : venue.locality}
+        {hotel ? venue.arrivalNote : venue.locality}
       </p>
       <div className="travel-place-actions">
         {ridable && (
@@ -145,6 +145,7 @@ export function VenueCard({
         </dl>
       )}
       {venue.pending && <p className="travel-pending">{venue.pending}</p>}
+      {!hotel && venue.arrivalNote && <p className="travel-arrival-note">{venue.arrivalNote}</p>}
       <details
         className="place-map"
         onToggle={(event) => setExpanded(event.currentTarget.open)}

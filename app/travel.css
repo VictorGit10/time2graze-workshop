@@ -33,6 +33,7 @@
 .hotel-stay dd { margin: 0; font-size: 15px; line-height: 1.5; color: var(--text); }
 .travel-page .travel-pending { margin: 12px 0 20px; padding-left: 12px; border-left: 2px solid var(--warning); color: var(--warning); font-size: 14px; line-height: 1.6; }
 .travel-organised { margin: 16px 0; color: var(--forest); font-size: 15px; line-height: 1.6; font-weight: 650; }
+.travel-arrival-note { margin: 16px 0; padding-left: 12px; border-left: 2px solid var(--forest); color: var(--text); font-size: var(--t-body); line-height: 1.6; }
 .place-map { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .place-map summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 52px; padding-block: 12px; color: var(--forest); font-size: 14px; font-weight: 750; cursor: pointer; list-style: none; }
 .place-map summary::-webkit-details-marker { display: none; }
@@ -63,13 +64,74 @@
 .travel-guides small { color: var(--muted); font-size: 13px; }
 .travel-guides a:hover strong { text-decoration: underline; text-underline-offset: 4px; }
 
+/* Goiânia and Goiás. Two modules of the same shape, mirrored, so the second
+   reads as the pair of the first rather than as a repeat. The map column is
+   capped: at the full rail a 640-unit square map would open nearly 800px tall
+   and push the legend that explains it off the screen. */
+.orient-module { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 520px); grid-template-areas: 'lede figure' 'aside figure' 'detail detail'; gap: 24px 44px; align-items: start; }
+.orient-module + .orient-module { margin-top: 56px; padding-top: 48px; border-top: 1px solid var(--line); }
+.orient-module.is-mirrored { grid-template-columns: minmax(0, 520px) minmax(0, 1fr); grid-template-areas: 'figure lede' 'figure aside' 'detail detail'; }
+/* Capped, and only engaged past roughly 1400px: at the full rail the text
+   column runs to 950px, which pulls each legend distance so far from the name
+   beside it that the pair stops reading as one row. */
+.orient-lede { grid-area: lede; max-width: 760px; }
+.orient-figure { grid-area: figure; margin: 0; padding: 18px 18px 14px; background: var(--surface); border: 1px solid var(--line); }
+.orient-aside { grid-area: aside; max-width: 760px; }
+.orient-detail { grid-area: detail; margin-top: 8px; }
+.orient-module h3 { margin: 0 0 14px; font-family: var(--font-serif), Georgia, serif; font-size: clamp(30px, 3.2vw, 42px); font-weight: 600; line-height: 1.05; letter-spacing: -.025em; }
+.orient-intro { margin: 0; max-width: 60ch; color: var(--text); font-size: 16px; line-height: 1.65; }
+
+/* The drawing. Strokes do not scale, so the outline stays legible from a
+   335px phone to a 520px column without a second set of widths. */
+.orient-map { display: block; width: 100%; height: auto; }
+.orient-map path { vector-effect: non-scaling-stroke; stroke-linejoin: round; stroke-linecap: round; }
+.orient-land { fill: #e7ede3; stroke: var(--forest); stroke-width: 1.6; }
+.orient-water { fill: none; stroke: var(--muted); stroke-width: 1.2; }
+.orient-inset { fill: var(--paper); stroke: var(--muted); stroke-width: 1; stroke-dasharray: 5 4; }
+.orient-pin circle { fill: var(--surface); stroke: var(--forest); stroke-width: 2.5; vector-effect: non-scaling-stroke; }
+.orient-pin text { fill: var(--forest); font-size: 21px; font-weight: 800; text-anchor: middle; font-variant-numeric: tabular-nums; }
+.orient-pin.is-workshop circle:first-child { fill: var(--accent); stroke: none; }
+.orient-pin.is-workshop circle:last-of-type { fill: var(--forest); stroke: var(--forest); }
+.orient-pin.is-workshop text { fill: #fff; }
+.orient-scale path { fill: none; stroke: var(--forest); stroke-width: 1.5; }
+.orient-scale text { fill: var(--muted-soft); font-size: 19px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.orient-compass-label { font-size: 17px !important; }
+.orient-figure figcaption { margin-top: 10px; color: var(--muted); font-size: var(--t-meta); line-height: 1.5; }
+.orient-key { display: flex; align-items: center; gap: 7px; margin-bottom: 6px; color: var(--muted-soft); font-weight: 700; }
+.orient-key::before { content: ''; width: 22px; height: 0; border-top: 2px solid var(--muted); flex: none; }
+.orient-figure figcaption a { text-decoration: underline; text-underline-offset: 3px; }
+
+/* The legend is what a screen reader gets: the map itself is aria-hidden, so
+   every entry has to stand on its own without the drawing beside it. */
+.orient-legend { margin: 0; padding: 0; list-style: none; }
+.orient-legend li { display: grid; grid-template-columns: 30px minmax(0, 1fr) auto; gap: 4px 14px; align-items: baseline; padding: 14px 0; border-top: 1px solid var(--line); }
+.orient-legend li:first-child { border-top: 0; padding-top: 4px; }
+.orient-legend-n { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; color: var(--forest); background: var(--surface); border: 1.5px solid var(--forest); border-radius: 50%; font-size: var(--t-meta); font-weight: 800; font-variant-numeric: tabular-nums; }
+.orient-legend li.is-workshop .orient-legend-n { color: #fff; background: var(--forest); }
+.orient-legend strong { display: block; color: var(--ink); font-size: var(--t-body); font-weight: 750; line-height: 1.35; }
+.orient-legend span:not(.orient-legend-n):not(.visually-hidden) { display: block; margin-top: 3px; color: var(--text); font-size: var(--t-meta-lg); line-height: 1.5; }
+.orient-legend em { color: var(--forest); font-size: var(--t-meta-lg); font-style: normal; font-weight: 750; white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+.orient-detail h4 { margin: 0 0 14px; color: var(--forest); font-size: var(--t-label); font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.orient-timeline { margin: 0 0 34px; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+.orient-timeline li { display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 18px; padding: 13px 0; border-bottom: 1px solid var(--line); }
+.orient-year { color: var(--forest); font-size: 17px; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+.orient-timeline p { margin: 0; max-width: 78ch; color: var(--text); font-size: var(--t-body); line-height: 1.6; }
+.orient-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 2px; margin: 0; border-top: 2px solid var(--forest); }
+.orient-facts > div { padding: 14px 16px 16px 0; }
+.orient-facts dt { color: var(--muted-soft); font-size: var(--t-label); font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.orient-facts dd { margin: 6px 0 0; }
+.orient-facts dd strong { display: block; color: var(--ink); font-size: 21px; font-weight: 700; line-height: 1.2; letter-spacing: -.015em; font-variant-numeric: tabular-nums; }
+.orient-facts dd span { display: block; margin-top: 5px; color: var(--muted); font-size: var(--t-meta); line-height: 1.45; }
+
 @media screen and (max-width: 760px) {
   main > .travel-page.section-pad:first-child { padding: 28px 20px 48px; }
   .travel-heading { margin-bottom: 18px; }
   .travel-heading h1 { font-size: 38px; }
   .travel-heading p { font-size: 14px; }
-  .travel-index { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; margin-bottom: 22px; }
-  .travel-index a { padding: 8px 2px; }
+  /* Four destinations now, and they still have to fit one phone row. */
+  .travel-index { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; margin-bottom: 22px; }
+  .travel-index a { padding: 8px 2px; font-size: 13px; }
   .travel-arrival, .travel-places, .travel-guides { grid-template-columns: 1fr; gap: 20px; }
   .travel-place, .shuttle-card { padding: 22px 20px; }
   .travel-page h2, .travel-place h3 { font-size: 30px; }
@@ -78,6 +140,20 @@
   .travel-place-actions { margin-block: 16px; }
   .travel-section { margin-top: 36px; padding-top: 26px; }
   .hotel-stay > div { grid-template-columns: 85px minmax(0, 1fr); gap: 10px; }
+  /* The map leads on a phone: it is the fastest answer to "where is this". */
+  .orient-module, .orient-module.is-mirrored { grid-template-columns: minmax(0, 1fr); grid-template-areas: 'lede' 'figure' 'aside' 'detail'; gap: 20px; }
+  .orient-module + .orient-module { margin-top: 36px; padding-top: 30px; }
+  .orient-module h3 { font-size: 30px; }
+  .orient-intro { font-size: 15px; }
+  .orient-figure { padding: 12px 12px 10px; }
+  .orient-legend li { grid-template-columns: 26px minmax(0, 1fr); gap: 2px 12px; padding: 12px 0; }
+  .orient-legend em { grid-column: 2; margin-top: 4px; }
+  .orient-detail { margin-top: 0; }
+  .orient-timeline { margin-bottom: 26px; }
+  .orient-timeline li { grid-template-columns: 56px minmax(0, 1fr); gap: 12px; }
+  .orient-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 16px; }
+  .orient-facts > div { padding: 12px 0 14px; }
+  .orient-facts dd strong { font-size: 19px; }
 }
 @media print {
   .travel-page, .travel-place, .shuttle-card { background: #fff; }
@@ -87,4 +163,17 @@
   .travel-place, .shuttle-card, .travel-section { margin-top: 12pt; padding: 10pt 0; break-inside: avoid; border: 0; border-top: 1px solid #aaa; }
   .travel-page h1 { font-size: 20pt; }
   .travel-page h2, .travel-place h3 { font-size: 16pt; }
+  /* The orientation section is far taller than a page, so it is the one
+     .travel-section that must be allowed to break; each module holds together
+     instead. The maps stay — a printed sheet is the offline copy a participant
+     actually carries — but at a size that does not spend a page on one shape. */
+  .orient { break-inside: auto; }
+  .orient-module, .orient-module.is-mirrored { display: block; break-inside: avoid; }
+  .orient-module + .orient-module { margin-top: 14pt; padding-top: 12pt; border-top: 1px solid #aaa; }
+  .orient-module h3 { font-size: 15pt; }
+  .orient-figure { float: right; width: 62mm; margin: 0 0 8pt 10pt; padding: 0; background: #fff; border: 0; }
+  .orient-intro, .orient-timeline p, .orient-legend strong { max-width: none; }
+  .orient-detail { margin-top: 8pt; }
+  .orient-facts { grid-template-columns: repeat(3, minmax(0, 1fr)); border-top-color: #444; }
+  .orient-legend li, .orient-timeline li { break-inside: avoid; }
 }

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { ArrowUpRight, BusFront } from 'lucide-react';
+import { Orientation } from '@/components/orientation';
 import { VenueCard } from '@/components/venue-card';
 import { LOCAL_GUIDES, SHUTTLE_PLAN } from '@/data/practical';
 import { MAP_VENUES } from '@/data/venues';
@@ -18,6 +19,7 @@ export default function PracticalPage() {
         <a href="#hotel">Hotel</a>
         <a href="#transport">Shuttle</a>
         <a href="#maps">Venues</a>
+        <a href="#orientation">The region</a>
       </nav>
       <div className="travel-arrival">
         <div id="stay">
@@ -53,9 +55,6 @@ export default function PracticalPage() {
               </div>
             ))}
           </dl>
-          <p className="travel-pending">
-            Exact pickup points and return times are pending confirmation.
-          </p>
           <Link className="travel-text-link" href="/programme/">
             View daily programme <ArrowUpRight aria-hidden="true" />
           </Link>
@@ -82,6 +81,7 @@ export default function PracticalPage() {
           ))}
         </div>
       </section>
+      <Orientation />
       <section
         className="travel-section"
         id="recommendations"

@@ -820,8 +820,9 @@ summary aligned.
   district unsafe for visitors; nothing replaced it, so the site is now
   silent on the question rather than reassuring or warning
 
-The hotel coverage confirmation remains urgent for participants booking
-international flights.
+**Superseded by the organiser's 8 September confirmations below.** The hotel
+dates and daily transport are confirmed. Remaining presenter/material delivery
+is owned by session teams and does not block acceptance of the website.
 
 ## Known technical debt
 
@@ -892,3 +893,32 @@ presentation rules in this document:
   `SHARE_ENDPOINT` in `lib/calendar-sharing.ts` is live, so the
   "get the live calendar by email" form on `/programme/` renders. It is
   idempotent: a repeat request answers `already` and sends nothing.
+
+## Release decisions — 8 September 2026
+
+These organiser confirmations supersede older pending-information lists above:
+
+- Accommodation is 13–18 September 2026. Do not show a coverage warning or
+  invent a breakfast/payment breakdown. Check-in/check-out details stay omitted.
+- Depart from Golden Lis at 08:00 Monday–Thursday and 06:30 Friday. Hotel
+  boarding is confirmed. Return boarding follows the group's activity location;
+  no list of return points or pending return details is needed.
+- Recommend Uber from the airport to the hotel. Keep the existing Uber, maps,
+  call and copy actions.
+- If the LAPIG gate is closed, ring the intercom. Do not publish an invented
+  postal address. The existing authorised pin remains.
+- No farm-identification information or farm-pending warning is required.
+- Presenter names and material files are supplied by the session teams. Preserve
+  existing names and file placeholders; delivery is not a website acceptance
+  blocker. Materials describes files being published as teams supply them.
+- The organiser enabled the Google Calendar trigger to run every four hours.
+  The older daily-trigger descriptions are historical. Do not recreate the
+  trigger or run setup as part of a frontend change.
+- Calendar invitations are a compact block at the top of Programme, before
+  the day tabs. One labelled email field, clear sending/success/error states,
+  and one whole-workshop ICS download replace the multiple subscription choices.
+  Existing per-day ICS URLs remain available for previously shared links.
+- Home derives its programme publication label from CALENDAR_RELEASE. Remove
+  internal institutional-approval prose from the participant-facing page.
+- Shared page anchors (#top, #content, #calendar) are not invalid sessions;
+  preserve native anchor behaviour and warnings for truly unknown session links.

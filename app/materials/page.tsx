@@ -54,15 +54,16 @@ export default function MaterialsPage() {
       <div className="materials-notice">
         <Info aria-hidden="true" />
         <p>
-          Presentations and documents will be added after approval. Some may be
-          restricted to participants.
+          Presentations and documents will be published as they are supplied by
+          session teams. Some may be restricted to participants.
         </p>
       </div>
 
       <nav className="page-index materials-index" aria-label="Materials by day">
         {groups.map(({ day }) => (
           <a key={day.index} href={`#materials-day-${day.index}`}>
-            {dayLabel(day.date).split(' · ')[0]} {Number(day.date.slice(-2))}
+            <span>{dayLabel(day.date).split(' · ')[0]}</span>
+            <strong>{Number(day.date.slice(-2))}</strong>
           </a>
         ))}
       </nav>

@@ -1,139 +1,99 @@
 'use client';
 
-import { CalendarPlus } from 'lucide-react';
-import { useState, type SyntheticEvent } from 'react';
+import { CheckCircle2, CircleAlert, Download, LoaderCircle } from 'lucide-react';
+import { useRef, useState, type SyntheticEvent } from 'react';
 import { CALENDAR_RELEASE } from '@/data/agenda';
-import type { Day } from '@/data/types';
-import { absoluteUrl, withBasePath } from '@/lib/base-path';
-import { webcalUrl } from '@/lib/calendar';
-import {
-  calendarShareEnabled,
-  requestCalendarAccess,
-  type ShareStatus,
-} from '@/lib/calendar-sharing';
-import { dayShort } from '@/lib/schedule';
+import { withBasePath } from '@/lib/base-path';
+import { calendarShareEnabled, requestCalendarAccess, type ShareStatus } from '@/lib/calendar-sharing';
 
-export function AddToCalendar({ day }: { day: Day }) {
-  const workshopFile = '/calendar/time2graze-workshop.ics';
-  const publicCalendarUrl = absoluteUrl(workshopFile);
-  const beta = CALENDAR_RELEASE === 'beta';
-  const [copyState, setCopyState] = useState<'ready' | 'copied' | 'failed'>(
-    'ready',
-  );
-  const [shareState, setShareState] = useState<ShareStatus | 'sending' | null>(
-    null,
-  );
-
-  async function copyCalendarUrl() {
-    if (!publicCalendarUrl) return;
-    try {
-      await navigator.clipboard.writeText(publicCalendarUrl);
-      setCopyState('copied');
-    } catch {
-      setCopyState('failed');
-    }
-  }
+export function AddToCalendar() {
+  const [email, setEmail] = useState('');
+  const [submittedEmail, setSubmittedEmail] = useState('');
+  const [state, setState] = useState<ShareStatus | 'sending' | null>(null);
+  const inFlight = useRef(false);
+  const sending = state === 'sending';
+  const success = state === 'shared' || state === 'already';
+  const failed = state === 'invalid' || state === 'limit' || state === 'error' || state === 'timeout';
 
   async function requestAccess(event: SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
-    const email = new FormData(event.currentTarget).get('email');
-    if (typeof email !== 'string') return;
-    setShareState('sending');
-    setShareState(await requestCalendarAccess(email.trim()));
+    if (inFlight.current || success) return;
+    inFlight.current = true;
+    const address = email.trim();
+    setSubmittedEmail(address);
+    setState('sending');
+    try {
+      setState(await requestCalendarAccess(address));
+    } catch {
+      setState('error');
+    } finally {
+      inFlight.current = false;
+    }
   }
 
+  const messages = {
+    sending: 'Sending your calendar invitation…',
+    shared: `Invitation sent to ${submittedEmail}. Accept the invitation from Google Calendar in your inbox.`,
+    already: `${submittedEmail} already has access. Check your Google Calendar or the original invitation in your inbox.`,
+    invalid: 'Enter a valid email address and try again.',
+    limit: 'Invitations have reached today’s limit. Download the programme below or try again tomorrow.',
+    error: 'We could not confirm your invitation. Check your inbox, try again or download the programme below.',
+    timeout: 'This is taking longer than expected. Check your inbox before trying again, or download the programme below.',
+  };
+  const StatusIcon = sending ? LoaderCircle : success ? CheckCircle2 : CircleAlert;
+
   return (
-    <aside
-      className="calendar-actions"
-      aria-labelledby="calendar-actions-title"
-    >
+    <aside className="calendar-actions" id="calendar" aria-labelledby="calendar-actions-title">
       <div className="calendar-intro">
-        <CalendarPlus aria-hidden="true" />
-        <div>
-          <p id="calendar-actions-title">
-            Add to calendar
-            {beta && <em>Beta</em>}
-          </p>
-          <span>
-            {beta
-              ? 'The programme may still change.'
-              : 'The approved workshop programme.'}
-          </span>
-        </div>
-      </div>
-
-      <div className="calendar-links">
-        <a
-          className="calendar-primary"
-          href={withBasePath(workshopFile)}
-          download
-        >
-          Download all five days
-        </a>
-        <a href={withBasePath(`/calendar/day-${day.index}.ics`)} download>
-          {dayShort(day)} only (.ics)
-        </a>
-        {publicCalendarUrl && (
-          <>
-            <a href={webcalUrl(publicCalendarUrl)}>Apple Calendar</a>
-            <button type="button" onClick={copyCalendarUrl}>
-              {copyState === 'copied'
-                ? 'Google URL copied'
-                : copyState === 'failed'
-                  ? 'Could not copy URL'
-                  : 'Copy URL for Google'}
-            </button>
-          </>
-        )}
-      </div>
-
-      <p className="calendar-note">
-        {beta
-          ? 'Beta entries are tentative. Provisional end times are omitted; downloaded copies must be imported again after programme updates. Events appear on 14–18 September 2026.'
-          : 'All entries use the approved programme in Brasília Time (UTC−3) and appear on 14–18 September 2026.'}
-      </p>
-      {publicCalendarUrl && (
-        <p className="calendar-help">
-          Google Calendar: on a computer, copy the URL, then use Other calendars
-          → From URL. The subscribed calendar will sync to the mobile app.
+        <h2 id="calendar-actions-title">Add to calendar</h2>
+        <p id="calendar-help">
+          {calendarShareEnabled
+            ? 'Get the Google Calendar invitation by email. Programme updates sync automatically.'
+            : 'Download all five days for your calendar.'}
+          {CALENDAR_RELEASE === 'beta' && ' This programme is provisional.'}
         </p>
-      )}
+      </div>
       {calendarShareEnabled && (
-        <form className="calendar-share" onSubmit={requestAccess}>
-          <div>
-            <p>Or get the live calendar by email</p>
-            <span>
-              {beta
-                ? 'Google shares the workshop calendar with your account and e-mails the invitation; accept it once and every programme update reaches you without importing again.'
-                : 'Google shares the approved workshop calendar with your account and e-mails the invitation; accept it once and any later change reaches you without importing again.'}
-            </span>
-          </div>
+        <form className="calendar-share" onSubmit={requestAccess} aria-busy={sending}>
+          <label htmlFor="calendar-email">Email address</label>
           <div className="calendar-share-field">
             <input
+              id="calendar-email"
               type="email"
               name="email"
               autoComplete="email"
+              autoCapitalize="none"
+              spellCheck={false}
               required
+              readOnly={sending}
+              value={email}
+              onChange={(event) => {
+                setEmail(event.target.value);
+                setState(null);
+              }}
               placeholder="name@example.org"
-              aria-label="Your e-mail address"
+              aria-describedby="calendar-help calendar-share-status"
+              aria-invalid={state === 'invalid' || undefined}
             />
-            <button type="submit" disabled={shareState === 'sending'}>
-              {shareState === 'sending' ? 'Requesting…' : 'Request access'}
+            <button type="submit" disabled={sending || success}>
+              {sending && <LoaderCircle className="calendar-spinner" aria-hidden="true" />}
+              {sending ? 'Sending…' : success ? 'Access granted' : failed ? 'Try again' : 'Send invitation'}
             </button>
           </div>
-          <output className="calendar-share-status">
-            {shareState === 'shared' &&
-              'Access requested. Accept the invitation from Google Calendar in your inbox and the five days appear in your account.'}
-            {shareState === 'already' &&
-              'This address already has access. Open Google Calendar and accept the invitation if you have not yet.'}
-            {shareState === 'invalid' && 'Enter a valid e-mail address.'}
-            {shareState === 'limit' &&
-              'The request could not be sent today. Use the download above, or try again tomorrow.'}
-            {shareState === 'error' &&
-              'The request could not be sent. Use the download above, or try again.'}
-          </output>
         </form>
       )}
+      <output
+        id="calendar-share-status"
+        className="calendar-share-status"
+        data-state={sending ? 'sending' : success ? 'success' : failed ? 'error' : undefined}
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        {state && <><StatusIcon className={sending ? 'calendar-spinner' : undefined} aria-hidden="true" /><span>{messages[state]}</span></>}
+      </output>
+      <a className="calendar-download" href={withBasePath('/calendar/time2graze-workshop.ics')} download>
+        <Download aria-hidden="true" /> Download programme (.ics)
+      </a>
     </aside>
   );
 }

@@ -61,6 +61,12 @@ export default function ProgrammePage() {
   useEffect(() => {
     const apply = () => {
       const hash = location.hash;
+      // Shared page anchors belong to normal browser navigation, not sessions.
+      if (!hash || hash === '#top' || document.getElementById(hash.slice(1))) {
+        setHashNotFound(false);
+        setPending(null);
+        return;
+      }
       const day = dayFromHash(hash);
       if (day !== null) {
         history.scrollRestoration = 'manual';
@@ -129,6 +135,8 @@ export default function ProgrammePage() {
           </time>
         </p>
       </div>
+
+      <AddToCalendar />
 
       <div className="programme-tools">
         <button type="button" onClick={() => window.print()}>
@@ -225,7 +233,7 @@ export default function ProgrammePage() {
         <details className="programme-resources">
           <summary>
             Materials for Day {day.index}
-            <span> · {resources.length} expected files</span>
+            <span> · {resources.length} expected {resources.length === 1 ? 'file' : 'files'}</span>
           </summary>
           <ul>
             {resources.map((entry) => (
@@ -242,8 +250,6 @@ export default function ProgrammePage() {
           </ul>
         </details>
       )}
-
-      <AddToCalendar day={day} />
 
       <ProgrammeForPrint />
     </section>
