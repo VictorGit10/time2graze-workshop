@@ -922,3 +922,33 @@ These organiser confirmations supersede older pending-information lists above:
   internal institutional-approval prose from the participant-facing page.
 - Shared page anchors (#top, #content, #calendar) are not invalid sessions;
   preserve native anchor behaviour and warnings for truly unknown session links.
+
+## City guide — 9 September 2026
+
+The organiser replaced the final illustrated city maps and Useful references
+with a city guide, scoped to the end of Practical information. This supersedes
+the old orientation presentation described above.
+
+- Goiânia gets brief historical context: the new planned capital, founded in
+  1933, contrasted with the older Cidade de Goiás. Its free-time guide adapts
+  a selected set of points from the supplied GMH Workshop My Maps.
+- Cidade de Goiás gets historical context, its existing licensed photograph,
+  the Rio Vermelho, Cora Coralina and living heritage. It is not a second
+  free-time itinerary.
+- `data/city-guide.ts` holds participant copy and selected points;
+  `components/orientation.tsx` composes the section as a server component.
+  `components/free-time-map.tsx` owns the interactive Leaflet map and filters.
+  The practical page remains a server component.
+- Names and coordinates from the reference map are retained with provenance
+  in `research/free-time.md`. The original My Maps was not modified.
+  Golden Lis is read from the venue registry. No new workshop venues, rides,
+  opening times or walking routes are inferred from leisure pins.
+- The map loads when its section enters the viewport, with an explicit load
+  button fallback. This observer loads a map; it does not animate content.
+  All place links render in HTML before map loading. A map failure must not
+  remove the list. OSM tile attribution stays visible.
+- Preserve the existing restriction on recommending an independent centre
+  walking route. Historical discussion of the city is not such a route.
+- The old map assets and geography research remain as source history, not
+  as a second visible section. Useful references has been removed by request;
+  inline history sources and photographic attribution remain.

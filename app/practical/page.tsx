@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { ArrowUpRight, BusFront } from 'lucide-react';
 import { Orientation } from '@/components/orientation';
 import { VenueCard } from '@/components/venue-card';
-import { LOCAL_GUIDES, SHUTTLE_PLAN } from '@/data/practical';
+import { SHUTTLE_PLAN } from '@/data/practical';
 import { MAP_VENUES } from '@/data/venues';
 
 export default function PracticalPage() {
@@ -19,7 +19,7 @@ export default function PracticalPage() {
         <a href="#hotel">Hotel</a>
         <a href="#transport">Shuttle</a>
         <a href="#maps">Venues</a>
-        <a href="#orientation">The region</a>
+        <a href="#orientation">City guide</a>
       </nav>
       <div className="travel-arrival">
         <div id="stay">
@@ -82,30 +82,6 @@ export default function PracticalPage() {
         </div>
       </section>
       <Orientation />
-      <section
-        className="travel-section"
-        id="recommendations"
-        aria-labelledby="guide-title"
-      >
-        <h2 id="guide-title">Useful references</h2>
-        <div className="travel-guides">
-          {LOCAL_GUIDES.map((guide) => (
-            <a
-              key={guide.href}
-              href={guide.href}
-              target="_blank"
-              rel="noreferrer"
-            >
-              <strong>
-                {guide.title}
-                <ArrowUpRight aria-hidden="true" />
-              </strong>
-              <span>{guide.description}</span>
-              <small>{guide.source}</small>
-            </a>
-          ))}
-        </div>
-      </section>
     </section>
   );
 }

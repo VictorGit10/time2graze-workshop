@@ -18,18 +18,3 @@ export const SHUTTLE_PLAN = [
     provisional: false,
   },
 ] as const;
-
-export const LOCAL_GUIDES = [
-  {
-    title: 'UFG guide for international students',
-    description: 'An English-language reference to university services and practical information for international visitors.',
-    href: 'https://sri.ufg.br/p/13919-guides-for-international-students',
-    source: 'UFG International Relations · English guide',
-  },
-  {
-    title: 'Historic Centre of the Town of Goiás',
-    description: 'Official context for the World Heritage historic centre participants will visit on Friday.',
-    href: 'https://whc.unesco.org/en/list/993/',
-    source: 'UNESCO World Heritage Centre · English',
-  },
-] as const;

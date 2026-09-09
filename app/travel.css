@@ -6,7 +6,7 @@
 .page-index { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
 .page-index a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 8px 18px; color: var(--forest); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); font-size: 14px; font-weight: 700; transition: background var(--m-quick) var(--m-ease), border-color var(--m-quick) var(--m-ease); }
 .page-index a:hover { background: var(--accent); border-color: var(--forest); }
-.travel-arrival, .travel-places, .travel-guides { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; align-items: start; }
+.travel-arrival, .travel-places { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; align-items: start; }
 .travel-arrival > #stay, .travel-arrival > #transport { grid-column: auto; min-width: 0; }
 .travel-page :is(article[id], section[id], #stay, #map-panel), .materials [id] { scroll-margin-top: 20px; }
 .travel-place, .shuttle-card { padding: clamp(22px, 2.5vw, 36px); background: var(--surface); border: 1px solid var(--line); }
@@ -56,73 +56,68 @@
 .shuttle-provisional { display: inline-block; margin-top: 8px; padding: 2px 7px; color: var(--warning); background: var(--warning-bg); border-radius: 99px; font-size: var(--t-label); font-style: normal; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
 .travel-section { margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--line); }
 .travel-section-heading { margin-bottom: 24px; }
-.travel-guides { gap: 36px; }
-.travel-guides > a { display: grid; gap: 10px; padding-block: 16px; }
-.travel-guides strong { display: flex; justify-content: space-between; gap: 16px; color: var(--forest); font-size: 16px; }
-.travel-guides strong svg { width: 18px; height: 18px; flex: none; }
-.travel-guides span { color: var(--text); font-size: 15px; line-height: 1.6; }
-.travel-guides small { color: var(--muted); font-size: 13px; }
-.travel-guides a:hover strong { text-decoration: underline; text-underline-offset: 4px; }
 
-/* Goiânia and Goiás. Two modules of the same shape, mirrored, so the second
-   reads as the pair of the first rather than as a repeat. The map column is
-   capped: at the full rail a 640-unit square map would open nearly 800px tall
-   and push the legend that explains it off the screen. */
-.orient-module { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 520px); grid-template-areas: 'lede figure' 'aside figure' 'detail detail'; gap: 24px 44px; align-items: start; }
-.orient-module + .orient-module { margin-top: 56px; padding-top: 48px; border-top: 1px solid var(--line); }
-.orient-module.is-mirrored { grid-template-columns: minmax(0, 520px) minmax(0, 1fr); grid-template-areas: 'figure lede' 'figure aside' 'detail detail'; }
-/* Capped, and only engaged past roughly 1400px: at the full rail the text
-   column runs to 950px, which pulls each legend distance so far from the name
-   beside it that the pair stops reading as one row. */
-.orient-lede { grid-area: lede; max-width: 760px; }
-.orient-figure { grid-area: figure; margin: 0; padding: 18px 18px 14px; background: var(--surface); border: 1px solid var(--line); }
-.orient-aside { grid-area: aside; max-width: 760px; }
-.orient-detail { grid-area: detail; margin-top: 8px; }
-.orient-module h3 { margin: 0 0 14px; font-family: var(--font-serif), Georgia, serif; font-size: clamp(30px, 3.2vw, 42px); font-weight: 600; line-height: 1.05; letter-spacing: -.025em; }
-.orient-intro { margin: 0; max-width: 60ch; color: var(--text); font-size: 16px; line-height: 1.65; }
-
-/* The drawing. Strokes do not scale, so the outline stays legible from a
-   335px phone to a 520px column without a second set of widths. */
-.orient-map { display: block; width: 100%; height: auto; }
-.orient-map path { vector-effect: non-scaling-stroke; stroke-linejoin: round; stroke-linecap: round; }
-.orient-land { fill: #e7ede3; stroke: var(--forest); stroke-width: 1.6; }
-.orient-water { fill: none; stroke: var(--muted); stroke-width: 1.2; }
-.orient-inset { fill: var(--paper); stroke: var(--muted); stroke-width: 1; stroke-dasharray: 5 4; }
-.orient-pin circle { fill: var(--surface); stroke: var(--forest); stroke-width: 2.5; vector-effect: non-scaling-stroke; }
-.orient-pin text { fill: var(--forest); font-size: 21px; font-weight: 800; text-anchor: middle; font-variant-numeric: tabular-nums; }
-.orient-pin.is-workshop circle:first-child { fill: var(--accent); stroke: none; }
-.orient-pin.is-workshop circle:last-of-type { fill: var(--forest); stroke: var(--forest); }
-.orient-pin.is-workshop text { fill: #fff; }
-.orient-scale path { fill: none; stroke: var(--forest); stroke-width: 1.5; }
-.orient-scale text { fill: var(--muted-soft); font-size: 19px; font-weight: 700; font-variant-numeric: tabular-nums; }
-.orient-compass-label { font-size: 17px !important; }
-.orient-figure figcaption { margin-top: 10px; color: var(--muted); font-size: var(--t-meta); line-height: 1.5; }
-.orient-key { display: flex; align-items: center; gap: 7px; margin-bottom: 6px; color: var(--muted-soft); font-weight: 700; }
-.orient-key::before { content: ''; width: 22px; height: 0; border-top: 2px solid var(--muted); flex: none; }
-.orient-figure figcaption a { text-decoration: underline; text-underline-offset: 3px; }
-
-/* The legend is what a screen reader gets: the map itself is aria-hidden, so
-   every entry has to stand on its own without the drawing beside it. */
-.orient-legend { margin: 0; padding: 0; list-style: none; }
-.orient-legend li { display: grid; grid-template-columns: 30px minmax(0, 1fr) auto; gap: 4px 14px; align-items: baseline; padding: 14px 0; border-top: 1px solid var(--line); }
-.orient-legend li:first-child { border-top: 0; padding-top: 4px; }
-.orient-legend-n { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; color: var(--forest); background: var(--surface); border: 1.5px solid var(--forest); border-radius: 50%; font-size: var(--t-meta); font-weight: 800; font-variant-numeric: tabular-nums; }
-.orient-legend li.is-workshop .orient-legend-n { color: #fff; background: var(--forest); }
-.orient-legend strong { display: block; color: var(--ink); font-size: var(--t-body); font-weight: 750; line-height: 1.35; }
-.orient-legend span:not(.orient-legend-n):not(.visually-hidden) { display: block; margin-top: 3px; color: var(--text); font-size: var(--t-meta-lg); line-height: 1.5; }
-.orient-legend em { color: var(--forest); font-size: var(--t-meta-lg); font-style: normal; font-weight: 750; white-space: nowrap; font-variant-numeric: tabular-nums; }
-
-.orient-detail h4 { margin: 0 0 14px; color: var(--forest); font-size: var(--t-label); font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
-.orient-timeline { margin: 0 0 34px; padding: 0; list-style: none; border-top: 1px solid var(--line); }
-.orient-timeline li { display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 18px; padding: 13px 0; border-bottom: 1px solid var(--line); }
-.orient-year { color: var(--forest); font-size: 17px; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
-.orient-timeline p { margin: 0; max-width: 78ch; color: var(--text); font-size: var(--t-body); line-height: 1.6; }
-.orient-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 2px; margin: 0; border-top: 2px solid var(--forest); }
-.orient-facts > div { padding: 14px 16px 16px 0; }
-.orient-facts dt { color: var(--muted-soft); font-size: var(--t-label); font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
-.orient-facts dd { margin: 6px 0 0; }
-.orient-facts dd strong { display: block; color: var(--ink); font-size: 21px; font-weight: 700; line-height: 1.2; letter-spacing: -.015em; font-variant-numeric: tabular-nums; }
-.orient-facts dd span { display: block; margin-top: 5px; color: var(--muted); font-size: var(--t-meta); line-height: 1.45; }
+/* City guide: brief context, a usable map, then the former capital's history. */
+.city-introduction { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 32px; padding-block: 12px 32px; }
+.city-guide h3 { margin: 0 0 16px; font-family: var(--font-serif), Georgia, serif; font-size: clamp(30px, 3.2vw, 42px); font-weight: 600; line-height: 1.1; letter-spacing: -.02em; }
+.city-date { margin: 0; color: var(--muted); font-size: var(--t-meta-lg); font-variant-numeric: tabular-nums; }
+.city-prose { max-width: 68ch; }
+.city-prose > p:not(.travel-eyebrow):not(.city-heritage) { margin: 0 0 16px; color: var(--text); font-size: 16px; line-height: 1.7; }
+.city-source { color: var(--muted); font-size: var(--t-meta); line-height: 1.6; }
+a.city-source, .city-source a { text-decoration: underline; text-underline-offset: 3px; }
+.city-free-time { border-top: 1px solid var(--line); padding-top: 28px; }
+.city-free-time-heading p { margin: 0 0 24px; color: var(--text); font-size: var(--t-body); line-height: 1.6; }
+.guide-filters { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 18px; padding: 0; border: 0; min-width: 0; }
+.guide-filters button { min-height: 44px; padding: 10px 16px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); font-size: var(--t-meta-lg); font-weight: 700; cursor: pointer; transition: background var(--m-quick) var(--m-ease); }
+.guide-filters button[aria-pressed="true"] { color: var(--forest-dark); background: var(--accent); border-color: var(--forest); }
+.guide-filters button:hover { border-color: var(--forest); }
+.guide-layout { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(300px, 1fr); gap: 28px; align-items: start; }
+.guide-map-panel { min-width: 0; border: 1px solid var(--line); background: var(--surface); }
+.guide-map-toolbar { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 16px; align-items: center; min-height: 58px; padding: 8px 14px; font-size: var(--t-meta-lg); color: var(--forest); }
+.guide-map-toolbar > span { display: flex; align-items: center; gap: 8px; }
+.guide-hotel-key { display: inline-grid; place-items: center; width: 27px; height: 27px; border: 1px solid var(--forest); background: var(--accent); border-radius: 50%; font-weight: 800; }
+.guide-map-toolbar button { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; border: 0; background: transparent; cursor: pointer; font-size: var(--t-meta-lg); }
+.guide-map-toolbar svg { width: 16px; height: 16px; }
+.guide-map-stage { position: relative; background: var(--surface-soft); }
+.guide-map-canvas { height: 530px; width: 100%; z-index: 0; font-family: var(--font-sans), Arial, sans-serif; }
+.guide-map-start { position: absolute; inset: 0; display: grid; place-content: center; padding: 24px; text-align: center; }
+.guide-map-start button { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 12px 20px; border: 1px solid var(--forest); border-radius: var(--radius); color: var(--forest); background: var(--accent); font-weight: 700; cursor: pointer; }
+.guide-map-start output, .guide-map-error { display: block; color: var(--text); font-size: var(--t-meta-lg); line-height: 1.6; }
+.guide-map-error { padding: 12px; margin: 0; }
+.guide-layout.is-expanded { grid-template-columns: minmax(0, 1fr); }
+.guide-layout.is-expanded .guide-map-canvas { height: 75vh; }
+.guide-layout.is-expanded .guide-results { max-height: none; }
+/* Outrank Leaflet's display:block regardless of stylesheet load order. */
+.guide-map-canvas .guide-map-pin, .guide-map-canvas .guide-map-cluster { display: grid; place-items: center; box-sizing: border-box; line-height: 1; font-family: var(--font-sans), Arial, sans-serif; font-size: 14px; font-weight: 800; text-align: center; box-shadow: 0 1px 4px #0004; }
+.guide-map-canvas .guide-map-pin { background: var(--forest); border: 2px solid white; border-radius: 50%; color: white; }
+.guide-map-canvas .guide-map-pin.is-hotel { background: var(--accent); color: var(--forest-dark); border-color: var(--forest); }
+.guide-map-canvas .guide-map-cluster { background: var(--surface); color: var(--forest); border: 2px solid var(--forest); border-radius: 18px; white-space: nowrap; }
+.guide-map-canvas .leaflet-popup-content { font-size: 14px; line-height: 1.6; }
+.guide-map-canvas .leaflet-popup-content a { color: var(--forest); text-decoration: underline; }
+.guide-map-canvas .leaflet-control-attribution { font-size: 12px; }
+.guide-results { max-height: 589px; overflow: auto; padding-inline: 3px 12px; overscroll-behavior: contain; }
+.guide-count { display: block; margin: 0 0 12px; color: var(--muted); font-size: var(--t-meta); }
+.guide-place-list { margin: 0; padding: 0; list-style: none; }
+.guide-place-list li { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 12px; padding-block: 18px; border-top: 1px solid var(--line); break-inside: avoid; }
+.guide-place-number { display: grid; place-items: center; width: 28px; height: 28px; border: 1px solid var(--forest); border-radius: 50%; color: var(--forest); font-size: var(--t-meta-lg); font-weight: 750; font-variant-numeric: tabular-nums; }
+.guide-place-list h4 { margin: 0 0 6px; color: var(--ink); font-size: 16px; line-height: 1.4; font-weight: 750; }
+.guide-place-list p { margin: 0; color: var(--text); font-size: var(--t-meta-lg); line-height: 1.6; }
+.guide-place-list p.guide-place-area { margin-bottom: 4px; font-size: var(--t-meta); color: var(--muted); }
+.guide-place-links { display: flex; flex-wrap: wrap; gap: 0 16px; margin-top: 5px; }
+.guide-place-links a, .guide-place-links button { display: inline-flex; align-items: center; gap: 3px; min-height: 44px; padding: 0; border: 0; background: transparent; color: var(--forest); font-size: var(--t-meta-lg); text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
+.guide-place-links svg { width: 14px; height: 14px; }
+.guide-credit { margin: 14px 0 0; }
+.city-history { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 40px; align-items: start; margin-top: 48px; padding-top: 40px; border-top: 1px solid var(--line); }
+.city-photo { margin: 0; }
+.city-photo img { display: block; width: 100%; height: auto; }
+.city-photo figcaption { margin-top: 8px; font-size: var(--t-meta); line-height: 1.5; color: var(--muted); }
+.city-photo figcaption a { text-decoration: underline; text-underline-offset: 3px; }
+.city-heritage { display: inline-block; padding: 8px 0; margin: 0; border-top: 2px solid var(--forest); color: var(--forest); font-size: var(--t-meta-lg); font-weight: 700; }
+.city-history-details { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+.city-history-details section { padding-top: 18px; border-top: 1px solid var(--line); }
+.city-history-details h4 { margin: 0 0 8px; font-size: 16px; font-weight: 750; }
+.city-history-details p { margin: 0; color: var(--text); font-size: var(--t-body); line-height: 1.7; }
+.city-sources { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 12px 24px; }
 
 @media screen and (max-width: 760px) {
   main > .travel-page.section-pad:first-child { padding: 28px 20px 48px; }
@@ -132,7 +127,7 @@
   /* Four destinations now, and they still have to fit one phone row. */
   .travel-index { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; margin-bottom: 22px; }
   .travel-index a { padding: 8px 2px; font-size: 13px; }
-  .travel-arrival, .travel-places, .travel-guides { grid-template-columns: 1fr; gap: 20px; }
+  .travel-arrival, .travel-places { grid-template-columns: 1fr; gap: 20px; }
   .travel-place, .shuttle-card { padding: 22px 20px; }
   .travel-page h2, .travel-place h3 { font-size: 30px; }
   .travel-eyebrow { margin-bottom: 12px; }
@@ -140,40 +135,34 @@
   .travel-place-actions { margin-block: 16px; }
   .travel-section { margin-top: 36px; padding-top: 26px; }
   .hotel-stay > div { grid-template-columns: 85px minmax(0, 1fr); gap: 10px; }
-  /* The map leads on a phone: it is the fastest answer to "where is this". */
-  .orient-module, .orient-module.is-mirrored { grid-template-columns: minmax(0, 1fr); grid-template-areas: 'lede' 'figure' 'aside' 'detail'; gap: 20px; }
-  .orient-module + .orient-module { margin-top: 36px; padding-top: 30px; }
-  .orient-module h3 { font-size: 30px; }
-  .orient-intro { font-size: 15px; }
-  .orient-figure { padding: 12px 12px 10px; }
-  .orient-legend li { grid-template-columns: 26px minmax(0, 1fr); gap: 2px 12px; padding: 12px 0; }
-  .orient-legend em { grid-column: 2; margin-top: 4px; }
-  .orient-detail { margin-top: 0; }
-  .orient-timeline { margin-bottom: 26px; }
-  .orient-timeline li { grid-template-columns: 56px minmax(0, 1fr); gap: 12px; }
-  .orient-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 16px; }
-  .orient-facts > div { padding: 12px 0 14px; }
-  .orient-facts dd strong { font-size: 19px; }
+  .city-introduction, .city-history, .city-history-details, .guide-layout { grid-template-columns: minmax(0, 1fr); gap: 22px; }
+  .city-introduction { padding-bottom: 26px; }
+  .city-guide h3 { font-size: 30px; }
+  .guide-filters { gap: 6px; }
+  .guide-filters button { padding-inline: 10px; }
+  .guide-map-canvas { height: 340px; }
+  .guide-results { max-height: none; overflow: visible; padding: 0; }
+  .city-history { margin-top: 36px; padding-top: 28px; }
+  .city-history > .city-prose { grid-row: 1; }
+
 }
 @media print {
   .travel-page, .travel-place, .shuttle-card { background: #fff; }
   .travel-page.section-pad { padding: 14pt 0 0; }
   .page-index, .travel-place-actions, .travel-address button, .travel-address output, .place-map, .place-website { display: none !important; }
-  .travel-arrival, .travel-places, .travel-guides { display: block; }
+  .travel-arrival, .travel-places { display: block; }
   .travel-place, .shuttle-card, .travel-section { margin-top: 12pt; padding: 10pt 0; break-inside: avoid; border: 0; border-top: 1px solid #aaa; }
   .travel-page h1 { font-size: 20pt; }
   .travel-page h2, .travel-place h3 { font-size: 16pt; }
-  /* The orientation section is far taller than a page, so it is the one
-     .travel-section that must be allowed to break; each module holds together
-     instead. The maps stay — a printed sheet is the offline copy a participant
-     actually carries — but at a size that does not spend a page on one shape. */
-  .orient { break-inside: auto; }
-  .orient-module, .orient-module.is-mirrored { display: block; break-inside: avoid; }
-  .orient-module + .orient-module { margin-top: 14pt; padding-top: 12pt; border-top: 1px solid #aaa; }
-  .orient-module h3 { font-size: 15pt; }
-  .orient-figure { float: right; width: 62mm; margin: 0 0 8pt 10pt; padding: 0; background: #fff; border: 0; }
-  .orient-intro, .orient-timeline p, .orient-legend strong { max-width: none; }
-  .orient-detail { margin-top: 8pt; }
-  .orient-facts { grid-template-columns: repeat(3, minmax(0, 1fr)); border-top-color: #444; }
-  .orient-legend li, .orient-timeline li { break-inside: avoid; }
+  .city-guide, .city-history, .city-free-time { break-inside: auto; }
+  .city-introduction, .city-history, .city-history-details, .guide-layout { display: block; }
+  .city-introduction, .city-history-details section { break-inside: avoid; }
+  .guide-map-panel, .guide-filters, .guide-count, .guide-place-links button { display: none !important; }
+  .guide-results { max-height: none; overflow: visible; }
+  .city-photo { float: right; width: 65mm; margin: 0 0 10pt 14pt; break-inside: avoid; }
+  .city-guide h3 { font-size: 16pt; }
+  .city-prose { max-width: none; }
+  .city-history-details { clear: both; }
+  .city-introduction, .city-history, .city-free-time { margin-top: 12pt; padding-top: 10pt; }
+  .city-sources { margin-top: 10pt; }
 }

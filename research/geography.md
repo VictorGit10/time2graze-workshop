@@ -1,5 +1,36 @@
 # Goiânia and Goiás — sources
 
+## Revision — 9 September 2026
+
+The organiser replaced the illustrated-map section with brief city history
+and a useful free-time guide for Goiânia. Cidade de Goiás carries richer
+historical context and its existing licensed photograph, not a second leisure
+guide. The earlier map research below is retained as provenance; it no longer
+describes the rendered section. Participant copy now lives in
+`data/city-guide.ts`; the source records in `data/geography.ts` are retained.
+
+New copy was checked against these first-party sources:
+
+- Goiânia City Hall, [História de Goiânia](https://www.goiania.go.gov.br/sobre-goiania/historia-de-goiania/):
+  foundation on 24 October 1933, Attílio Corrêa Lima's plan, and construction
+  near older Campinas. The municipal
+  [historical account](https://www.goiania.go.gov.br/shtml/seplam/anuario2012/_html/historico.html)
+  confirms the 1937 capital transfer.
+- [Goiás Casa Civil](https://goias.gov.br/casacivil/goiania/) confirms the
+  planned capital's Art Deco context and Attílio Corrêa Lima's commission.
+- Cidade de Goiás City Hall, [A cidade](https://goias.go.gov.br/a-cidade):
+  Sant’Anna in 1727, Vila Boa and the capital's transfer in 1937.
+- [UNESCO](https://whc.unesco.org/en/list/993/): inscription in 2001, the
+  Rio Vermelho, topography, local construction techniques and living cultural
+  traditions. The page paraphrases these facts; it does not reproduce the
+  UNESCO description.
+- [Museu Casa de Cora Coralina](https://museucoracoralina.com.br/o-museu/)
+  and [UFG](https://publica.ciar.ufg.br/ebooks/patrimonios-possiveis/10_cleomar_rocha.html):
+  poet's dates, former home, museum and collection. Opening hours and entry
+  prices are deliberately not copied.
+
+The free-time places and pins are documented in `research/free-time.md`.
+
 Compiled 8 September 2026 for the orientation section on `/practical/`
 (`components/orientation.tsx`, `data/geography.ts`). Every figure rendered on
 the page appears below with the source it came from. Nothing on that section is
