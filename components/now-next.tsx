@@ -4,14 +4,21 @@ import Link from 'next/link';
 import { AGENDA } from '@/data/agenda';
 import { useWorkshopClock } from '@/hooks/use-workshop-clock';
 import { nextSessionId, stateOf, todayIndex } from '@/lib/now';
+import { recapForDay } from '@/lib/recap';
 import { dayLabel, sessionTitle, timeLabel } from '@/lib/schedule';
 
 /**
  * What is happening right now, on the home page, during the workshop week.
  *
- * It renders nothing outside those five days, and nothing once the last item
- * of a day has started: an empty band is honest, a stale one is not. Only one
- * state can appear, since `nextSessionId` stands down while a session runs.
+ * It renders nothing outside those five days, and nothing once the day has run
+ * out of items and has not been summarised: an empty band is honest, a stale
+ * one is not. Only one session state can appear, since `nextSessionId` stands
+ * down while a session is running.
+ *
+ * The recap line is the exception to the band emptying out. A day's summary
+ * goes up in the evening, which is exactly when the schedule has stopped
+ * having anything to say — without this the most useful thing on the site at
+ * 21:00 would be the one thing the home page did not mention.
  */
 export function NowNext() {
   const clock = useWorkshopClock();
@@ -22,18 +29,29 @@ export function NowNext() {
   const running = day.sessions.find((s) => stateOf(s, clock) === 'running');
   const nextId = nextSessionId(day, clock);
   const session = running ?? day.sessions.find((s) => s.id === nextId);
-  if (!session) return null;
+  const recap = recapForDay(day.index);
+  if (!session && !recap) return null;
 
   return (
     <aside className="now-band" aria-label="Happening today">
       <p className="now-band-day">Day {day.index} · {dayLabel(day.date)}</p>
-      <p className="now-band-item">
-        <span className={running ? 'tl-mark' : 'tl-mark tl-mark--next'}>
-          {running ? 'Now' : 'Next'}
-        </span>
-        <span className="now-band-time">{timeLabel(session)}</span>
-        <Link href={`/programme/#${session.id}`}>{sessionTitle(session)}</Link>
-      </p>
+      {session && (
+        <p className="now-band-item">
+          <span className={running ? 'tl-mark' : 'tl-mark tl-mark--next'}>
+            {running ? 'Now' : 'Next'}
+          </span>
+          <span className="now-band-time">{timeLabel(session)}</span>
+          <Link href={`/programme/#${session.id}`}>{sessionTitle(session)}</Link>
+        </p>
+      )}
+      {recap && (
+        <p className="now-band-item now-band-recap">
+          <span className="tl-mark tl-mark--next">Summary</span>
+          <Link href={`/programme/#recap-day-${day.index}`}>
+            Today&rsquo;s summary is published
+          </Link>
+        </p>
+      )}
     </aside>
   );
 }

@@ -1,41 +1,17 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { readFileSync } from 'node:fs';
-import { runInNewContext } from 'node:vm';
-import ts from 'typescript';
+import { fixture as load } from './apps-script-fixture.mjs';
 
-const source = ts.transpileModule(
-  readFileSync(new URL('../lib/calendar-sharing.ts', import.meta.url), 'utf8'),
-  { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } },
-).outputText;
-
-function fixture() {
-  const timers = new Map();
-  const scripts = [];
-  const window = {
-    setTimeout(fn, ms) { const id = timers.size + 1; timers.set(id, { fn, ms }); return id; },
-    clearTimeout(id) { timers.delete(id); },
-  };
-  const exports = {};
-  runInNewContext(source, {
-    exports, window,
-    document: {
-      createElement: () => ({ remove() { this.removed = true; } }),
-      head: { appendChild: (script) => scripts.push(script) },
-    },
-  });
-  const reply = (status, index = 0) => {
-    const callback = new URL(scripts[index].src).searchParams.get('callback');
-    window[callback]({ status });
-    return callback;
-  };
-  return { request: exports.requestCalendarAccess, scripts, timers, window, reply };
-}
+const fixture = () => {
+  const f = load('calendar-sharing');
+  return { ...f, request: f.exports.requestCalendarAccess };
+};
 
 test('successful invitation encodes the address and cleans up the request', async () => {
   const f = fixture();
   const result = f.request('participant+workshop@example.org');
-  assert.equal(new URL(f.scripts[0].src).searchParams.get('email'), 'participant+workshop@example.org');
+  assert.equal(f.params().get('action'), 'share');
+  assert.equal(f.params().get('email'), 'participant+workshop@example.org');
   const callback = f.reply('shared');
   assert.equal(await result, 'shared');
   assert.equal(f.scripts[0].removed, true);

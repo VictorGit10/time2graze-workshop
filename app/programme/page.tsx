@@ -5,13 +5,16 @@ import Link from 'next/link';
 import { FileText, Printer } from 'lucide-react';
 import { AddToCalendar } from '@/components/add-to-calendar';
 import { Programme, ProgrammeForPrint } from '@/components/programme';
+import { DayRecap } from '@/components/recap';
 import { AGENDA } from '@/data/agenda';
 import { useTabKeys } from '@/hooks/use-tab-keys';
 import { useWorkshopClock } from '@/hooks/use-workshop-clock';
 import {
   dayFromHash,
+  dayFromRecapHash,
   dayFromSessionHash,
   scrollToDayPanel,
+  scrollToRecap,
   scrollToSession,
 } from '@/lib/deep-link';
 import { todayIndex } from '@/lib/now';
@@ -29,7 +32,7 @@ function clockLabel(minutes: number) {
 export default function ProgrammePage() {
   /** What is waiting to be scrolled to, once the day it names has rendered. */
   const [pending, setPending] = useState<
-    { session: string } | { day: true } | null
+    { session: string } | { day: true } | { recap: true } | null
   >(null);
   const clock = useWorkshopClock();
   const today = todayIndex(AGENDA, clock);
@@ -75,6 +78,14 @@ export default function ProgrammePage() {
         setHashNotFound(false);
         return;
       }
+      const recapDay = dayFromRecapHash(hash);
+      if (recapDay !== null) {
+        history.scrollRestoration = 'manual';
+        setPicked(recapDay);
+        setPending({ recap: true });
+        setHashNotFound(false);
+        return;
+      }
       const owner = dayFromSessionHash(hash);
       if (owner !== null) {
         // The browser restores the previous scroll position after load, which
@@ -104,6 +115,7 @@ export default function ProgrammePage() {
   useEffect(() => {
     if (!pending) return;
     if ('session' in pending) scrollToSession(pending.session);
+    else if ('recap' in pending) scrollToRecap();
     else scrollToDayPanel();
     // Not cleared: every link produces a fresh object, and it is that identity
     // change that runs this again.
@@ -228,6 +240,8 @@ export default function ProgrammePage() {
         </aside>
         <Programme day={day} clock={clock} />
       </div>
+
+      <DayRecap day={day} clock={clock} />
 
       {resources.length > 0 && (
         <details className="programme-resources">

@@ -8,6 +8,19 @@ export function dayFromHash(hash: string) {
   return index >= 0 ? index : null;
 }
 
+/**
+ * '#recap-day-3' -> index 2. Checked separately from `dayFromHash` because the
+ * recap only exists in the DOM while its own day is open: a link arriving from
+ * the home band or from a message has to switch the day before the browser can
+ * find anything to scroll to.
+ */
+export function dayFromRecapHash(hash: string) {
+  const match = /^#?recap-day-(\d+)$/.exec(hash);
+  if (!match) return null;
+  const index = AGENDA.findIndex((d) => d.index === Number(match[1]));
+  return index >= 0 ? index : null;
+}
+
 /** '#d3-country-uruguay' -> index of the day holding that session. */
 export function dayFromSessionHash(hash: string) {
   const id = hash.replace(/^#/, '');
@@ -71,4 +84,14 @@ export function scrollToSession(id: string) {
   // No `behavior`: the CSS decides, and it already switches to instant under
   // prefers-reduced-motion.
   target.scrollIntoView({ block: 'center' });
+}
+
+/** Scrolls to the day's recap, once the day holding it has rendered. */
+export function scrollToRecap() {
+  if (document.readyState !== 'complete') {
+    addEventListener('load', () => scrollToRecap(), { once: true });
+    return;
+  }
+
+  document.querySelector('.recap')?.scrollIntoView({ block: 'start' });
 }

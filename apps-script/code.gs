@@ -6,6 +6,9 @@
  * calendar with them as readers and Google e-mails the invitation. A daily
  * trigger repopulates the calendar from the workshop's published .ics feed,
  * so every programme change pushed to the site reaches subscribers on its own.
+ *
+ * The same web app also receives reader corrections to the daily recaps —
+ * see flags.gs. Both endpoints are anonymous and both are capped.
  */
 
 const CALENDAR_NAME = 'Time2Graze Brazil Workshop';
@@ -64,7 +67,7 @@ function listWorkshopEventsByCalendar() {
   if (!found) console.log('No owned calendar holds events in that week.');
 }
 
-/** Web-app entry point. `action` is `share` (default) or `ping`. */
+/** Web-app entry point. `action` is `share` (default), `flag` or `ping`. */
 function doGet(e) {
   const action = String(e.parameter.action || 'share').toLowerCase();
   let payload;
@@ -78,6 +81,8 @@ function doGet(e) {
       };
     } else if (action === 'share') {
       payload = shareCalendar(e.parameter.email);
+    } else if (action === 'flag') {
+      payload = recordFlag(e.parameter);
     } else {
       payload = { status: 'error', message: 'Unknown action.' };
     }
@@ -159,6 +164,7 @@ function withinDailyShareLimit() {
  */
 function setup() {
   const calendarId = getWorkshopCalendarId();
+  const flagSheet = getFlagSheet().getParent().getUrl();
   const sync = syncFromSite();
   const armed = ScriptApp.getProjectTriggers().some(
     (trigger) => trigger.getHandlerFunction() === 'syncFromSite',
@@ -171,9 +177,10 @@ function setup() {
       .create();
   }
   console.log(
-    'Setup complete. Calendar %s, sync %s, daily trigger %s.',
+    'Setup complete. Calendar %s, sync %s, daily trigger %s. Recap corrections: %s',
     calendarId,
     JSON.stringify(sync),
     armed ? 'already armed' : 'armed',
+    flagSheet,
   );
 }

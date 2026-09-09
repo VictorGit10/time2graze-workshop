@@ -532,8 +532,10 @@ The site is meant to grow into a full workshop hub and will receive:
 
 - the actual files for the 21 materials already declared on their sessions
 - hotel details, booking and check-in information
-- detailed maps of the venues and the region
-- participant recommendations: arrival and local guidance
+- detailed maps of the venues; the city and town maps arrived on
+  8 September 2026 — see [Goiânia and Cidade de Goiás](#goiânia-and-cidade-de-goiás)
+- participant recommendations: arrival and local guidance. The orientation
+  section is not this. Local guidance is still blocked on LAPIG
 
 Build these out as the real content arrives. Do not delete the placeholders,
 and do not fill them with invented detail in the meantime.
@@ -556,18 +558,26 @@ components/site-footer.tsx   Footer, shared by every page.
 components/now-next.tsx      The home page's "happening now", workshop week only.
 components/programme.tsx     Proportional, chronological and print programmes.
 components/venue-card.tsx    One venue on Travel: actions, copy feedback, map disclosure.
+components/orientation.tsx   Travel's Goiânia and Cidade de Goiás section: the drawn maps and their legends.
+components/recap.tsx         The day's published record, and the control that flags a line as wrong.
 components/add-to-calendar.tsx  .ics downloads, subscription URL and the share form.
 hooks/use-tab-keys.ts        Arrow-key movement for the day tablist. Horizontal only.
 data/agenda.ts               The five days, sessions, tracks and materials.
 data/types.ts                Content contracts.
 data/venues.ts               The single venue registry: names, pins, addresses.
 data/practical.ts            Accommodation, contracted shuttle and selected guide links.
+data/recaps.ts               The daily recaps, one entry per day, written the evening of that day.
+data/geography.ts            The two towns: figures, chronologies, map markers, drawn geometry.
 data/institutions.ts         The marks cleared for display, with their artwork sizes.
 data/navigation.ts           The four destinations. The header and the 404 share it.
 hooks/use-workshop-clock.ts  Client clock with a null server snapshot.
+hooks/use-flagged-lines.ts   Which recap lines this browser has already flagged.
 lib/base-path.ts             The one place a raw path gets the Pages basePath.
 lib/deep-link.ts             Day/session hash resolution and scrolling.
 lib/materials.ts             Materials view derived from the agenda.
+lib/recap.ts                 Recap lookup, section headings and stamps.
+lib/recap-feedback.ts        A reader's correction, sent to the Apps Script.
+lib/apps-script.ts           The web app URL and the JSONP transport both endpoints share.
 lib/now.ts                   Goiânia clock and Today/Now/Next rules.
 lib/places.ts                Map embed, map link and ride link, from coordinates.
 lib/schedule.ts              Time, duration and programme-axis helpers.
@@ -578,8 +588,11 @@ postcss.config.mjs           Tailwind, imported by globals.css for its reset onl
 public/                      Hero, social preview, favicon, logos and calendar files.
 research/logos/              Logo provenance and previous-site references.
 research/venues.md           Where every address, pin and photo licence came from.
-apps-script/                clasp project: live calendar sharing + daily .ics sync.
-lib/calendar-sharing.ts     JSONP request to the Apps Script web app.
+research/geography.md        Sources for every figure in that section, and the map licences.
+research/build-maps.py       Regenerates the two map outlines. Not part of the build.
+apps-script/                clasp project: live calendar sharing, daily .ics sync, recap corrections.
+docs/daily-recap.md         How a day gets summarised, published and corrected. The nightly procedure.
+lib/calendar-sharing.ts     Calendar access request to the Apps Script web app.
 ```
 
 Only what needs the browser is a client component. `/programme/` is one, for
@@ -598,6 +611,13 @@ rather than being declared inside a component.
 - Edit `data/venues.ts` to change a venue, its pin or its address. The
   programme, the agenda lines and the location panel share this registry.
   Record where a new fact came from in `research/venues.md` at the same time.
+- Edit `data/geography.ts` for the Goiânia and Cidade de Goiás section, and record the
+  source in `research/geography.md` in the same commit. An orientation pin is
+  not a venue: see [Goiânia and Cidade de Goiás](#goiânia-and-cidade-de-goiás).
+- Edit `data/recaps.ts` to publish or revise a day's summary, following
+  [`docs/daily-recap.md`](docs/daily-recap.md) — the item ids in it are what
+  reader corrections point at, so they are assigned by that procedure and not
+  by hand on a whim. See [Daily recaps](#daily-recaps).
 - Materials are declared on the day, session or track that produces them.
   `lib/materials.ts` aggregates them; do not recreate a hand-maintained list.
 - The four page components compose the data. Do not move operational facts
@@ -652,6 +672,120 @@ building it, and that are easy to break:
   and gets no ride link.** Cidade de Goiás is reached by the 06:30 bus on day
   5; offering a ride there would propose a 130 km taxi for a journey that is
   already arranged.
+
+## Goiânia and Cidade de Goiás
+
+The last section of `/practical/`, added 8 September 2026. It answers *where am
+I* for participants who have never been to central Brazil.
+`components/orientation.tsx` composes it, `data/geography.ts` holds it,
+`research/geography.md` sources every figure.
+
+**The two modules are a pair, and the pairing is the argument.** Goiânia was
+drawn on paper from 1933 to replace the capital Cidade de Goiás had been since
+1739, and the 1937 transfer appears in both chronologies from its own side. The
+maps carry the same contrast without saying it: a radial plan laid out on the
+plateau, and a town strung along the Rio Vermelho between two ranges of hills —
+which is what UNESCO inscribed the historic centre for. The second module was a
+map of the *state* for one draft; it was the wrong pair, because a state has no
+such relationship to a city. Do not restore it.
+
+**It is orientation, not recommendation, and the difference is the whole
+design.** The organiser judged the central district of Goiânia unsafe for
+visiting participants on 3 September 2026 and the self-guided Art Deco route
+came off the site then (`research/local-guide.md`). That still stands. This
+section says where things are; it never suggests going to one. No verb on it
+invites an excursion, Praça Cívica appears as the geometry of the 1933 plan
+rather than as a destination, and the four markers in Cidade de Goiás describe
+the town the workshop is taken to as a group on Friday. Written guidance on
+independent movement is still owed by LAPIG; until it arrives the site stays
+silent, and adding a reassurance here would break that silence.
+
+**An orientation pin is not a venue.** `data/venues.ts` governs places a
+participant is sent to, and its rule — a pin nobody has confirmed does not get
+a ride link or an address — is untouched, because nothing here sends anyone
+anywhere. The airport, Praça Cívica and the town's museums and churches live in
+`data/geography.ts` with no action attached. A place that becomes operational
+moves to the registry and takes the registry's confirmation with it.
+
+**Two claims about the Rio Vermelho's banks come straight from the UNESCO
+citation and go no further.** The Rosário's right-bank position and the reason
+it is named are quoted from it. The Casa de Cora Coralina's bank is left
+unstated on purpose: its sources place it beside the bridge, and left and right
+bank are defined looking downstream, so it cannot be read off the map. Do not
+"complete" that line.
+
+**Each map is a real basemap with an overlay drawn on it.** The first version
+drew everything — a municipal boundary, a river, four pins — and the organiser
+rejected it in the words that should settle any repeat attempt: *só um contorno
+sem significado*. An administrative outline with no city inside it is a shape,
+not a map. Do not go back to it. `research/build-maps.py` stitches MapTiler
+tiles to each frame, writes `public/images/maps/*.webp`, and prints the blocks
+for `data/geography.ts`; re-running it must reproduce them.
+
+**The MapTiler key lives in `MAPTILER_KEY` and never in a committed file.** It
+is used on the machine that regenerates the images; what ships is the `.webp`,
+so the site builds and deploys with no key and no runtime call to anyone.
+MapTiler rather than Google because Google's Static Maps terms forbid storing
+the rendered image, and committing it is the whole approach. The free tier
+serves tiles but not rendered maps, which is why the frame is stitched locally.
+Attribution to MapTiler **and** OpenStreetMap is required wherever a map is
+shown; both captions carry it.
+
+Decisions in the plates that are easy to undo by accident:
+
+- **The overlay's viewBox is the image's own pixel space.** A pin lands on the
+  street it was computed from only because both sides are Web Mercator on the
+  same frame. Change the projection on one side and everything silently slides.
+  The pin coordinates are printed by the generator; never nudge one by hand to
+  make it look better placed.
+- **MapTiler serves 512px logical tiles, 1024px at `@2x`.** Assuming the usual
+  256 pasted every tile at half its width, and the seams showed as a tonal
+  checkerboard with the labels sliced at every join.
+- **Pick the zoom for the width the map is *displayed* at, not delivered at.**
+  Tiles render labels for the zoom's own pixel scale, so choosing a zoom for
+  the 2x pixel count renders every name for a map twice the size it is shown at
+  and the labels come out unreadable — which was the original complaint.
+  `pick_zoom` targets the plate's displayed width and `@2x` adds the sharpness.
+- **`basic-v2-light`, not `streets-v2-light`.** Mixed-case labels rather than
+  uppercase, and at the town's zoom `streets` labels every bar and burger
+  joint. This is an institutional site.
+- **The river is drawn on top because the basemap omits it**, and in both
+  modules it is the subject: Goiânia's one watercourse, and the line the UNESCO
+  citation says the town's whole plan is adapted to.
+- **The scale bar is a real scale**, computed from `kmPerUnit` — the frame's
+  true width in kilometres over the image width — not drawn to look right.
+- **Distances are straight-line and say so.** Haversine, not road distances.
+  Cidade de Goiás is 126 km straight-line and about 130 km by the road the
+  Friday bus takes; both are correct and the caption is what keeps them from
+  reading as a contradiction.
+- **The plate is `aria-hidden` and the numbered legend is the source**, the
+  same division the programme grid makes. Marker and legend entry come from one
+  `MapPlace` record, so a map cannot carry a pin the list does not explain.
+- **The locator inset is the one thing still drawn from vector data**, keeps
+  its own equirectangular projection, and shares no frame with the basemap
+  under it. It exists because a 1.8 km street plan is unplaceable for a reader
+  who has never been to Brazil.
+- **The origin carries no distance, and the town has no distance column at
+  all.** Rendering `distance ?? origin` put the word "Golden Lis" in the
+  hotel's own distance column; the caption names the reference point instead.
+  In the town every marker is within 750 m of the next.
+- **`.orient-lede` and `.orient-aside` are capped at 760px.** Past roughly
+  1400px the text column reaches 950px and pulls each legend distance so far
+  from its name that the pair stops reading as one row.
+- **`.orient` is the one `.travel-section` that may break across printed
+  pages**, because it is several pages tall; each module holds together
+  instead. The plates stay in print — a sheet is the offline copy someone
+  actually carries — floated at 62mm.
+
+**Overpass mirrors fail in a way that looks like success.** One answered HTTP
+200 with `elements: []`, which the script cached and turned into a map with no
+river on it. A blank layer is the one failure mode that looks finished, so
+`overpass()` treats an empty result as a failed request, deletes the cache file
+and moves on. Keep that check if the fetching is ever rewritten.
+
+No temperature, humidity or clothing advice. Aggregator weather sites were the
+only source available for those, and field guidance belongs to LAPIG; the
+climate fact on the page is a season, not a forecast.
 
 ## Images
 
@@ -812,6 +946,76 @@ renders. Redeploy only when the endpoint logic changes, and update the constant
 to the new `/exec` URL. Never put the organiser's main calendar's ID in
 `getWorkshopCalendarId`.
 
+## Daily recaps
+
+Each workshop day is summarised the same evening and published on
+`/programme/`, under the day it belongs to. Participants flag lines they think
+are wrong; those go to a private spreadsheet and the recap is revised from
+them the next morning.
+
+**The nightly procedure — capture, the NotebookLM prompt, publishing, applying
+corrections — is [`docs/daily-recap.md`](docs/daily-recap.md), and that is the
+only document the work needs.** What follows is what a *code* change must not
+break.
+
+**It is not a fifth destination.** A day's record belongs to the day, so it
+renders inside `/programme/`, and `#recap-day-3` opens that day and scrolls to
+it. `data/recaps.ts` is a separate module from `data/agenda.ts` only because
+the agenda is the schedule and would be buried under a week of prose; the two
+are joined in `lib/recap.ts`.
+
+**The item id is the load-bearing part.** Every flaggable line carries
+`d<day>-r<serial>`, hand-assigned, unique within its day and **never reused or
+renumbered**. A reader flags a line in the evening and the organiser reads that
+flag the next morning against a text that may already have been corrected — the
+id is the only thing connecting the two. `scripts/recap.test.mjs` enforces the
+format, the uniqueness, the day match, that every `sessionId` names a real
+session or track, that every action has an owner, and that the stamps are
+ordered. Adding a field means adding its guard there too.
+
+**Readers flag a line; they do not highlight a span.** This was decided
+against text selection deliberately, and all four reasons still hold: selection
+on a phone is unusable, a selection-only affordance has no keyboard or screen
+reader equivalent, a quoted span is stale the moment the line is revised, and
+the request travels in a JSONP query string where a quote plus a note does not
+fit. The control is a real `<button>` disclosure per item, described by the
+line it sits on. Do not "improve" this into a highlighter.
+
+**The note is required and the name is optional.** "This is wrong" without
+saying how is not actionable; the name is what lets the organiser go and ask.
+
+**The recap sits outside `.agenda-panel`.** That panel is a two-column grid —
+a third child lands under the day summary rather than beside it.
+
+**It is not printed.** The printed programme is all five days and the panel
+holds one, so a single day's record stapled to a five-day agenda would
+contradict the print rule. Paper carries the schedule; recaps stay on screen.
+
+**One endpoint constant, in `lib/apps-script.ts`.** Calendar sharing and recap
+flagging are served by the same Apps Script deployment, so two copies of that
+URL is one copy that gets forgotten — and the symptom is silent: the site posts
+to an address that answers nothing.
+
+**Redeploy the existing deployment, do not create a new one.**
+`clasp deploy -i <deploymentId>` keeps the `/exec` URL, so the constant does
+not move; `clasp deploy` on its own mints a new URL and quietly leaves the site
+talking to the old version. And **authorise before deploying**: the manifest
+gained `spreadsheets` and `drive.file` for the corrections sheet, the web app
+executes as its owner, and a version deployed before that consent fails every
+request — calendar sharing included, not just flagging. The consent screen is
+a browser interaction on the owner's account; no tooling substitutes for it.
+
+**Flagging closes after 21 September 2026, in two places** —
+`RECAP_FEEDBACK_CLOSES` in `data/recaps.ts` takes the control off the page, and
+`FLAG_CLOSES` in `apps-script/flags.gs` refuses the write. The site's copy is a
+courtesy so a reader is not offered a control that would be refused; the script
+is what actually enforces it. A public write endpoint left open on a site
+nobody is watching any more is the thing being avoided.
+
+**A day with no recap still renders its block**, saying one is due. That is how
+a reader learns the record exists. Never write a recap for a day that has not
+been held, and never back-date `published`.
+
 ## Waiting on the LAPIG team
 
 Unresolved on the live site, and not answerable by guessing. Filling these in
@@ -839,8 +1043,11 @@ summary aligned.
 - Written guidance on where in Goiânia participants can move around on
   their own. The self-guided Art Deco route was removed from the local
   guide on 3 September 2026 because the organiser judged the central
-  district unsafe for visitors; nothing replaced it, so the site is now
-  silent on the question rather than reassuring or warning
+  district unsafe for visitors, and the site is still silent on the question
+  rather than reassuring or warning. The orientation section added on
+  8 September 2026 does **not** answer it: it is orientation, and it was
+  written specifically not to imply that anywhere on it can be visited
+  unaccompanied. Only LAPIG can lift that silence, in writing
 
 **Superseded by the organiser's 8 September confirmations below.** The hotel
 dates and daily transport are confirmed. Remaining presenter/material delivery

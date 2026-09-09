@@ -745,6 +745,82 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
   .document-placeholders article > span { display: none; }
 }
 @media print {
-  .programme-tools, .programme-resources { display: none !important; }
+  /* The printed programme is all five days; the panel holds one. A recap for
+     the open day alone would be a single day's record stapled to a five-day
+     agenda, so paper carries the schedule and the recaps stay on screen. */
+  .programme-tools, .programme-resources, .recap { display: none !important; }
   .resource-item { break-inside: avoid; }
+}
+
+/* --- Daily recap ------------------------------------------------------------
+   The record of a day, published the same evening and corrected from what
+   readers flag. It sits outside .agenda-panel — the panel is a two-column
+   grid, and a third child would land under the day summary rather than beside
+   it — and below the programme it describes. */
+.recap { margin-top: 24px; background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--forest); scroll-margin-top: 110px; }
+.recap-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 20px; padding: 18px 20px; background: var(--surface-soft); border-bottom: 1px solid var(--line); }
+.recap-head h3 { margin: 0; color: var(--forest); font-family: var(--font-sans), Arial, sans-serif; font-size: 18px; font-weight: 800; }
+.recap-stamp { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 0; color: var(--muted-soft); font-size: var(--t-meta); font-variant-numeric: tabular-nums; }
+.recap-stamp em { color: var(--muted-soft); font-style: normal; font-weight: 700; }
+.recap-revised { color: var(--forest); font-weight: 700; }
+/* The rule belongs to the block, not to the sentence: a border on the capped
+   paragraph stopped in the middle of the panel. */
+.recap-invite { max-width: 62ch; margin: 0; padding: 14px 20px; color: var(--text); font-size: var(--t-meta-lg); line-height: 1.5; }
+.recap-invite + .recap-sections { border-top: 1px solid var(--line); }
+.recap-pending { margin: 0; padding: 18px 20px; color: var(--muted-soft); font-size: var(--t-meta-lg); }
+.recap-section { padding: 20px; border-top: 1px solid var(--line); }
+.recap-section:first-child { border-top: 0; }
+.recap-section h4 { margin: 0 0 12px; font-size: var(--t-body); font-weight: 750; }
+.recap-section h4 a { color: var(--forest); border-bottom: 1px solid transparent; transition: border-color var(--m-quick) var(--m-ease); }
+.recap-section h4 a:hover { border-color: var(--forest); }
+/* Capped like the orientation text, and for the same reason: past this the
+   flag control sits so far from the line it belongs to that the pair stops
+   reading as one row. */
+.recap-list { max-width: 980px; }
+.recap-list + .recap-list { margin-top: 16px; }
+.recap-list-label { margin: 0 0 4px; color: var(--muted-soft); font-size: var(--t-label); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+
+/* The line and the way to say it is wrong. The button is quiet until it is
+   wanted: 30 loud controls down a page would read as the page's subject. */
+.recap-item { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 0 12px; padding: 2px 0; border-top: 1px solid transparent; }
+.recap-item + .recap-item { border-top-color: var(--line); }
+.recap-text { margin: 7px 0; color: var(--ink); font-size: var(--t-body); line-height: 1.55; }
+.recap-owner { display: inline-block; margin-right: 8px; padding: 1px 7px; color: var(--forest-dark); background: var(--accent); font-size: var(--t-label); font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+.recap-flag { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 10px; color: var(--muted-soft); background: transparent; border: 1px solid transparent; border-radius: var(--radius); font-size: var(--t-meta); font-weight: 700; cursor: pointer; transition: color var(--m-quick) var(--m-ease), border-color var(--m-quick) var(--m-ease); }
+.recap-flag svg { width: 15px; height: 15px; }
+.recap-flag:hover { color: var(--forest); border-color: var(--line); }
+.recap-item[data-flagged] .recap-flag { color: var(--forest); border-color: var(--accent); background: var(--accent); }
+
+.recap-form { grid-column: 1 / -1; margin: 4px 0 14px; padding: 14px; background: var(--surface-soft); border: 1px solid var(--line); }
+.recap-form label { display: block; margin-bottom: 6px; color: var(--ink); font-size: var(--t-meta-lg); font-weight: 700; }
+.recap-form label + textarea, .recap-form label + input { width: 100%; padding: 10px 12px; color: var(--ink); background: var(--surface); border: 1px solid var(--muted); border-radius: var(--radius); font-family: inherit; font-size: 16px; }
+.recap-form textarea { resize: vertical; line-height: 1.5; }
+.recap-form input:read-only, .recap-form textarea:read-only { background: var(--surface-soft); }
+.recap-form > textarea + label { margin-top: 12px; }
+.recap-form-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.recap-form-actions button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 10px 16px; border-radius: var(--radius); font-size: var(--t-meta-lg); font-weight: 750; cursor: pointer; }
+.recap-form-actions button[type='submit'] { color: #fff; background: var(--forest); border: 1px solid var(--forest); transition: background var(--m-quick) var(--m-ease); }
+.recap-form-actions button[type='submit']:not(:disabled):hover { background: var(--forest-dark); }
+.recap-form-actions button[type='submit']:disabled { cursor: default; }
+.recap-form-actions button[type='button'] { color: var(--forest); background: transparent; border: 1px solid var(--line); }
+.recap-form-actions button svg { width: 17px; height: 17px; }
+.recap-form-status { display: flex; align-items: flex-start; gap: 10px; margin-top: 12px; padding: 12px; font-size: var(--t-meta-lg); line-height: 1.5; }
+.recap-form-status:empty { display: none; }
+.recap-form-status svg { flex: none; width: 20px; height: 20px; margin-top: 1px; }
+.recap-form-status[data-state='success'] { color: var(--forest-dark); background: var(--accent); border-left: 3px solid var(--forest); }
+.recap-form-status[data-state='error'] { color: var(--warning); background: var(--warning-bg); border-left: 3px solid var(--warning); }
+
+/* The evening is when the schedule has nothing left to say and the summary
+   does, so the band grows a second row rather than emptying out. */
+.now-band { row-gap: 12px; }
+.now-band-recap { grid-column: 2; }
+
+@media screen and (max-width: 760px) {
+  .recap-head, .recap-invite, .recap-pending, .recap-section { padding-inline: 16px; }
+  /* Beside the line, the control leaves a 27-character measure on a 375px
+     screen — narrower than the text it is there to serve. It costs a row per
+     line to put it underneath, and the reading width is worth the rows. */
+  .recap-item { grid-template-columns: minmax(0, 1fr); }
+  .recap-flag { justify-self: start; margin-left: -10px; border-color: var(--line); }
+  .now-band-recap { grid-column: 1; }
 }

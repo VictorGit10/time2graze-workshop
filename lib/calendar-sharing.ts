@@ -3,18 +3,13 @@
  *
  * The endpoint is an Apps Script web app deployed with "execute as owner";
  * it shares the workshop calendar with the address as a reader and Google
- * sends the invitation. Apps Script responses carry no CORS headers, so the
- * request is JSONP — a script tag, which needs no permission and whose
- * response we can read, unlike an opaque `no-cors` POST.
+ * sends the invitation. The transport and the endpoint URL live in
+ * `lib/apps-script.ts`, which explains why this is JSONP.
  */
 
-// Web-app URL of the Apps Script project (apps-script/), deployed 5 September
-// 2026 with "execute as owner" and anonymous access. Redeploy only when the
-// endpoint logic changes, and put the new /exec URL here.
-const SHARE_ENDPOINT: string =
-  'https://script.google.com/macros/s/AKfycbzpmYFJq7WFRxtnGHGZkW0FFhiit9441UHtfZnwfrNZI6Vuku1MY6Rb7JBBIcFwGcBi/exec';
+import { appsScriptEnabled, jsonp } from './apps-script';
 
-export const calendarShareEnabled = SHARE_ENDPOINT !== '';
+export const calendarShareEnabled = appsScriptEnabled;
 
 export type ShareStatus =
   | 'shared'
@@ -24,37 +19,10 @@ export type ShareStatus =
   | 'timeout'
   | 'error';
 
-type ShareResponse = { status?: string };
+const ANSWERS = ['shared', 'already', 'invalid', 'limit'];
 
-export function requestCalendarAccess(email: string): Promise<ShareStatus> {
-  return new Promise((resolve) => {
-    const callbackName = `t2gCalendarShare${Math.random().toString(36).slice(2)}`;
-    const script = document.createElement('script');
-    const timer = window.setTimeout(() => {
-      cleanup();
-      resolve('timeout');
-    }, 20000);
-
-    const finish = (status: ShareStatus) => {
-      window.clearTimeout(timer);
-      cleanup();
-      resolve(status);
-    };
-
-    function cleanup() {
-      delete (window as unknown as Record<string, unknown>)[callbackName];
-      script.remove();
-    }
-
-    (window as unknown as Record<string, unknown>)[callbackName] = (response: ShareResponse) => {
-      finish(
-        response && ['shared', 'already', 'invalid', 'limit'].includes(response.status ?? '')
-          ? (response.status as ShareStatus)
-          : 'error',
-      );
-    };
-    script.onerror = () => finish('error');
-    script.src = `${SHARE_ENDPOINT}?action=share&email=${encodeURIComponent(email)}&callback=${callbackName}`;
-    document.head.appendChild(script);
-  });
+export async function requestCalendarAccess(email: string): Promise<ShareStatus> {
+  const result = await jsonp({ action: 'share', email }, 't2gCalendarShare');
+  if (!result.ok) return result.reason;
+  return ANSWERS.includes(result.status) ? (result.status as ShareStatus) : 'error';
 }

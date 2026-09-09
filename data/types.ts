@@ -82,3 +82,52 @@ export type Day = {
   /** Files belonging to the day as a whole rather than to one session. */
   materials?: Material[];
 };
+
+/**
+ * One line of a day's recap, and the unit a reader flags.
+ *
+ * `id` is hand-assigned, unique within its day and **never reused**: a flag
+ * raised against `d3-r7` is read hours later, against a text that may already
+ * have been corrected, so the id has to keep meaning the same line. Retire a
+ * number when its line is deleted; never renumber the ones around it.
+ */
+export type RecapItem = {
+  /** `d3-r7` — day index, then a serial that only ever grows. */
+  id: string;
+  text: string;
+  /** Who carries the action. Only meaningful inside `actions`. */
+  owner?: string;
+};
+
+/**
+ * The part of a recap covering one session. A block with no `sessionId` is
+ * about the day as a whole and carries its own `title` instead — the two are
+ * exclusive, and one of them is required.
+ */
+export type RecapSection = {
+  /** A session or track id in `data/agenda.ts`. The heading links to it. */
+  sessionId?: string;
+  /** Heading for a block belonging to no single session. */
+  title?: string;
+  /** What happened, in one short paragraph. */
+  summary?: RecapItem;
+  decisions?: RecapItem[];
+  /** Questions the room left open. */
+  questions?: RecapItem[];
+  actions?: RecapItem[];
+};
+
+/**
+ * A day's record, published the same evening and corrected afterwards from
+ * what readers flag. Absent until the day has actually been summarised —
+ * `/programme/` says "to be published" rather than inventing one.
+ */
+export type DayRecap = {
+  /** ISO datetime in America/Sao_Paulo, when the first version went up. */
+  published: string;
+  /** Set on every revision after the first. Rendered; never back-dated. */
+  revised?: string;
+  /** How many flagged points the latest revision resolved. */
+  corrections?: number;
+  sections: RecapSection[];
+};
