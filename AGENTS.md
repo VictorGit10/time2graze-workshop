@@ -1378,12 +1378,17 @@ should read a sheet of titles rather than a sheet of ids.
 `data/agenda.ts`, and also covers the row keying, the caps and the closing
 window. Renaming a track means editing both files; the test says so.
 
-**It needs a redeploy to work.** The `choose` action is new, so until
-`clasp push` and `clasp deploy -i <deploymentId>` have run, the live
-deployment answers "Unknown action." and the form reports that it did not
-send. Redeploy the existing deployment — a fresh `clasp deploy` mints a new
-`/exec` and quietly leaves the site talking to the old version. No manifest
-change is involved: `spreadsheets` and `drive.file` were already granted for
-the corrections sheet, so no new consent screen is needed. `choiceSheetUrl()`
-prints the sheet's address and `choiceTally()` prints the counts per activity,
-both from the editor.
+**Deployed 9 September 2026 as version 3** ("Split-session choices"), into
+the existing deployment, so `APPS_SCRIPT_ENDPOINT` did not move — a fresh
+`clasp deploy` would have minted a new `/exec` and quietly left the site
+talking to the old version. No manifest change was involved: `spreadsheets`
+and `drive.file` were already granted for the corrections sheet, so no new
+consent screen was needed. The live endpoint answers `?action=choose` with
+`invalid` for anything that names no real activity, which is the safe way to
+check it is routed at all: validation runs before the sheet is touched, so
+that probe writes nothing and does not even consume the daily counter.
+
+**The choices spreadsheet does not exist until the first real choice.**
+`getChoiceSheet()` creates it on demand, exactly as the corrections sheet
+does. `choiceSheetUrl()` prints its address and `choiceTally()` prints the
+counts per activity, both run from the editor.
