@@ -689,10 +689,32 @@ both are easy to undo by accident:
 ## Running and deploying
 
 ```
-npm run dev     Local dev server on :3000
-npm run build   Static export into out/
-npm run lint    oxlint
+npm run dev           Local dev server on :3000
+npm run build         Static export into out/
+npm run lint          oxlint
+npm run format:check  oxfmt, reporting only — see below
 ```
+
+**There is deliberately no `npm run format`.** It existed, it was one word, and
+`oxfmt` writes in place by default with no preview. On 9 September 2026 it was
+run across the repository and committed as `Apply oxfmt across the repository`:
+38 files, 3020 insertions, including 2628 lines of `app/globals.css` and the
+deployed Apps Script sources. Nothing was broken by it — but it buried the
+feature it travelled with in mechanical churn, and it collided with every other
+branch in flight, four days before the workshop.
+
+The script is now split: `format:check` reports and never writes, and
+`format:write` exists for someone who has decided to reformat on purpose.
+`.oxfmtrc.json` additionally keeps the formatter away from `*.css`, `*.md`,
+`*.json` and `apps-script/**`. Three of those are composed by hand and one is
+live code — `apps-script/sync.gs` carries a literal NUL byte as the separator
+in its content hash, which is why git reports that file as binary and why it
+must not be casually rewritten.
+
+**This repository has never been formatted, and that is not a defect to fix.**
+`format:check` reports 31 files, and it will keep reporting them. Reformatting
+is a decision to take on its own, in its own commit, when nothing else is in
+flight — not a tidy-up bundled into someone else's change.
 
 Pushing to `main` triggers `.github/workflows/deploy-pages.yml`, which builds
 and publishes `out/` to https://victorgit10.github.io/time2graze-workshop/

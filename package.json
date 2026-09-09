@@ -12,7 +12,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "oxlint",
-    "format": "oxfmt"
+    "format:check": "oxfmt --check",
+    "format:write": "oxfmt"
   },
   "dependencies": {
     "leaflet": "^1.9.4",
