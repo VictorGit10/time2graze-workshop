@@ -1443,9 +1443,14 @@ reads this in an arrivals hall, and a plausible guess is worse than a blank.
 
 Static export means no server on the origin, so a key in the bundle is a key a
 scraper drains overnight. `worker/` is a Cloudflare Worker and the only place
-the key exists — see `worker/README.md` for deploying it and for the four
-things guarding it: origin allowlist, per-IP burst limit, a daily cap in KV in
-the spirit of `DAILY_SHARE_LIMIT`, and per-answer caps.
+the key exists. Four things guard it: origin allowlist, per-IP burst limit, a
+daily cap in KV in the spirit of `DAILY_SHARE_LIMIT`, and per-answer caps —
+`worker/README.md` covers what it is and why.
+
+**Turning the model on is [`docs/assistant-setup.md`](docs/assistant-setup.md),
+and that is the only document that step needs.** It is optional and it is not
+urgent: the panel answers without it. The order in it matters — the worker
+reads the corpus from the published site, so the site is deployed first.
 
 **It holds no copy of the workshop.** It fetches the published corpus and
 caches it, the way `syncFromSite()` treats the published `.ics` as the single

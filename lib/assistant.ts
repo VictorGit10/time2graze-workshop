@@ -15,10 +15,11 @@
 import { withBasePath } from '@/lib/base-path';
 
 /**
- * The deployed Cloudflare Worker — see `worker/README.md`. Empty means no
- * model: the panel still answers from the corpus, and no key is spent. This is
- * the kill switch, and it lives here for the same reason the Apps Script URL
- * lives in one place: two copies is one copy that gets forgotten.
+ * The deployed Cloudflare Worker — see `docs/assistant-setup.md`, whose last
+ * step is setting this. Empty means no model: the panel still answers from the
+ * corpus, and no key is spent. This is the kill switch, and it lives here for
+ * the same reason the Apps Script URL lives in one place: two copies is one
+ * copy that gets forgotten.
  */
 export const ASSISTANT_ENDPOINT: string = '';
 
