@@ -155,14 +155,14 @@ it. What keeps the site from reading as generated is not the colour — it is
 structure and detail. Do not try to fix "it looks AI-made" by changing the
 palette; fix it by making the structure specific to this content.
 
-**The thesis is measured time.** Five days, 44 scheduled items, a strict clock,
+**The thesis is measured time.** Five days, 46 scheduled items, a strict clock,
 people arriving from seven time zones. The programme is not one section among
 others — it is why the site exists. Everything else is reference material.
 
 In one line: **an international operational document, with editorial finish and
 temporal behaviour.**
 
-Count carefully. "44 sessions" is wrong — the 44 includes meals, coffee breaks,
+Count carefully. "46 sessions" is wrong — the 46 includes meals, coffee breaks,
 transfers and receptions. Say _scheduled items_.
 
 **The signature is the programme, drawn to scale — on large screens only.**
@@ -171,13 +171,13 @@ the height of a forty-five minute country presentation and the shape of a day
 is visible at a glance. Parallel activities sit in adjacent columns, because
 that is what they are.
 
-**All 45 end times are confirmed.** Twenty of them were logical display
+**All 46 end times are confirmed.** Twenty of them were logical display
 intervals for lunches, coffee breaks, check-ins, summaries, dinners and Day 5
 transfers, chosen so every item had the same visual grammar; the organiser
 approved them as real on 5 September 2026 and the `endStatus: 'provisional'`
-markers came off. The two Day 5 farm visits are confirmed as sessions — which
-farm hosts them stays pending on the venue field. The grid still renders the
-states below whenever a future item needs one:
+markers came off. The Day 5 farm visit is confirmed as a session — which farm
+hosts it stays pending on the venue field. The grid still renders the states
+below whenever a future item needs one:
 
 | State                                             | Rendering                                          |
 | ------------------------------------------------- | -------------------------------------------------- |
@@ -1145,7 +1145,7 @@ presentation rules in this document:
   `.ics` export no longer emits "Bring:" lines. If a session ever needs a
   stated requirement again, reintroduce the field rather than writing it into
   a title.
-- The organiser approved all twenty inferred end times and the two Day 5 farm
+- The organiser approved all twenty inferred end times and the Day 5 farm
   visit times on 5 September 2026. Every `endStatus: 'provisional'` and
   `status: 'tbd'` marker came off `data/agenda.ts` and `CALENDAR_RELEASE` is
   `final`: the `.ics` carries confirmed ends, events are CONFIRMED, and the

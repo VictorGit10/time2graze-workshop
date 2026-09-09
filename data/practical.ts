@@ -13,7 +13,7 @@ export const SHUTTLE_PLAN = [
   },
   {
     days: 'Friday',
-    time: '06:30',
+    time: '06:00',
     detail: 'Departure from Golden Lis for Cidade de Goiás',
     provisional: false,
   },

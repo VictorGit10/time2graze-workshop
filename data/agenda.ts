@@ -6,8 +6,13 @@ import type { Day } from './types';
  * Session ids are hand-written and must not change once anything links to
  * them. The twenty end times once inferred from the next programme item or
  * the rhythm of the day were approved as real by the organiser on
- * 5 September 2026; the two Day 5 farm visits keep their confirmed times
- * while which farm hosts them stays pending on the venue field.
+ * 5 September 2026; the Day 5 farm visit keeps its confirmed times while
+ * which farm hosts it stays pending on the venue field.
+ *
+ * Day 2's second Open Agenda, Day 5's afternoon (City Tour and the Serra
+ * Dourada lookout, in place of a farm visit duplicated from the morning) and
+ * every Day 5 time were reconciled against the organiser's own agenda
+ * spreadsheet on 9 September 2026.
  */
 /**
  * Calendar publication state. `final` since 5 September 2026: the organiser
@@ -49,6 +54,7 @@ export const AGENDA: Day[] = [
           {
             id: 'd1-gee-course',
             title: 'GEE / GEE App short course',
+            speakers: [{ name: 'Vinícius', org: 'LAPIG' }],
             materials: [{ kind: 'slides' }],
           },
         ],
@@ -68,6 +74,7 @@ export const AGENDA: Day[] = [
         start: '14:00',
         end: '15:30',
         title: 'Interactive Session: Field Protocol Alignment',
+        speakers: [{ name: 'Nathália', org: 'LAPIG' }],
         venueId: 'lapig',
         kind: 'technical',
         materials: [{ kind: 'slides' }],
@@ -189,6 +196,15 @@ export const AGENDA: Day[] = [
         venueId: null,
         kind: 'technical',
         materials: [{ kind: 'slides' }],
+      },
+      {
+        id: 'd2-open-agenda-afternoon',
+        date: '2026-09-15',
+        start: '16:45',
+        end: '17:30',
+        title: 'Open Agenda',
+        venueId: null,
+        kind: 'technical',
       },
       {
         id: 'd2-daily-summary',
@@ -459,7 +475,7 @@ export const AGENDA: Day[] = [
       {
         id: 'd5-trip-out',
         date: '2026-09-18',
-        start: '06:30',
+        start: '06:00',
         end: '09:30',
         title: 'Trip to Cidade de Goiás',
         venueId: 'cidadeDeGoias',
@@ -469,7 +485,7 @@ export const AGENDA: Day[] = [
         id: 'd5-farm-morning',
         date: '2026-09-18',
         start: '09:30',
-        end: '11:30',
+        end: '12:00',
         title: 'Field Visit: Grazing Livestock Farm',
         venueId: null,
         kind: 'field',
@@ -477,25 +493,34 @@ export const AGENDA: Day[] = [
       {
         id: 'd5-lunch',
         date: '2026-09-18',
-        start: '12:00',
-        end: '14:00',
+        start: '12:30',
+        end: '14:30',
         title: 'Lunch',
         venueId: 'cidadeDeGoias',
         kind: 'meal',
       },
       {
-        id: 'd5-farm-afternoon',
+        id: 'd5-city-tour',
         date: '2026-09-18',
-        start: '14:00',
-        end: '17:30',
-        title: 'Field Visit: Grazing Livestock Farm',
+        start: '14:30',
+        end: '16:30',
+        title: 'City Tour',
+        venueId: 'cidadeDeGoias',
+        kind: 'social',
+      },
+      {
+        id: 'd5-serra-dourada',
+        date: '2026-09-18',
+        start: '16:30',
+        end: '17:00',
+        title: 'Serra Dourada Lookout',
         venueId: null,
-        kind: 'field',
+        kind: 'social',
       },
       {
         id: 'd5-trip-back',
         date: '2026-09-18',
-        start: '17:30',
+        start: '17:00',
         end: '19:00',
         title: 'Return trip to Goiânia',
         venueId: null,

@@ -32,7 +32,7 @@ Waiting for confirmed information:
 - hotel, booking, check-in and check-out details;
 - confirmation of the LAPIG street address, entrance and CEP;
 - airport transfers and daily transport;
-- the two Day 5 farm locations;
+- the Day 5 farm location;
 - approval for any institutional marks beyond Land & Carbon Lab, UFG and LAPIG;
 - the expected presentation files, shared folder and final programme PDF.
 
