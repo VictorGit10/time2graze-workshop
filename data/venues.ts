@@ -45,15 +45,12 @@ export type Venue = {
   /** Confirmed instructions supplied by the organiser. */
   arrivalNote?: string;
   /**
-   * The workshop takes participants here; they do not make their own way.
-   * Suppresses the ride link, which would otherwise offer a 130 km taxi to a
-   * place the day-5 bus already covers.
-   */
-  organisedTransport?: boolean;
-  /**
-   * Organiser authorisation to offer a ride to the recorded coordinate.
-   * This does not confirm a postal address or entrance. LAPIG was explicitly
-   * authorised on 5 September 2026; its address remains pending.
+   * Organiser authorisation to offer a ride to the recorded coordinate, and
+   * the marker for a place a participant navigates to at all. This does not
+   * confirm a postal address or entrance. LAPIG was explicitly authorised on
+   * 5 September 2026; its address remains pending. Cidade de Goiás has none:
+   * the workshop coach takes participants there, and a ride link would offer
+   * a 130 km taxi to a municipality centroid.
    */
   ride?: boolean;
   /** Absent until an authorised photograph exists. */
@@ -82,7 +79,8 @@ export const VENUES = {
       src: '/images/venues/lapig.webp',
       alt: 'Entrance to the LAPIG building on the UFG Campus Samambaia',
       credit: 'Photo: LAPIG · Jornal UFG',
-      creditHref: 'https://jornal.ufg.br/n/187113-nos-seus-30-anos-lapig-e-referencia-nacional-na-area-de-geotecnologias',
+      creditHref:
+        'https://jornal.ufg.br/n/187113-nos-seus-30-anos-lapig-e-referencia-nacional-na-area-de-geotecnologias',
     },
     website: 'https://lapig.iesa.ufg.br/',
     phone: '+55 62 3521-1360',
@@ -93,7 +91,8 @@ export const VENUES = {
     short: 'Golden Lis',
     use: 'Accommodation',
     locality: 'Setor Santa Genoveva, Goiânia',
-    address: 'Av. das Indústrias, 75 — Setor Santa Genoveva, Goiânia — GO, 74670-600, Brazil',
+    address:
+      'Av. das Indústrias, 75 — Setor Santa Genoveva, Goiânia — GO, 74670-600, Brazil',
     /** From the place record the hotel's own site links to. */
     coords: { lat: -16.6412156, lon: -49.2401076 },
     /** The only venue whose address, pin and phone the source itself confirms. */
@@ -103,7 +102,8 @@ export const VENUES = {
       alt: 'Front entrance of Golden Lis Hotel Boutique in Goiânia',
       credit: 'Photo supplied for this website',
     },
-    arrivalNote: 'Uber is recommended for travel from the airport to the hotel.',
+    arrivalNote:
+      'Uber is recommended for travel from the airport to the hotel.',
     website: 'https://goldenlishoteis.com.br/',
     phone: '+55 62 3639-1003',
     onMap: true,
@@ -116,12 +116,12 @@ export const VENUES = {
     /** A town, not a building: the pin is the municipality, drawn wider. */
     coords: { lat: -15.9408902, lon: -50.1465398 },
     mapSpan: 0.08,
-    organisedTransport: true,
     photo: {
       src: '/images/venues/cidade-de-goias.webp',
       alt: 'Historic street and colonial buildings in Cidade de Goiás',
       credit: 'Historic centre · Adelano Lázaro · CC BY-SA 4.0',
-      creditHref: 'https://commons.wikimedia.org/wiki/File:Rua_do_Conjunto_Arquitet%C3%B4nico_da_Cidade_de_Goi%C3%A1s,_Goi%C3%A1s,_Brasil.jpg',
+      creditHref:
+        'https://commons.wikimedia.org/wiki/File:Rua_do_Conjunto_Arquitet%C3%B4nico_da_Cidade_de_Goi%C3%A1s,_Goi%C3%A1s,_Brasil.jpg',
     },
     onMap: true,
   },

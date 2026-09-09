@@ -13,8 +13,8 @@ Colombia, Tanzania, Nigeria, Uganda, Zimbabwe and Brazil. Many of them will
 read this page on a phone, on hotel wi-fi, deciding what time to be in a lobby.
 
 That audience is the whole design brief. The site exists to answer four
-questions: *what is this, when is my session, where do I sleep and eat, how do
-I get there.*
+questions: _what is this, when is my session, where do I sleep and eat, how do
+I get there._
 
 ## The brief
 
@@ -83,12 +83,12 @@ fact first.
 
 Four pages, literal names:
 
-| Path          | Holds |
-| ------------- | ----- |
+| Path          | Holds                                                                                                            |
+| ------------- | ---------------------------------------------------------------------------------------------------------------- |
 | `/`           | What, when and where; the overview; partners; and during the week, the session running now and the one due next. |
-| `/programme/` | The five days, the proportional grid, print, and `.ics` once times are approved. |
-| `/materials/` | Presentations and documents by day, each linked to the session that produces it. |
-| `/practical/` | Hotel, transfers, daily transport, maps and recommendations. |
+| `/programme/` | The five days, the proportional grid, print, and `.ics` once times are approved.                                 |
+| `/materials/` | Presentations and documents by day, each linked to the session that produces it.                                 |
+| `/practical/` | Hotel, transfers, daily transport, maps and recommendations.                                                     |
 
 The same navigation appears on every page: `Home`, `Programme`, `Materials`,
 `Practical information`. On small screens it stays in the sticky header as a
@@ -154,7 +154,7 @@ In one line: **an international operational document, with editorial finish and
 temporal behaviour.**
 
 Count carefully. "44 sessions" is wrong — the 44 includes meals, coffee breaks,
-transfers and receptions. Say *scheduled items*.
+transfers and receptions. Say _scheduled items_.
 
 **The signature is the programme, drawn to scale — on large screens only.**
 The vertical axis is real time, so a three-hour workshop occupies three times
@@ -170,13 +170,13 @@ markers came off. The two Day 5 farm visits are confirmed as sessions — which
 farm hosts them stays pending on the venue field. The grid still renders the
 states below whenever a future item needs one:
 
-| State | Rendering |
-|---|---|
-| Confirmed interval (`start` + `end`) | Block, height proportional to duration |
-| Provisional interval (`endStatus: 'provisional'`) | Proportional block, visibly labelled |
-| Start only (fallback) | Point marker on the axis, no implied height |
-| Parallel activities | Separate blocks in adjacent columns, same interval |
-| Unconfirmed item (`status: 'tbd'`) | Visibly marked as not yet fixed |
+| State                                             | Rendering                                          |
+| ------------------------------------------------- | -------------------------------------------------- |
+| Confirmed interval (`start` + `end`)              | Block, height proportional to duration             |
+| Provisional interval (`endStatus: 'provisional'`) | Proportional block, visibly labelled               |
+| Start only (fallback)                             | Point marker on the axis, no implied height        |
+| Parallel activities                               | Separate blocks in adjacent columns, same interval |
+| Unconfirmed item (`status: 'tbd'`)                | Visibly marked as not yet fixed                    |
 
 Removing `endStatus` after approval promotes the interval to confirmed — that
 is exactly what happened here. Until then, visual continuity is not
@@ -365,8 +365,7 @@ order is the argument: what is happening now, what this is, where to go next.
   state, not an outstanding item; only genuinely missing information is amber.
 - **The band names no venue.** It used to, for meals, breaks and social items
   (`Lunch @ Cidade de Goiás`), which left it as the one surface on the site
-  naming a place after the programme and the `.ics` went silent on 5 September
-  2026. The organiser removed it: what a participant needs from the band is
+  naming a place after the programme and the `.ics` went silent on 5 September 2026. The organiser removed it: what a participant needs from the band is
   that the interval exists, not where to stand. Daily movement is the workshop
   shuttle, and Travel & stay holds the places.
 
@@ -400,7 +399,7 @@ Four decisions here are easy to undo by accident:
   freeze on its first frame, and the first frame is opacity zero — a blank
   agenda on paper.
 - **The scroll entrances are CSS, not JavaScript**, via `animation-timeline:
-  view()` behind `@supports`. A browser without it drops the rule and opens the
+view()` behind `@supports`. A browser without it drops the rule and opens the
   page fully visible, which is the correct state and not a fallback. An
   IntersectionObserver has no such exit, and `/materials/` is a server
   component that must keep shipping no script of its own.
@@ -445,16 +444,16 @@ Extract content into typed data before any redesign. Keep the model small:
 
 ```ts
 type WorkshopSession = {
-  id: string;                  // hand-written, stable, never derived from the title
-  date: string;                // full ISO date, not "Day 3"
+  id: string; // hand-written, stable, never derived from the title
+  date: string; // full ISO date, not "Day 3"
   start: string;
-  end?: string;                // display interval; inspect endStatus before operational use
-  endStatus?: 'provisional';   // visibly provisional; never drives Now or .ics
+  end?: string; // display interval; inspect endStatus before operational use
+  endStatus?: 'provisional'; // visibly provisional; never drives Now or .ics
   title: string;
   speakers?: Speaker[];
-  venueId: string | null;      // registry id, recorded but not rendered — see below
+  venueId: string | null; // registry id, recorded but not rendered — see below
   kind: 'technical' | 'meal' | 'break' | 'transport' | 'field' | 'social';
-  tracks?: ParallelTrack[];    // parallel activities modelled explicitly
+  tracks?: ParallelTrack[]; // parallel activities modelled explicitly
   materials?: Material[];
   status?: 'confirmed' | 'tbd';
 };
@@ -549,7 +548,7 @@ app/programme/layout.tsx     Route metadata. The page is a client component.
 app/programme/page.tsx       Day tabs, deep links and the printable programme.
 app/materials/page.tsx       Materials by day. A server component: no state.
 app/practical/layout.tsx     Route metadata for the stable /practical/ route.
-app/practical/page.tsx       Travel & stay: hotel, shuttle, venues. A server component.
+app/practical/page.tsx       Travel & stay, in two parts. A server component.
 app/not-found.tsx            404, listing the same four destinations.
 app/globals.css              Shared tokens, screen, responsive and print styles.
 app/travel.css               Styles owned by Travel & stay.
@@ -557,8 +556,10 @@ components/site-header.tsx   Persistent navigation, with the current page marked
 components/site-footer.tsx   Footer, shared by every page.
 components/now-next.tsx      The home page's "happening now", workshop week only.
 components/programme.tsx     Proportional, chronological and print programmes.
-components/venue-card.tsx    One venue on Travel: actions, copy feedback, map disclosure.
-components/orientation.tsx   Travel's Goiânia and Cidade de Goiás section: the drawn maps and their legends.
+components/venue-card.tsx    A place you navigate to (hotel, LAPIG): actions, copy, map.
+components/friday-visit.tsx  Cidade de Goiás as one block: the coach, then the town.
+components/orientation.tsx   Travel part two: Goiânia's context and the free-time map.
+components/free-time-map.tsx Clustered Leaflet map of the free-time places.
 components/recap.tsx         The day's published record, and the control that flags a line as wrong.
 components/add-to-calendar.tsx  .ics downloads, subscription URL and the share form.
 hooks/use-tab-keys.ts        Arrow-key movement for the day tablist. Horizontal only.
@@ -668,10 +669,14 @@ building it, and that are easy to break:
   authorisation of 5 September 2026 over its existing sourced pin, which is not
   the same as a confirmed street address — the card still says so. Cidade de
   Goiás gets no ride: see the next rule.
-- **A venue the workshop drives people to carries `organisedTransport: true`
-  and gets no ride link.** Cidade de Goiás is reached by the 06:30 bus on day
-  5; offering a ride there would propose a 130 km taxi for a journey that is
-  already arranged.
+- **A venue the workshop drives people to gets no `ride` flag, and no venue
+  card either.** Cidade de Goiás is reached by the 06:30 bus on day 5;
+  offering a ride there would propose a 130 km taxi for a journey that is
+  already arranged. The `organisedTransport` flag that used to encode this was
+  removed on 9 September 2026, when the town stopped being a venue card at all:
+  a place nobody navigates to needs no directions button and no copyable
+  municipality centroid. `components/friday-visit.tsx` renders it instead, and
+  the absent `ride` flag carries the reasoning. See the 9 September entry below.
 
 ## Goiânia and Cidade de Goiás
 
@@ -895,7 +900,7 @@ external URLs pass through untouched. Keep material files out of
 
 `apps-script/` is a Google Apps Script project, pushed with `clasp` (installed
 and authenticated on the working machine). It owns one dedicated calendar —
-*Time2Graze Brazil Workshop*, never the organiser's own — and does two jobs:
+_Time2Graze Brazil Workshop_, never the organiser's own — and does two jobs:
 
 - **Sharing.** The deployed web app receives `?action=share&email=…` and shares
   that calendar with the address as a reader, `sendNotifications: true`, so
@@ -931,7 +936,7 @@ calendar. `syncFromSite()` now ends with
 `warnOnDuplicateWorkshopCalendars()`, which logs a warning whenever another
 "Time2Graze…" calendar is visible to the account — a recurrence is seen in
 the next daily sync's log, not discovered by a participant. Participants
-importing the .ics into *their own* calendar apps is fine and intended; the
+importing the .ics into _their own_ calendar apps is fine and intended; the
 damage is only a second calendar in the account that hosts the synced one.
 
 **Deploying the script.** Only when the endpoint logic changes — never for a
@@ -1181,3 +1186,48 @@ the old orientation presentation described above.
 - The old map assets and geography research remain as source history, not
   as a second visible section. Useful references has been removed by request;
   inline history sources and photographic attribution remain.
+
+## Travel restructured — 9 September 2026
+
+The organiser judged the page confused and Cidade de Goiás redundant, and both
+readings were correct. The page carried two accounts of the same town: a venue
+card under "Workshop locations" offering directions and a copyable municipality
+centroid, and a history article further down repeating its photograph. The
+heading outline had two `Cidade de Goiás` h3s, and one section answered to
+three names — `#maps` in the anchor, "Venues" in the index, "Workshop
+locations" in the heading.
+
+The cause was organising by genre — a hotel, a bus, some places, some history —
+rather than by what a participant is doing when they open the page.
+
+- **Travel & stay is two parts, and they are the only h2s.** _Your week_ holds
+  the hotel, the shuttle and the two destinations. _Goiânia_ holds the city's
+  context and the free-time map. Everything inside a part is an h3. Do not
+  reintroduce a heading level between them.
+- **Cidade de Goiás appears once, in part one, as the Friday destination.**
+  Logistics at the front of the block, the town's history inside it: the lead
+  paragraph and the UNESCO line visible, the rest behind one disclosure. It is
+  a workshop destination that happens to be a World Heritage town, not a second
+  itinerary. The photograph is published once, on this block.
+- **Both destinations state the journey on one axis.** `travel` on the venue
+  card and the matching line on the Friday block read "Workshop shuttle from
+  Golden Lis · <days> <time>", derive from `SHUTTLE_PLAN`, and link to
+  `#transport`, which stays the single detailed source for departures. Eyebrows
+  say when you go — "Monday–Thursday", "Friday 18 September" — not what kind of
+  building it is. The hotel's eyebrow is "Your hotel": it is the base, not a
+  destination.
+- **`VenueCard` takes its eyebrow as a prop and always renders an h3.** It is
+  now only for places a participant navigates to. Deriving the eyebrow inside
+  the component is what let the two places drift onto different axes.
+- **`#stay`, `#transport`, `#maps`, `#map-panel`, `#hotel`, `#lapig`,
+  `#cidade-de-goias`, `#orientation` and `#recommendations` all still resolve.**
+  `#maps` and `#map-panel` survive as wrappers with no heading of their own.
+  The index reads Hotel · Shuttle · Locations · Free time, still four items on
+  one phone row.
+- **Print keeps the town's history.** `.friday-more` is excluded from the rule
+  that hides `.place-map` on paper; its summary, map and tile credit are hidden
+  and the prose prints.
+- This supersedes the placement described in the 5 September Travel bullet and
+  in the 9 September city guide entry. The content itself is unchanged: nothing
+  was written, and `data/city-guide.ts` still holds every paragraph, detail and
+  source.
