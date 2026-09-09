@@ -5,6 +5,7 @@ import { AGENDA } from '@/data/agenda';
 import type { Day, Session, Track } from '@/data/types';
 import { useChoices } from '@/hooks/use-track-choice';
 import { type Clock, nextSessionId, stateOf } from '@/lib/now';
+import { choosingOpen } from '@/lib/split-sessions';
 import {
   axisBounds, axisTicks, dayLabel, durationOf, fromMinutes, isEvening,
   presenterLabel, timeLabel, toMinutes,
@@ -67,12 +68,18 @@ function TrackCard({ track, chosen }: { track: Track; chosen: boolean }) {
  * visibly marked and do not count as confirmed operational times.
  */
 function Block(
-  { session, from, state }: { session: Session; from: number; state: SessionMark },
+  { session, from, state, clock }: {
+    session: Session;
+    from: number;
+    state: SessionMark;
+    clock: Clock | null;
+  },
 ) {
   /* Under 45 minutes there is no room to stack time, title and metadata, so the
      block lays them out on one row instead of clipping them. */
   const compact = (durationOf(session) ?? 0) <= 45;
   const { picks } = useChoices();
+  const undecided = !picks[session.id] && choosingOpen(session, clock);
 
   return (
     <article
@@ -89,7 +96,8 @@ function Block(
         {session.tracks ? (
           <>
             <p className="tl-split-label">
-              Split session · choose one
+              Split session
+              {undecided && <span className="split-todo">Choose one</span>}
               <Mark state={state} />
             </p>
             <div className="tl-tracks">
@@ -205,7 +213,7 @@ function Timeline({ day, clock }: { day: Day; clock: Clock | null }) {
         )}
         {daytime.map((s) =>
           s.end
-            ? <Block key={s.id} session={s} from={from} state={mark(s)} />
+            ? <Block key={s.id} session={s} from={from} state={mark(s)} clock={clock} />
             : <Point key={s.id} session={s} from={from} state={mark(s)} />
         )}
       </div>
@@ -219,10 +227,11 @@ function Timeline({ day, clock }: { day: Day; clock: Clock | null }) {
  * diagram into 375px would turn the signature into an obstacle.
  */
 function List(
-  { sessions, anchors = true, marks }: {
+  { sessions, anchors = true, marks, clock = null }: {
     sessions: Session[];
     anchors?: boolean;
     marks?: (s: Session) => SessionMark;
+    clock?: Clock | null;
   },
 ) {
   const { picks } = useChoices();
@@ -240,7 +249,12 @@ function List(
             <div className="session-body" data-state={marks?.(session) ?? undefined}>
               {session.tracks ? (
                 <>
-                  <p className="tl-split-label">Split session · choose one</p>
+                  <p className="tl-split-label">
+                    Split session
+                    {!picks[session.id] && choosingOpen(session, clock) && (
+                      <span className="split-todo">Choose one</span>
+                    )}
+                  </p>
                   <ul className="session-tracks">
                     {session.tracks.map((t) => (
                       <li key={t.id} data-chosen={picks[session.id] === t.id || undefined}>
@@ -327,7 +341,7 @@ export function Programme({ day, clock }: { day: Day; clock: Clock | null }) {
 
       {/* The same day as a list: the only version small screens and print show,
           and the one assistive technology reads. */}
-      <List sessions={day.sessions} marks={marks} />
+      <List sessions={day.sessions} marks={marks} clock={clock} />
     </div>
   );
 }

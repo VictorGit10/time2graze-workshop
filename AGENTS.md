@@ -1347,10 +1347,31 @@ so a button inside it is focusable by keyboard and invisible to a screen
 reader; its list counterpart carries the day to assistive technology but is
 clipped away above 1280px, so a button there is one desktop readers cannot
 click. `components/split-choice.tsx` therefore sits below the programme,
-outside `.agenda-panel` for the same reason the recap does, and the programme
-above only ever *displays* the answer — the `Your choice` mark on the track
-card and on the list entry, from this browser's own storage. Do not "improve"
+outside `.agenda-panel` for the same reason the recap does. Do not "improve"
 this by moving the control into the grid.
+
+**Which is exactly why the day has to announce it.** Shipped first without
+that, the chooser was a block at the foot of the page nothing pointed at: a
+reader looking at the 10:00 slot had no reason to think an answer was expected
+of them, let alone that the page could take one. Three surfaces now carry the
+same state, and they answer to one function, `choosingOpen` in
+`lib/split-sessions.ts`, so they cannot disagree:
+
+- **The session says it needs an answer.** `Split session` plus a `Choose one`
+  chip, in the grid and in the list, until this browser has picked; then the
+  chosen activity carries `Your choice` instead. Both are state chips, not
+  controls — the grid is `aria-hidden` and could not hold a control anyway.
+- **`SplitNotice` sits between the day tabs and the panel**, carrying the
+  time, the state and the only link: `#split-day-N`, resolved by
+  `splitAnchor()` at both ends. It is glued to the tabs above and the panel
+  below (`border-top: 0`, as `.agenda-panel` has) so the three read as one
+  card. One interactive pointer, identical on every width — a second copy
+  inside the clipped list would be a focus stop nobody can see.
+- **The chooser itself** states the answer back once it has one.
+
+A day with no split session renders none of it, and none of it prints: paper
+carries the schedule, and a chip saying `Choose one` on a sheet that cannot be
+clicked is noise. `Your choice` does print — that sheet is the reader's own.
 
 **A choice is changed, not repeated.** The sheet is keyed by session and name,
 matched case- and space-insensitively, so someone who changes their mind

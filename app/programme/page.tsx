@@ -6,7 +6,7 @@ import { FileText, Printer } from 'lucide-react';
 import { AddToCalendar } from '@/components/add-to-calendar';
 import { Programme, ProgrammeForPrint } from '@/components/programme';
 import { DayRecap } from '@/components/recap';
-import { SplitChoice } from '@/components/split-choice';
+import { SplitChoice, SplitNotice } from '@/components/split-choice';
 import { AGENDA } from '@/data/agenda';
 import { useTabKeys } from '@/hooks/use-tab-keys';
 import { useWorkshopClock } from '@/hooks/use-workshop-clock';
@@ -220,6 +220,11 @@ export default function ProgrammePage() {
           the tabs.
         </output>
       )}
+
+      {/* A decision the day expects from the reader, said before they scroll
+          past the session that needs it — the chooser itself is below the
+          programme, and nothing in the grid can link to it. */}
+      <SplitNotice day={day} clock={clock} />
 
       {/* The key remounts the panel on every day change, and it is that mount
           which triggers the transition on .agenda-panel. Programme holds no

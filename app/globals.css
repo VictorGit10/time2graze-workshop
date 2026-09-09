@@ -773,12 +773,28 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
   /* The printed programme is all five days; the panel holds one. A recap for
      the open day alone would be a single day's record stapled to a five-day
      agenda, so paper carries the schedule and the recaps stay on screen. */
-  .programme-tools, .programme-resources, .recap, .split-choice { display: none !important; }
+  .programme-tools, .programme-resources, .recap, .split-choice, .split-notice, .split-todo { display: none !important; }
   /* The choice itself does print — it is the reader's own agenda — but as
      text, not as a tinted pill. */
   .split-mark { padding: 0; color: #000 !important; background: none !important; }
   .resource-item { break-inside: avoid; }
 }
+
+/* The decision, announced where the day starts rather than at the foot of the
+   page. It is glued to the tabs above and the panel below — border-top: 0, as
+   .agenda-panel has — so the three read as one card rather than as a banner
+   dropped between them. */
+.split-notice { display: grid; gap: 10px; padding: 14px clamp(15px, 2vw, 24px); background: var(--surface-soft); border: 1px solid var(--line); border-top: 0; border-left: 3px solid var(--forest); }
+.split-notice p { display: flex; flex-wrap: wrap; gap: 7px 14px; align-items: center; margin: 0; color: var(--text); font-size: var(--t-meta-lg); line-height: 1.5; }
+.split-notice-when { color: var(--forest); font-size: var(--t-label); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.split-notice-state { flex: 1 1 16ch; }
+.split-notice a { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 18px; color: #fff; background: var(--forest); border-radius: var(--radius); font-size: var(--t-meta-lg); font-weight: 750; transition: background var(--m-quick) var(--m-ease); }
+.split-notice a:hover { background: var(--forest-dark); }
+
+/* The same fact on the session itself: this hour is still waiting on you. It
+   is a state chip and not a control — the grid it sits in is aria-hidden, and
+   the link above is the one thing to click. */
+.split-todo { display: inline-block; margin-left: 9px; vertical-align: 1px; padding: 2px 8px; color: var(--forest-dark); background: var(--accent); border-radius: 99px; font-size: var(--t-label); font-weight: 800; letter-spacing: .05em; }
 
 /* --- Split sessions ---------------------------------------------------------
    Two activities run at the same hour, and this is where a participant says
@@ -788,7 +804,7 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
    control half the readers cannot reach. It sits below the programme instead,
    outside .agenda-panel for the same reason the recap is, and the programme
    above only ever displays the answer. */
-.split-choice { margin-top: 24px; background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--forest); }
+.split-choice { margin-top: 24px; background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--forest); scroll-margin-top: 110px; }
 .split-choice-head { padding: 18px 20px; background: var(--surface-soft); border-bottom: 1px solid var(--line); }
 .split-choice-head h3 { margin: 0; color: var(--forest); font-family: var(--font-sans), Arial, sans-serif; font-size: var(--t-head-sm); font-weight: 800; }
 .split-choice-head p { max-width: 62ch; margin: 6px 0 0; color: var(--text); font-size: var(--t-meta-lg); line-height: 1.5; }
