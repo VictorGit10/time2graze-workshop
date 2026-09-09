@@ -21,6 +21,15 @@ import type { Day } from './types';
  */
 export const CALENDAR_RELEASE: 'beta' | 'final' = 'final';
 
+/**
+ * Last day a split-session choice is accepted, in the workshop's timezone.
+ * The two split sessions are Day 1 and Day 4; after Day 4 there is nothing
+ * left to choose, and `CHOICE_CLOSES` in `apps-script/tracks.gs` refuses the
+ * write on the same date. This constant only stops the site offering a
+ * control the script would refuse.
+ */
+export const TRACK_CHOICE_CLOSES = '2026-09-17';
+
 export const AGENDA: Day[] = [
   {
     index: 1,

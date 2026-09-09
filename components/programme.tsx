@@ -1,10 +1,13 @@
+'use client';
+
 import { Clock3 } from 'lucide-react';
 import { AGENDA } from '@/data/agenda';
 import type { Day, Session, Track } from '@/data/types';
+import { useChoices } from '@/hooks/use-track-choice';
 import { type Clock, nextSessionId, stateOf } from '@/lib/now';
 import {
-  axisBounds, axisTicks, dayLabel, durationOf, fromMinutes, isEvening, timeLabel,
-  toMinutes,
+  axisBounds, axisTicks, dayLabel, durationOf, fromMinutes, isEvening,
+  presenterLabel, timeLabel, toMinutes,
 } from '@/lib/schedule';
 
 type SessionMark = 'running' | 'next' | null;
@@ -31,17 +34,10 @@ function span(session: Session, from: number) {
   } as React.CSSProperties;
 }
 
-function speakerOf(item: Session | Track) {
-  if (!item.speakers) return null;
-  return item.speakers
-    .map((s) => (s.org ? `${s.name} · ${s.org}` : s.name))
-    .join('; ');
-}
-
 function PresenterLine(
   { item, compact = false }: { item: Session | Track; compact?: boolean },
 ) {
-  const presenter = speakerOf(item);
+  const presenter = presenterLabel(item);
   if (!presenter) return null;
 
   return (
@@ -52,12 +48,16 @@ function PresenterLine(
   );
 }
 
-/** One activity inside a split session. */
-function TrackCard({ track }: { track: Track }) {
+/**
+ * One activity inside a split session. `chosen` is this browser's own answer
+ * to it — the site never shows anyone else's, and never a count.
+ */
+function TrackCard({ track, chosen }: { track: Track; chosen: boolean }) {
   return (
-    <div className="tl-track">
+    <div className="tl-track" data-chosen={chosen || undefined}>
       <p className="tl-track-title">{track.title}</p>
       <PresenterLine item={track} />
+      {chosen && <p className="split-mark">Your choice</p>}
     </div>
   );
 }
@@ -72,6 +72,7 @@ function Block(
   /* Under 45 minutes there is no room to stack time, title and metadata, so the
      block lays them out on one row instead of clipping them. */
   const compact = (durationOf(session) ?? 0) <= 45;
+  const { picks } = useChoices();
 
   return (
     <article
@@ -92,7 +93,9 @@ function Block(
               <Mark state={state} />
             </p>
             <div className="tl-tracks">
-              {session.tracks.map((t) => <TrackCard key={t.id} track={t} />)}
+              {session.tracks.map((t) => (
+                <TrackCard key={t.id} track={t} chosen={picks[session.id] === t.id} />
+              ))}
             </div>
           </>
         ) : (
@@ -127,7 +130,7 @@ function Block(
 function Point(
   { session, from, state }: { session: Session; from: number; state: SessionMark },
 ) {
-  const presenter = speakerOf(session);
+  const presenter = presenterLabel(session);
 
   return (
     <div
@@ -222,6 +225,8 @@ function List(
     marks?: (s: Session) => SessionMark;
   },
 ) {
+  const { picks } = useChoices();
+
   return (
     <ol className="session-list">
       {sessions.map((session) => {
@@ -238,9 +243,12 @@ function List(
                   <p className="tl-split-label">Split session · choose one</p>
                   <ul className="session-tracks">
                     {session.tracks.map((t) => (
-                      <li key={t.id}>
+                      <li key={t.id} data-chosen={picks[session.id] === t.id || undefined}>
                         <strong>{t.title}</strong>
                         <PresenterLine item={t} />
+                        {picks[session.id] === t.id && (
+                          <em className="split-mark">Your choice</em>
+                        )}
                       </li>
                     ))}
                   </ul>

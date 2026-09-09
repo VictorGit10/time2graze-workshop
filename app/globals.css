@@ -773,9 +773,59 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
   /* The printed programme is all five days; the panel holds one. A recap for
      the open day alone would be a single day's record stapled to a five-day
      agenda, so paper carries the schedule and the recaps stay on screen. */
-  .programme-tools, .programme-resources, .recap { display: none !important; }
+  .programme-tools, .programme-resources, .recap, .split-choice { display: none !important; }
+  /* The choice itself does print — it is the reader's own agenda — but as
+     text, not as a tinted pill. */
+  .split-mark { padding: 0; color: #000 !important; background: none !important; }
   .resource-item { break-inside: avoid; }
 }
+
+/* --- Split sessions ---------------------------------------------------------
+   Two activities run at the same hour, and this is where a participant says
+   which one they will be in. The control cannot live on the programme itself:
+   the proportional grid is aria-hidden, and the list that carries it to
+   assistive technology is clipped away on desktop — a button in either is a
+   control half the readers cannot reach. It sits below the programme instead,
+   outside .agenda-panel for the same reason the recap is, and the programme
+   above only ever displays the answer. */
+.split-choice { margin-top: 24px; background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--forest); }
+.split-choice-head { padding: 18px 20px; background: var(--surface-soft); border-bottom: 1px solid var(--line); }
+.split-choice-head h3 { margin: 0; color: var(--forest); font-family: var(--font-sans), Arial, sans-serif; font-size: var(--t-head-sm); font-weight: 800; }
+.split-choice-head p { max-width: 62ch; margin: 6px 0 0; color: var(--text); font-size: var(--t-meta-lg); line-height: 1.5; }
+
+.split-session { padding: 20px; border-top: 1px solid var(--line); }
+.split-choice-head + .split-session { border-top: 0; }
+.split-when { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; margin: 0 0 12px; color: var(--muted); font-size: var(--t-meta); font-variant-numeric: tabular-nums; }
+
+.split-form fieldset { margin: 0; padding: 0; border: 0; }
+.split-form legend { margin-bottom: 8px; padding: 0; color: var(--ink); font-size: var(--t-meta-lg); font-weight: 700; }
+/* The whole option is the target, not the 18px dot: this is answered on a
+   phone, in a corridor, a minute before the session starts. */
+.split-option { display: flex; gap: 11px; align-items: flex-start; padding: 11px 13px; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); cursor: pointer; transition: border-color var(--m-quick) var(--m-ease); }
+.split-option + .split-option { margin-top: 8px; }
+.split-option:hover { border-color: var(--forest); }
+.split-option:has(input:checked) { border-color: var(--forest); box-shadow: inset 0 0 0 1px var(--forest); }
+.split-option input { flex: none; width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--forest); }
+.split-option strong { display: block; font-family: var(--font-sans), Arial, sans-serif; font-size: var(--t-meta-lg); font-weight: 700; line-height: 1.3; }
+.split-option small { display: block; margin-top: 3px; color: var(--muted); font-size: var(--t-meta); }
+
+.split-name { display: block; margin: 15px 0 6px; color: var(--ink); font-size: var(--t-meta-lg); font-weight: 700; }
+.split-form > input { width: 100%; max-width: 340px; padding: 10px 12px; color: var(--ink); background: var(--surface); border: 1px solid var(--muted); border-radius: var(--radius); font-family: inherit; font-size: var(--t-body-lg); }
+.split-form > input:read-only { background: var(--surface-soft); }
+.split-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+
+/* An answer already given is a statement, not a form: most returns to this
+   block are to check what was picked, not to change it. */
+.split-answer { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; justify-content: space-between; }
+.split-answer-title { display: flex; gap: 10px; align-items: center; margin: 0; font-size: var(--t-body); line-height: 1.45; }
+.split-answer-title svg { flex: none; width: 20px; height: 20px; color: var(--forest); }
+.split-answer button { min-height: 44px; padding: 10px 16px; border-radius: var(--radius); font-size: var(--t-meta-lg); font-weight: 750; cursor: pointer; }
+
+/* The same answer, carried back onto the programme. It is this browser's own
+   choice and nobody else's — the site never shows a count. */
+.split-mark { display: inline-block; margin: 6px 0 0; padding: 2px 8px; color: var(--forest-dark); background: var(--accent); border-radius: 99px; font-size: var(--t-label); font-style: normal; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
+.tl-track[data-chosen] { border-color: var(--forest); }
+.session-tracks li[data-chosen] { border-left-color: var(--forest); }
 
 /* --- Daily recap ------------------------------------------------------------
    The record of a day, published the same evening and corrected from what
@@ -823,17 +873,17 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
 .recap-form input:read-only, .recap-form textarea:read-only { background: var(--surface-soft); }
 .recap-form > textarea + label { margin-top: 12px; }
 .recap-form-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-.recap-form-actions button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 10px 16px; border-radius: var(--radius); font-size: var(--t-meta-lg); font-weight: 750; cursor: pointer; }
-.recap-form-actions button[type='submit'] { color: #fff; background: var(--forest); border: 1px solid var(--forest); transition: background var(--m-quick) var(--m-ease); }
-.recap-form-actions button[type='submit']:not(:disabled):hover { background: var(--forest-dark); }
-.recap-form-actions button[type='submit']:disabled { cursor: default; }
-.recap-form-actions button[type='button'] { color: var(--forest); background: transparent; border: 1px solid var(--line); }
-.recap-form-actions button svg { width: 17px; height: 17px; }
-.recap-form-status { display: flex; align-items: flex-start; gap: 10px; margin-top: 12px; padding: 12px; font-size: var(--t-meta-lg); line-height: 1.5; }
-.recap-form-status:empty { display: none; }
-.recap-form-status svg { flex: none; width: 20px; height: 20px; margin-top: 1px; }
-.recap-form-status[data-state='success'] { color: var(--forest-dark); background: var(--accent); border-left: 3px solid var(--forest); }
-.recap-form-status[data-state='error'] { color: var(--warning); background: var(--warning-bg); border-left: 3px solid var(--warning); }
+.recap-form-actions button, .split-actions button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 10px 16px; border-radius: var(--radius); font-size: var(--t-meta-lg); font-weight: 750; cursor: pointer; }
+.recap-form-actions button[type='submit'], .split-actions button[type='submit'] { color: #fff; background: var(--forest); border: 1px solid var(--forest); transition: background var(--m-quick) var(--m-ease); }
+.recap-form-actions button[type='submit']:not(:disabled):hover, .split-actions button[type='submit']:not(:disabled):hover { background: var(--forest-dark); }
+.recap-form-actions button[type='submit']:disabled, .split-actions button[type='submit']:disabled { cursor: default; }
+.recap-form-actions button[type='button'], .split-actions button[type='button'], .split-answer button { color: var(--forest); background: transparent; border: 1px solid var(--line); }
+.recap-form-actions button svg, .split-actions button svg { width: 17px; height: 17px; }
+.recap-form-status, .split-status { display: flex; align-items: flex-start; gap: 10px; margin-top: 12px; padding: 12px; font-size: var(--t-meta-lg); line-height: 1.5; }
+.recap-form-status:empty, .split-status:empty { display: none; }
+.recap-form-status svg, .split-status svg { flex: none; width: 20px; height: 20px; margin-top: 1px; }
+.recap-form-status[data-state='success'], .split-status[data-state='success'] { color: var(--forest-dark); background: var(--accent); border-left: 3px solid var(--forest); }
+.recap-form-status[data-state='error'], .split-status[data-state='error'] { color: var(--warning); background: var(--warning-bg); border-left: 3px solid var(--warning); }
 
 /* The evening is when the schedule has nothing left to say and the summary
    does, so the band grows a second row rather than emptying out. */

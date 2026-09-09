@@ -7,8 +7,9 @@
  * trigger repopulates the calendar from the workshop's published .ics feed,
  * so every programme change pushed to the site reaches subscribers on its own.
  *
- * The same web app also receives reader corrections to the daily recaps —
- * see flags.gs. Both endpoints are anonymous and both are capped.
+ * The same web app also receives reader corrections to the daily recaps
+ * (flags.gs) and split-session choices (tracks.gs). Every endpoint here is
+ * anonymous, and every one of them is capped.
  */
 
 const CALENDAR_NAME = 'Time2Graze Brazil Workshop';
@@ -67,7 +68,10 @@ function listWorkshopEventsByCalendar() {
   if (!found) console.log('No owned calendar holds events in that week.');
 }
 
-/** Web-app entry point. `action` is `share` (default), `flag` or `ping`. */
+/**
+ * Web-app entry point. `action` is `share` (default), `flag`, `choose` or
+ * `ping`.
+ */
 function doGet(e) {
   const action = String(e.parameter.action || 'share').toLowerCase();
   let payload;
@@ -83,6 +87,8 @@ function doGet(e) {
       payload = shareCalendar(e.parameter.email);
     } else if (action === 'flag') {
       payload = recordFlag(e.parameter);
+    } else if (action === 'choose') {
+      payload = recordChoice(e.parameter);
     } else {
       payload = { status: 'error', message: 'Unknown action.' };
     }
@@ -165,6 +171,7 @@ function withinDailyShareLimit() {
 function setup() {
   const calendarId = getWorkshopCalendarId();
   const flagSheet = getFlagSheet().getParent().getUrl();
+  const choiceSheet = getChoiceSheet().getParent().getUrl();
   const sync = syncFromSite();
   const armed = ScriptApp.getProjectTriggers().some(
     (trigger) => trigger.getHandlerFunction() === 'syncFromSite',
@@ -177,10 +184,11 @@ function setup() {
       .create();
   }
   console.log(
-    'Setup complete. Calendar %s, sync %s, daily trigger %s. Recap corrections: %s',
+    'Setup complete. Calendar %s, sync %s, daily trigger %s. Recap corrections: %s. Split-session choices: %s',
     calendarId,
     JSON.stringify(sync),
     armed ? 'already armed' : 'armed',
     flagSheet,
+    choiceSheet,
   );
 }

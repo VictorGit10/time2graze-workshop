@@ -66,6 +66,18 @@ export function sessionTitle(session: Session) {
   return label;
 }
 
+/**
+ * 'Ana Paula · LAPIG; Vinícius · LAPIG' — the form the page reads, which is
+ * deliberately not the calendar's `Name/ORG`: one sits in a line of metadata
+ * under a title, the other inside a title on someone's phone.
+ */
+export function presenterLabel(item: Session | Track) {
+  if (!item.speakers) return null;
+  return item.speakers
+    .map((s) => (s.org ? `${s.name} · ${s.org}` : s.name))
+    .join('; ');
+}
+
 /** 'Day 1' */
 export function dayShort(day: Day) {
   return `Day ${day.index}`;

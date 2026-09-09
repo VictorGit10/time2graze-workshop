@@ -17,6 +17,8 @@ Implemented:
 - typed agenda, venue and material data;
 - proportional programme on large screens and a chronological mobile view;
 - explicit parallel tracks and point markers for activities without an end;
+- split-session sign-up: participants say which of two parallel activities
+  they will join, and the organisers read one row per person;
 - deep links to each day and scheduled item;
 - print layout containing all five days;
 - `Today`, `Now` and `Next` states in `America/Sao_Paulo`;

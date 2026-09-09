@@ -1325,3 +1325,65 @@ values. What it means in practice:
 - Verified at 390, 768, 1024, 1280, 1440, 1680 and 1920px on all four routes:
   no horizontal overflow, and no clipped timeline block, day tab or directory
   card at any of them. Re-run that check after touching the ramp.
+
+## Split-session choices — 9 September 2026
+
+Two sessions run two activities at the same hour — Day 1 at 10:00 and Day 4 at
+14:00 — and the rooms have to be sized before the day starts. The programme
+said "Split session · choose one" and gave nobody a way to answer it. It does
+now: a participant picks one activity, gives their name, and the Apps Script
+keeps **one row per person per session** in a private spreadsheet the
+organiser reads.
+
+**The name is required.** It is what makes the sheet an attendance list rather
+than a count: an organiser reading it the evening before needs to know who has
+still not said, and thirty anonymous clicks from any number of browsers cannot
+tell them that. The site remembers the name and offers it again for the second
+split session — a person on hotel wi-fi types it once.
+
+**The control cannot live on the programme itself, and that is a structural
+constraint, not a layout preference.** The proportional grid is `aria-hidden`,
+so a button inside it is focusable by keyboard and invisible to a screen
+reader; its list counterpart carries the day to assistive technology but is
+clipped away above 1280px, so a button there is one desktop readers cannot
+click. `components/split-choice.tsx` therefore sits below the programme,
+outside `.agenda-panel` for the same reason the recap does, and the programme
+above only ever *displays* the answer — the `Your choice` mark on the track
+card and on the list entry, from this browser's own storage. Do not "improve"
+this by moving the control into the grid.
+
+**A choice is changed, not repeated.** The sheet is keyed by session and name,
+matched case- and space-insensitively, so someone who changes their mind
+rewrites their own row; the endpoint answers `changed` rather than `recorded`
+and the page says so. Without that key, an organiser counting rows the evening
+before would count the same person twice.
+
+**The site never reads a choice back.** A reader sees their own answer, from
+their own browser (`hooks/use-track-choice.ts`), and never a count or anyone
+else's name. Publishing "18 people are in the GEE course" would turn a room
+question into a popularity signal, and the endpoint is anonymous — the numbers
+would be worth nothing anyway.
+
+**The control comes off when it stops having an effect**, in three places: the
+session has started (the room is what it is), `TRACK_CHOICE_CLOSES` in
+`data/agenda.ts` has passed, or the endpoint is not configured. `CHOICE_CLOSES`
+in `apps-script/tracks.gs` refuses the write on the same date and is what
+actually enforces it; the site's copy is the courtesy, exactly as with recap
+flagging.
+
+**`apps-script/tracks.gs` holds its own copy of the split sessions** — a public
+endpoint has to refuse anything that names no real activity, and the organiser
+should read a sheet of titles rather than a sheet of ids.
+`scripts/track-choice.test.mjs` fails the moment that copy drifts from
+`data/agenda.ts`, and also covers the row keying, the caps and the closing
+window. Renaming a track means editing both files; the test says so.
+
+**It needs a redeploy to work.** The `choose` action is new, so until
+`clasp push` and `clasp deploy -i <deploymentId>` have run, the live
+deployment answers "Unknown action." and the form reports that it did not
+send. Redeploy the existing deployment — a fresh `clasp deploy` mints a new
+`/exec` and quietly leaves the site talking to the old version. No manifest
+change is involved: `spreadsheets` and `drive.file` were already granted for
+the corrections sheet, so no new consent screen is needed. `choiceSheetUrl()`
+prints the sheet's address and `choiceTally()` prints the counts per activity,
+both from the editor.

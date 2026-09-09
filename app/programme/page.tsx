@@ -6,6 +6,7 @@ import { FileText, Printer } from 'lucide-react';
 import { AddToCalendar } from '@/components/add-to-calendar';
 import { Programme, ProgrammeForPrint } from '@/components/programme';
 import { DayRecap } from '@/components/recap';
+import { SplitChoice } from '@/components/split-choice';
 import { AGENDA } from '@/data/agenda';
 import { useTabKeys } from '@/hooks/use-tab-keys';
 import { useWorkshopClock } from '@/hooks/use-workshop-clock';
@@ -240,6 +241,8 @@ export default function ProgrammePage() {
         </aside>
         <Programme day={day} clock={clock} />
       </div>
+
+      <SplitChoice day={day} clock={clock} />
 
       <DayRecap day={day} clock={clock} />
 
