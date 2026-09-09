@@ -51,3 +51,7 @@ tsconfig.tsbuildinfo
 
 # local scratch
 /tmp/
+
+# API responses cached by research/build-maps.py; the generated paths are
+# committed in data/geography.ts, the raw GeoJSON does not need to be.
+/research/.map-cache/

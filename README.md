@@ -48,6 +48,8 @@ Content is kept out of the page markup:
 - `data/venues.ts` — the single venue registry: hotel, LAPIG, Cidade de Goiás;
 - `data/types.ts` — the content contracts;
 - `data/practical.ts` — accommodation, the contracted shuttle and guide links;
+- `data/geography.ts` — the Goiânia and Cidade de Goiás orientation section:
+  figures, chronologies, map markers and the generated map geometry;
 - `data/navigation.ts` — the four destinations, shared by the header and 404;
 - `lib/materials.ts` — derives the Materials section from the agenda;
 - `lib/calendar.ts` — generates the `.ics` files from the same agenda;
