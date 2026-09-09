@@ -507,12 +507,31 @@ Extract the data with no visual change at all, as its own step.
 - **12px is the floor for metadata only** — eyebrows, captions, labels.
   Functional text belongs at **14–17px**. This was written when the CSS bottomed
   out at 8px for uppercase labels, which was both an accessibility failure and
-  one of the most recognisable tells of generated layout. The scale now lives in
-  `:root` as `--t-label` (12px), `--t-meta` (13px), `--t-meta-lg` (14px) and
-  `--t-body` (15px); reach for a token rather than a literal. `.fact-list dd`
+  one of the most recognisable tells of generated layout. The scale lives in
+  `:root`; reach for a token rather than a literal. `.fact-list dd`
   was the last literal 12px on functional text and became `--t-meta-lg` in
   September 2026 — the `dt` beside it keeps the floor, which is what the floor
   is for.
+- **The scale is fluid between 1024px and `--wide`.** Every token holds its
+  floor to 1024px and reaches its ceiling at 1600px: `--t-label` 12→13,
+  `--t-meta` 13→15, `--t-meta-lg` 14→16, `--t-body` 15→17, `--t-body-lg` 16→18
+  and `--t-head-sm` 18→21. The floors are the sizes the site shipped with, so
+  the phone this page was designed around is untouched; the ceilings answer a
+  September 2026 report that the type was too small on a desktop monitor, which
+  is read from further away and where the rail is already at its widest. One
+  `--t-ramp` expression — 0 at 1024px, 1 at `--wide` — drives all six, so they
+  cannot drift apart; a new token multiplies that ramp rather than writing its
+  own vw. `--t-body-lg` is the 16px band, which is also the floor iOS needs to
+  not zoom a focused input; `--t-head-sm` is for the sans subheadings inside a
+  card, and travels further so it stays clear of `--t-body` at 17px.
+- **The timeline's `--hour` rides the same ramp** (76→88px). A `.tl-block` is
+  as tall as its session is long and clips what does not fit, so growing the
+  titles without growing the boxes would cut the short sessions off on exactly
+  the monitors the growth is for.
+- **Print and the mobile overrides never leave the floor.** A print page box is
+  narrower than 1024px, and the `max-width` blocks sit inside it, so both keep
+  the literals they were written with — those are deliberate step-downs, not
+  tokens waiting to be substituted.
 - **Tabular numerals for times** (`font-variant-numeric: tabular-nums`) so the
   time column aligns exactly.
 - **No third typeface.** Cormorant Garamond and Manrope are enough. Reach for
@@ -1280,3 +1299,29 @@ has its own h3, **Goiânia: a young capital**. Preserve the stable anchors.
 Ride buttons keep the existing service link and text label; the organiser
 subsequently asked to remove the Uber wordmark, so the button uses the site's
 generic car icon.
+
+## Desktop type size — 9 September 2026
+
+Readers on a computer monitor reported that the type was too small. It was:
+the whole scale was fixed in pixels, tuned against the phone the site was
+designed around, and a 13px caption read at arm's length on a 1680px screen is
+not the same 13px read at 35cm on a phone.
+
+The fix is in the tokens, not in the rules that use them — see
+[Type and detail rules](#type-and-detail-rules) for the ramp and the six
+values. What it means in practice:
+
+- **Nothing below 1024px changed.** Phones and tablets render byte-identical
+  type; so does print. Only the desktop end of the range moved.
+- **Literals were folded into tokens as part of it**, because a token that
+  grows is no use to a rule that hard-codes 14px. The compact programme
+  controls, the materials resource list, the now band, the form controls and
+  most of `travel.css` were converted. What stayed literal: display sizes
+  (20px and up), and the sizes inside `max-width` blocks, which are phone
+  step-downs and belong there.
+- **Two tokens were added**, `--t-body-lg` and `--t-head-sm`, for bands that
+  had only ever been written as literals. Prefer extending the scale to
+  reintroducing a literal.
+- Verified at 390, 768, 1024, 1280, 1440, 1680 and 1920px on all four routes:
+  no horizontal overflow, and no clipped timeline block, day tab or directory
+  card at any of them. Re-run that check after touching the ramp.
