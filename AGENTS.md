@@ -135,6 +135,15 @@ institutional marks reads as a logo the project does not have. The favicon is a
 plain monogram because a browser tab needs an icon — that is a tab marker, not
 a brand.
 
+The **project** does have one, and since 9 September 2026 it leads the
+institutions row: the `time2graze` wordmark, at the client's request. That does
+not reopen the paragraph above. The workshop still has no badge, the header and
+footer still carry the name in type, and the mark on the page is Time2Graze's
+own — not one drawn for this event. It is also not an official file: it was
+lifted from a screenshot of a slide and recoloured for a white background, and
+`research/logos/README.md` records what was changed and what to ask the project
+for.
+
 **Palette and type are settled.** Cream-green paper (`--paper: #f5f6f2`), dark
 forest (`--forest: #184b39`), pale lime accent (`--accent: #dce89b`) — the lime
 deliberately rhymes with Land & Carbon Lab's accent. Cormorant Garamond for

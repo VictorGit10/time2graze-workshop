@@ -18,6 +18,13 @@ export type Institution = {
  */
 export const DISPLAYED_INSTITUTIONS: Institution[] = [
   {
+    name: 'Time2Graze',
+    href: 'https://alliancebioversityciat.org/projects/time2graze',
+    logo: '/logos/institutions/time2graze.png',
+    width: 409,
+    height: 236,
+  },
+  {
     name: 'Land & Carbon Lab',
     href: 'https://landcarbonlab.org/',
     logo: '/logos/institutions/land-carbon-lab.svg',

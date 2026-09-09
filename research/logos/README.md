@@ -22,6 +22,36 @@ recorded under [Canvas crops](#canvas-crops) below.
 | INIA Uruguay | `inia-uruguay.png` | https://www.inia.uy/index.php/comunicacion/logotipo-institucional | Official site logo. Confirm against the recommended short `INIA Uruguay` lockup in the current brand manual before use |
 | Alliance Bioversity International & CIAT | `alliance-bioversity-ciat.svg` | https://commons.wikimedia.org/wiki/File:Alliance_Logo_Refresh_EN_color.svg | Current English mark; Alliance-authored asset, CC BY 4.0 |
 | WWF | `wwf.png` | https://cdnassets.panda.org/_skins/international/img/logo.png | Mark served by WWF's official global site; compact production asset |
+| Time2Graze | `time2graze.png` | Screenshot of a project slide, supplied by the client on 9 September 2026 | **Not an official asset.** Lifted from the screenshot and recoloured — see [The Time2Graze wordmark](#the-time2graze-wordmark) |
+
+## The Time2Graze wordmark
+
+The project's own mark is the one file here that did not come from an
+institutional site. No published Time2Graze asset could be found: the project
+is documented on the Alliance Bioversity–CIAT and Global Methane Hub sites, and
+neither serves a logo for it. What exists is a client screenshot of a slide,
+`time2graze-slide-source.png`, 470 x 366.
+
+That screenshot is unusually clean — a flat `#171717` background, pure white
+and one olive green (`#4C631F`), with antialiasing and nothing else. So each
+pixel reads as the background plus some coverage of one ink, and that coverage
+is recoverable as alpha. `time2graze-extract.py` does exactly that, and
+rebuilds `public/logos/institutions/time2graze.png` from the screenshot at any
+time.
+
+**The mark was recoloured, and that is a real alteration.** The slide carries
+the reversed lockup — white type with a green `2`, on dark. The institutions
+band is white, where reversed type is invisible, so the white was re-laid in
+the mark's own `#171717` and the green carried over untouched. Both colours
+are the mark's; nothing else was redrawn. A wordmark shown reversed on a dark
+slide almost always has a dark counterpart, so this is likely to be close to
+the official light-background version — but it has not been checked against
+one.
+
+**Still to do:** ask the Time2Graze communication team for the real file —
+vector, or a transparent PNG, in both the light-background and reversed
+versions — and replace this asset with it. Until then the page is showing a
+mark reconstructed from a screenshot.
 
 ## Canvas crops
 
@@ -53,11 +83,14 @@ mark's plate.
 
 ## Marks currently shown
 
-The home page displays only Land & Carbon Lab, UFG and LAPIG, following the
-client's instruction on 4 September 2026. They appear in one neutral
-institutional row, without unconfirmed public-role labels. Every other asset in
-the candidate set remains unpublished until the relevant institution approves
-its use and the Time2Graze/LAPIG team confirms its inclusion.
+The home page displays Time2Graze, Land & Carbon Lab, UFG and LAPIG. Land &
+Carbon Lab, UFG and LAPIG follow the client's instruction on 4 September 2026;
+Time2Graze was added on 9 September 2026, at the client's request, and leads
+the row because it is the project the workshop belongs to rather than one more
+affiliation. They appear in one neutral institutional row, without unconfirmed
+public-role labels. Every other asset in the candidate set remains unpublished
+until the relevant institution approves its use and the Time2Graze/LAPIG team
+confirms its inclusion.
 
 ## Previous GPW workshop references
 
