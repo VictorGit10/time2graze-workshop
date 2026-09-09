@@ -72,7 +72,7 @@ export function VenueCard({
         </p>
         <h3 id={`${anchor}-title`}>{venue.name}</h3>
         <p className="travel-place-context">
-          {hotel ? venue.arrivalNote : venue.locality}
+          {venue.locality}
         </p>
         {travel && (
           <a className="travel-getting-there" href="#transport">
@@ -109,6 +109,12 @@ export function VenueCard({
         )}
       </div>
       <div className="travel-place-details">
+        {hotel && venue.arrivalNote && (
+          <section className="hotel-arrival" aria-labelledby="hotel-arrival-title">
+            <h4 id="hotel-arrival-title">Arrival from the airport</h4>
+            <p>{venue.arrivalNote}</p>
+          </section>
+        )}
         <div className="travel-place-actions">
           {venue.ride === true && (
             <a
