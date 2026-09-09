@@ -24,11 +24,32 @@
   --rail: calc(var(--wide) - 2 * var(--gutter));
 
   /* Type scale. 12px is the floor, and only for metadata: uppercase labels,
-     indices and tags. Functional text belongs at 14-17px. */
-  --t-label: 12px;
-  --t-meta: 13px;
-  --t-meta-lg: 14px;
-  --t-body: 15px;
+     indices and tags. Functional text belongs at 14-17px.
+
+     Every token holds its floor to 1024px, then ramps to its ceiling at
+     --wide. The phone this page was designed around keeps exactly the sizes
+     it had; the desktop monitor it is also read on — further from the eye,
+     and with the rail already at its widest — gets type in proportion to
+     that distance. Reported from a monitor in September 2026: at a flat
+     13px, the programme's own metadata was being read at arm's length.
+
+     The ramp is one expression so the tokens cannot drift apart: it is 0 at
+     1024px, 1 at --wide, and every token multiplies it by its own travel.
+     Paper never leaves the floor — a page box is narrower than 1024px — so
+     the print rules below are untouched by this, as are the mobile
+     overrides, which sit under breakpoints inside the floor. */
+  --t-ramp: calc((100vw - 1024px) / 576);
+  --t-label: clamp(12px, calc(12px + 1 * var(--t-ramp)), 13px);
+  --t-meta: clamp(13px, calc(13px + 2 * var(--t-ramp)), 15px);
+  --t-meta-lg: clamp(14px, calc(14px + 2 * var(--t-ramp)), 16px);
+  --t-body: clamp(15px, calc(15px + 2 * var(--t-ramp)), 17px);
+  /* The 16px functional text that had been written as a literal: the now
+     band, the lede of a travel part, the city prose, and every form control
+     — where 16px is also the floor iOS needs to not zoom the page on focus. */
+  --t-body-lg: clamp(16px, calc(16px + 2 * var(--t-ramp)), 18px);
+  /* The sans subheadings inside a card (calendar, recap). They have to stay
+     clear of --t-body once it reaches 17px, so they travel further. */
+  --t-head-sm: clamp(18px, calc(18px + 3 * var(--t-ramp)), 21px);
 
   /* Motion. One curve and three durations for the whole site, so nothing
      moves to a rhythm of its own: --m-quick for a state returning under the
@@ -180,7 +201,7 @@ button { color: inherit; font: inherit; }
 /* The workshop has no mark of its own: the name is the brand and carries the
    weight alone. */
 .brand { display: grid; width: max-content; line-height: 1; }
-.brand strong { font-size: 17px; font-weight: 800; letter-spacing: -.015em; }
+.brand strong { font-size: clamp(17px, calc(17px + 2 * var(--t-ramp)), 19px); font-weight: 800; letter-spacing: -.015em; }
 .brand small { margin-top: 7px; color: var(--muted); font-size: var(--t-label); font-weight: 700; letter-spacing: .09em; text-transform: uppercase; }
 
 /* The hero eyebrow's two-colour rule — pale lime with the dark forest beside
@@ -230,7 +251,7 @@ button { color: inherit; font: inherit; }
    just arrived, rather than having blinked into place unexplained. */
 .now-band { display: grid; grid-template-columns: minmax(150px, .7fr) minmax(0, 4.3fr); align-items: center; gap: 24px; max-width: var(--wide); margin: 0 auto; padding: 20px var(--gutter); color: #fff; background: var(--forest-dark); border-top: 4px solid var(--accent); animation: enter-down var(--m-enter) var(--m-ease) both; }
 .now-band-day { margin: 0; color: var(--accent); font-size: var(--t-label); font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
-.now-band-item { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px; margin: 0; font-size: 16px; }
+.now-band-item { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px; margin: 0; font-size: var(--t-body-lg); }
 .now-band-time { color: rgba(255,255,255,.72); font-variant-numeric: tabular-nums; }
 .now-band-item a { font-weight: 700; border-bottom: 1px solid rgba(255,255,255,.38); transition: border-color var(--m-quick) var(--m-ease); }
 .now-band-item a:hover { border-color: var(--accent); }
@@ -330,12 +351,12 @@ button { color: inherit; font: inherit; }
 
 /* Calendar invitation is available before the day tabs. */
 .calendar-actions { display: grid; grid-template-columns: minmax(240px, 1fr) minmax(360px, 1.25fr); gap: 12px 36px; align-items: start; margin: 0 auto 20px; padding: 20px 22px; background: var(--surface-soft); border: 1px solid var(--line); border-left: 3px solid var(--forest); scroll-margin-top: 110px; }
-.calendar-intro h2 { margin: 0; color: var(--forest); font-family: var(--font-sans), Arial, sans-serif; font-size: 18px; font-weight: 800; }
+.calendar-intro h2 { margin: 0; color: var(--forest); font-family: var(--font-sans), Arial, sans-serif; font-size: var(--t-head-sm); font-weight: 800; }
 .calendar-intro p { max-width: 46ch; margin: 7px 0 0; color: var(--text); font-size: var(--t-meta-lg); line-height: 1.5; }
 .calendar-share { min-width: 0; }
 .calendar-share label { display: block; margin-bottom: 7px; color: var(--ink); font-size: var(--t-meta-lg); font-weight: 700; }
 .calendar-share-field { display: flex; gap: 8px; }
-.calendar-share-field input { width: 100%; min-width: 0; min-height: 44px; padding: 10px 12px; color: var(--ink); background: var(--surface); border: 1px solid var(--muted); border-radius: var(--radius); font-family: inherit; font-size: 16px; }
+.calendar-share-field input { width: 100%; min-width: 0; min-height: 44px; padding: 10px 12px; color: var(--ink); background: var(--surface); border: 1px solid var(--muted); border-radius: var(--radius); font-family: inherit; font-size: var(--t-body-lg); }
 .calendar-share-field input[aria-invalid='true'] { border-color: var(--warning); outline: 1px solid var(--warning); }
 .calendar-share-field input:read-only { background: var(--surface-soft); }
 .calendar-share-field button { display: inline-flex; flex-shrink: 0; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 10px 16px; color: #fff; background: var(--forest); border: 1px solid var(--forest); border-radius: var(--radius); font-size: var(--t-meta-lg); font-weight: 750; cursor: pointer; transition: background var(--m-quick) var(--m-ease); }
@@ -457,7 +478,11 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
    the grid is aria-hidden, because an absolutely-positioned diagram reads very
    badly. */
 
-.programme { --hour: 76px; }
+/* The minute-to-pixel rate rides the same ramp as the type. A .tl-block is
+   exactly as tall as its session is long and clips what does not fit, so a
+   scale that grew the titles and not the boxes would start cutting the short
+   sessions off on the widest monitors — the ones the growth is for. */
+.programme { --hour: clamp(76px, calc(76px + 12 * var(--t-ramp)), 88px); }
 
 /* Minutes to pixels: the one rule the whole proportion depends on. */
 .timeline { display: grid; grid-template-columns: 62px 1fr; gap: 18px; margin-top: 8px; }
@@ -695,17 +720,17 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
 /* Compact operational controls share the existing type and motion tokens. */
 .day-tabs .day-tab-mobile { display: none; }
 .programme-tools { display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 0 auto 16px; }
-.programme-tools a, .programme-tools button { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 0; color: var(--forest); background: transparent; border: 0; font-size: 14px; font-weight: 700; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
+.programme-tools a, .programme-tools button { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 0; color: var(--forest); background: transparent; border: 0; font-size: var(--t-meta-lg); font-weight: 700; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
 .programme-tools svg { width: 17px; height: 17px; }
 .programme-resources { margin-top: 24px; border-block: 1px solid var(--line); }
-.programme-resources summary { padding: 16px; cursor: pointer; font-size: 15px; font-weight: 700; }
-.programme-resources summary span { margin-left: 12px; color: var(--muted); font-size: 13px; font-weight: 500; }
+.programme-resources summary { padding: 16px; cursor: pointer; font-size: var(--t-body); font-weight: 700; }
+.programme-resources summary span { margin-left: 12px; color: var(--muted); font-size: var(--t-meta); font-weight: 500; }
 .programme-resources ul { list-style: none; margin: 0; padding: 0 16px 12px; }
-.programme-resources li a { display: block; padding: 12px 0; border-top: 1px solid var(--line); color: var(--forest); font-size: 15px; font-weight: 650; }
+.programme-resources li a { display: block; padding: 12px 0; border-top: 1px solid var(--line); color: var(--forest); font-size: var(--t-body); font-weight: 650; }
 .programme-resources li a:hover { text-decoration: underline; text-underline-offset: 4px; }
-.programme-resources small { display: block; margin-top: 4px; font-size: 13px; color: var(--muted); font-weight: 500; }
-.resource-item .resource-session { justify-self: start; display: inline-flex; align-items: center; min-height: 44px; margin-top: 3px; font-size: 14px; font-weight: 650; }
-.resource-item em { background: transparent; padding: 0; font-size: 13px; font-weight: 500; text-transform: none; letter-spacing: 0; }
+.programme-resources small { display: block; margin-top: 4px; font-size: var(--t-meta); color: var(--muted); font-weight: 500; }
+.resource-item .resource-session { justify-self: start; display: inline-flex; align-items: center; min-height: 44px; margin-top: 3px; font-size: var(--t-meta-lg); font-weight: 650; }
+.resource-item em { background: transparent; padding: 0; font-size: var(--t-meta); font-weight: 500; text-transform: none; letter-spacing: 0; }
 .materials .section-title { margin-bottom: 28px; }
 .materials-notice { margin-top: 0; margin-bottom: 20px; }
 .materials .materials-index { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0; }
@@ -759,7 +784,7 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
    it — and below the programme it describes. */
 .recap { margin-top: 24px; background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--forest); scroll-margin-top: 110px; }
 .recap-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 20px; padding: 18px 20px; background: var(--surface-soft); border-bottom: 1px solid var(--line); }
-.recap-head h3 { margin: 0; color: var(--forest); font-family: var(--font-sans), Arial, sans-serif; font-size: 18px; font-weight: 800; }
+.recap-head h3 { margin: 0; color: var(--forest); font-family: var(--font-sans), Arial, sans-serif; font-size: var(--t-head-sm); font-weight: 800; }
 .recap-stamp { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 0; color: var(--muted-soft); font-size: var(--t-meta); font-variant-numeric: tabular-nums; }
 .recap-stamp em { color: var(--muted-soft); font-style: normal; font-weight: 700; }
 .recap-revised { color: var(--forest); font-weight: 700; }
@@ -793,7 +818,7 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
 
 .recap-form { grid-column: 1 / -1; margin: 4px 0 14px; padding: 14px; background: var(--surface-soft); border: 1px solid var(--line); }
 .recap-form label { display: block; margin-bottom: 6px; color: var(--ink); font-size: var(--t-meta-lg); font-weight: 700; }
-.recap-form label + textarea, .recap-form label + input { width: 100%; padding: 10px 12px; color: var(--ink); background: var(--surface); border: 1px solid var(--muted); border-radius: var(--radius); font-family: inherit; font-size: 16px; }
+.recap-form label + textarea, .recap-form label + input { width: 100%; padding: 10px 12px; color: var(--ink); background: var(--surface); border: 1px solid var(--muted); border-radius: var(--radius); font-family: inherit; font-size: var(--t-body-lg); }
 .recap-form textarea { resize: vertical; line-height: 1.5; }
 .recap-form input:read-only, .recap-form textarea:read-only { background: var(--surface-soft); }
 .recap-form > textarea + label { margin-top: 12px; }
