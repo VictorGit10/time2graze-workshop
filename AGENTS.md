@@ -1392,3 +1392,76 @@ that probe writes nothing and does not even consume the daily counter.
 `getChoiceSheet()` creates it on demand, exactly as the corrections sheet
 does. `choiceSheetUrl()` prints its address and `choiceTally()` prints the
 counts per activity, both run from the editor.
+
+## The assistant — 9 September 2026
+
+A question panel over the site's own content, reached from a control on every
+page. It is not a fifth destination: it opens over whichever page the reader is
+already on, and it closes when they follow it somewhere.
+
+**It exists mainly for the people the English-only rule does not serve.**
+Participants travel from Uruguay, Argentina, Colombia and Brazil. The site
+stays in English — that rule is unchanged — and the panel is the one place a
+question asked in Portuguese or Spanish gets an answer.
+
+### Two paths, and the reader is told which one answered
+
+`lib/assistant-search.ts` ranks the corpus by weighted word overlap and returns
+**the published lines themselves**. It needs no key, it cannot be eloquent and
+it cannot be wrong. `ASSISTANT_ENDPOINT` in `lib/assistant.ts` adds a model on
+top, grounded in the same corpus. Empty means no model, which is the shipped
+default and the kill switch: the panel keeps working, and no key is spent.
+When the worker refuses or is unreachable, the search answers instead and the
+turn says so.
+
+### Never invent a fact, applied to a model
+
+The site's first rule is the whole reason this took the shape it did. Someone
+reads this in an arrivals hall, and a plausible guess is worse than a blank.
+
+- **`public/assistant-corpus.json` is the model's entire world.** Generated
+  from `data/` by `scripts/build-assistant-corpus.mjs` in `prebuild`, the way
+  the calendar is. It is a projection of the data, never a place to write
+  prose — 96 entries, 32 kB, small enough that the whole site fits in one
+  context. There is no retrieval index and no second copy of any fact.
+- **A pending detail stays pending in the corpus.** A venue with no confirmed
+  address says so in words; a TBD session and a provisional end time keep their
+  qualification. `scripts/assistant.test.mjs` fails if any of that is lost.
+- **No coordinates, and no map geometry.** A decimal degree is nothing to read
+  back to a reader and nothing a model should calculate a distance from. The
+  SVG path strings in `data/geography.ts` are kilobytes the model cannot use.
+  Both are tested for.
+- **Session entries name no venue.** The programme and the `.ics` have been
+  silent on places since 5 September 2026; an assistant naming a room would be
+  the only surface on the site contradicting them.
+- **The model never writes a URL.** It ends an answer with `SOURCES: id, id`,
+  and the panel resolves those ids against the corpus the browser already has.
+  An id it invents resolves to nothing and is dropped. That is also how the
+  panel conducts navigation — the buttons under an answer are real entries.
+
+### The worker, and why there is one
+
+Static export means no server on the origin, so a key in the bundle is a key a
+scraper drains overnight. `worker/` is a Cloudflare Worker and the only place
+the key exists — see `worker/README.md` for deploying it and for the four
+things guarding it: origin allowlist, per-IP burst limit, a daily cap in KV in
+the spirit of `DAILY_SHARE_LIMIT`, and per-answer caps.
+
+**It holds no copy of the workshop.** It fetches the published corpus and
+caches it, the way `syncFromSite()` treats the published `.ics` as the single
+source of truth. Changing the agenda and pushing the site is the whole update
+procedure; the worker is redeployed only when its logic, model or limits
+change. `OLLAMA_MODEL` is `glm-5.2` — confirm any change against
+`GET https://ollama.com/api/tags`, since `glm-4.6` and `glm-4.7` are retired.
+
+### What the design is not
+
+The brief rejects "generic AI aesthetics" by name, so `app/assistant.css` has
+no gradient, no glow, no circular bubble and no colour the rest of the site
+does not have — paper, forest, the 3px radius, one weight of type. It is a
+native `<dialog>`, which gives focus trapping and Escape for free rather than
+reimplementing them, and it never prints.
+
+**Do not give the assistant a page, a name, or an introduction.** "Ask" is a
+plain word; a paragraph explaining what it can do would be prose explaining the
+interface, which the site does not carry.
