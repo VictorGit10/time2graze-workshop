@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import {
   ArrowUpRight,
+  BusFront,
   Car,
   Check,
   ChevronDown,
@@ -11,7 +12,7 @@ import {
   MapPin,
   Phone,
 } from 'lucide-react';
-import { ACCOMMODATION_PLAN, SHUTTLE_PLAN } from '@/data/practical';
+import { ACCOMMODATION_PLAN } from '@/data/practical';
 import type { MapVenue } from '@/data/venues';
 import { withBasePath } from '@/lib/base-path';
 import {
@@ -22,21 +23,33 @@ import {
   uberLink,
 } from '@/lib/places';
 
-/** Real anchors preserve the destination when sharing or reloading. */
+/**
+ * A place you can be routed to: the hotel and LAPIG. Cidade de Goiás is a
+ * Friday coach trip, not a building you navigate to, and has its own block —
+ * offering it directions and a copyable municipality centroid was the source
+ * of the page's two competing accounts of the same place.
+ *
+ * `eyebrow` is passed in rather than derived, so the page keeps every place on
+ * one axis: the hotel is your base, the others say when you go there.
+ * Real anchors preserve the destination when sharing or reloading.
+ */
 export function VenueCard({
   venue,
   anchor,
+  eyebrow,
+  travel,
 }: {
   venue: MapVenue;
   anchor: string;
+  eyebrow: string;
+  /** How you reach it, when the workshop organises the journey. */
+  travel?: string;
 }) {
   const [expanded, setExpanded] = useState(false);
   const [copyState, setCopyState] = useState<'ready' | 'copied' | 'failed'>(
     'ready',
   );
   const hotel = venue.id === 'hotel';
-  const Heading = hotel ? 'h2' : 'h3';
-  const ridable = venue.ride === true && !venue.organisedTransport;
   const copyValue = venue.address ?? formatCoordinates(venue.coords);
   async function copy() {
     try {
@@ -54,18 +67,20 @@ export function VenueCard({
     >
       <p className="travel-eyebrow">
         <MapPin aria-hidden="true" />
-        {hotel
-          ? 'Your hotel'
-          : venue.organisedTransport
-            ? 'Friday field visit'
-            : 'University laboratory'}
+        {eyebrow}
       </p>
-      <Heading id={`${anchor}-title`}>{venue.name}</Heading>
+      <h3 id={`${anchor}-title`}>{venue.name}</h3>
       <p className="travel-place-context">
         {hotel ? venue.arrivalNote : venue.locality}
       </p>
+      {travel && (
+        <a className="travel-getting-there" href="#transport">
+          <BusFront aria-hidden="true" />
+          {travel}
+        </a>
+      )}
       <div className="travel-place-actions">
-        {ridable && (
+        {venue.ride === true && (
           <a
             className="travel-uber"
             href={uberLink(
@@ -77,7 +92,7 @@ export function VenueCard({
             rel="noreferrer"
           >
             <Car aria-hidden="true" />
-            Open Uber to {hotel ? 'hotel' : venue.short}
+            Open Uber to {venue.short}
             <ArrowUpRight aria-hidden="true" />
           </a>
         )}
@@ -96,16 +111,10 @@ export function VenueCard({
         {venue.phone && (
           <a href={`tel:${venue.phone.replace(/[^+\d]/g, '')}`}>
             <Phone aria-hidden="true" />
-            {hotel ? 'Call hotel' : 'Call LAPIG'}
+            Call {venue.short}
           </a>
         )}
       </div>
-      {venue.organisedTransport && (
-        <p className="travel-organised">
-          Travel by workshop shuttle · Friday departure {SHUTTLE_PLAN[1].time}{' '}
-          from Golden Lis.
-        </p>
-      )}
       <div className="travel-address">
         <p>{copyValue}</p>
         <button type="button" onClick={copy}>
@@ -145,7 +154,9 @@ export function VenueCard({
         </dl>
       )}
       {venue.pending && <p className="travel-pending">{venue.pending}</p>}
-      {!hotel && venue.arrivalNote && <p className="travel-arrival-note">{venue.arrivalNote}</p>}
+      {!hotel && venue.arrivalNote && (
+        <p className="travel-arrival-note">{venue.arrivalNote}</p>
+      )}
       <details
         className="place-map"
         onToggle={(event) => setExpanded(event.currentTarget.open)}
@@ -209,7 +220,7 @@ export function VenueCard({
           target="_blank"
           rel="noreferrer"
         >
-          {hotel ? 'Hotel website' : 'LAPIG website'}
+          {venue.short} website
           <ArrowUpRight aria-hidden="true" />
         </a>
       )}
