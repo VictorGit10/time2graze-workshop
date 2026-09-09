@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import {
   ArrowUpRight,
   BusFront,
@@ -233,6 +234,7 @@ export function VenueCard({
             <ArrowUpRight aria-hidden="true" />
           </a>
         )}
+        {venue.id === 'lapig' && <Link className="story-inline-link" href="/#about-lapig">About LAPIG and UFG <ArrowUpRight aria-hidden="true" /></Link>}
       </div>
     </article>
   );

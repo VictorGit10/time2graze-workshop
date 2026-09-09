@@ -9,6 +9,8 @@ import {
 } from '@/data/institutions';
 import { withBasePath } from '@/lib/base-path';
 import { materialsByDay } from '@/lib/materials';
+import { OptionalStory } from '@/components/optional-story';
+import { StoryLink } from '@/components/story-link';
 
 const SCHEDULED_ITEMS = AGENDA.reduce(
   (total, day) => total + day.sessions.length,
@@ -123,6 +125,11 @@ function Institutions() {
           </a>
         ))}
       </div>
+      <div className="institution-stories">
+        <OptionalStory id="ufg" />
+        <OptionalStory id="lapig" />
+        <OptionalStory id="funape" />
+      </div>
     </section>
   );
 }
@@ -207,7 +214,9 @@ export function HomeLanding() {
             </div>
             <div>
               <dt>Host</dt>
-              <dd>LAPIG · Federal University of Goiás</dd>
+              <dd>LAPIG · Federal University of Goiás
+                <StoryLink className="story-inline-link" href="/#about-ufg">About UFG and LAPIG <ArrowRight aria-hidden="true" /></StoryLink>
+              </dd>
             </div>
           </dl>
         </div>

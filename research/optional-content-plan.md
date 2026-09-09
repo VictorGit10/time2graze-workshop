@@ -1,6 +1,14 @@
 # Conteúdos opcionais — plano editorial e de experiência
 
-Preparado em 9 de setembro de 2026. Escopo desta entrega: pesquisa e estrutura para implementação posterior. Nenhuma alteração nas páginas públicas.
+Preparado em 9 de setembro de 2026; implementação local concluída na mesma data. O plano inicial abaixo permanece como registro da pesquisa.
+
+## Escopo implementado
+
+Por decisão do usuário, `about-time2graze` e `about-land-carbon-lab` foram excluídos. Foram implementados sete conteúdos: UFG, LAPIG e FUNAPE na Home; Goiânia, Cerrado, Cidade de Goiás e FICA em Practical information. Todos abrem dentro das quatro páginas existentes, por entradas discretas e links contextuais.
+
+Os textos são renderizados no HTML; as galerias carregam apenas quando o conteúdo é aberto. Há ampliação de fotografias, navegação por teclado, links diretos e respeito à preferência por movimento reduzido. Oito novas imagens reais foram incorporadas em WebP com miniaturas, créditos e licenças, além da fotografia existente do LAPIG. A procedência está em `optional-content-image-provenance.json` e os dados em `data/story-images.json`. O FICA utiliza composição tipográfica e links oficiais, sem fotografia cuja autorização esteja pendente. Sua edição de junho não é apresentada como atividade do workshop de setembro.
+
+Os documentos de textos e mídia registram também propostas iniciais que não entraram nesta implementação; os arquivos em `data/optional-content.ts` e `data/optional-media.ts` representam o conteúdo efetivamente utilizado.
 
 Documentos de trabalho:
 
