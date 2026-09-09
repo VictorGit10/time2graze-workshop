@@ -34,7 +34,7 @@ do. Samauma was removed from the participant-facing agenda on 3 September.
 | CEP as published | 74001-970 | https://lapig.iesa.ufg.br/ | Wrong kind of CEP — see below |
 | Coordinates (candidate) | `-16.6022387, -49.2649118` | Google place record | **Needs LAPIG confirmation** |
 | Plus Code | 9PXP+42 Chácaras Califórnia, Goiânia | Google place record | Derived from the coordinates above |
-| Phone | (62) 3521-1360 | https://lapig.iesa.ufg.br/ | Unverified by a second source |
+| Phone | (62) 3521-1360 | https://lapig.iesa.ufg.br/ | Unverified by a second source; omitted from the site after the organiser reported that the fixed line does not work |
 | Phone on the Google record | (62) 3521-1000 | Google place record | This is the UFG switchboard, not the lab |
 | Email | lapigcoordenacao@gmail.com · lapigcomunica@gmail.com | https://lapig.iesa.ufg.br/ | Unverified |
 | Opening hours | "closes 18:00" | Google place record | Crowd-editable field; do not publish |

@@ -5,6 +5,7 @@ import Image from 'next/image';
 import {
   ArrowUpRight,
   BusFront,
+  Car,
   Check,
   ChevronDown,
   Copy,
@@ -120,14 +121,7 @@ export function VenueCard({
               target="_blank"
               rel="noreferrer"
             >
-              <Image
-                className="uber-logo"
-                src={withBasePath('/logos/uber.svg')}
-                alt=""
-                width={58}
-                height={20}
-                aria-hidden="true"
-              />
+              <Car aria-hidden="true" />
               Open Uber to {venue.short}
               <ArrowUpRight aria-hidden="true" />
             </a>

@@ -83,7 +83,6 @@ export const VENUES = {
         'https://jornal.ufg.br/n/187113-nos-seus-30-anos-lapig-e-referencia-nacional-na-area-de-geotecnologias',
     },
     website: 'https://lapig.iesa.ufg.br/',
-    phone: '+55 62 3521-1360',
     onMap: true,
   },
   hotel: {
@@ -95,7 +94,7 @@ export const VENUES = {
       'Av. das Indústrias, 75 — Setor Santa Genoveva, Goiânia — GO, 74670-600, Brazil',
     /** From the place record the hotel's own site links to. */
     coords: { lat: -16.6412156, lon: -49.2401076 },
-    /** The only venue whose address, pin and phone the source itself confirms. */
+    /** The only venue whose address and pin the source itself confirms. */
     ride: true,
     photo: {
       src: '/images/venues/golden-lis.webp',

@@ -1268,4 +1268,6 @@ The organiser subsequently asked for the city section's purpose to be explicit:
 its h2 is now **City & free time**, matching the top shortcut. Its introduction
 explains that Goiânia is the participants' base during the workshop; the history
 has its own h3, **Goiânia: a young capital**. Preserve the stable anchors.
-Existing ride buttons now use the Uber wordmark (source: `research/logos/uber.md`).
+Ride buttons keep the existing service link and text label; the organiser
+subsequently asked to remove the Uber wordmark, so the button uses the site's
+generic car icon.
