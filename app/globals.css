@@ -791,10 +791,18 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
 .split-notice a { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 18px; color: #fff; background: var(--forest); border-radius: var(--radius); font-size: var(--t-meta-lg); font-weight: 750; transition: background var(--m-quick) var(--m-ease); }
 .split-notice a:hover { background: var(--forest-dark); }
 
-/* The same fact on the session itself: this hour is still waiting on you. It
-   is a state chip and not a control — the grid it sits in is aria-hidden, and
-   the link above is the one thing to click. */
-.split-todo { display: inline-block; margin-left: 9px; vertical-align: 1px; padding: 2px 8px; color: var(--forest-dark); background: var(--accent); border-radius: 99px; font-size: var(--t-label); font-weight: 800; letter-spacing: .05em; }
+/* The same fact on the session itself, and a way to act on it: this hour is
+   still waiting on you, and the chip goes to the chooser. */
+.split-todo { display: inline-flex; align-items: center; min-height: 30px; margin-left: 9px; vertical-align: -9px; padding: 4px 12px; color: var(--forest-dark); background: var(--accent); border: 1px solid transparent; border-radius: 99px; font-size: var(--t-label); font-weight: 800; letter-spacing: .05em; transition: border-color var(--m-quick) var(--m-ease); }
+a.split-todo:hover { border-color: var(--forest); }
+/* Above 1280px the list is clipped away and the grid beside it is
+   aria-hidden, so this copy of the chip would be a link nobody can see —
+   a tab stop into blank space. SplitNotice carries the same link in plain
+   view there; on smaller screens this list IS the programme, and the chip
+   has to work. */
+@media (min-width: 1280px) {
+  .programme > .session-list .split-todo { display: none; }
+}
 
 /* --- Split sessions ---------------------------------------------------------
    Two activities run at the same hour, and this is where a participant says

@@ -5,7 +5,7 @@ import { AGENDA } from '@/data/agenda';
 import type { Day, Session, Track } from '@/data/types';
 import { useChoices } from '@/hooks/use-track-choice';
 import { type Clock, nextSessionId, stateOf } from '@/lib/now';
-import { choosingOpen } from '@/lib/split-sessions';
+import { choosingOpen, splitAnchor } from '@/lib/split-sessions';
 import {
   axisBounds, axisTicks, dayLabel, durationOf, fromMinutes, isEvening,
   presenterLabel, timeLabel, toMinutes,
@@ -50,6 +50,26 @@ function PresenterLine(
 }
 
 /**
+ * "This hour is still waiting on you", on the session itself.
+ *
+ * A link, because a green chip that says `Choose one` and does nothing when
+ * tapped is a broken promise. `silent` is the copy inside the proportional
+ * grid: that diagram is `aria-hidden`, so the chip in it is for the mouse and
+ * is kept out of the tab order — a focus stop nobody can see is worse than no
+ * focus stop. The list's copy is a real link, and the desktop rule in
+ * globals.css drops it there, where that list is clipped away and `SplitNotice`
+ * is carrying the same link in plain view.
+ */
+function ChooseChip({ href, silent }: { href?: string; silent?: boolean }) {
+  if (!href) return <span className="split-todo">Choose one</span>;
+  return (
+    <a className="split-todo" href={href} tabIndex={silent ? -1 : undefined}>
+      Choose one
+    </a>
+  );
+}
+
+/**
  * One activity inside a split session. `chosen` is this browser's own answer
  * to it — the site never shows anyone else's, and never a count.
  */
@@ -68,11 +88,13 @@ function TrackCard({ track, chosen }: { track: Track; chosen: boolean }) {
  * visibly marked and do not count as confirmed operational times.
  */
 function Block(
-  { session, from, state, clock }: {
+  { session, from, state, clock, splitHref }: {
     session: Session;
     from: number;
     state: SessionMark;
     clock: Clock | null;
+    /** Where the chooser for this day lives. */
+    splitHref: string;
   },
 ) {
   /* Under 45 minutes there is no room to stack time, title and metadata, so the
@@ -97,7 +119,7 @@ function Block(
           <>
             <p className="tl-split-label">
               Split session
-              {undecided && <span className="split-todo">Choose one</span>}
+              {undecided && <ChooseChip href={splitHref} silent />}
               <Mark state={state} />
             </p>
             <div className="tl-tracks">
@@ -213,7 +235,16 @@ function Timeline({ day, clock }: { day: Day; clock: Clock | null }) {
         )}
         {daytime.map((s) =>
           s.end
-            ? <Block key={s.id} session={s} from={from} state={mark(s)} clock={clock} />
+            ? (
+              <Block
+                key={s.id}
+                session={s}
+                from={from}
+                state={mark(s)}
+                clock={clock}
+                splitHref={`#${splitAnchor(day)}`}
+              />
+            )
             : <Point key={s.id} session={s} from={from} state={mark(s)} />
         )}
       </div>
@@ -227,11 +258,13 @@ function Timeline({ day, clock }: { day: Day; clock: Clock | null }) {
  * diagram into 375px would turn the signature into an obstacle.
  */
 function List(
-  { sessions, anchors = true, marks, clock = null }: {
+  { sessions, anchors = true, marks, clock = null, splitHref }: {
     sessions: Session[];
     anchors?: boolean;
     marks?: (s: Session) => SessionMark;
     clock?: Clock | null;
+    /** Absent on paper, where a link to a form is nothing to press. */
+    splitHref?: string;
   },
 ) {
   const { picks } = useChoices();
@@ -252,7 +285,7 @@ function List(
                   <p className="tl-split-label">
                     Split session
                     {!picks[session.id] && choosingOpen(session, clock) && (
-                      <span className="split-todo">Choose one</span>
+                      <ChooseChip href={splitHref} />
                     )}
                   </p>
                   <ul className="session-tracks">
@@ -341,7 +374,12 @@ export function Programme({ day, clock }: { day: Day; clock: Clock | null }) {
 
       {/* The same day as a list: the only version small screens and print show,
           and the one assistive technology reads. */}
-      <List sessions={day.sessions} marks={marks} clock={clock} />
+      <List
+        sessions={day.sessions}
+        marks={marks}
+        clock={clock}
+        splitHref={`#${splitAnchor(day)}`}
+      />
     </div>
   );
 }

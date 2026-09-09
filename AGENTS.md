@@ -1357,17 +1357,26 @@ of them, let alone that the page could take one. Three surfaces now carry the
 same state, and they answer to one function, `choosingOpen` in
 `lib/split-sessions.ts`, so they cannot disagree:
 
-- **The session says it needs an answer.** `Split session` plus a `Choose one`
-  chip, in the grid and in the list, until this browser has picked; then the
-  chosen activity carries `Your choice` instead. Both are state chips, not
-  controls — the grid is `aria-hidden` and could not hold a control anyway.
+- **The session says it needs an answer, and takes you there.** `Split
+  session` plus a `Choose one` chip, in the grid and in the list, until this
+  browser has picked; then the chosen activity carries `Your choice` instead.
+  The chip is a link to the chooser — a green pill saying `Choose one` that
+  does nothing when tapped is a broken promise.
 - **`SplitNotice` sits between the day tabs and the panel**, carrying the
-  time, the state and the only link: `#split-day-N`, resolved by
-  `splitAnchor()` at both ends. It is glued to the tabs above and the panel
-  below (`border-top: 0`, as `.agenda-panel` has) so the three read as one
-  card. One interactive pointer, identical on every width — a second copy
-  inside the clipped list would be a focus stop nobody can see.
+  time, the state and the same link. It is glued to the tabs above and the
+  panel below (`border-top: 0`, as `.agenda-panel` has) so the three read as
+  one card.
 - **The chooser itself** states the answer back once it has one.
+
+Every link resolves through `splitAnchor()`, so the three cannot point at
+different places. The two chip copies exist because the programme has two
+representations, and each is made reachable by exactly the readers who can see
+it: the grid's copy is `tabIndex={-1}`, since that diagram is `aria-hidden`
+and a focusable link in it would be a tab stop into nothing; the list's copy
+is a real link, and `display: none` above 1280px, where that list is clipped
+away and would be the same trap. Below 1280px the list *is* the programme and
+its chip is the one a thumb reaches. Check `.programme > .session-list` holds
+no focusable element on a wide screen before adding another control to it.
 
 A day with no split session renders none of it, and none of it prints: paper
 carries the schedule, and a chip saying `Choose one` on a sheet that cannot be
