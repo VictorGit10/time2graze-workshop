@@ -273,7 +273,11 @@ export function SplitNotice({ day, clock }: { day: Day; clock: Clock | null }) {
               )}
             </span>
             {editable && (
-              <a href={`#${splitAnchor(day)}`}>{chosen ? 'Change' : 'Choose one'}</a>
+              /* Only an unanswered session pulses. A "Change" that beats at
+                 someone who has already told us where they will be is a nag. */
+              <a href={`#${splitAnchor(day)}`} data-todo={chosen ? undefined : ''}>
+                {chosen ? 'Change' : 'Choose one'}
+              </a>
             )}
           </p>
         );

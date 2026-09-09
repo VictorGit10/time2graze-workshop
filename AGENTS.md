@@ -1368,6 +1368,21 @@ same state, and they answer to one function, `choosingOpen` in
   one card.
 - **The chooser itself** states the answer back once it has one.
 
+**Both controls pulse, and that is the only thing on the site that moves on
+its own.** A ring opens out of the chip and the notice button over the first
+third of a three-second cycle and then rests for the other two — a beat, not a
+blink, because this is a workshop programme and a flashing control reads as an
+alarm. They share the keyframes and start together, so the page has one
+heartbeat rather than two competing ones, and both stop under the cursor or on
+focus: the reader is there, the signal has done its work. It is guarded the
+way `.calendar-spinner` is — inside
+`@media screen and (prefers-reduced-motion: no-preference)`, timed off
+`--m-enter`, and `linear` rather than `--m-ease`, which is an ease-out written
+for a state landing under a cursor and spends a looping ring's whole life in
+its first tenth of a second. The ring is `box-shadow`, so it costs no layout
+and cannot push a timeline block out of its hour; it is 10px, which clears the
+`overflow: hidden` on `.tl-block` with 25px to spare. Nothing of it prints.
+
 Every link resolves through `splitAnchor()`, so the three cannot point at
 different places. The two chip copies exist because the programme has two
 representations, and each is made reachable by exactly the readers who can see

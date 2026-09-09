@@ -791,6 +791,39 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
 .split-notice a { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 18px; color: #fff; background: var(--forest); border-radius: var(--radius); font-size: var(--t-meta-lg); font-weight: 750; transition: background var(--m-quick) var(--m-ease); }
 .split-notice a:hover { background: var(--forest-dark); }
 
+/* The one thing on this page that asks for something back, so it is the one
+   thing that moves on its own: a ring that opens out of the control and
+   fades, then a long rest before the next. A slow beat carries across a room;
+   a blink is a smoke alarm, and this is a workshop programme.
+   Both controls share the keyframes and the period, so they beat together
+   rather than competing — and both stop the moment the reader is on them,
+   the signal having done its work. `--m-enter` × 5 keeps the timing inside
+   the site's own vocabulary, as .calendar-spinner does. */
+@keyframes split-pulse {
+  0% { box-shadow: 0 0 0 0 var(--pulse-from); }
+  /* Out in the first third, then two thirds of nothing. The rest is what
+     makes it a beat instead of a flash. */
+  35% { box-shadow: 0 0 0 10px var(--pulse-to); }
+  100% { box-shadow: 0 0 0 0 var(--pulse-to); }
+}
+
+@media screen and (prefers-reduced-motion: no-preference) {
+  /* linear, not --m-ease: the site's curve is an ease-out written for a state
+     landing under the cursor, and on a loop it spends the ring's whole life in
+     the first tenth of a second. A beat wants an even one, as .calendar-spinner
+     does. */
+  a.split-todo, .split-notice a[data-todo] {
+    animation: split-pulse calc(var(--m-enter) * 5) linear infinite;
+  }
+  /* The ring reads against what it sits on: forest around the pale chip,
+     pale around the forest button. */
+  a.split-todo { --pulse-from: rgba(24, 56, 43, .4); --pulse-to: rgba(24, 56, 43, 0); }
+  .split-notice a[data-todo] { --pulse-from: rgba(220, 232, 155, .9); --pulse-to: rgba(220, 232, 155, 0); }
+  a.split-todo:hover, a.split-todo:focus-visible,
+  .split-notice a:hover, .split-notice a:focus-visible { animation: none; }
+
+}
+
 /* The same fact on the session itself, and a way to act on it: this hour is
    still waiting on you, and the chip goes to the chooser. */
 .split-todo { display: inline-flex; align-items: center; min-height: 30px; margin-left: 9px; vertical-align: -9px; padding: 4px 12px; color: var(--forest-dark); background: var(--accent); border: 1px solid transparent; border-radius: 99px; font-size: var(--t-label); font-weight: 800; letter-spacing: .05em; transition: border-color var(--m-quick) var(--m-ease); }
