@@ -545,11 +545,21 @@ Extract the data with no visual change at all, as its own step.
   declaration, which reaches the hero's `14–18`, the wordmark's `2`, the day
   tabs, the story facts and the step years. Manrope's figures are already
   lining, so nothing sans moved.
-- **A figure that is data is set in Manrope.** Same reasoning that keeps
-  session titles out of the serif on the grid: a count is functional text.
-  FICA's `38 / 7 / 4` are sans; the dated *spines* — Goiânia's steps, the
-  town's `1727 · 1937 · 2001` — stay serif, because there the year is being
-  read as a date in a sentence about time, not as a measurement.
+- **Every display figure on the site is set in Manrope**, at weight 750 with
+  `letter-spacing: -.045em` and `lining-nums tabular-nums`. Same reasoning that
+  keeps session titles out of the serif on the grid: a figure is functional
+  text. This started as FICA's counts alone, with the dated spines left in the
+  serif; the client asked on 10 September 2026 for the same treatment
+  everywhere, and it now covers `.story-facts dd`, `.story-steps-year`,
+  `.story-observatories-figure` and `.story-campuses-figures dd` — LAPIG's
+  1994, FUNAPE's 1,772 m², the town's `1727 · 1937 · 2001`, Goiânia's steps and
+  UFG's 114 / 22,000+ / 6. **Each ceiling came down by about a sixth** when it
+  moved (48→43, 52→44, 54→46, 36→32): Manrope is optically larger than
+  Cormorant at the same size, and keeping the old numbers would have made every
+  band heavier than the one it replaced. What stays serif is the display voice
+  that happens to contain digits — the `Time2Graze` wordmark, the hero's
+  `14—18`, `Mon · 14 Sep` on the day tabs, `Day 1 · Welcome` on materials.
+  Those are names and headings, not measurements.
 - **No third typeface.** Cormorant Garamond and Manrope are enough. Reach for
   weight, size and spacing before reaching for a new family.
 
@@ -1860,3 +1870,18 @@ shape as `BODIES`. `Story` gained two optional fields for it: `mark`, the
 acronym a subject is known by, and `note`, the one misreading a subject invites.
 FICA is the only user of either. Adding a third `id ===` branch instead of a
 registry entry is the failure this replaced.
+
+### A second pre-existing bug, found in the same pass
+
+`.story-steps li p` set `font-size: var(--t-body)` and outranked
+`.story-steps-year` on specificity, so Goiânia's `1933 · 1937 · 2003` — written
+as display type at `clamp(34px, 3.4vw, 52px)`, with its own mobile and print
+step-downs — had been rendering at 16px since the device was built. Nobody saw
+it while the years were serif and small; putting them in a heavy sans made it
+obvious immediately. The paragraph rule is now `.story-steps li > div p`, which
+is where the prose actually lives.
+
+The general shape of this is worth keeping: **a rule written for one child of a
+list, sitting beside a rule written for the list's descendants, loses.** If a
+device gives an element a display size and the element does not look like
+display type, check what else in the file can reach it.
