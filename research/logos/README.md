@@ -7,6 +7,10 @@ cross-project operational checklist is in `research/pending-information.md`.
 
 ## Candidate final assets
 
+FUNAPE was added to the displayed institutions at the client's explicit request
+on 9 September 2026. `public/logos/institutions/funape.png` is the supplied
+`logo_site.png` (256 × 71), copied without changes to the artwork or colours.
+
 Files in `public/logos/institutions/` were downloaded from official
 institutional sites or from the Land & Carbon Lab asset host. The artwork is
 unmodified; several files had their **canvas** cropped to the artwork, which is

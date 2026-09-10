@@ -32,14 +32,14 @@ export const STORIES: Record<StoryId, Story> = {
   },
   lapig: {
     id: 'lapig', label: 'About LAPIG', category: 'Laboratory',
-    title: 'Observing landscapes',
+    title: 'Thirty years of research',
     lead: 'At LAPIG, satellite observations and geographic information support the study of changing landscapes.',
     chapters: [
       { title: 'Research at UFG', text: 'Established in 1994 and linked to IESA, LAPIG works with remote sensing and geoprocessing. It produces and organises geographic information for environmental and territorial monitoring.' },
       { title: 'Pastures as a research focus', text: 'The laboratory studies pasture condition and productivity through mapping and monitoring. Its Pasture Research Programme provides the Atlas of Pastures and contributes to pasture mapping within MapBiomas.' },
       { title: 'From research to accessible data', text: 'The Atlas of Pastures makes geospatial information about Brazilian pastures available online. The laboratory’s research pages introduce its projects and the data products they produce.' },
     ],
-    images: ['lapig-building'], facts: [{ value: '1994', label: 'Laboratory established' }, { value: 'Pastures', label: 'Mapping and monitoring' }],
+    images: ['lapig-team', 'lapig-research'], facts: [{ value: '1994', label: 'Laboratory established' }, { value: '2024', label: 'Thirty-year anniversary' }, { value: 'UFG', label: 'Research, education and outreach' }],
     sources: [{ label: 'LAPIG website', href: 'https://lapig.iesa.ufg.br/' }, { label: 'Pasture Research Programme', href: 'https://lapig.iesa.ufg.br/p/38950-programa-de-pesquisa-em-pastagens-ppp?atr=pt-BR&locale=pt-BR' }, { label: 'Thirty years of LAPIG · UFG', href: 'https://ufg.br/n/186501-lapig-ufg-realiza-solenidade-para-celebrar-30-anos-de-historia' }],
     related: [{ label: 'About UFG', href: '/#about-ufg' }, { label: 'The Cerrado landscape', href: '/practical/#about-cerrado' }],
   },
@@ -87,9 +87,8 @@ export const STORIES: Record<StoryId, Story> = {
     chapters: [
       { title: 'Cinema in Cidade de Goiás', text: 'Film screenings, discussions and cultural activities bring environmental questions into the city’s cultural life. The 2026 opening took place at Cine Teatro São Joaquim.' },
       { title: 'Water and climate', text: 'The 27th edition ran from 16 to 21 June 2026 under the theme “Água e Clima no Brasil das Nascentes”, focusing on water, climate and Brazil’s headwaters.' },
-      { title: 'A university connection', text: 'UFG co-organised the festival with the Goiás State Secretariat of Culture, through Fundação RTVE. The June festival is separate from the September workshop.' },
     ],
-    images: [], facts: [{ value: '1999', label: 'First edition' }, { value: '16–21 June', label: '2026 festival dates' }, { value: '27', label: 'Editions through 2026' }],
+    images: ['fica-cinema', 'fica-awards', 'fica-city'], facts: [{ value: '1999', label: 'First edition' }, { value: '16–21 June', label: '2026 festival dates' }, { value: '27', label: 'Editions through 2026' }],
     sources: [{ label: 'FICA 2026 · official festival report', href: 'https://fica.go.gov.br/n/201969-fica-2026-inicia-sua-maior-edicao-com-homenagem-a-dalton-paula-e-estreia-nacional-de-a-curva-do-rio' }, { label: 'Festival dates · UFG', href: 'https://goias.ufg.br/n/200984-ufg-campus-goias-abre-selecao-de-monitores-para-o-fica-2026?atr=en&locale=en' }],
     related: [{ label: 'About UFG', href: '/#about-ufg' }],
   },

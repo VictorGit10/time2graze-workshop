@@ -4,6 +4,17 @@ Preparado em 9 de setembro de 2026; implementação local concluída na mesma da
 
 ## Escopo implementado
 
+Revisão editorial adicional: removido o capítulo “A university connection” do
+FICA por solicitação do usuário. UFG, Goiânia, Cidade de Goiás e Cerrado usam
+seletores fotográficos com miniaturas, mantendo ampliação e créditos. As duas
+cidades apresentam as datas em sequência cronológica. O Cerrado alterna entre
+locais explicitamente distintos; não utiliza uma sobreposição que sugeriria
+comparação temporal ou geográfica do mesmo lugar. Painéis longos têm progresso
+de leitura vinculado à rolagem por CSS, somente com suporte do navegador e sem
+preferência por movimento reduzido. Nenhuma nova afirmação factual foi adicionada.
+
+Revisão de navegação: as sete entradas agora mostram “Learn more” com seta e abrem painéis modais nativos. No computador o painel é amplo; no celular ocupa a tela. Uma barra fixa oferece “Back to page” e “Copy link”. Escape fecha a camada ativa; os links relacionados na mesma página substituem o conteúdo aberto sem acumular entradas no histórico. Fotografias usam uma segunda camada, com bloqueio de rolagem compartilhado. O botão Voltar do navegador retorna ao ponto de origem. Links recebidos diretamente podem ser fechados sem sair do site. Sem JavaScript, o texto permanece disponível na página. `scripts/story-navigation.test.mjs` cobre o histórico e o bloqueio de rolagem.
+
 Por decisão do usuário, `about-time2graze` e `about-land-carbon-lab` foram excluídos. Foram implementados sete conteúdos: UFG, LAPIG e FUNAPE na Home; Goiânia, Cerrado, Cidade de Goiás e FICA em Practical information. Todos abrem dentro das quatro páginas existentes, por entradas discretas e links contextuais.
 
 Os textos são renderizados no HTML; as galerias carregam apenas quando o conteúdo é aberto. Há ampliação de fotografias, navegação por teclado, links diretos e respeito à preferência por movimento reduzido. Oito novas imagens reais foram incorporadas em WebP com miniaturas, créditos e licenças, além da fotografia existente do LAPIG. A procedência está em `optional-content-image-provenance.json` e os dados em `data/story-images.json`. O FICA utiliza composição tipográfica e links oficiais, sem fotografia cuja autorização esteja pendente. Sua edição de junho não é apresentada como atividade do workshop de setembro.

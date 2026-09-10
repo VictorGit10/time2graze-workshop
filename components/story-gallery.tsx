@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight, Expand, X } from 'lucide-react';
 import type { StoryImage } from '@/data/optional-media';
 import { withBasePath } from '@/lib/base-path';
 import { useStoryOpen } from '@/components/story-disclosure';
+import { lockStoryScroll } from '@/lib/story-navigation';
 
 function Credit({ photo }: { photo: StoryImage }) {
   return <span className="story-photo-credit">
@@ -34,8 +35,7 @@ export function StoryGallery({ photos }: { photos: StoryImage[] }) {
   useEffect(() => {
     const node = dialog.current;
     if (!isOpen || !node) return;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    const release = lockStoryScroll();
     node.showModal();
     const closeBackdrop = (event: MouseEvent) => {
       if (event.target === node) setSelected(null);
@@ -52,7 +52,7 @@ export function StoryGallery({ photos }: { photos: StoryImage[] }) {
       node.removeEventListener('click', closeBackdrop);
       node.removeEventListener('keydown', navigate);
       node.close();
-      document.body.style.overflow = previousOverflow;
+      release();
       returnFocus.current?.focus({ preventScroll: true });
     };
   }, [isOpen, photos.length]);
@@ -75,7 +75,7 @@ export function StoryGallery({ photos }: { photos: StoryImage[] }) {
     </div>}
     <noscript><p className="story-noscript">{photos.map(item => <a key={item.id} href={withBasePath(item.src)}>{item.caption} · {item.credit} </a>)}</p></noscript>
     <dialog ref={dialog} className="story-lightbox" aria-label="Photograph gallery"
-      onCancel={() => setSelected(null)}>
+      onCancel={(event) => { event.stopPropagation(); setSelected(null); }}>
       {photo && <div className="story-lightbox-inner">
         <header><span>Photographs <span aria-live="polite">{(selected ?? 0) + 1} / {photos.length}</span></span>
           <button type="button" aria-label="Close photograph gallery" onClick={() => setSelected(null)} autoFocus><X aria-hidden="true" /></button>

@@ -102,5 +102,70 @@
     "sourcePage": "https://commons.wikimedia.org/wiki/File:Central_Brazil_Cerrado_(Landsat_9,_2025-05-19).jpg",
     "license": "Public domain",
     "licenseUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/"
+  },
+  "lapig-team": {
+    "id": "lapig-team",
+    "src": "/images/stories/lapig-team.webp",
+    "thumbnail": "/images/stories/lapig-team-thumb.webp",
+    "width": 1000,
+    "height": 663,
+    "alt": "LAPIG researchers in front of a mural depicting Cerrado wildlife and a drone.",
+    "caption": "The LAPIG team, from the laboratory’s 30-year retrospective (2024).",
+    "credit": "LAPIG / Jornal UFG",
+    "sourcePage": "https://jornal.ufg.br/n/187113-nos-seus-30-anos-lapig-e-referencia-nacional-na-area-de-geotecnologias",
+    "license": "Reuse with credit",
+    "licenseUrl": "https://jornal.ufg.br/n/187113-nos-seus-30-anos-lapig-e-referencia-nacional-na-area-de-geotecnologias"
+  },
+  "lapig-research": {
+    "id": "lapig-research",
+    "src": "/images/stories/lapig-research.webp",
+    "thumbnail": "/images/stories/lapig-research-thumb.webp",
+    "width": 1000,
+    "height": 663,
+    "alt": "Four photographs of LAPIG researchers discussing maps and working at computer workstations.",
+    "caption": "Inside LAPIG: shared workspaces, maps and research discussions. Archive, 2024.",
+    "credit": "LAPIG / Jornal UFG",
+    "sourcePage": "https://jornal.ufg.br/n/187113-nos-seus-30-anos-lapig-e-referencia-nacional-na-area-de-geotecnologias",
+    "license": "Reuse with credit",
+    "licenseUrl": "https://jornal.ufg.br/n/187113-nos-seus-30-anos-lapig-e-referencia-nacional-na-area-de-geotecnologias"
+  },
+  "fica-cinema": {
+    "id": "fica-cinema",
+    "src": "/images/stories/fica-cinema.webp",
+    "thumbnail": "/images/stories/fica-cinema-thumb.webp",
+    "width": 1600,
+    "height": 1065,
+    "alt": "Speakers on stage in front of a projection identifying FICA 2024.",
+    "caption": "On stage at FICA 2024. Archive photograph published in UFG’s 2025 festival preview.",
+    "credit": "Secult Goiás / Portal UFG - Universidade Federal de Goiás",
+    "sourcePage": "https://ufg.br/n/191899-fica-2025-comeca-na-terca-feira-10-6",
+    "license": "Reuse with credit",
+    "licenseUrl": "https://ufg.br/n/63495-direitos-autorais"
+  },
+  "fica-city": {
+    "id": "fica-city",
+    "src": "/images/stories/fica-city.webp",
+    "thumbnail": "/images/stories/fica-city-thumb.webp",
+    "width": 1600,
+    "height": 1065,
+    "alt": "A large outdoor festival audience at night, with phone lights shining towards the stage.",
+    "caption": "The festival beyond the cinema: an outdoor audience. Archive photograph from UFG’s 2025 preview; capture year not specified.",
+    "credit": "Secult Goiás / Portal UFG - Universidade Federal de Goiás",
+    "sourcePage": "https://ufg.br/n/191899-fica-2025-comeca-na-terca-feira-10-6",
+    "license": "Reuse with credit",
+    "licenseUrl": "https://ufg.br/n/63495-direitos-autorais"
+  },
+  "fica-awards": {
+    "id": "fica-awards",
+    "src": "/images/stories/fica-awards.webp",
+    "thumbnail": "/images/stories/fica-awards-thumb.webp",
+    "width": 1600,
+    "height": 1066,
+    "alt": "Award recipients and organisers gathered on stage beneath the FICA 2025 projection.",
+    "caption": "The closing ceremony of FICA 2025 at Cine Teatro São Joaquim.",
+    "credit": "Ana Paula Vieira / Secult Goiás / Portal UFG - Universidade Federal de Goiás",
+    "sourcePage": "https://ufg.br/n/192118-reitora-da-ufg-participa-da-solenidade-de-encerramento-do-fica",
+    "license": "Reuse with credit",
+    "licenseUrl": "https://ufg.br/n/63495-direitos-autorais"
   }
 }
