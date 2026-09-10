@@ -64,7 +64,22 @@
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 88px; scrollbar-gutter: stable; }
-body { margin: 0; color: var(--ink); background: var(--paper); font-family: var(--font-sans), Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+/* Lining figures, once, for the whole document.
+
+   Cormorant Garamond ships old-style figures as its default: 1999 with two
+   descending nines, a 4 that drops below the baseline, a 3 that drops further.
+   In running serif text that is correct typography. In this site's numbers it
+   is not — the figures here are dates, years, editions, counts and distances,
+   read as data at 32-60px, where uneven heights read as a wobble rather than
+   as a texture. It was reported as exactly that in September 2026.
+
+   The property inherits, so one declaration reaches every serif number on the
+   site: the hero's 14-18, the day tabs, the story facts, the step years.
+   Manrope's figures are already lining, so nothing sans changes. A rule that
+   needs tabular figures writes `lining-nums tabular-nums`, because
+   font-variant-numeric is one property and a bare `tabular-nums` would send
+   the figure style back to the font's default. */
+body { margin: 0; color: var(--ink); background: var(--paper); font-family: var(--font-sans), Arial, sans-serif; font-variant-numeric: lining-nums; -webkit-font-smoothing: antialiased; }
 a { color: inherit; text-decoration: none; }
 button { color: inherit; font: inherit; }
 ::selection { color: var(--forest-dark); background: var(--accent); }
@@ -139,7 +154,7 @@ button { color: inherit; font: inherit; }
   .home-directory a { display: grid; grid-template-columns: 34px 1fr 18px; align-items: start; gap: 14px; min-height: 145px; padding: 25px 22px; background: var(--surface); border-top: 1px solid var(--line); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); transition: background var(--m-quick) var(--m-ease); }
   .home-directory a:first-child { border-left: 1px solid var(--line); }
   .home-directory a:hover { background: #f7f9f3; }
-  .home-directory-index { padding-top: 3px; color: var(--forest); font-size: var(--t-label); font-weight: 800; font-variant-numeric: tabular-nums; }
+  .home-directory-index { padding-top: 3px; color: var(--forest); font-size: var(--t-label); font-weight: 800; font-variant-numeric: lining-nums tabular-nums; }
   .home-directory a > div { display: grid; }
   .home-directory strong { font-family: var(--font-serif), Georgia, serif; font-size: 24px; font-weight: 600; line-height: 1.05; }
   .home-directory small { max-width: 34ch; margin-top: 9px; color: var(--muted); font-size: var(--t-meta); line-height: 1.4; }
@@ -252,7 +267,7 @@ button { color: inherit; font: inherit; }
 .now-band { display: grid; grid-template-columns: minmax(150px, .7fr) minmax(0, 4.3fr); align-items: center; gap: 24px; max-width: var(--wide); margin: 0 auto; padding: 20px var(--gutter); color: #fff; background: var(--forest-dark); border-top: 4px solid var(--accent); animation: enter-down var(--m-enter) var(--m-ease) both; }
 .now-band-day { margin: 0; color: var(--accent); font-size: var(--t-label); font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
 .now-band-item { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px; margin: 0; font-size: var(--t-body-lg); }
-.now-band-time { color: rgba(255,255,255,.72); font-variant-numeric: tabular-nums; }
+.now-band-time { color: rgba(255,255,255,.72); font-variant-numeric: lining-nums tabular-nums; }
 .now-band-item a { font-weight: 700; border-bottom: 1px solid rgba(255,255,255,.38); transition: border-color var(--m-quick) var(--m-ease); }
 .now-band-item a:hover { border-color: var(--accent); }
 .now-band .tl-mark { margin-left: 0; color: var(--forest-dark); background: var(--accent); }
@@ -324,7 +339,7 @@ button { color: inherit; font: inherit; }
 .programme-title { display: flex; justify-content: space-between; align-items: end; gap: 32px; margin-bottom: clamp(32px, 4vw, 52px); }
 .programme-clock { display: flex; align-items: baseline; gap: 18px; margin: 0 0 5px; padding-left: 18px; border-left: 1px solid var(--line); }
 .programme-clock > span { color: var(--muted); font-size: var(--t-label); font-weight: 750; letter-spacing: .06em; text-transform: uppercase; }
-.programme-clock time { min-width: 72px; color: var(--forest); font-size: 20px; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1; }
+.programme-clock time { min-width: 72px; color: var(--forest); font-size: 20px; font-weight: 800; font-variant-numeric: lining-nums tabular-nums; line-height: 1; }
 .programme-clock small { margin-right: 7px; color: var(--muted); font-size: var(--t-label); font-weight: 750; letter-spacing: .06em; text-transform: uppercase; }
 .day-tabs { display: grid; grid-template-columns: repeat(5, 1fr); border: 1px solid var(--line); }
 .day-tabs [role='tab'] { min-width: 0; padding: 23px clamp(15px, 2vw, 28px); text-align: left; background: transparent; border: 0; border-right: 1px solid var(--line); cursor: pointer; transition: background var(--m-move) var(--m-ease), color var(--m-move) var(--m-ease); }
@@ -390,7 +405,7 @@ button { color: inherit; font: inherit; }
 .resource-groups { border-top: 1px solid var(--ink); }
 .resource-group { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 48px; padding: 40px 0 46px; border-bottom: 1px solid var(--line); }
 .resource-group > header { display: grid; grid-template-columns: 52px 1fr; gap: 18px; align-content: start; }
-.resource-group > header > span { display: grid; place-items: center; width: 52px; height: 52px; color: var(--forest); background: var(--accent); border: 1px solid var(--forest); font-size: var(--t-meta-lg); font-weight: 850; font-variant-numeric: tabular-nums; }
+.resource-group > header > span { display: grid; place-items: center; width: 52px; height: 52px; color: var(--forest); background: var(--accent); border: 1px solid var(--forest); font-size: var(--t-meta-lg); font-weight: 850; font-variant-numeric: lining-nums tabular-nums; }
 .resource-group > header p { margin: 0; color: var(--muted); font-size: var(--t-label); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .resource-group > header h2 { margin: 5px 0 0; font-family: var(--font-serif), Georgia, serif; font-size: 27px; font-weight: 600; letter-spacing: -.02em; }
 .resource-group > header small { display: block; margin-top: 9px; color: var(--muted); font-size: var(--t-meta); }
@@ -492,12 +507,12 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
    to exist on. It does not touch the scale — it is paper, not time. */
 .tl-body { position: relative; height: calc(var(--span) * var(--hour) / 60 + 26px); }
 
-.tl-tick { position: absolute; top: calc(var(--start) * var(--hour) / 60); right: 0; color: var(--muted); font-size: var(--t-label); font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1; transform: translateY(-50%); }
+.tl-tick { position: absolute; top: calc(var(--start) * var(--hour) / 60); right: 0; color: var(--muted); font-size: var(--t-label); font-weight: 700; font-variant-numeric: lining-nums tabular-nums; line-height: 1; transform: translateY(-50%); }
 .tl-rule { position: absolute; top: calc(var(--start) * var(--hour) / 60); right: 0; left: 0; border-top: 1px solid var(--line); opacity: .45; }
 .tl-rule[data-hour] { opacity: 1; }
 
 .tl-block { position: absolute; z-index: 2; top: calc(var(--start) * var(--hour) / 60); right: 0; left: 0; display: grid; grid-template-columns: 92px 1fr; gap: 14px; overflow: hidden; align-content: center; padding: 7px 14px; background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--forest); border-radius: var(--radius); height: calc(var(--dur) * var(--hour) / 60); }
-.tl-block .tl-time { margin: 0; color: var(--muted); font-size: var(--t-label); font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.35; }
+.tl-block .tl-time { margin: 0; color: var(--muted); font-size: var(--t-label); font-weight: 700; font-variant-numeric: lining-nums tabular-nums; line-height: 1.35; }
 .tl-block-body { min-width: 0; }
 .tl-block-meta { display: flex; flex-wrap: wrap; gap: 9px; align-items: center; margin: 4px 0 0; }
 .tl-title { margin: 0; font-size: var(--t-meta-lg); font-weight: 700; line-height: 1.3; }
@@ -528,7 +543,7 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
 .tl-point[data-kind='meal'] .tl-dot,
 .tl-point[data-kind='break'] .tl-dot,
 .tl-point[data-kind='transport'] .tl-dot { background: var(--muted); }
-.tl-point .tl-time { margin: 0; color: var(--muted); font-size: var(--t-label); font-weight: 700; font-variant-numeric: tabular-nums; }
+.tl-point .tl-time { margin: 0; color: var(--muted); font-size: var(--t-label); font-weight: 700; font-variant-numeric: lining-nums tabular-nums; }
 /* A session title is functional text: 14px, not 13. */
 .tl-point-title { margin: 0; font-size: var(--t-meta-lg); font-weight: 700; line-height: 1.3; }
 .tl-point-copy { min-width: 0; }
@@ -540,7 +555,7 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
 .tl-evening-title { margin: 13px 0 0; color: var(--forest); font-size: var(--t-label); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .tl-evening-items { display: grid; gap: 10px; }
 .tl-evening-card { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 14px; align-items: start; padding: 13px 14px; background: var(--surface-soft); border: 1px solid var(--line); border-left: 3px solid var(--line); border-radius: var(--radius); }
-.tl-evening-card .tl-time { margin: 1px 0 0; color: var(--muted); font-size: var(--t-label); font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.35; }
+.tl-evening-card .tl-time { margin: 1px 0 0; color: var(--muted); font-size: var(--t-label); font-weight: 700; font-variant-numeric: lining-nums tabular-nums; line-height: 1.35; }
 .tl-evening-body { min-width: 0; }
 
 /* The list. On desktop it leaves the view without leaving the accessibility
@@ -556,7 +571,7 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
 .session-list { display: grid; gap: 0; margin: 0; padding: 0 34px; list-style: none; }
 .session-list .session { display: grid; grid-template-columns: 128px 1fr; gap: 18px; padding: 15px 0; border-top: 1px solid var(--line); }
 .session-list .session:first-child { border-top: 0; }
-.session-time { display: flex; gap: 8px; align-items: center; margin: 0; color: var(--muted); font-size: var(--t-meta); font-weight: 700; font-variant-numeric: tabular-nums; }
+.session-time { display: flex; gap: 8px; align-items: center; margin: 0; color: var(--muted); font-size: var(--t-meta); font-weight: 700; font-variant-numeric: lining-nums tabular-nums; }
 .session-time svg { width: 14px; height: 14px; }
 .session-body h3 { margin: 0; font-size: var(--t-body); font-weight: 700; line-height: 1.35; }
 .session-tracks { display: grid; gap: 7px; margin: 0; padding: 0; list-style: none; }
@@ -651,7 +666,7 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
    not cover the running block's text, and shows the time rather than repeating
    the word "now". */
 .tl-now { position: absolute; z-index: 1; top: calc(var(--start) * var(--hour) / 60); right: 0; left: 0; border-top: 2px solid var(--forest); pointer-events: none; }
-.tl-now-label { position: absolute; z-index: 4; right: calc(100% + 18px); padding: 2px 7px; color: #fff; background: var(--forest); border-radius: 99px; font-size: var(--t-label); font-weight: 800; font-variant-numeric: tabular-nums; transform: translateY(-50%); }
+.tl-now-label { position: absolute; z-index: 4; right: calc(100% + 18px); padding: 2px 7px; color: #fff; background: var(--forest); border-radius: 99px; font-size: var(--t-label); font-weight: 800; font-variant-numeric: lining-nums tabular-nums; transform: translateY(-50%); }
 
 .tl-mark { display: inline-block; margin-left: 9px; vertical-align: 1px; padding: 2px 8px; color: #fff; background: var(--forest); border-radius: 99px; font-size: var(--t-label); font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
 .tl-mark--next { color: var(--forest); background: var(--accent); }
@@ -736,7 +751,7 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
 .materials .materials-index { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0; }
 .materials .materials-index a { display: flex; flex-direction: column; align-items: center; gap: 5px; border-right-width: 0; }
 .materials .materials-index a:last-child { border-right-width: 1px; }
-.materials .materials-index strong { font-size: 20px; font-variant-numeric: tabular-nums; }
+.materials .materials-index strong { font-size: 20px; font-variant-numeric: lining-nums tabular-nums; }
 @media screen and (max-width: 760px) { .materials .materials-index a { min-width: 0; padding: 12px 3px; } }
 @media screen and (max-width: 1279px) {
   .agenda-panel { grid-template-columns: 1fr; }
@@ -852,7 +867,7 @@ a.split-todo:hover { border-color: var(--forest); }
 
 .split-session { padding: 20px; border-top: 1px solid var(--line); }
 .split-choice-head + .split-session { border-top: 0; }
-.split-when { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; margin: 0 0 12px; color: var(--muted); font-size: var(--t-meta); font-variant-numeric: tabular-nums; }
+.split-when { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; margin: 0 0 12px; color: var(--muted); font-size: var(--t-meta); font-variant-numeric: lining-nums tabular-nums; }
 
 .split-form fieldset { margin: 0; padding: 0; border: 0; }
 .split-form legend { margin-bottom: 8px; padding: 0; color: var(--ink); font-size: var(--t-meta-lg); font-weight: 700; }
@@ -892,7 +907,7 @@ a.split-todo:hover { border-color: var(--forest); }
 .recap { margin-top: 24px; background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--forest); scroll-margin-top: 110px; }
 .recap-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 20px; padding: 18px 20px; background: var(--surface-soft); border-bottom: 1px solid var(--line); }
 .recap-head h3 { margin: 0; color: var(--forest); font-family: var(--font-sans), Arial, sans-serif; font-size: var(--t-head-sm); font-weight: 800; }
-.recap-stamp { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 0; color: var(--muted-soft); font-size: var(--t-meta); font-variant-numeric: tabular-nums; }
+.recap-stamp { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 0; color: var(--muted-soft); font-size: var(--t-meta); font-variant-numeric: lining-nums tabular-nums; }
 .recap-stamp em { color: var(--muted-soft); font-style: normal; font-weight: 700; }
 .recap-revised { color: var(--forest); font-weight: 700; }
 /* The rule belongs to the block, not to the sentence: a border on the capped

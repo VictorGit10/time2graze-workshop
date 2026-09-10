@@ -423,7 +423,7 @@
   color: var(--forest);
   font-size: 36px;
   line-height: 1.2;
-  font-variant-numeric: tabular-nums;
+  font-variant-numeric: lining-nums tabular-nums;
 }
 .shuttle-times span {
   display: block;

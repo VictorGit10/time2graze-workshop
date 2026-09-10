@@ -532,8 +532,24 @@ Extract the data with no visual change at all, as its own step.
   narrower than 1024px, and the `max-width` blocks sit inside it, so both keep
   the literals they were written with — those are deliberate step-downs, not
   tokens waiting to be substituted.
-- **Tabular numerals for times** (`font-variant-numeric: tabular-nums`) so the
-  time column aligns exactly.
+- **Tabular numerals for times** (`font-variant-numeric: lining-nums
+  tabular-nums`) so the time column aligns exactly. Write both keywords:
+  `font-variant-numeric` is one property, and a bare `tabular-nums` sends the
+  figure style back to the font's default, which is the next bullet's problem.
+- **Lining figures, declared once on `body`.** Cormorant Garamond's default
+  figures are old-style — 1999 with two descending nines, a 4 and a 3 that drop
+  below the baseline. That is correct in running serif text and wrong for what
+  this site sets in the serif: years, dates, editions, counts and distances,
+  read as data at 32–60px, where uneven heights read as a wobble. It was
+  reported as exactly that on 10 September 2026 and fixed in one inherited
+  declaration, which reaches the hero's `14–18`, the wordmark's `2`, the day
+  tabs, the story facts and the step years. Manrope's figures are already
+  lining, so nothing sans moved.
+- **A figure that is data is set in Manrope.** Same reasoning that keeps
+  session titles out of the serif on the grid: a count is functional text.
+  FICA's `38 / 7 / 4` are sans; the dated *spines* — Goiânia's steps, the
+  town's `1727 · 1937 · 2001` — stay serif, because there the year is being
+  read as a date in a sentence about time, not as a measurement.
 - **No third typeface.** Cormorant Garamond and Manrope are enough. Reach for
   weight, size and spacing before reaching for a new family.
 
@@ -1530,10 +1546,12 @@ and understated the restriction as `Reuse with credit`.
   beyond what FUNAPE's own site says.
 - **FICA is a June festival and the workshop is in September.** The entry sits
   under the Friday visit to Cidade de Goiás, which is the one place a reader
-  could mistake it for something on the programme. The prose is past tense and
-  the fact row now reads `Dates of the most recent edition` rather than
-  `2026 festival dates`, which was a June date set in display type beside a
-  September itinerary. Keep any new FICA fact in that tense.
+  could mistake it for something on the programme. The prose is past tense
+  throughout, and since 10 September 2026 the masthead says it outright —
+  `The festival is held in June. It is not part of the workshop programme.` —
+  rather than leaving tense to carry it alone. Keep any new FICA fact in that
+  tense, and do not give the subject a week link: it has no session, and
+  `lib/story-week.ts` is correct to render nothing for it.
 
 ## Story devices — 9 September 2026
 
@@ -1555,7 +1573,7 @@ carries the shared pieces a composition may draw on.
 | FUNAPE | A four-step sequence, labelled as general | It has no cleared photography and no documented role here |
 | Goiânia | 1933 · 1937 · 2003 as steps | A city drawn before it was built is an order of events |
 | Cidade de Goiás | Two views, the dated spine, then the walk | Its heritage argument is a relationship between river, hills and town |
-| FICA | Typographic; four competition sections | No cleared festival photography beyond three archive frames |
+| FICA | Typographic: the acronym keyed to its Portuguese name, a title card, four competitive showcases | No cleared festival photography beyond three archive frames |
 | Cerrado | The scale ladder: ground, air, orbit | It is the working method of the laboratory hosting the week |
 
 **The scale ladder must stay a set of choices.** Its three photographs are
@@ -1732,3 +1750,84 @@ arrived: measured at 0px, with every caption below them jumping on load. Both
 now pass `natural` to `StoryPhotos`, which writes each ratio inline. If a new
 gallery wants natural proportions, use `natural` — never bare
 `aspect-ratio: auto`.
+
+## The numerals, and FICA rebuilt — 10 September 2026
+
+Two things, and the first is the site's and not FICA's.
+
+### The figures were old-style everywhere
+
+Reported by the client on the FICA panel and true on all four routes: the
+numbers looked crooked. They were. Cormorant Garamond ships old-style figures
+as its default, so every serif number on the site — the hero's `14–18`, the
+`2` in the Time2Graze wordmark, `Mon · 14 Sep` on the day tabs, `1994`,
+`1727 · 1937 · 2001`, `Inside FICA 2026` — was set with descending nines,
+threes and fours. The rule is in
+[Type and detail rules](#type-and-detail-rules); the fix is one inherited
+declaration on `body` plus `lining-nums` written into the thirteen
+`tabular-nums` rules that would otherwise have reset it.
+
+The client also said the numbers looked like "what every AI site uses", and
+that half of it is not solved by an OpenType feature: a 60px serif figure on a
+cream ground is the current house style of generated design. Where a figure is
+a **count**, it is now Manrope — FICA's `38 / 7 / 4`. Where it is a **date in a
+sequence** — Goiânia's steps, the town's spine — the serif stays, because there
+the year is being read as a date and not as a measurement. Do not flatten that
+distinction in either direction.
+
+### The panel
+
+FICA is the one subject with no cleared photography beyond three archive
+frames, so the panel is built out of type and out of the festival's own words.
+What it now carries, and why each part is there:
+
+- **A masthead that spells the acronym out of the name.** `FICA` set large,
+  and under it `Festival Internacional de Cinema e Vídeo Ambiental` with the
+  four initials it gave up marked in the accent. A reader who does not read
+  Portuguese gets the acronym explained without a sentence explaining it, and
+  the festival's own name — not a translation of it — is what the panel is
+  titled. `keyed()` in `components/stories/fica.tsx` walks the mark against the
+  title and returns null if any letter fails to land on a word initial, so a
+  future edit that breaks the correspondence renders plain text rather than a
+  wrong claim about the name.
+- **A title card, flush on the film.** `27th edition · 16–21 June 2026 · Cine
+  Teatro São Joaquim`, then the 2026 theme in Portuguese with its translation,
+  then `38 films / 7 countries / 4 competitive showcases`. It is dark, and it
+  sits directly on top of `StoryCinema` with no gap, so the card and the screen
+  read as one block: the room going down before the projector. That is the only
+  dark surface in the stories, and it is there because the subject is cinema —
+  not because a panel needed contrast.
+- **Four competitive showcases, with their real Portuguese names**, ordered
+  from the world inwards: international, then Indigenous cinema and traditional
+  peoples, then the state, then `Becos da Minha Terra` — the town Friday goes
+  to. That order is editorial and it is the argument for the subject being on
+  this site at all. They are a `ul`, not an `ol`: a set, not a ranking, and the
+  `01 02 03 04` that used to number them was both arbitrary and the worst of
+  the old-style figures.
+- **The Cora Coralina link.** The best feature in the international competition
+  wins the Prêmio Cora Coralina, and the poet's house is a museum a few streets
+  from the festival's cinema, already covered in the town's own story. Two
+  subjects the site already carries turn out to be one fact.
+
+Sources and the deliberate omissions — prize totals, currency conversion, the
+festival's own promotional line about itself — are in
+`research/optional-content-fica-2026.md`. The structured material is in
+`data/story-features.ts` beside the other devices'.
+
+**The lime fact row is gone.** It carried `1999`, `16–21 June 2026` and `27` in
+60px serif, and the middle one was a June date set in display type on a
+September workshop's site. Everything it said is still on the page: the founding
+year is in the lead, the edition and the dates are the title card's top line,
+and the count of editions was restating the ordinal.
+
+### The frame stopped branching on id
+
+`optional-story.tsx` had one `id === 'fica'` branch left, inside the shared
+opening, which is exactly what
+[Story devices](#story-devices--9-september-2026) says should not be there. The
+default opening is now `StoryOpening` in `story-parts.tsx`, and a subject whose
+opening is its own exports one that an `OPENINGS` registry picks up — the same
+shape as `BODIES`. `Story` gained two optional fields for it: `mark`, the
+acronym a subject is known by, and `note`, the one misreading a subject invites.
+FICA is the only user of either. Adding a third `id ===` branch instead of a
+registry entry is the failure this replaced.

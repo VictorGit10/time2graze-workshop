@@ -17,6 +17,25 @@ import { StoryLink } from '@/components/story-link';
 
 export type ChapterTag = 'h4' | 'h5';
 export type StoryBodyProps = { story: Story; ChapterHeading: ChapterTag };
+export type StoryOpeningProps = { story: Story; Heading: 'h3' | 'h4' };
+
+/**
+ * The opening six of the seven subjects share: what kind of thing this is,
+ * what it is called, and one sentence saying why a reader might want it.
+ *
+ * A subject whose opening is its own — FICA's wordmark — exports one instead,
+ * and `optional-story.tsx` picks it up from a registry. That is deliberately
+ * the same shape as the body registry: the frame decides nothing by id.
+ */
+export function StoryOpening({ story, Heading }: StoryOpeningProps) {
+  return (
+    <div className="story-opening">
+      <p className="story-eyebrow">{story.category}</p>
+      <Heading className="story-title">{story.title}</Heading>
+      <p className="story-lead">{story.lead}</p>
+    </div>
+  );
+}
 
 export function StoryChapters({ story, ChapterHeading }: StoryBodyProps) {
   if (!story.chapters.length) return null;

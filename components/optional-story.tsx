@@ -1,14 +1,14 @@
 import { STORIES, type StoryId } from '@/data/optional-content';
 import { STORY_IMAGES } from '@/data/optional-media';
 import { StoryDisclosure } from '@/components/story-disclosure';
-import { StoryReferences, type ChapterTag } from '@/components/story-parts';
+import { StoryOpening, StoryReferences, type ChapterTag } from '@/components/story-parts';
 import { StoryWeekLink } from '@/components/story-week-link';
 import { UfgStory } from '@/components/stories/ufg';
 import { LapigStory } from '@/components/stories/lapig';
 import { FunapeStory } from '@/components/stories/funape';
 import { GoianiaStory } from '@/components/stories/goiania';
 import { CidadeDeGoiasStory } from '@/components/stories/cidade-de-goias';
-import { FicaStory } from '@/components/stories/fica';
+import { FicaOpening, FicaStory } from '@/components/stories/fica';
 import { CerradoStory } from '@/components/stories/cerrado';
 
 const BODIES = {
@@ -20,6 +20,9 @@ const BODIES = {
   fica: FicaStory,
   cerrado: CerradoStory,
 } as const;
+
+/** Subjects whose opening is their own. Everything else takes `StoryOpening`. */
+const OPENINGS: Partial<Record<StoryId, typeof FicaOpening>> = { fica: FicaOpening };
 
 /** Matches scripts/build-entry-thumbs.mjs. Changing one means changing both. */
 const ENTRY_THUMB = { width: 260, height: 186 };
@@ -40,6 +43,7 @@ export function OptionalStory({ id, headingLevel = 3 }: { id: StoryId; headingLe
   const Heading = headingLevel === 3 ? 'h3' : 'h4';
   const ChapterHeading: ChapterTag = headingLevel === 3 ? 'h4' : 'h5';
   const Body = BODIES[id];
+  const Opening = OPENINGS[id] ?? StoryOpening;
   const image = story.thumbnail ? STORY_IMAGES[story.thumbnail] : undefined;
   /* The entry crop when one has been built, and the image's own dimensions
      when it has not, so a new story shows something before the script is run. */
@@ -58,20 +62,7 @@ export function OptionalStory({ id, headingLevel = 3 }: { id: StoryId; headingLe
       thumbnail={thumbnail}
       printAlways={id === 'cidade-de-goias'}
     >
-      <div className="story-opening">
-        <p className="story-eyebrow">{story.category}</p>
-        <Heading className="story-title">
-          {id === 'fica' ? (
-            <>
-              <span className="story-festival-name">FICA</span>{' '}
-              <span className="story-festival-subtitle">Cinema, culture &amp; environment</span>
-            </>
-          ) : (
-            story.title
-          )}
-        </Heading>
-        <p className="story-lead">{story.lead}</p>
-      </div>
+      <Opening story={story} Heading={Heading} />
       <Body story={story} ChapterHeading={ChapterHeading} />
       <StoryWeekLink sessionId={story.weekSessionId} note={story.weekNote} />
       <StoryReferences story={story} />
