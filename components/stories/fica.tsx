@@ -114,7 +114,7 @@ export function FicaStory({ story, ChapterHeading }: StoryBodyProps) {
           ))}
         </ul>
         <a href="https://fica.go.gov.br/n/201264-fica-2026-reune-38-filmes-de-sete-paises-em-mostras-competitivas" target="_blank" rel="noreferrer">
-          How the showcases were filled in 2026 <ArrowUpRight aria-hidden="true" />
+          The 2026 selection <ArrowUpRight aria-hidden="true" />
         </a>
       </section>
       <section className="fica-edition">

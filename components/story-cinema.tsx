@@ -46,8 +46,8 @@ function Player({ films, poster }: { films: StoryFilm[]; poster: StoryImage }) {
         the linter asks for and what assistive technology reads without an id
         to wire up. The reset in the stylesheet is load-bearing — a fieldset
         defaults to min-width: min-content and would refuse to shrink. */}
-    <fieldset className="story-film-picker">
-      <legend className="story-film-picker-label">Choose a film</legend>
+    <fieldset className="story-picker">
+      <legend className="story-picker-label">Choose a film</legend>
       <div className="story-film-selection">
         {films.map((item, index) => {
           const current = selected === index;

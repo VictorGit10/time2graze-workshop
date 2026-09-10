@@ -129,6 +129,12 @@
   .story-chapters { grid-template-columns: 1fr; gap: 28px; margin-bottom: 32px; }
   .story-chapters p { font-size: 16px; line-height: 1.8; }
   .story-references { grid-template-columns: 1fr; }
+  /* Standalone links measured 18-37px tall on a phone — the campus link worst
+     at 18, below even the 24px AA minimum. Inline links inside a credit
+     sentence are deliberately not touched. */
+  .story-references a, .story-observatories-go, .story-park-go, .story-steps-hinge,
+  .story-campuses li a, .fica-showcases > a, .story-inline-link,
+  .story-film-caption > a { min-height: 44px; align-items: center; }
   .story-lightbox { width: calc(100vw - 16px); max-height: calc(100dvh - 24px); }
   .story-lightbox-inner { padding: 10px 12px 18px; }
   .story-lightbox-inner > img { max-height: calc(100dvh - 270px); }
@@ -209,10 +215,17 @@
 .story-film-caption p { margin: 0; max-width: 65ch; font-size: var(--t-body); line-height: 1.6; }
 .story-film-caption > a { display: flex; gap: 8px; align-items: center; font-size: var(--t-meta-lg); color: var(--forest); text-decoration: underline; text-underline-offset: 4px; }
 .story-film-caption svg { width: 14px; height: 14px; flex: none; }
-/* A label, not a sentence about how to use it. The chooser sits directly under
-   the screen it drives, and the small print about the poster went below it. */
-.story-film-picker { min-width: 0; margin: 0; padding: 0; border: 0; }
-.story-film-picker-label { margin: 0 0 12px; color: var(--forest); font-size: var(--t-label); font-weight: 750; letter-spacing: .11em; text-transform: uppercase; }
+/* Three devices ask the reader to pick — films, views, scales — and until
+   10 September 2026 only the container carried the word, in an aria-label a
+   sighted reader never saw and, on the explorer's bare div, that assistive
+   technology ignored too. `fieldset` + `legend` is the native pair for a group
+   of controls; `min-width: 0` is load-bearing, because a fieldset defaults to
+   min-width: min-content and will not shrink inside the panel.
+
+   A label, not a sentence about how to use it: the rule against prose
+   explaining the interface still stands. */
+.story-picker { min-width: 0; margin: 0; padding: 0; border: 0; }
+.story-picker-label { margin: 0 0 12px; color: var(--forest); font-size: var(--t-label); font-weight: 750; letter-spacing: .11em; text-transform: uppercase; }
 .story-film-selection { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 .story-film-selection button { display: flex; flex-direction: column; gap: 0; padding: 0; border: 1px solid var(--line); text-align: left; color: var(--text); background: var(--paper); cursor: pointer; transition: border-color var(--m-quick) var(--m-ease), background var(--m-quick) var(--m-ease); }
 .story-film-selection button[aria-pressed='true'] { border-color: var(--forest); background: var(--accent); }
@@ -362,10 +375,6 @@
   .fica-figures dd { grid-column: 1; grid-row: 1; font-size: 34px; }
   .fica-figures dt { grid-column: 2; grid-row: 1; font-size: 14px; }
   .fica-showcases li { padding-top: 14px; }
-  /* Wrapped, the arrow was a flex item and landed at the end of the second
-     line on its own. Inline keeps it attached to the last word. */
-  .fica-showcases > a { display: inline; }
-  .fica-showcases > a svg { display: inline-block; vertical-align: -3px; margin-left: 8px; }
   .fica-edition { margin: 34px 0; }
   .fica-edition dl { grid-template-columns: 1fr; gap: 0; }
   .fica-edition > dl > div { gap: 4px; padding: 13px 0; border-top: 1px solid var(--line); }
@@ -472,7 +481,7 @@
 .story-campuses li strong { font-size: var(--t-meta-lg); font-weight: 650; color: var(--forest-dark); line-height: 1.4; }
 .story-campuses li small { color: var(--muted); font-size: var(--t-label); }
 .story-campuses-mark { margin-top: 4px; color: var(--forest); font-size: var(--t-label); font-weight: 700; letter-spacing: .04em; }
-.story-campuses li a { display: inline-flex; align-items: center; gap: 6px; margin-top: 6px; color: var(--forest); font-size: var(--t-label); font-weight: 650; text-decoration: underline; text-underline-offset: 4px; }
+.story-campuses li a { display: inline-flex; align-items: center; gap: 6px; margin-top: 6px; padding-block: 5px; color: var(--forest); font-size: var(--t-label); font-weight: 650; text-decoration: underline; text-underline-offset: 4px; }
 .story-campuses li svg { width: 13px; height: 13px; }
 
 /* Goiânia · three dates as an order of events */

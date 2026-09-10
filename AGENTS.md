@@ -1937,3 +1937,32 @@ with `object-fit: cover`), which is what makes it read as a frame.
 
 Both changes are shared with LAPIG, which uses the same component. Check both
 panels after touching it.
+
+### Then the same check was run on all seven
+
+The phone pass above was done on FICA alone, which was the wrong scope: the
+same faults were sitting in the other panels. `.story-facts` is shared, so the
+pairing fix reached LAPIG, FUNAPE and both city stories the moment it landed —
+but two things had to be found by looking.
+
+**There are three choosers, not one.** Films, views (`story-explorer`) and
+scales (`story-scale`) all ask the reader to pick, and only the container ever
+carried the word — in an `aria-label` no sighted reader saw and which, on the
+explorer's bare `div` with no role, assistive technology ignored as well. All
+three are now `fieldset` + `legend` with the shared `.story-picker` /
+`.story-picker-label` pair: `Choose a film`, `Choose a view`, `Choose a scale of
+observation`. If a fourth device asks the reader to choose, it uses the same
+two classes.
+
+**Standalone links were between 18px and 37px tall on a phone.** The campus
+link was the worst at 18 — under even the 24px WCAG 2.5.8 AA minimum, and the
+site's own convention is the 44px target the story trigger already uses. One
+rule in the ≤600px block now raises every standalone link to 44. **Links inside
+a credit sentence are deliberately excluded**: 2.5.8 exempts a target in a
+block of text, and padding them out would break the line they sit in.
+
+The audit is `scripts/`-free on purpose — it was a throwaway Playwright pass at
+390px over all seven panels, checking for horizontal overflow, text under 12px,
+targets under 40px, and label/value pairs more than 55px apart. Worth
+re-running by hand after a layout change; the useful part is the list of what
+to look for, which is this paragraph.

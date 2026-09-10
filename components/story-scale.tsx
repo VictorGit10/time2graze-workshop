@@ -28,7 +28,9 @@ function Ladder() {
   const photo = STORY_IMAGES[rung.image];
   return (
     <div className="story-scale">
-      <ol className="story-scale-rungs" aria-label="Choose a scale of observation">
+      <fieldset className="story-picker">
+        <legend className="story-picker-label">Choose a scale of observation</legend>
+        <ol className="story-scale-rungs">
         {CERRADO_SCALES.map((item, index) => (
           <li key={item.id}>
             <button type="button" aria-pressed={index === active} onClick={() => setActive(index)}>
@@ -38,7 +40,8 @@ function Ladder() {
             </button>
           </li>
         ))}
-      </ol>
+        </ol>
+      </fieldset>
       <output className="story-scale-status">{rung.rung}: {rung.instrument}. {rung.note}</output>
       <div className="story-scale-view" key={rung.id}>
         <StoryGallery photos={photo ? [photo] : []} />
