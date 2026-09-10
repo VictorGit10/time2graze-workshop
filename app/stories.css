@@ -118,8 +118,12 @@
   .story-gallery[data-count='1'] .story-photo-open img { aspect-ratio: 4 / 3; }
   .story-photo-expand { bottom: 10px; right: 10px; padding: 8px; }
   .story-photo-expand span { display: none; }
-  .story-facts { grid-template-columns: 1fr; gap: 22px; margin-block: 28px; padding-block: 22px; }
-  .story-facts > div { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: 16px; }
+  .story-facts { grid-template-columns: 1fr; gap: 18px; margin-block: 28px; padding-block: 22px; }
+  /* `auto 1fr`, not two equal halves: the number column shrinks to the widest
+     figure and the label starts right after it. Two halves put the label at
+     the far edge of the screen and wrapped it there — reported on 10 September
+     2026 as not being able to tell which label belonged to which number. */
+  .story-facts > div { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: baseline; gap: 14px; }
   .story-facts dd { grid-column: 1; grid-row: 1; font-size: 30px; }
   .story-facts dt { grid-column: 2; grid-row: 1; font-size: 14px; }
   .story-chapters { grid-template-columns: 1fr; gap: 28px; margin-bottom: 32px; }
@@ -201,22 +205,33 @@
 .story-play-icon svg { width: 27px; height: 27px; fill: currentColor; }
 .story-screen-caption small { display: block; margin-bottom: 8px; font-size: var(--t-meta-lg); font-weight: 650; }
 .story-screen-caption strong { display: block; max-width: 22ch; font-family: var(--font-serif), Georgia, serif; font-size: clamp(28px, 3.5vw, 54px); line-height: 1.08; font-weight: 500; }
-.story-film-caption { display: grid; grid-template-columns: 1fr auto; column-gap: 24px; row-gap: 8px; padding: 18px 0 24px; }
+.story-film-caption { display: grid; grid-template-columns: 1fr auto; column-gap: 24px; row-gap: 10px; padding: 18px 0 22px; }
 .story-film-caption p { margin: 0; max-width: 65ch; font-size: var(--t-body); line-height: 1.6; }
 .story-film-caption > a { display: flex; gap: 8px; align-items: center; font-size: var(--t-meta-lg); color: var(--forest); text-decoration: underline; text-underline-offset: 4px; }
 .story-film-caption svg { width: 14px; height: 14px; flex: none; }
-.story-film-caption small { grid-column: 1 / -1; font-size: var(--t-label); color: var(--muted); line-height: 1.6; }
-.story-film-caption small a { text-decoration: underline; }
+/* A label, not a sentence about how to use it. The chooser sits directly under
+   the screen it drives, and the small print about the poster went below it. */
+.story-film-picker { min-width: 0; margin: 0; padding: 0; border: 0; }
+.story-film-picker-label { margin: 0 0 12px; color: var(--forest); font-size: var(--t-label); font-weight: 750; letter-spacing: .11em; text-transform: uppercase; }
 .story-film-selection { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 .story-film-selection button { display: flex; flex-direction: column; gap: 0; padding: 0; border: 1px solid var(--line); text-align: left; color: var(--text); background: var(--paper); cursor: pointer; transition: border-color var(--m-quick) var(--m-ease), background var(--m-quick) var(--m-ease); }
 .story-film-selection button[aria-pressed='true'] { border-color: var(--forest); background: var(--accent); }
 .story-film-selection button:hover { border-color: var(--forest); }
-.story-film-selection img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
-.story-film-selection button > span { display: grid; gap: 9px; width: 100%; padding: 18px; }
-.story-film-selection small { font-size: var(--t-label); color: var(--muted); }
-.story-film-selection strong { font-size: var(--t-body-lg); line-height: 1.4; }
-.story-film-selection span > span { display: flex; justify-content: space-between; align-items: center; gap: 10px; color: var(--forest); font-size: var(--t-meta-lg); }
-.story-film-selection svg { width: 15px; height: 15px; }
+.story-film-thumb { position: relative; display: block; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; background: var(--forest-dark); }
+.story-film-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* Every row wears the badge, so a row reads as a film you can start rather
+   than as a card that links somewhere. */
+.story-film-badge { position: absolute; inset: auto auto 10px 10px; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: #0e2b21d9; color: #fff; }
+.story-film-badge svg { width: 15px; height: 15px; margin-left: 2px; fill: currentColor; }
+.story-film-selection button[aria-pressed='true'] .story-film-badge { background: var(--forest); }
+.story-film-meta { display: grid; align-content: center; gap: 8px; width: 100%; min-width: 0; padding: 16px 18px 18px; }
+.story-film-meta small { font-size: var(--t-label); color: var(--muted); }
+.story-film-selection button[aria-pressed='true'] .story-film-meta small { color: var(--forest); font-weight: 700; }
+.story-film-meta strong { font-size: var(--t-body-lg); line-height: 1.35; text-wrap: pretty; }
+.story-film-meta > span { color: var(--forest); font-size: var(--t-meta-lg); }
+.story-film-notes { display: grid; gap: 8px; margin-top: 20px; }
+.story-film-notes small { font-size: var(--t-label); color: var(--muted); line-height: 1.6; }
+.story-film-notes a { text-decoration: underline; }
 .story-photo-essay { margin-block: 64px; }
 .story-essay-heading { display: grid; grid-template-columns: 1.1fr 1fr; column-gap: 8%; align-items: end; margin-bottom: 28px; }
 .story-essay-heading > .story-eyebrow { grid-column: 1 / -1; }
@@ -321,11 +336,14 @@
   .story-screen-caption small { font-size: 12px; margin-bottom: 4px; }
   .story-film-caption { grid-template-columns: 1fr; }
   .story-film-selection { grid-template-columns: 1fr; gap: 10px; }
-  .story-film-selection button { flex-direction: row; align-items: center; }
-  .story-film-selection img { width: 110px; flex: none; }
-  .story-film-selection button > span { padding: 12px; gap: 5px; }
-  .story-film-selection strong { font-size: 15px; }
-  .story-film-selection small, .story-film-selection span > span { font-size: 12px; }
+  .story-film-selection button { flex-direction: row; align-items: stretch; min-height: 86px; }
+  .story-film-thumb { width: 122px; flex: none; aspect-ratio: auto; }
+  .story-film-meta { padding: 11px 14px; gap: 4px; }
+  .story-film-meta strong { font-size: 15px; }
+  .story-film-meta small, .story-film-meta > span { font-size: 12px; }
+  .story-film-badge { inset: auto auto 7px 7px; width: 29px; height: 29px; }
+  .story-film-badge svg { width: 13px; height: 13px; }
+  .story-film-notes { margin-top: 16px; }
   .story-essay-heading { grid-template-columns: 1fr; gap: 18px; }
   .story-essay-heading > .story-eyebrow { margin: 0; }
   .story-photo-essay { margin-block: 40px; }
@@ -338,13 +356,20 @@
   .fica-billing-line { display: grid; gap: 7px; }
   .fica-billing-line span:not(:first-child)::before { content: none; }
   .fica-name { font-size: 21px; }
-  .fica-figures { grid-template-columns: 1fr; gap: 14px; }
-  .fica-figures > div { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: 16px; }
-  .fica-figures dd { grid-column: 1; grid-row: 1; font-size: 38px; }
+  .fica-figures { grid-template-columns: 1fr; gap: 0; padding-top: 18px; }
+  .fica-figures > div { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: baseline; gap: 14px; padding: 13px 0; border-top: 1px solid #ffffff1f; }
+  .fica-figures > div:first-child { border-top: 0; padding-top: 0; }
+  .fica-figures dd { grid-column: 1; grid-row: 1; font-size: 34px; }
   .fica-figures dt { grid-column: 2; grid-row: 1; font-size: 14px; }
   .fica-showcases li { padding-top: 14px; }
+  /* Wrapped, the arrow was a flex item and landed at the end of the second
+     line on its own. Inline keeps it attached to the last word. */
+  .fica-showcases > a { display: inline; }
+  .fica-showcases > a svg { display: inline-block; vertical-align: -3px; margin-left: 8px; }
   .fica-edition { margin: 34px 0; }
-  .fica-edition dl { grid-template-columns: 1fr; gap: 18px; }
+  .fica-edition dl { grid-template-columns: 1fr; gap: 0; }
+  .fica-edition > dl > div { gap: 4px; padding: 13px 0; border-top: 1px solid var(--line); }
+  .fica-edition > dl > div:first-child { border-top: 0; padding-top: 0; }
   .fica-edition > p { margin-top: 20px; }
 }
 @media print {

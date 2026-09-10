@@ -1885,3 +1885,55 @@ The general shape of this is worth keeping: **a rule written for one child of a
 list, sitting beside a rule written for the list's descendants, loses.** If a
 device gives an element a display size and the element does not look like
 display type, check what else in the file can reach it.
+
+## The phone pass — 10 September 2026
+
+Three things reported from a phone, all of them real.
+
+### A figure and its label were half a screen apart
+
+`.story-facts` and `.fica-figures` both stacked to one column below 600px and
+then split each pair into **two equal halves** — `minmax(0, 1fr)
+minmax(0, 1fr)`. At 390px that put the number at the left edge and its label at
+the right, with room left over for the label to wrap onto two lines. `4` sat
+alone opposite `Competitive showcases`, and the reader could not tell which
+label belonged to which number.
+
+Both are now `auto minmax(0, 1fr)` on a shared **baseline**: the figure column
+shrinks to the widest value and the label starts immediately after it. Hairline
+rules separate the pairs, so each row is one thing.
+
+**The rule this generalises to:** on a phone, a label belongs to the value it
+names, not to the opposite margin. Two equal columns are a desktop habit —
+`auto` plus a baseline is what makes a pair read as a pair. `.fica-edition`
+takes the same treatment stacked, with the gap inside a pair smaller than the
+gap between them.
+
+### The film chooser did not read as a control
+
+The block ran screen → description → **three notes** → chooser, which on a
+phone is a wall of grey type between the screen and the only thing that changes
+what is on it. The chooser then read as three unrelated cards.
+
+`components/story-cinema.tsx` now runs screen → the film's own line → chooser →
+small print. Three things carry the relationship, and **none of them is a
+paragraph explaining the interface** — that rule still holds:
+
+- The chooser is a `fieldset` with a `legend` reading `Choose a film`. Not a
+  `div` with `role="group"`: `jsx-a11y/prefer-tag-over-role` asks for the native
+  pair, and it needs no id wiring. **`min-width: 0` on the fieldset is
+  load-bearing** — a fieldset defaults to `min-width: min-content` and will not
+  shrink inside the panel.
+- Every row wears a play badge over its own frame, so a row reads as a film you
+  can start rather than as a card that links somewhere.
+- The row already loaded says `On screen now`; the others say `Watch next`.
+
+### The thumbnails looked cropped
+
+They were `110px` wide with `height: auto` inside a `93px` row, so each frame
+floated as a short sliver with dead space above and below it. The frame now
+stretches the row (`align-items: stretch`, `122px` wide, the image filling it
+with `object-fit: cover`), which is what makes it read as a frame.
+
+Both changes are shared with LAPIG, which uses the same component. Check both
+panels after touching it.
