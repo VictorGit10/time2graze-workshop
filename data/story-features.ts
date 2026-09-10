@@ -199,71 +199,84 @@ export const UFG_OBSERVATORIES = [
 ] as const;
 
 /**
- * The 27th FICA, as the festival and the state government reported it.
+ * FICA as an institution, not as one edition.
  *
- * Sources, all checked 10 September 2026:
- *  - Opening, theme, venue and honouree:
- *    https://fica.go.gov.br/n/201969-fica-2026-inicia-sua-maior-edicao-com-homenagem-a-dalton-paula-e-estreia-nacional-de-a-curva-do-rio
- *  - Selection, showcase names and counts:
+ * The panel was rebuilt around the 2026 edition on 10 September 2026 and read,
+ * correctly, as a page about the 27th FICA rather than about FICA. These three
+ * figures are the festival's own and none of them belongs to a single year.
+ *
+ * Sources, checked 10 September 2026:
+ *  - Annual in Cidade de Goiás since 1999, and the international competition
+ *    named after Washington Novaes:
+ *    https://www.goiania.go.leg.br/sala-de-imprensa/noticias/sessao-solene-nesta-terca-feira-25-celebrara-25-anos-do-festival-internacional-de-cinema-e-video-ambiental-o-fica
+ *  - Edition count through 2026:
  *    https://fica.go.gov.br/n/201264-fica-2026-reune-38-filmes-de-sete-paises-em-mostras-competitivas
- *  - Prize names and values:
- *    https://fica.go.gov.br/n/199834-fica-2026-reformula-premiacao-e-garante-distribuicao-igualitaria-entre-categorias-tecnicas
- *
- * The theme is left in Portuguese with a translation beside it, the way the
- * festival's own title is. Translating it away would lose the phrase the
- * festival ran under.
- *
- * The tense is the tense of the whole panel: this edition happened in June and
- * the workshop is in September. Nothing here may be written as an invitation.
  */
-export const FICA_EDITION = {
-  ordinal: '27th edition',
-  dates: '16–21 June 2026',
-  venue: 'Cine Teatro São Joaquim, Cidade de Goiás',
-  theme: 'Água e Clima no Brasil das Nascentes',
-  themeGloss: 'Water and climate in Brazil’s headwaters',
-  figures: [
-    { value: '38', label: 'Films in competition' },
-    { value: '7', label: 'Countries represented' },
-    { value: '4', label: 'Competitive showcases' },
-  ],
-} as const;
+export const FICA_FIGURES = [
+  { value: '1999', label: 'First edition' },
+  { value: '27', label: 'Editions through 2026' },
+  { value: '4', label: 'Competitive showcases' },
+] as const;
 
 /**
- * The four competitive showcases of the 2026 edition, in the order the
- * festival's reach narrows: the world, then peoples, then the state, then the
- * streets of the town itself. That order is editorial, not the source's, and
- * it ends where the reader's Friday is — which is the only reason this
- * subject is on a workshop site at all.
+ * The four competitive showcases: the festival's standing shape, not the 2026
+ * selection.
  *
- * The Portuguese names are the festival's own and are not translated away; the
- * gloss beside each one is the translation. Prize values are the announced
- * values for 2026 and are written in reais, because that is the currency they
- * were announced in and an exchange rate is not a fact this site can hold.
+ * Each entry says what the showcase is *for*. It said what the showcase held in
+ * June 2026 — six features from four countries, eight shorts from six others —
+ * and that is an edition's fact wearing a festival's clothes. Prize values were
+ * removed on the client's instruction of 10 September 2026; the Cora Coralina
+ * prize keeps its name in the chapters, because a name is not a number.
+ *
+ * The order runs from the widest reach to the streets of the host town. The
+ * Indigenous and traditional peoples' showcase sits second because it is not a
+ * geographic category at all, and forcing it onto that axis to keep the shape
+ * tidy would be the order inventing a claim.
+ *
+ * Names and Washington Novaes's role, checked 10 September 2026:
+ *  - https://fica.go.gov.br/n/201264-fica-2026-reune-38-filmes-de-sete-paises-em-mostras-competitivas
+ *  - https://goias.gov.br/cultura/homenageado-do-fica-2020-washington-novaes-fez-parte-da-historia-e-consolidacao-do-festival/
  */
 export const FICA_SHOWCASES = [
   {
     name: 'Mostra Internacional Washington Novaes',
     gloss: 'International competition',
-    text: 'Six feature films from Brazil, Canada, Poland and Austria, with eight shorter films from Goiás, Rio de Janeiro, São Paulo, Belgium, Colombia and Iran.',
-    award: { name: 'Prêmio Cora Coralina · best feature', value: 'R$ 35,000' },
+    text: 'The main competition, open to environmental film from any country. It carries the name of the journalist who set the festival’s approach to environmental questions across its first ten editions.',
   },
   {
     name: 'Mostra Cinema Indígena e Povos Tradicionais',
     gloss: 'Indigenous cinema and traditional peoples',
-    text: 'Three feature films — two Brazilian, one Canadian — with six Brazilian shorts and medium-length films.',
-    award: { name: 'Best feature', value: 'R$ 35,000' },
+    text: 'A competition of its own, rather than a category inside another one, for Indigenous cinema and the cinema of traditional peoples.',
   },
   {
     name: 'Mostra Cinema Goiano',
     gloss: 'Cinema from the state of Goiás',
-    text: 'Three feature films and six shorts made in Goiás, the state the workshop meets in.',
-    award: { name: 'Best feature', value: 'R$ 35,000' },
+    text: 'Film made in Goiás — the state the workshop meets in, and the one whose landscapes this week is about.',
   },
   {
     name: 'Mostra Becos da Minha Terra',
     gloss: 'The alleys of my land',
-    text: 'Six works made in Cidade de Goiás and the territory around it — the town that hosts the festival, and the town Friday goes to.',
-    award: { name: 'Best film', value: 'R$ 35,000' },
+    text: 'Film made in Cidade de Goiás and the territory around it: the town that hosts the festival, and the town Friday goes to.',
   },
 ] as const;
+
+/**
+ * The most recent edition, kept to one labelled block near the foot of the
+ * panel. It is a fact about FICA, not the subject of the page — which is the
+ * whole reason it no longer opens it.
+ *
+ * The theme stays in Portuguese with a translation beside it, the way the
+ * festival’s own title does. The tense is past: this edition happened in June
+ * and the workshop is in September, and nothing here may read as an invitation.
+ *
+ * Source, checked 10 September 2026:
+ * https://fica.go.gov.br/n/201969-fica-2026-inicia-sua-maior-edicao-com-homenagem-a-dalton-paula-e-estreia-nacional-de-a-curva-do-rio
+ */
+export const FICA_EDITION = {
+  ordinal: '27th edition',
+  dates: '16–21 June 2026',
+  venue: 'Cine Teatro São Joaquim',
+  theme: 'Água e Clima no Brasil das Nascentes',
+  themeGloss: 'Water and climate in Brazil’s headwaters',
+  honour: 'The edition honoured the visual artist Dalton Paula, and opened with the national premiere of “A Curva do Rio”.',
+} as const;

@@ -1544,14 +1544,18 @@ and understated the restriction as `Reuse with credit`.
   a relationship the research does not yet support. Confirm it with the
   organiser before the site is announced. The story text itself claims nothing
   beyond what FUNAPE's own site says.
-- **FICA is a June festival and the workshop is in September.** The entry sits
-  under the Friday visit to Cidade de Goiás, which is the one place a reader
-  could mistake it for something on the programme. The prose is past tense
-  throughout, and since 10 September 2026 the masthead says it outright —
-  `The festival is held in June. It is not part of the workshop programme.` —
-  rather than leaving tense to carry it alone. Keep any new FICA fact in that
-  tense, and do not give the subject a week link: it has no session, and
-  `lib/story-week.ts` is correct to render nothing for it.
+- **FICA's festival is in June and the workshop is in September.** The entry
+  sits under the Friday visit to Cidade de Goiás, which is the one place a
+  reader could mistake it for something on the programme. The prose is past
+  tense throughout, and since 10 September 2026 the masthead says it outright —
+  `The most recent edition ran in June 2026. The festival is not part of the
+  workshop programme.` — rather than leaving tense to carry it alone. Keep any
+  new FICA fact in that tense, and do not give the subject a week link: it has
+  no session, and `lib/story-week.ts` is correct to render nothing for it.
+  Note the wording: **not** "held every June". Recent editions run in June and
+  the first ran in June 1999, but Secult announced one opening on 14 December,
+  so the site says *held in Cidade de Goiás since 1999* and *recent editions
+  have run in June*.
 
 ## Story devices — 9 September 2026
 
@@ -1790,35 +1794,60 @@ What it now carries, and why each part is there:
   title and returns null if any letter fails to land on a word initial, so a
   future edit that breaks the correspondence renders plain text rather than a
   wrong claim about the name.
-- **A title card, flush on the film.** `27th edition · 16–21 June 2026 · Cine
-  Teatro São Joaquim`, then the 2026 theme in Portuguese with its translation,
-  then `38 films / 7 countries / 4 competitive showcases`. It is dark, and it
-  sits directly on top of `StoryCinema` with no gap, so the card and the screen
-  read as one block: the room going down before the projector. That is the only
-  dark surface in the stories, and it is there because the subject is cinema —
-  not because a panel needed contrast.
+- **A title card, flush on the film.** `Cidade de Goiás, Goiás`, one line
+  saying what the festival is, then `1999 / 27 / 4`. It is dark, and it sits
+  directly on top of `StoryCinema` with no gap, so the card and the screen read
+  as one block: the room going down before the projector. That is the only dark
+  surface in the stories, and it is there because the subject is cinema — not
+  because a panel needed contrast.
 - **Four competitive showcases, with their real Portuguese names**, ordered
-  from the world inwards: international, then Indigenous cinema and traditional
-  peoples, then the state, then `Becos da Minha Terra` — the town Friday goes
-  to. That order is editorial and it is the argument for the subject being on
-  this site at all. They are a `ul`, not an `ol`: a set, not a ranking, and the
-  `01 02 03 04` that used to number them was both arbitrary and the worst of
-  the old-style figures.
-- **The Cora Coralina link.** The best feature in the international competition
-  wins the Prêmio Cora Coralina, and the poet's house is a museum a few streets
-  from the festival's cinema, already covered in the town's own story. Two
-  subjects the site already carries turn out to be one fact.
+  from the widest reach inwards: international, then Indigenous cinema and
+  traditional peoples, then the state, then `Becos da Minha Terra` — the town
+  Friday goes to. The Indigenous showcase sits second because it is not a
+  geographic category at all; forcing it onto that axis to tidy the shape would
+  be the order inventing a claim. They are a `ul`, not an `ol`: a set, not a
+  ranking, and the `01 02 03 04` that used to number them was both arbitrary
+  and the worst of the old-style figures.
+- **The Cora Coralina link.** The best feature in the main competition wins the
+  Prêmio Cora Coralina, and the poet's house is a museum a few streets from the
+  festival's cinema, already covered in the town's own story. Two subjects the
+  site already carries turn out to be one fact.
 
-Sources and the deliberate omissions — prize totals, currency conversion, the
-festival's own promotional line about itself — are in
-`research/optional-content-fica-2026.md`. The structured material is in
+Sources and the deliberate omissions are in
+`research/optional-content-fica.md`. The structured material is in
 `data/story-features.ts` beside the other devices'.
 
 **The lime fact row is gone.** It carried `1999`, `16–21 June 2026` and `27` in
 60px serif, and the middle one was a June date set in display type on a
-September workshop's site. Everything it said is still on the page: the founding
-year is in the lead, the edition and the dates are the title card's top line,
-and the count of editions was restating the ordinal.
+September workshop's site.
+
+### Then it was rebuilt again, the same day
+
+The first pass was assembled entirely out of the festival's reporting of its
+27th edition, and the client read the result correctly: **it was a page about
+the 27th FICA, not about FICA.** A dated title card opened it and the reader
+met a theme, a venue, a selection and a prize list before ever learning what
+the festival is.
+
+Three rules came out of that, and they generalise past this panel:
+
+- **A subject's page opens on the subject.** The most recent edition is now one
+  labelled block — `The most recent edition` — near the foot, styled as the
+  quietest band in the panel. It is a fact *about* FICA; it is not FICA.
+- **A count belonging to one year is not the shape of the institution.** `38
+  films / 7 countries` and the per-showcase feature counts were true and were
+  2026's. The showcases now say what each is *for*, permanently. The title
+  card's figures are `1999 / 27 / 4`, none of which belongs to a single year.
+- **Explain before you show.** `StoryChapters` moved up to sit directly under
+  the film block, so a reader learns the festival's subject, the journalist who
+  set its line, what it does between screenings and who runs it before reaching
+  the competition structure.
+
+**No prize values anywhere**, on the client's instruction of 10 September 2026.
+The Prêmio Cora Coralina keeps its name — the name is the whole point of it —
+and the Acari Passos and João Bennio prizes are not named at all, because
+nothing consulted says who those figures were and a prize name whose owner you
+cannot identify adds nothing.
 
 ### The frame stopped branching on id
 

@@ -115,21 +115,24 @@ export const STORIES: Record<StoryId, Story> = {
        the festival's own, not a translation of it. */
     mark: 'FICA',
     title: 'Festival Internacional de Cinema e Vídeo Ambiental',
-    lead: 'Cidade de Goiás has held an international environmental film festival every June since 1999. The 27th edition ran in June 2026 — three months before this workshop, in the town Friday goes to.',
+    lead: 'An environmental film festival, held in Cidade de Goiás since 1999. Twenty-seven editions have now taken place in the same World Heritage town — the town this workshop visits on Friday.',
     /* The one thing a reader on a workshop site could get wrong. It is stated
        once, in the opening, rather than defended by tense alone. */
-    note: 'The festival is held in June. It is not part of the workshop programme.',
+    note: 'The most recent edition ran in June 2026. The festival is not part of the workshop programme.',
     chapters: [
-      { title: 'A festival and its town', text: 'FICA has been held in Cidade de Goiás since 1999, and the town is part of how it works: screenings, debates and awards run through a place small enough to be crossed on foot. The 2026 edition opened at the Cine Teatro São Joaquim and honoured the visual artist Dalton Paula, with the national premiere of “A Curva do Rio”.' },
-      { title: 'Who runs it', text: 'The festival is organised by the Government of Goiás through its State Secretariat of Culture, with the Federal University of Goiás — the workshop’s host university — through Fundação RTVE. The 2026 edition also worked with Fiocruz and Saneago, the state water utility, on the year’s theme.' },
-      { title: 'A prize with an address', text: 'The best feature in the international competition receives the Prêmio Cora Coralina, named after the poet who lived and wrote in this town, and whose house is now a museum a few streets from the festival’s cinema.' },
+      { title: 'A festival with a subject', text: 'FICA is not a general film festival with an environmental strand — the environment is its whole subject, and it is in the festival’s name. It has been held in Cidade de Goiás since 1999, which makes it two years older than the town’s own World Heritage inscription. Recent editions have run in June.' },
+      { title: 'The journalist who set its line', text: 'Washington Novaes (1934–2020) was an environmental journalist and filmmaker. He was FICA’s environmental consultant from the first edition in 1999 until 2008, and the state’s own account credits him with establishing how the festival approaches environmental questions — its themes, its guests and its debates. The main competition carries his name.' },
+      { title: 'More than a screening programme', text: 'Around the competition the festival runs debates, roundtables and lectures, and filmmaking workshops in local schools. One of its screenings is powered by the audience: at BikeCine the projection runs on bicycles the public pedals. The three films above are television reports on exactly that — the festival as it works in the town, rather than as a list of titles.' },
+      { title: 'Who runs it', text: 'The festival is organised by the Government of Goiás through its State Secretariat of Culture, with the Federal University of Goiás — the workshop’s host university — through Fundação RTVE. UFG has a campus in the town, and runs a student monitor programme for each edition.' },
+      { title: 'A prize with an address', text: 'The best feature in the main competition receives the Prêmio Cora Coralina, named after the poet who lived and wrote in this town. Her house is now a museum, a few streets from the cinema where the prize is given.' },
     ],
     images: ['fica-cinema', 'fica-awards', 'fica-city'],
     sources: [
-      { label: 'FICA 2026 · opening, theme and honouree', href: 'https://fica.go.gov.br/n/201969-fica-2026-inicia-sua-maior-edicao-com-homenagem-a-dalton-paula-e-estreia-nacional-de-a-curva-do-rio' },
-      { label: 'The 2026 selection · 38 films, seven countries', href: 'https://fica.go.gov.br/n/201264-fica-2026-reune-38-filmes-de-sete-paises-em-mostras-competitivas' },
-      { label: 'The 2026 prizes', href: 'https://fica.go.gov.br/n/199834-fica-2026-reformula-premiacao-e-garante-distribuicao-igualitaria-entre-categorias-tecnicas' },
-      { label: 'Festival dates · UFG', href: 'https://goias.ufg.br/n/200984-ufg-campus-goias-abre-selecao-de-monitores-para-o-fica-2026?atr=en&locale=en' },
+      { label: 'The festival, and its twenty-five years', href: 'https://www.goiania.go.leg.br/sala-de-imprensa/noticias/sessao-solene-nesta-terca-feira-25-celebrara-25-anos-do-festival-internacional-de-cinema-e-video-ambiental-o-fica' },
+      { label: 'Washington Novaes and the festival’s line', href: 'https://goias.gov.br/cultura/homenageado-do-fica-2020-washington-novaes-fez-parte-da-historia-e-consolidacao-do-festival/' },
+      { label: 'The competitive showcases', href: 'https://fica.go.gov.br/n/201264-fica-2026-reune-38-filmes-de-sete-paises-em-mostras-competitivas' },
+      { label: 'The most recent edition', href: 'https://fica.go.gov.br/n/201969-fica-2026-inicia-sua-maior-edicao-com-homenagem-a-dalton-paula-e-estreia-nacional-de-a-curva-do-rio' },
+      { label: 'UFG at the festival', href: 'https://goias.ufg.br/n/200984-ufg-campus-goias-abre-selecao-de-monitores-para-o-fica-2026?atr=en&locale=en' },
     ],
     related: [
       { label: 'History and photos of Cidade de Goiás', href: '/practical/#about-cidade-de-goias' },

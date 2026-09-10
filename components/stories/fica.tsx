@@ -1,7 +1,7 @@
 import { ArrowUpRight } from 'lucide-react';
 import { StoryChapters, StoryPhotos, type StoryBodyProps, type StoryOpeningProps } from '@/components/story-parts';
 import { StoryCinema } from '@/components/story-cinema';
-import { FICA_EDITION, FICA_SHOWCASES } from '@/data/story-features';
+import { FICA_EDITION, FICA_FIGURES, FICA_SHOWCASES } from '@/data/story-features';
 import { STORY_FILMS } from '@/data/story-films';
 import { STORY_IMAGES } from '@/data/optional-media';
 
@@ -62,21 +62,36 @@ export function FicaOpening({ story, Heading }: StoryOpeningProps) {
   );
 }
 
+/**
+ * The order is the correction of 10 September 2026. Built around the 2026
+ * edition, this panel read as a page about the 27th FICA and not about FICA:
+ * a dated title card opened it, and the reader met a theme, a venue and a
+ * selection before ever learning what the festival is.
+ *
+ * Now the festival comes first and the explanation comes early — its subject,
+ * the journalist who set its line, what it does between screenings, who runs
+ * it. The standing shape follows. One edition, clearly labelled as the most
+ * recent of twenty-seven, sits near the foot where a fact about the subject
+ * belongs rather than at the top where the subject belongs.
+ */
 export function FicaStory({ story, ChapterHeading }: StoryBodyProps) {
   return (
     <>
-      {/* The billing sits flush on the film, so the title card and the screen
-          read as one dark block: the room going down before the projector. */}
-      <section className="fica-billing" aria-label="The 2026 edition">
+      {/* The billing sits flush on the film, so the card and the screen read
+          as one dark block: the room going down before the projector. What it
+          bills is the festival — three figures, none of them a single year's. */}
+      <section className="fica-billing" aria-label="The festival">
         <p className="fica-billing-line">
-          <span>{FICA_EDITION.ordinal}</span>
-          <span>{FICA_EDITION.dates}</span>
-          <span>{FICA_EDITION.venue}</span>
+          <span>Cidade de Goiás, Goiás</span>
         </p>
-        <p className="fica-theme" lang="pt-BR">{FICA_EDITION.theme}</p>
-        <p className="fica-theme-gloss">{FICA_EDITION.themeGloss}</p>
+        {/* What the figures below cannot say, and what a reader who has never
+            heard of FICA most needs: the environment is not a strand in the
+            programme, it is the whole subject. The line repeats none of the
+            three figures — a standfirst that restates the count beneath it is
+            two things saying one thing. */}
+        <p className="fica-standfirst">A film festival whose entire subject is the environment.</p>
         <dl className="fica-figures">
-          {FICA_EDITION.figures.map((figure) => (
+          {FICA_FIGURES.map((figure) => (
             <div key={figure.label}>
               <dt>{figure.label}</dt>
               <dd>{figure.value}</dd>
@@ -85,8 +100,9 @@ export function FicaStory({ story, ChapterHeading }: StoryBodyProps) {
         </dl>
       </section>
       <StoryCinema films={STORY_FILMS.fica} poster={STORY_IMAGES['fica-city']} />
+      <StoryChapters story={story} ChapterHeading={ChapterHeading} />
       <section className="fica-showcases">
-        <p className="story-eyebrow">The 2026 competition</p>
+        <p className="story-eyebrow">What the festival competes over</p>
         <ChapterHeading>Four competitive showcases</ChapterHeading>
         <ul>
           {FICA_SHOWCASES.map((showcase) => (
@@ -94,19 +110,35 @@ export function FicaStory({ story, ChapterHeading }: StoryBodyProps) {
               <p className="fica-showcase-name" lang="pt-BR">{showcase.name}</p>
               <p className="fica-showcase-gloss">{showcase.gloss}</p>
               <p className="fica-showcase-text">{showcase.text}</p>
-              <p className="fica-showcase-award">
-                <span>{showcase.award.name}</span>
-                <span>{showcase.award.value}</span>
-              </p>
             </li>
           ))}
         </ul>
-        <p className="fica-showcase-note">Prize values as announced for the 2026 edition, which set the same top value across the four showcases.</p>
         <a href="https://fica.go.gov.br/n/201264-fica-2026-reune-38-filmes-de-sete-paises-em-mostras-competitivas" target="_blank" rel="noreferrer">
-          The 2026 selection in full <ArrowUpRight aria-hidden="true" />
+          How the showcases were filled in 2026 <ArrowUpRight aria-hidden="true" />
         </a>
       </section>
-      <StoryChapters story={story} ChapterHeading={ChapterHeading} />
+      <section className="fica-edition">
+        <p className="story-eyebrow">The most recent edition</p>
+        <dl>
+          <div>
+            <dt>Edition</dt>
+            <dd>{FICA_EDITION.ordinal}</dd>
+          </div>
+          <div>
+            <dt>Dates</dt>
+            <dd>{FICA_EDITION.dates}</dd>
+          </div>
+          <div>
+            <dt>Opened at</dt>
+            <dd>{FICA_EDITION.venue}</dd>
+          </div>
+          <div>
+            <dt>Theme</dt>
+            <dd lang="pt-BR">{FICA_EDITION.theme}<span>{FICA_EDITION.themeGloss}</span></dd>
+          </div>
+        </dl>
+        <p>{FICA_EDITION.honour}</p>
+      </section>
       <section className="story-photo-essay">
         <div className="story-essay-heading">
           <p className="story-eyebrow">The festival in photographs</p>
