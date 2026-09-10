@@ -4,6 +4,27 @@ Preparado em 9 de setembro de 2026; implementação local concluída na mesma da
 
 ## Escopo implementado
 
+**Segunda revisão — 9 de setembro de 2026 (dispositivos).** Os sete painéis
+deixaram de compartilhar quatro widgets e passaram a ter, cada um, um
+dispositivo que só aquele assunto justifica; a composição de cada assunto vive
+em `components/stories/<id>.tsx`. A UFG ganhou fatos com fonte primária
+(criação em 14/12/1960, as cinco escolas e os câmpus). Cada história que é uma
+sessão da agenda mostra qual é e liga para o Programme; três não são e não
+mostram nada. As entradas fechadas ganharam miniatura própria de 260 px e uma
+linha de chamada. `AGENTS.md` registra as decisões e os limites.
+
+**Revisão de correções — 9 de setembro de 2026.** Onde este documento e o
+código divergem, o código prevalece; `AGENTS.md` passou a registrar as
+decisões das stories. Três divergências conhecidas: (a) os painéis são modais
+nativos, não expansões na própria página como recomendado adiante; (b) a FUNAPE
+entrou na faixa de marcas por pedido explícito do cliente, contrariando a
+orientação da seção Home deste plano — o papel da fundação neste workshop
+continua pendente de confirmação com o organizador; (c) as datas do FICA
+deixaram o rótulo `2026 festival dates`, que punha um intervalo de junho em
+tipo grande ao lado de um itinerário de setembro, e as licenças das fotografias
+do Portal UFG passaram a declarar a restrição não comercial e a apontar para os
+termos, com a modificação de cada arquivo declarada no próprio crédito.
+
 Revisão editorial adicional: removido o capítulo “A university connection” do
 FICA por solicitação do usuário. UFG, Goiânia, Cidade de Goiás e Cerrado usam
 seletores fotográficos com miniaturas, mantendo ampliação e créditos. As duas

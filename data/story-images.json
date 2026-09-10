@@ -10,7 +10,9 @@
     "credit": "Fronteira",
     "sourcePage": "https://commons.wikimedia.org/wiki/File:Alameda_Palmeiras,_Campus_Samambaia,_Universidade_Federal_de_Goi%C3%A1s,_Goi%C3%A2nia,_agosto_de_2023_(3).jpg",
     "license": "CC BY-SA 4.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "edits": "Resized, converted to WebP",
+    "entry": "/images/stories/M01-entry.webp"
   },
   "M02": {
     "id": "M02",
@@ -23,7 +25,8 @@
     "credit": "Fronteira",
     "sourcePage": "https://commons.wikimedia.org/wiki/File:Biblioteca_Central_da_UFG,_Campus_Samambaia,_dezembro_de_2022_(1).jpg",
     "license": "CC BY-SA 4.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "edits": "Resized, converted to WebP"
   },
   "M03": {
     "id": "M03",
@@ -36,7 +39,9 @@
     "credit": "Fronteira",
     "sourcePage": "https://commons.wikimedia.org/wiki/File:Parque_Flamboyant,_Goi%C3%A2nia,_dezembro_de_2022_(1).jpg",
     "license": "CC BY-SA 4.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "edits": "Resized, converted to WebP",
+    "entry": "/images/stories/M03-entry.webp"
   },
   "M04": {
     "id": "M04",
@@ -49,7 +54,8 @@
     "credit": "Fronteira",
     "sourcePage": "https://commons.wikimedia.org/wiki/File:Parque_Vaca_Brava,_Bueno,_Goi%C3%A2nia,_fevereiro_de_2025.jpg",
     "license": "CC BY-SA 4.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "edits": "Resized, converted to WebP"
   },
   "M05": {
     "id": "M05",
@@ -62,7 +68,9 @@
     "credit": "Sarah Yasmin Pereira Marques",
     "sourcePage": "https://commons.wikimedia.org/wiki/File:Centro_-_Cidade_de_Goi%C3%A1s.jpg",
     "license": "CC BY-SA 4.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "edits": "Resized, converted to WebP",
+    "entry": "/images/stories/M05-entry.webp"
   },
   "M06": {
     "id": "M06",
@@ -75,7 +83,8 @@
     "credit": "Fotografistahc",
     "sourcePage": "https://commons.wikimedia.org/wiki/File:Casa_da_Ponte.jpg",
     "license": "CC BY-SA 4.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "edits": "Resized, converted to WebP"
   },
   "M07": {
     "id": "M07",
@@ -88,7 +97,9 @@
     "credit": "Moronifilho",
     "sourcePage": "https://commons.wikimedia.org/wiki/File:Cerrado_cajuzinho_fruto_t%C3%ADpico_da_culin%C3%A1ria_de_goi%C3%A1s_com_serra_dourada_ao_fundo.JPG",
     "license": "CC BY-SA 3.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0"
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "edits": "Resized, converted to WebP",
+    "entry": "/images/stories/M07-entry.webp"
   },
   "M08": {
     "id": "M08",
@@ -101,7 +112,8 @@
     "credit": "NASA/Wanmei Liang; Landsat data: USGS",
     "sourcePage": "https://commons.wikimedia.org/wiki/File:Central_Brazil_Cerrado_(Landsat_9,_2025-05-19).jpg",
     "license": "Public domain",
-    "licenseUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/"
+    "licenseUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+    "edits": "Resized, converted to WebP"
   },
   "lapig-team": {
     "id": "lapig-team",
@@ -113,8 +125,10 @@
     "caption": "The LAPIG team, from the laboratory’s 30-year retrospective (2024).",
     "credit": "LAPIG / Jornal UFG",
     "sourcePage": "https://jornal.ufg.br/n/187113-nos-seus-30-anos-lapig-e-referencia-nacional-na-area-de-geotecnologias",
-    "license": "Reuse with credit",
-    "licenseUrl": "https://jornal.ufg.br/n/187113-nos-seus-30-anos-lapig-e-referencia-nacional-na-area-de-geotecnologias"
+    "license": "Reuse with credit · non-commercial",
+    "licenseUrl": "https://ufg.br/n/63495-direitos-autorais",
+    "edits": "Resized, converted to WebP",
+    "entry": "/images/stories/lapig-team-entry.webp"
   },
   "lapig-research": {
     "id": "lapig-research",
@@ -126,8 +140,9 @@
     "caption": "Inside LAPIG: shared workspaces, maps and research discussions. Archive, 2024.",
     "credit": "LAPIG / Jornal UFG",
     "sourcePage": "https://jornal.ufg.br/n/187113-nos-seus-30-anos-lapig-e-referencia-nacional-na-area-de-geotecnologias",
-    "license": "Reuse with credit",
-    "licenseUrl": "https://jornal.ufg.br/n/187113-nos-seus-30-anos-lapig-e-referencia-nacional-na-area-de-geotecnologias"
+    "license": "Reuse with credit · non-commercial",
+    "licenseUrl": "https://ufg.br/n/63495-direitos-autorais",
+    "edits": "Resized, converted to WebP"
   },
   "fica-cinema": {
     "id": "fica-cinema",
@@ -139,8 +154,9 @@
     "caption": "On stage at FICA 2024. Archive photograph published in UFG’s 2025 festival preview.",
     "credit": "Secult Goiás / Portal UFG - Universidade Federal de Goiás",
     "sourcePage": "https://ufg.br/n/191899-fica-2025-comeca-na-terca-feira-10-6",
-    "license": "Reuse with credit",
-    "licenseUrl": "https://ufg.br/n/63495-direitos-autorais"
+    "license": "Reuse with credit · non-commercial",
+    "licenseUrl": "https://ufg.br/n/63495-direitos-autorais",
+    "edits": "Resized, converted to WebP"
   },
   "fica-city": {
     "id": "fica-city",
@@ -152,8 +168,10 @@
     "caption": "The festival beyond the cinema: an outdoor audience. Archive photograph from UFG’s 2025 preview; capture year not specified.",
     "credit": "Secult Goiás / Portal UFG - Universidade Federal de Goiás",
     "sourcePage": "https://ufg.br/n/191899-fica-2025-comeca-na-terca-feira-10-6",
-    "license": "Reuse with credit",
-    "licenseUrl": "https://ufg.br/n/63495-direitos-autorais"
+    "license": "Reuse with credit · non-commercial",
+    "licenseUrl": "https://ufg.br/n/63495-direitos-autorais",
+    "edits": "Resized, converted to WebP",
+    "entry": "/images/stories/fica-city-entry.webp"
   },
   "fica-awards": {
     "id": "fica-awards",
@@ -165,7 +183,8 @@
     "caption": "The closing ceremony of FICA 2025 at Cine Teatro São Joaquim.",
     "credit": "Ana Paula Vieira / Secult Goiás / Portal UFG - Universidade Federal de Goiás",
     "sourcePage": "https://ufg.br/n/192118-reitora-da-ufg-participa-da-solenidade-de-encerramento-do-fica",
-    "license": "Reuse with credit",
-    "licenseUrl": "https://ufg.br/n/63495-direitos-autorais"
+    "license": "Reuse with credit · non-commercial",
+    "licenseUrl": "https://ufg.br/n/63495-direitos-autorais",
+    "edits": "Resized, converted to WebP"
   }
 }

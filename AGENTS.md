@@ -1437,3 +1437,190 @@ that probe writes nothing and does not even consume the daily counter.
 `getChoiceSheet()` creates it on demand, exactly as the corrections sheet
 does. `choiceSheetUrl()` prints its address and `choiceTally()` prints the
 counts per activity, both run from the editor.
+
+## Optional stories — 9 September 2026
+
+Seven subjects that a participant may want and none of them needs: UFG, LAPIG
+and FUNAPE on the home page, Goiânia, the Cerrado, Cidade de Goiás and FICA on
+Travel & stay. They are reference reading, and the whole design follows from
+that: closed, they cost one row each; opened, they are allowed a magazine.
+
+**They are not a fifth destination, and the rule against one still holds.**
+No story has a route, a navigation entry or a place in the directory. Each is
+addressed by a hash inside a page that already exists — `/#about-ufg`,
+`/practical/#about-fica` — and its entry is a row in the page that already
+carries the subject. The names obey the same test as the pages do: `About UFG`
+and `Learn more` are things a reader already understands. Do not promote one
+to a route, and do not add an eighth without asking what page already earns it.
+
+**The panel is a native `<dialog>` opened with `showModal()`, and that
+overrode the plan.** `research/optional-content-plan.md` recommended expanding
+in place, below the entry. That is superseded — the panels are modal — and the
+rest of that document is research, not a specification. The reason is the
+sticky header: an in-page panel scrolls under it and a long story leaves the
+reader with no fixed way out, while the modal layer sits above it and carries
+`Back to page` at the top and the foot of every panel.
+
+**The `#about-` hash space is the stories' own.** It has nothing to do with
+`/programme/`'s `data-session` resolver, and the two must not be merged — that
+resolver has its own rules under [Deep links](#deep-links). The story trigger
+*does* carry the `id`, deliberately: a reader arriving from another page lands
+on the entry the panel came out of, so closing it leaves them where the link
+promised.
+
+**The history contract is three lines in `lib/story-navigation.ts`, and every
+part of it is load-bearing:**
+
+- Opening from the page **pushes one entry**, so Back closes the panel.
+- Opening a *related* story from inside a panel **replaces** it, so a reader
+  three subjects deep still leaves with one Back rather than three.
+- A story reached by a link from outside has no entry to pop, so `closeStory`
+  falls back to `replaceState` — a shared link closes into the site instead of
+  leaving it.
+
+`scripts/story-navigation.test.mjs` covers all three, plus the scroll lock.
+**The lock is a counter, not a flag** (`lockStoryScroll`), because the
+photograph lightbox is a second dialog inside the first and the two unmount in
+whichever order React chooses; a boolean let the inner one unlock the page
+while the outer was still open.
+
+**Closed panels download nothing.** The text is server-rendered and sits in the
+HTML; every image, gallery, explorer and film player is mounted behind
+`useStoryOpen()`, so a reader who never opens a story pays for none of it —
+confirmed against `performance.getEntriesByType('resource')`, not assumed.
+Films are YouTube embeds that load only on a deliberate play, and closing a
+story unmounts the player so reopening never resumes audio. Keep it that way:
+an `img` or an `iframe` rendered outside that gate silently undoes it.
+
+**Print carries only what a reader asked for.** An open panel prints; a closed
+one does not, except `data-print-always`, which is Cidade de Goiás alone —
+that town's history printed before the stories existed and still does.
+**Goiânia's history no longer prints**, which is a real change from the version
+before 9 September 2026: it moved behind its panel with the rest. That is
+deliberate. Adding `printAlways` to `goiania` in `components/optional-story.tsx`
+reverses it in one word if the organiser wants the paper sheet to carry it.
+
+### Media rights in the stories
+
+Nothing enters `data/story-images.json` without a local file and documented
+rights; `research/optional-content-image-provenance.json` records the source
+page, the credit, the licence, the changes and the date each was checked.
+
+**Every record states its modification, and that is a licence term rather than
+a courtesy.** The files are resized and converted to WebP, and both licences in
+use require saying so — CC BY-SA 4.0 asks whether the material was modified,
+and Portal UFG's terms at https://ufg.br/n/63495-direitos-autorais require
+derived material to identify its changes. The `edits` field carries it and the
+caption prints it. A new image without `edits` is a rights defect, not a
+cosmetic one.
+
+**The Portal UFG photographs are non-commercial**, and their `license` says so;
+their `licenseUrl` points at those terms, never at the article the photograph
+was published in. The LAPIG pair pointed at the article until 9 September 2026
+and understated the restriction as `Reuse with credit`.
+
+### Two things a person still has to answer
+
+- **FUNAPE sits in the institutions row at the client's explicit request** of
+  9 September 2026, under the heading `Institutional affiliations`. Its role in
+  *this* workshop is not established in any source consulted —
+  `research/optional-content-plan.md` records that as open — so the row asserts
+  a relationship the research does not yet support. Confirm it with the
+  organiser before the site is announced. The story text itself claims nothing
+  beyond what FUNAPE's own site says.
+- **FICA is a June festival and the workshop is in September.** The entry sits
+  under the Friday visit to Cidade de Goiás, which is the one place a reader
+  could mistake it for something on the programme. The prose is past tense and
+  the fact row now reads `Dates of the most recent edition` rather than
+  `2026 festival dates`, which was a June date set in display type beside a
+  September itinerary. Keep any new FICA fact in that tense.
+
+## Story devices — 9 September 2026
+
+The seven panels were built with four presentational widgets shared between
+them, and it showed: every one ran opening → media widget → facts → two
+columns of prose → references. They differed by which widget sat in slot two.
+That is a template, and a template is what the reader feels.
+
+**Each subject now has a device only that subject could justify**, and the
+composition lives in `components/stories/<id>.tsx`. `optional-story.tsx` is the
+frame — entry, opening, week link, references — and holds no `id ===` branches:
+it had four, and every new subject wanted a fifth. `components/story-parts.tsx`
+carries the shared pieces a composition may draw on.
+
+| Subject | Device | Why that subject |
+| ------- | ------ | ---------------- |
+| UFG | Five founding schools; the campus list with a computed distance | The reader is standing inside it, and Friday's town holds another campus |
+| LAPIG | Its own three films, then the retrospective photographs | It publishes its own account of itself |
+| FUNAPE | A four-step sequence, labelled as general | It has no cleared photography and no documented role here |
+| Goiânia | 1933 · 1937 · 2003 as steps | A city drawn before it was built is an order of events |
+| Cidade de Goiás | Two views, the dated spine, then the walk | Its heritage argument is a relationship between river, hills and town |
+| FICA | Typographic; four competition sections | No cleared festival photography beyond three archive frames |
+| Cerrado | The scale ladder: ground, air, orbit | It is the working method of the laboratory hosting the week |
+
+**The scale ladder must stay a set of choices.** Its three photographs are
+three different places — Serra Dourada, a LAPIG aerial frame and Serra de
+Caldas — and a slider, a dissolve or a continuous zoom would assert a single
+site across them. That would be a false claim made by an interaction rather
+than by a sentence, which is harder to notice and harder to correct. Rungs are
+pressed, each names its own location, and the closing chapter says outright
+that these are three places. Only Landsat's 30 m is a published figure; the
+other rungs name the instrument, because no ground coverage is documented for
+them and a fabricated number beside a real one is worse than no number.
+
+**Only one device needs JavaScript.** The founding list, the campus list, the
+steps and the sequence are server-rendered and print. Keep it that way: a
+device that hides content behind a click cannot be printed and cannot be read
+by someone who arrived with the panel already open.
+
+### The week link
+
+`lib/story-week.ts` resolves a story's `weekSessionId` against `AGENDA` and
+renders the title, day, time and venue with a link into the programme. **The
+time is never written in the story's own copy** — the programme is the only
+place a time lives, and a second copy is a second thing to update.
+
+Four stories declare a session and three do not, and the three are the point:
+FICA is a June festival, FUNAPE is not a place, and Goiânia is the whole week
+rather than an appointment. Giving all seven a line would have invented three
+appointments to make a row look consistent. An id that no longer resolves
+renders nothing rather than a dead deep link.
+
+Two of the four are worth keeping: `d1-ufg-tour` is literally "UFG Tour —
+Welcome at LAPIG", and `d5-serra-dourada` is the lookout at the mountain in the
+Cerrado ladder's first rung. The connection is real; do not manufacture more.
+
+### The entry rows
+
+Each row carries a thumbnail, the subject, and one line saying what is inside.
+Seven identical rows were a list nobody read before opening one, and the
+accessible name is set explicitly (`aria-label`) so the same is true by ear.
+
+**Entry thumbnails are their own file.** `scripts/build-entry-thumbs.mjs`
+crops 260×186 versions into `public/images/stories/<id>-entry.webp`; the
+gallery's 640px thumbnails were serving 85 KB to paint a 92×66 slot. Run it by
+hand after adding a story thumbnail — it resolves sharp from Next's own copy,
+which is transitive and must never be something the deploy depends on — and
+commit the output. `ENTRY_THUMB` in `optional-story.tsx` mirrors its
+dimensions; changing one means changing both.
+
+**Watch the closed height on a phone.** Stacking `Learn more` under the row
+first time out cost about 100px per entry and put four entries — 800px, most of
+a screen — between a reader and the transport information below them. The
+action sits at the right as a 44px target, and the teaser is clamped to two
+lines. Measured at 375px: 115–137px per row. If a change pushes that back over
+150, it is taking the page back.
+
+### UFG's facts are sourced now
+
+The panel used to carry three sentences. It now carries the creation date, the
+five schools and the campuses, from
+https://ufg.br/n/63408-historia and https://ufg.br/p/27153-campus (checked
+9 September 2026), in `data/story-features.ts`.
+
+**One thing on the history page is deliberately not reproduced.** It gives the
+creation as 14 December 1960 and also describes a decree signed by Juscelino
+Kubitschek on 18 December 1961. Those cannot both be the founding act, the page
+does not reconcile them, and this site does not publish a fact it cannot
+resolve. Only the creation date is on the page. If someone confirms the decree,
+it can go in with its own source — do not add it from the history page alone.

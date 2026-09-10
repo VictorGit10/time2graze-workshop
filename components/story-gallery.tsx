@@ -11,6 +11,7 @@ function Credit({ photo }: { photo: StoryImage }) {
   return <span className="story-photo-credit">
     <a href={photo.sourcePage} target="_blank" rel="noreferrer">{photo.credit}</a>
     {photo.licenseUrl && <> · <a href={photo.licenseUrl} target="_blank" rel="noreferrer">{photo.license}</a></>}
+    {photo.edits && <> · {photo.edits}</>}
   </span>;
 }
 

@@ -7,6 +7,14 @@ export type Story = {
   label: string;
   category: string;
   title: string;
+  /** One line on the closed entry. Seven identical rows are not a menu. */
+  teaser: string;
+  /** STORY_IMAGES key for the entry's thumbnail; FUNAPE has none and shows its mark. */
+  thumbnail?: string;
+  /** The AGENDA session this subject is in the reader's week, if it is one. */
+  weekSessionId?: string;
+  /** Why that session and this subject are the same thing. */
+  weekNote?: string;
   lead: string;
   chapters: { title: string; text: string }[];
   images: string[];
@@ -19,19 +27,23 @@ export type Story = {
 export const STORIES: Record<StoryId, Story> = {
   ufg: {
     id: 'ufg', label: 'About UFG', category: 'University',
+    teaser: 'Five schools, one university — and a campus in the town you visit on Friday.',
+    thumbnail: 'M01', weekSessionId: 'd1-ufg-tour',
     title: 'Federal University of Goiás',
     lead: 'A university in Goiás, connecting education, research and cultural life.',
     chapters: [
-      { title: 'A university takes shape', text: 'The Federal University of Goiás — Universidade Federal de Goiás, or UFG — was established in 1960 through the union of five existing colleges. Today its activities include undergraduate and postgraduate education.' },
+      { title: 'A university takes shape', text: 'The Federal University of Goiás — Universidade Federal de Goiás, or UFG — was created on 14 December 1960, joining five higher-education schools that already existed in Goiânia. Today its activities include undergraduate and postgraduate education, across campuses in several cities of the state.' },
       { title: 'The workshop’s host university', text: 'LAPIG is part of UFG’s Institute of Socio-Environmental Studies, known as IESA. The workshop takes place at the laboratory on Campus Samambaia in Goiânia.' },
       { title: 'Beyond the laboratory', text: 'UFG also co-organises FICA, the environmental film festival in Cidade de Goiás. The festival brings the university into conversations about cinema, science and the environment.' },
     ],
-    images: ['M01', 'M02'], facts: [{ value: '1960', label: 'University established' }, { value: 'Samambaia', label: 'The workshop’s campus' }],
-    sources: [{ label: 'UFG website', href: 'https://ufg.br/' }, { label: 'UFG and FICA', href: 'https://fica.go.gov.br/n/201969-fica-2026-inicia-sua-maior-edicao-com-homenagem-a-dalton-paula-e-estreia-nacional-de-a-curva-do-rio' }],
+    images: ['M01', 'M02'],
+    sources: [{ label: 'UFG website', href: 'https://ufg.br/' }, { label: 'UFG history · 1960', href: 'https://ufg.br/n/63408-historia' }, { label: 'UFG campuses', href: 'https://ufg.br/p/27153-campus' }, { label: 'UFG and FICA', href: 'https://fica.go.gov.br/n/201969-fica-2026-inicia-sua-maior-edicao-com-homenagem-a-dalton-paula-e-estreia-nacional-de-a-curva-do-rio' }],
     related: [{ label: 'About LAPIG', href: '/#about-lapig' }, { label: 'FICA: cinema and the environment', href: '/practical/#about-fica' }],
   },
   lapig: {
     id: 'lapig', label: 'About LAPIG', category: 'Laboratory',
+    teaser: 'The laboratory hosting the workshop, in its own films and photographs.',
+    thumbnail: 'lapig-team', weekSessionId: 'd1-ufg-tour',
     title: 'Thirty years of research',
     lead: 'At LAPIG, satellite observations and geographic information support the study of changing landscapes.',
     chapters: [
@@ -45,6 +57,7 @@ export const STORIES: Record<StoryId, Story> = {
   },
   funape: {
     id: 'funape', label: 'About FUNAPE', category: 'Research support',
+    teaser: 'The administrative work that happens behind a research project.',
     title: 'Supporting research projects',
     lead: 'FUNAPE provides the administrative support that helps research and education projects take place.',
     chapters: [
@@ -56,19 +69,21 @@ export const STORIES: Record<StoryId, Story> = {
   },
   goiania: {
     id: 'goiania', label: 'History and photos of Goiânia', category: 'City history',
+    teaser: 'A capital drawn on paper in 1933, and what was listed in 2003.',
+    thumbnail: 'M03',
     title: 'Goiânia, a planned capital',
     lead: 'A new capital, drawn in the twentieth century, grew beside the older settlement of Campinas.',
     chapters: [
-      { title: 'A new beginning', text: CITY_STORIES.goiania.paragraphs[0] },
       { title: 'The shape of the city', text: CITY_STORIES.goiania.paragraphs[1] },
-      { title: 'Art Deco heritage', text: 'In 2003, IPHAN recognised Goiânia’s architectural and urban ensemble. The listed group includes 22 public buildings and monuments, preserving part of the city’s early identity.' },
     ],
-    images: ['M03', 'M04'], facts: [{ value: '1933', label: 'Goiânia founded' }, { value: '1937', label: 'State capital transferred' }, { value: '2003', label: 'Art Deco ensemble listed' }],
+    images: ['M03', 'M04'],
     sources: [CITY_STORIES.goiania.source, { label: 'Art Deco heritage · IPHAN', href: 'https://www.gov.br/iphan/pt-br/assuntos/noticias/iphan-lanca-norma-de-preservacao-do-acervo-arquitetonico-e-urbanistico-art-deco-de-goiania-go' }],
     related: [{ label: 'History of Cidade de Goiás', href: '/practical/#about-cidade-de-goias' }],
   },
   'cidade-de-goias': {
     id: 'cidade-de-goias', label: 'History and photos of Cidade de Goiás', category: 'History & culture',
+    teaser: 'The former capital, its river, and the poet who wrote from its bank.',
+    thumbnail: 'M05', weekSessionId: 'd5-city-tour',
     title: 'Streets, landscape and literature',
     lead: 'The former capital of Goiás carries its history in the relationship between the town, the river and the hills.',
     chapters: [
@@ -82,24 +97,29 @@ export const STORIES: Record<StoryId, Story> = {
   },
   fica: {
     id: 'fica', label: 'FICA: cinema and the environment', category: 'Film & environment',
+    teaser: 'An environmental film festival the same town has hosted since 1999.',
+    thumbnail: 'fica-city',
     title: 'Environmental questions, on screen',
     lead: 'Since 1999, Cidade de Goiás has hosted the Festival Internacional de Cinema e Vídeo Ambiental — FICA.',
     chapters: [
       { title: 'Cinema in Cidade de Goiás', text: 'Film screenings, discussions and cultural activities bring environmental questions into the city’s cultural life. The 2026 opening took place at Cine Teatro São Joaquim.' },
       { title: 'Water and climate', text: 'The 27th edition ran from 16 to 21 June 2026 under the theme “Água e Clima no Brasil das Nascentes”, focusing on water, climate and Brazil’s headwaters.' },
     ],
-    images: ['fica-cinema', 'fica-awards', 'fica-city'], facts: [{ value: '1999', label: 'First edition' }, { value: '16–21 June', label: '2026 festival dates' }, { value: '27', label: 'Editions through 2026' }],
+    images: ['fica-cinema', 'fica-awards', 'fica-city'], facts: [{ value: '1999', label: 'First edition' }, { value: '16–21 June 2026', label: 'Dates of the most recent edition' }, { value: '27', label: 'Editions through 2026' }],
     sources: [{ label: 'FICA 2026 · official festival report', href: 'https://fica.go.gov.br/n/201969-fica-2026-inicia-sua-maior-edicao-com-homenagem-a-dalton-paula-e-estreia-nacional-de-a-curva-do-rio' }, { label: 'Festival dates · UFG', href: 'https://goias.ufg.br/n/200984-ufg-campus-goias-abre-selecao-de-monitores-para-o-fica-2026?atr=en&locale=en' }],
     related: [{ label: 'About UFG', href: '/#about-ufg' }],
   },
   cerrado: {
     id: 'cerrado', label: 'The Cerrado landscape', category: 'Landscape',
-    title: 'The Cerrado, at two scales',
+    teaser: 'One landscape, seen on foot, from the air and from orbit.',
+    thumbnail: 'M07', weekSessionId: 'd5-serra-dourada',
+    weekNote: 'Serra Dourada is the landscape on the first rung above; the programme stops at its lookout on the way back.',
+    title: 'The Cerrado, at three scales',
     lead: 'Savanna and grassland landscapes in central Brazil support a rich variety of plant and animal life.',
     chapters: [
       { title: 'Seen from the ground', text: 'The vegetation and terrain of Serra Dourada offer one view of the Cerrado in Goiás. This regional landscape provides context for the workshop’s interest in land and grazing systems.' },
       { title: 'Seen from space', text: 'On 19 May 2025, Landsat 9 captured Serra de Caldas and its surrounding landscape. The image reveals another scale of observation, connecting this regional view with the work of remote sensing.' },
-      { title: 'Two places in Goiás', text: 'Serra Dourada and Serra de Caldas are different locations. These images show regional landscapes, rather than the farm visited during the workshop.' },
+      { title: 'Three places, not one', text: 'Serra Dourada, the aerial photograph and Serra de Caldas are different locations. The rungs above change the instrument, not the place, and none of them shows the farm visited during the workshop.' },
     ],
     images: ['M07', 'M08'],
     sources: [{ label: 'Cerrado · ICMBio', href: 'https://www.gov.br/icmbio/pt-br/assuntos/biodiversidade/unidade-de-conservacao/unidades-de-biomas/cerrado/cerrado' }, { label: 'Serra de Caldas · NASA', href: 'https://www.nasa.gov/image-article/central-brazil-cerrado/' }],
