@@ -1677,3 +1677,58 @@ describes a decree signed by Juscelino Kubitschek on 18 December 1961. Both
 cannot be the founding act, the page does not reconcile them, and only the
 creation date is published. The Observatório UFG-IA has no launch date on its
 announcement either, so the site gives none.
+
+## Campuses, FUNAPE and the science park — 10 September 2026
+
+**The campus a visitor never notices is a campus.** Câmpus Colemar Natal e
+Silva has no gate and no perimeter: the Faculty of Law, the Hospital das
+Clínicas and their neighbours stand among ordinary streets in Goiânia's Setor
+Universitário, four kilometres from Samambaia. The panel says that outright,
+because a reader who walks past it will otherwise see a hospital and a law
+school and not a university. It is named after the man who directed that
+faculty, organised the assemblies and marches that argued for a federal
+university in Goiás, and became UFG's first rector in 1961
+(https://jornal.ufg.br/n/135985-a-criacao-da-ufg-uma-ousadia-historica).
+
+That page also has JK signing the creation decree in **December 1960**, which
+agrees with the 14 December 1960 date on the history page and makes the
+"18 December 1961" sentence there look like a slip. Still only the creation
+date is published, and still from one source.
+
+**FUNAPE is a building, and the address is the argument.** The panel used to
+be two paragraphs about administrative support, which is true and forgettable.
+It now opens on the building itself — 1,772 m², two floors, a roof garden and
+a training room for 97, opened December 2020 — and then lists its neighbours in
+the Parque Tecnológico Samambaia: the innovation agency, the prototyping lab,
+the incubator, and LaMCAD, whose largest client is the CEMPA-Cerrado that
+forecasts the weather in the UFG panel. Naming the neighbours says what the
+foundation is for better than a sentence about contracting does.
+
+**It still claims no role in this workshop.** Every sentence describes what
+FUNAPE is and does generally. Its place in the institutions row remains
+unconfirmed — see the earlier entry — and nothing in the panel was written to
+make that placement look settled.
+
+### What is not there, and why
+
+Wikimedia Commons has no photograph of the Parque Tecnológico, of FUNAPE, or
+of Câmpus Colemar Natal e Silva under any licence. The FUNAPE building comes
+from Portal UFG under its attributed, non-commercial terms — the same basis as
+the FICA and LAPIG photographs. The park itself has none and is drawn in type,
+as FICA is.
+
+**Three Commons photographs of the Faculty of Law were rejected**, and they are
+the best that exists there: each is a wall of window air-conditioners on
+stained concrete. The Hospital das Clínicas frame was taken instead, and it is
+honest about what that campus looks like — an urban block on a working street.
+Its provenance note records what is in it, including the parked cars, because
+the rule now is that the record says what was actually seen.
+
+### A pre-existing layout bug, found while doing this
+
+`.story-photo-essay .story-photo-open img` carried `aspect-ratio: auto`, so
+the LAPIG and FICA essays reserved **no height at all** until their images
+arrived: measured at 0px, with every caption below them jumping on load. Both
+now pass `natural` to `StoryPhotos`, which writes each ratio inline. If a new
+gallery wants natural proportions, use `natural` — never bare
+`aspect-ratio: auto`.

@@ -214,5 +214,34 @@
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
     "edits": "Resized, converted to WebP"
+  },
+  "U05": {
+    "id": "U05",
+    "src": "/images/stories/U05.webp",
+    "thumbnail": "/images/stories/U05-thumb.webp",
+    "width": 1400,
+    "height": 1050,
+    "alt": "A two-storey modern building in white and grey volumes with an orange perforated screen and dark glazing, on a lawn.",
+    "caption": "The FUNAPE building in the Parque Tecnológico Samambaia, inaugurated in December 2020.",
+    "credit": "Portal UFG - Universidade Federal de Goiás",
+    "sourcePage": "https://ufg.br/n/136743-novo-predio-da-fundacao-de-apoio-a-pesquisa-e-inaugurado",
+    "license": "Reuse with credit · non-commercial",
+    "licenseUrl": "https://ufg.br/n/63495-direitos-autorais",
+    "edits": "Resized, converted to WebP",
+    "entry": "/images/stories/U05-entry.webp"
+  },
+  "U06": {
+    "id": "U06",
+    "src": "/images/stories/U06.webp",
+    "thumbnail": "/images/stories/U06-thumb.webp",
+    "width": 1400,
+    "height": 1050,
+    "alt": "A tall hospital building carrying UFG signage, seen from a tree-lined street with parked cars.",
+    "caption": "The Hospital das Clínicas on Câmpus Colemar Natal e Silva, in Goiânia’s Setor Universitário — December 2022.",
+    "credit": "Fronteira",
+    "sourcePage": "https://commons.wikimedia.org/wiki/File:Hospital_das_Cl%C3%ADnicas_da_UFG,_Goi%C3%A2nia,_dezembro_de_2022_(1).jpg",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "edits": "Resized, converted to WebP"
   }
 }

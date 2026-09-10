@@ -25,7 +25,7 @@ export function UfgStory({ story, ChapterHeading }: StoryBodyProps) {
       <StoryChapters story={story} ChapterHeading={ChapterHeading} />
       <StoryObservatories ChapterHeading={ChapterHeading} />
       <StoryPhotos story={story} natural />
-      <StoryCampuses />
+      <StoryCampuses ChapterHeading={ChapterHeading} />
     </>
   );
 }

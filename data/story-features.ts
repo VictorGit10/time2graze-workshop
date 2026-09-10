@@ -33,11 +33,62 @@ export const UFG_FOUNDERS = [
  * here says the group visits that campus, because the programme does not.
  */
 export const UFG_CAMPUSES = [
-  { name: 'Câmpus Samambaia', city: 'Goiânia', week: 'The workshop runs here' },
-  { name: 'Câmpus Colemar Natal e Silva', city: 'Goiânia' },
-  { name: 'Câmpus Aparecida de Goiânia', city: 'Aparecida de Goiânia' },
-  { name: 'Câmpus Cidade de Goiás', city: 'Cidade de Goiás', week: 'Friday’s destination town', href: 'https://goias.ufg.br/' },
-  { name: 'Câmpus Cidade Ocidental', city: 'Cidade Ocidental' },
+  {
+    name: 'Câmpus Samambaia', city: 'Goiânia',
+    text: 'The large campus north-west of the centre, wooded enough that monkeys use the walkways. It holds LAPIG, the Parque Tecnológico Samambaia and an agrometeorological station that has been recording the climate of Goiânia since 1977.',
+    week: 'The workshop runs here',
+  },
+  {
+    name: 'Câmpus Colemar Natal e Silva', city: 'Setor Universitário, Goiânia',
+    text: 'The campus inside the city, around Praça Universitária: the Faculty of Law — one of the five schools joined in 1960 — and the Hospital das Clínicas, among others. It carries the name of the man who ran the campaign for the university from that faculty and became its first rector.',
+    note: 'A campus with no gate: it is a set of buildings in an ordinary Goiânia neighbourhood, four kilometres from Samambaia.',
+  },
+  { name: 'Câmpus Aparecida de Goiânia', city: 'Aparecida de Goiânia', text: 'Newer, in the neighbouring city; the Faculty of Science and Technology and its palaeontology collection are here.' },
+  {
+    name: 'Câmpus Cidade de Goiás', city: 'Cidade de Goiás',
+    text: 'In the former capital, the UNESCO-listed town the programme visits on Friday. The group does not go to the campus — but the university is there.',
+    week: 'Friday’s destination town', href: 'https://goias.ufg.br/',
+  },
+  { name: 'Câmpus Cidade Ocidental', city: 'Cidade Ocidental', text: 'On the far side of the state, near the border with the Federal District.' },
+] as const;
+
+/**
+ * UFG's own figures, from https://ufg.br/p/27153-campus (10 September 2026):
+ * "Com 114 cursos de graduação, cerca de 4 mil vagas disponíveis por ano na
+ * graduação e mais de 22 mil alunos, a UFG está presente nas cidades de
+ * Goiânia, Caldas Novas, Firminópolis, Aparecida de Goiânia, Cidade
+ * Ocidental, Cidade de Goiás."
+ *
+ * The city count is six and the named campuses are five, because the page
+ * reports a presence in Caldas Novas and Firminópolis without naming a campus
+ * there. Both numbers are the page's; neither is reconciled into the other.
+ */
+export const UFG_FIGURES = [
+  { value: '114', label: 'Undergraduate courses' },
+  { value: '22,000+', label: 'Students' },
+  { value: '6', label: 'Cities' },
+] as const;
+
+/**
+ * The Parque Tecnológico Samambaia, on the campus where the workshop runs.
+ * Source: https://parquesamambaia.ufg.br/p/sobre-pts (10 September 2026) —
+ * "um complexo organizacional de caráter científico e tecnológico mantido
+ * pela Universidade Federal de Goiás", useful area ~179,000 m², discussed
+ * from 2004, feasibility approved 2005, implantation from 2011.
+ *
+ * The order is not alphabetical: FUNAPE first, because this list appears in
+ * FUNAPE's own panel and the point is that the foundation is a building in a
+ * place, next to the machines it helps pay for.
+ */
+export const PARQUE_TECNOLOGICO = [
+  { name: 'FUNAPE', text: 'Its own building since December 2020: 1,772 m² over two floors, a roof garden, water recycling, and a training room for 97 people.' },
+  { name: 'LaMCAD', text: 'The multi-user high-performance computing laboratory, opened in 2020. CEMPA-Cerrado — which forecasts the weather of the Cerrado — is its largest client.' },
+  { name: 'CRTI', text: 'The Regional Centre for Technological Development and Innovation, next door to FUNAPE.' },
+  { name: 'Agência UFG de Inovação', text: 'The university’s innovation agency.' },
+  { name: 'CEMEP', text: 'The Centre of Excellence in Molecular Studies, Energy and Petroleum.' },
+  { name: 'IPElab', text: 'An open prototyping laboratory.' },
+  { name: 'CEI', text: 'The Entrepreneurship and Incubation Centre, with coworking space, startups and spin-offs.' },
+  { name: 'Edifício LIFE', text: 'One of the park’s laboratory buildings.' },
 ] as const;
 
 /**

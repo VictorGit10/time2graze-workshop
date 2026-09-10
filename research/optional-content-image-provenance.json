@@ -228,5 +228,31 @@
     "width": 1400,
     "height": 1050,
     "notes": "The School of Music and Performing Arts, Campus Samambaia, UFG — December 2022."
+  },
+  {
+    "id": "U05",
+    "sourcePage": "https://ufg.br/n/136743-novo-predio-da-fundacao-de-apoio-a-pesquisa-e-inaugurado",
+    "credit": "Portal UFG - Universidade Federal de Goiás",
+    "licence": "Publisher permits reuse with attribution; Portal UFG restricts commercial reuse.",
+    "licenceUrl": "https://ufg.br/n/63495-direitos-autorais",
+    "changes": "Resized (long edge 1400px) and converted to WebP; no crop or tonal edits.",
+    "verifiedDate": "2026-09-10",
+    "visualInspection": "Passed; opened at full size. Building exterior only, no people in frame.",
+    "width": 1400,
+    "height": 1050,
+    "notes": "The FUNAPE building in the Parque Tecnológico Samambaia, inaugurated in December 2020."
+  },
+  {
+    "id": "U06",
+    "sourcePage": "https://commons.wikimedia.org/wiki/File:Hospital_das_Cl%C3%ADnicas_da_UFG,_Goi%C3%A2nia,_dezembro_de_2022_(1).jpg",
+    "credit": "Fronteira",
+    "licence": "CC BY-SA 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "changes": "Resized (long edge 1400px) and converted to WebP; no crop or tonal edits.",
+    "verifiedDate": "2026-09-10",
+    "visualInspection": "Passed; opened at full size. A public street scene: three pedestrians at a distance, none identifiable; parked cars with vehicle plates visible, incidental to a photograph of the building. No graffiti or signage beyond the hospital’s own.",
+    "width": 1400,
+    "height": 1050,
+    "notes": "The Hospital das Clínicas on Câmpus Colemar Natal e Silva, in Goiânia’s Setor Universitário — December 2022."
   }
 ]

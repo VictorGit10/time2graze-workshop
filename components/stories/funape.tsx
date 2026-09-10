@@ -1,12 +1,19 @@
 import Image from 'next/image';
-import { StoryChapters, StoryFacts, type StoryBodyProps } from '@/components/story-parts';
+import { StoryChapters, StoryFacts, StoryPhotos, type StoryBodyProps } from '@/components/story-parts';
 import { StorySequence } from '@/components/story-sequence';
+import { StoryPark } from '@/components/story-park';
 import { withBasePath } from '@/lib/base-path';
 
 /**
- * The shortest panel of the seven, and it should stay that way. FUNAPE has no
- * cleared photography and no documented role in this workshop; the honest
- * response is a well-set page, not a gallery borrowed from somewhere else.
+ * This was the shortest panel of the seven and deliberately so, because the
+ * foundation had no cleared photography and no documented role in this
+ * workshop. The first is now fixed: it has a building, and the building is
+ * photographed and creditable.
+ *
+ * The second is not, and the panel still does not claim one. Everything here
+ * describes what FUNAPE is and does in general, and what stands around it on
+ * the campus — no sentence says it organises, funds or manages this event.
+ * That question is still open with the organiser.
  */
 export function FunapeStory({ story, ChapterHeading }: StoryBodyProps) {
   return (
@@ -20,8 +27,10 @@ export function FunapeStory({ story, ChapterHeading }: StoryBodyProps) {
           loading="lazy"
         />
       </div>
+      <StoryPhotos story={story} />
       <StoryChapters story={story} ChapterHeading={ChapterHeading} />
       <StorySequence />
+      <StoryPark ChapterHeading={ChapterHeading} />
       <StoryFacts story={story} />
     </>
   );

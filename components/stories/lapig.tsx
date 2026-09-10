@@ -24,7 +24,7 @@ export function LapigStory({ story, ChapterHeading }: StoryBodyProps) {
             collaboration. Photographs from LAPIG’s 2024 anniversary retrospective.
           </p>
         </div>
-        <StoryPhotos story={story} />
+        <StoryPhotos story={story} natural />
       </section>
       <StoryChapters story={story} ChapterHeading={ChapterHeading} />
       <section className="story-research-paths">

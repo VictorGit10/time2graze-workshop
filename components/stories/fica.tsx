@@ -54,7 +54,7 @@ export function FicaStory({ story, ChapterHeading }: StoryBodyProps) {
             photographs show earlier editions; the films above cover 2026.
           </p>
         </div>
-        <StoryPhotos story={story} />
+        <StoryPhotos story={story} natural />
       </section>
     </>
   );
