@@ -15,7 +15,15 @@ function Credit({ photo }: { photo: StoryImage }) {
   </span>;
 }
 
-export function StoryGallery({ photos }: { photos: StoryImage[] }) {
+/**
+ * `natural` keeps each photograph's own proportions instead of cropping the
+ * set into one ratio. The ratio is written inline, per image, because
+ * `aspect-ratio: auto` reserves no height at all until the file arrives: the
+ * gallery collapses to nothing and every caption below it jumps when the
+ * images land. The CSS crops elsewhere on the site do the same job for the
+ * galleries that want a common shape.
+ */
+export function StoryGallery({ photos, natural = false }: { photos: StoryImage[]; natural?: boolean }) {
   const expanded = useStoryOpen();
   const [selected, setSelected] = useState<number | null>(null);
   const dialog = useRef<HTMLDialogElement>(null);
@@ -60,7 +68,7 @@ export function StoryGallery({ photos }: { photos: StoryImage[] }) {
 
   if (!photos.length) return null;
   return <>
-    {expanded && <div className="story-gallery" data-count={photos.length}>
+    {expanded && <div className="story-gallery" data-count={photos.length} data-natural={natural || undefined}>
       {photos.map((item, index) => <figure className="story-photo" key={item.id}>
         <button type="button" className="story-photo-open" aria-label={`Enlarge photo: ${item.caption}`}
           onClick={(event) => { returnFocus.current = event.currentTarget; setSelected(index); }}>
@@ -68,7 +76,8 @@ export function StoryGallery({ photos }: { photos: StoryImage[] }) {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={withBasePath(item.src)}
             srcSet={item.thumbnail ? `${withBasePath(item.thumbnail)} 640w, ${withBasePath(item.src)} ${item.width}w` : undefined}
-            sizes="(max-width: 700px) 90vw, 60vw" width={item.width} height={item.height} alt={item.alt} loading="lazy" />
+            sizes="(max-width: 700px) 90vw, 60vw" width={item.width} height={item.height} alt={item.alt} loading="lazy"
+            style={natural ? { aspectRatio: item.width + " / " + item.height } : undefined} />
           <span className="story-photo-expand"><Expand aria-hidden="true" /><span>Enlarge</span></span>
         </button>
         <figcaption><span>{item.caption}</span><Credit photo={item} /></figcaption>

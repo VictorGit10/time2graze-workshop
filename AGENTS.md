@@ -1624,3 +1624,56 @@ Kubitschek on 18 December 1961. Those cannot both be the founding act, the page
 does not reconcile them, and this site does not publish a fact it cannot
 resolve. Only the creation date is on the page. If someone confirms the decree,
 it can go in with its own source — do not add it from the history page alone.
+
+## UFG, expanded — 10 September 2026
+
+**Look at every photograph at full size before it is published.** The pair that
+opened this panel until 10 September had been through a documented provenance
+check that recorded "visible weathering and graffiti" — and shipped. The
+graffiti read `FORA PM`, `REITOR TEM RABO PRESO` and `A+ ZONA ANTIFA`, on the
+Central Library of the host university, on the page that introduces that
+university to people arriving from seven countries. A licence check is not a
+look. The provenance file now carries a `visualInspection` line that says what
+was actually examined.
+
+**A university is easier to describe by what it measures than by how many
+people it enrols.** That is the panel's argument and it is checkable: UFG keeps
+observatories pointed at the land (LAPIG), at the sky (CEMPA-Cerrado) and at
+its own use of artificial intelligence (Observatório UFG-IA, which LAPIG built
+— the same laboratory the participants sit in). CEIA is the fourth card and is
+labelled `Builds the instruments`, not a fourth "watches": forcing the
+symmetry would have been the device inventing a fact to complete its own
+shape. `UFG_OBSERVATORIES` in `data/story-features.ts` carries the sources.
+
+**The photographs are not a campus tour**, and that is the correction to what
+was there before. A monkey hanging from the walkway of Campus Samambaia, an
+agrometeorological station photographed from directly above, a case of fossils
+and a music school: the range of one university, which is truer than its
+façades and survives being seen by someone who has never been there. All four
+are CC BY-SA 4.0 from Wikimedia Commons and every frame was opened at full
+size first. Three sunset views of the same campus were rejected in the same
+pass — each was a car park with overhead cables.
+
+**`natural` on `StoryGallery` keeps each photograph's own proportions**, and
+the ratio is written inline per image rather than left to `aspect-ratio: auto`.
+That is not a style preference: with `auto`, an unloaded image reserves no
+height at all, the gallery collapses to nothing, and every caption below it
+jumps as the files land. Measured before the fix: four images at 0px tall.
+
+**A pre-existing rule had to be narrowed for this.** `.story-photo:first-child`
+was given `grid-column: 1 / -1` and `aspect-ratio: 16 / 9` for the stories that
+lead with one wide frame. UFG was in that list and is not one of them any more;
+leaving it there letterboxed a portrait photograph into 16:9. Goiânia and
+Cidade de Goiás still are, and still want it.
+
+**`scripts/build-entry-thumbs.mjs` reads the stories rather than a list.** The
+hand-kept list went stale the first time a story changed its thumbnail and
+failed on an image that no longer existed.
+
+### One fact deliberately left out
+
+UFG's own history page gives the creation as 14 December 1960 and also
+describes a decree signed by Juscelino Kubitschek on 18 December 1961. Both
+cannot be the founding act, the page does not reconcile them, and only the
+creation date is published. The Observatório UFG-IA has no launch date on its
+announcement either, so the site gives none.

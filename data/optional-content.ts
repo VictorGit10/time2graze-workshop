@@ -27,18 +27,19 @@ export type Story = {
 export const STORIES: Record<StoryId, Story> = {
   ufg: {
     id: 'ufg', label: 'About UFG', category: 'University',
-    teaser: 'Five schools, one university — and a campus in the town you visit on Friday.',
-    weekSessionId: 'd1-ufg-tour',
+    teaser: 'Five schools became one university. It now keeps observatories — including one pointed at itself.',
+    thumbnail: 'U01', weekSessionId: 'd1-ufg-tour',
     title: 'Federal University of Goiás',
-    lead: 'A university in Goiás, connecting education, research and cultural life.',
+    lead: 'A university in Goiás that measures things: pasture from orbit, weather over the Cerrado, and its own use of artificial intelligence.',
     chapters: [
       { title: 'A university takes shape', text: 'The Federal University of Goiás — Universidade Federal de Goiás, or UFG — was created on 14 December 1960, joining five higher-education schools that already existed in Goiânia. Today its activities include undergraduate and postgraduate education, across campuses in several cities of the state.' },
       { title: 'The workshop’s host university', text: 'LAPIG is part of UFG’s Institute of Socio-Environmental Studies, known as IESA. The workshop takes place at the laboratory on Campus Samambaia in Goiânia.' },
+      { title: 'A university of instruments', text: 'The same campus carries a centre forecasting the weather of the Cerrado, a laboratory mapping its pastures, an agrometeorological station recording the climate of Goiânia since 1977, and the first undergraduate degree in artificial intelligence opened in Brazil.' },
       { title: 'Beyond the laboratory', text: 'UFG also co-organises FICA, the environmental film festival in Cidade de Goiás. The festival brings the university into conversations about cinema, science and the environment.' },
     ],
-    /* Withdrawn 10 September 2026: see components/stories/ufg.tsx. */
-    images: [],
-    sources: [{ label: 'UFG website', href: 'https://ufg.br/' }, { label: 'UFG history · 1960', href: 'https://ufg.br/n/63408-historia' }, { label: 'UFG campuses', href: 'https://ufg.br/p/27153-campus' }, { label: 'UFG and FICA', href: 'https://fica.go.gov.br/n/201969-fica-2026-inicia-sua-maior-edicao-com-homenagem-a-dalton-paula-e-estreia-nacional-de-a-curva-do-rio' }],
+    /* Not a campus tour: the range of one university. See components/stories/ufg.tsx. */
+    images: ['U01', 'U02', 'U03', 'U04'],
+    sources: [{ label: 'UFG website', href: 'https://ufg.br/' }, { label: 'UFG history · 1960', href: 'https://ufg.br/n/63408-historia' }, { label: 'UFG campuses', href: 'https://ufg.br/p/27153-campus' }, { label: 'CEMPA-Cerrado', href: 'https://cempa.ufg.br/p/39752-apresentacao' }, { label: 'Observatório UFG-IA', href: 'https://lapig-ufg.github.io/observatorio-ia/' }, { label: 'CEIA · Centre of Excellence in AI', href: 'https://ceia.ufg.br/sobre-nos/' }, { label: 'UFG and FICA', href: 'https://fica.go.gov.br/n/201969-fica-2026-inicia-sua-maior-edicao-com-homenagem-a-dalton-paula-e-estreia-nacional-de-a-curva-do-rio' }],
     related: [{ label: 'About LAPIG', href: '/#about-lapig' }, { label: 'FICA: cinema and the environment', href: '/practical/#about-fica' }],
   },
   lapig: {

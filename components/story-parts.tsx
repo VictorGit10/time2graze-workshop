@@ -47,8 +47,8 @@ export function StoryFacts({ story }: { story: Story }) {
 }
 
 /** Photographs the story owns, in the registry order it declares. */
-export function StoryPhotos({ story }: { story: Story }) {
-  return <StoryGallery photos={story.images.flatMap((key) => (STORY_IMAGES[key] ? [STORY_IMAGES[key]] : []))} />;
+export function StoryPhotos({ story, natural = false }: { story: Story; natural?: boolean }) {
+  return <StoryGallery natural={natural} photos={story.images.flatMap((key) => (STORY_IMAGES[key] ? [STORY_IMAGES[key]] : []))} />;
 }
 
 /** Two named views of a subject, chosen rather than dissolved between. */

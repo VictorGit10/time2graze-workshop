@@ -35,8 +35,16 @@ const WIDTH = 260;
 const HEIGHT = 186;
 const images = JSON.parse(readFileSync('data/story-images.json', 'utf8'));
 
-/** Only the images an entry row actually uses. */
-const ENTRIES = ['M01', 'M03', 'M05', 'M07', 'lapig-team', 'fica-city'];
+/**
+ * Read from the stories rather than listed here: a hand-kept list went stale
+ * the first time a story changed its thumbnail, and failed the build on an
+ * image that no longer existed. The data file is small and hand-written, so a
+ * match on its one `thumbnail:` field is safe; finding none is an error, not
+ * an empty run.
+ */
+const declared = readFileSync('data/optional-content.ts', 'utf8');
+const ENTRIES = [...new Set([...declared.matchAll(/thumbnail:\s*'([^']+)'/g)].map((m) => m[1]))];
+if (!ENTRIES.length) throw new Error('no story declares a thumbnail — has the field been renamed?');
 
 /* Wrapped rather than run at the top level: a top-level `await` in this
    directory switches oxlint into its type-aware pass, which then reports the

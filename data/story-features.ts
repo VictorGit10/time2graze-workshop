@@ -95,3 +95,54 @@ export const GOIANIA_STEPS = [
   { year: '1937', title: 'The government moves', text: 'The state government transfers from Cidade de Goiás to the new city.', hinge: { label: 'The town it left', href: '/practical/#about-cidade-de-goias' } },
   { year: '2003', title: 'The Art Deco ensemble is listed', text: 'IPHAN recognises the architectural and urban ensemble: 22 public buildings and monuments.' },
 ] as const;
+
+/**
+ * What UFG watches, and the one entry that builds instead.
+ *
+ * A university describes itself in student counts and campus photographs, and
+ * both are forgettable. This one keeps observatories: it watches the land, it
+ * watches the sky, and — since LAPIG built the third — it watches itself. That
+ * is a specific and checkable thing to say, and it is the same idea the
+ * workshop is about, which is why the panel is built on it.
+ *
+ * CEIA is marked as building rather than watching, because it is: forcing a
+ * fourth "watches" onto it to make the row symmetrical would have been the
+ * device inventing a fact for the sake of its own shape.
+ *
+ * Sources, all checked 10 September 2026:
+ *  - CEMPA-Cerrado name and mission: https://cempa.ufg.br/p/39752-apresentacao
+ *  - Observatório UFG-IA, and UFG's 2019 AI degree:
+ *    https://lapig.iesa.ufg.br/n/203133-lapig-lanca-observatorio-ufg-ia-para-debater-e-mapear-uso-de-inteligencia-artificial
+ *  - CEIA's founding, FAPEG policy and triple-helix model:
+ *    https://ceia.ufg.br/sobre-nos/
+ */
+export const UFG_OBSERVATORIES = [
+  {
+    id: 'lapig', role: 'Watches the land', figure: '1994',
+    name: 'LAPIG',
+    full: 'Laboratório de Sensoriamento Remoto e Geoprocessamento',
+    text: 'Remote sensing and geoprocessing for environmental and territorial monitoring — including the pastures this workshop is about. It is the laboratory you are sitting in.',
+    href: '/#about-lapig', internal: true,
+  },
+  {
+    id: 'cempa', role: 'Watches the sky', figure: '2 km',
+    name: 'CEMPA-Cerrado',
+    full: 'Centro de Excelência em Estudos, Monitoramento e Previsões Ambientais do Cerrado',
+    text: 'Numerical weather prediction for Goiás and the Centre-West, down to a two-kilometre grid over the Goiânia region, with climate bulletins, air-quality forecasts and active-fire monitoring.',
+    href: 'https://cempa.ufg.br/',
+  },
+  {
+    id: 'observatorio', role: 'Watches the university', figure: 'Daily',
+    name: 'Observatório UFG-IA',
+    full: 'A platform to monitor, collect data on and study artificial intelligence',
+    text: 'A public collection of articles, papers, news and video on artificial intelligence, updated daily, alongside a survey of how the university itself uses the technology. Launched by LAPIG.',
+    href: 'https://lapig-ufg.github.io/observatorio-ia/',
+  },
+  {
+    id: 'ceia', role: 'Builds the instruments', figure: '2019',
+    name: 'CEIA',
+    full: 'Centro de Excelência em Inteligência Artificial',
+    text: 'Created under a public policy of FAPEG, the state research foundation, on a triple-helix model of university, government and companies. UFG opened Brazil’s first undergraduate degree in AI the same year.',
+    href: 'https://ceia.ufg.br/',
+  },
+] as const;

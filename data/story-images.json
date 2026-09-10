@@ -1,33 +1,4 @@
 {
-  "M01": {
-    "id": "M01",
-    "src": "/images/stories/M01.webp",
-    "thumbnail": "/images/stories/M01-thumb.webp",
-    "width": 1400,
-    "height": 1050,
-    "alt": "A tree-lined road and university buildings along Alameda Palmeiras at UFG’s Campus Samambaia.",
-    "caption": "Alameda Palmeiras, Campus Samambaia, UFG, Goiânia — August 2023.",
-    "credit": "Fronteira",
-    "sourcePage": "https://commons.wikimedia.org/wiki/File:Alameda_Palmeiras,_Campus_Samambaia,_Universidade_Federal_de_Goi%C3%A1s,_Goi%C3%A2nia,_agosto_de_2023_(3).jpg",
-    "license": "CC BY-SA 4.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-    "edits": "Resized, converted to WebP",
-    "entry": "/images/stories/M01-entry.webp"
-  },
-  "M02": {
-    "id": "M02",
-    "src": "/images/stories/M02.webp",
-    "thumbnail": "/images/stories/M02-thumb.webp",
-    "width": 1400,
-    "height": 1050,
-    "alt": "The concrete façade of UFG’s Central Library behind a lawn, palms and a sign naming the library.",
-    "caption": "Central Library, Campus Samambaia, UFG — December 2022.",
-    "credit": "Fronteira",
-    "sourcePage": "https://commons.wikimedia.org/wiki/File:Biblioteca_Central_da_UFG,_Campus_Samambaia,_dezembro_de_2022_(1).jpg",
-    "license": "CC BY-SA 4.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-    "edits": "Resized, converted to WebP"
-  },
   "M03": {
     "id": "M03",
     "src": "/images/stories/M03.webp",
@@ -185,6 +156,63 @@
     "sourcePage": "https://ufg.br/n/192118-reitora-da-ufg-participa-da-solenidade-de-encerramento-do-fica",
     "license": "Reuse with credit · non-commercial",
     "licenseUrl": "https://ufg.br/n/63495-direitos-autorais",
+    "edits": "Resized, converted to WebP"
+  },
+  "U01": {
+    "id": "U01",
+    "src": "/images/stories/U01.webp",
+    "thumbnail": "/images/stories/U01-thumb.webp",
+    "width": 1050,
+    "height": 1400,
+    "alt": "A capuchin monkey hanging from the roof of a covered walkway lined with red columns, on a university campus.",
+    "caption": "A monkey on the covered walkway, Campus Samambaia, UFG — 11 January 2019.",
+    "credit": "Fronteira",
+    "sourcePage": "https://commons.wikimedia.org/wiki/File:Macaco_no_corredor_da_Universidade_Federal_de_Goi%C3%A1s_Campus_Samambaia,_janeiro_de_2019.jpg",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "edits": "Resized, converted to WebP",
+    "entry": "/images/stories/U01-entry.webp"
+  },
+  "U02": {
+    "id": "U02",
+    "src": "/images/stories/U02.webp",
+    "thumbnail": "/images/stories/U02-thumb.webp",
+    "width": 1400,
+    "height": 788,
+    "alt": "An aerial view looking straight down on a fenced enclosure of meteorological instruments.",
+    "caption": "The agrometeorological station of the School of Agronomy, UFG, from above — it has stood in Goiânia since 1977.",
+    "credit": "Túllio F",
+    "sourcePage": "https://commons.wikimedia.org/wiki/File:Esta%C3%A7%C3%A3o_Agrometeorol%C3%B3gica_-_Escola_de_Agronomia_-_Universidade_Federal_de_Goi%C3%A1s.jpg",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "edits": "Resized, converted to WebP"
+  },
+  "U03": {
+    "id": "U03",
+    "src": "/images/stories/U03.webp",
+    "thumbnail": "/images/stories/U03-thumb.webp",
+    "width": 1400,
+    "height": 933,
+    "alt": "A museum case of fossils — a shark jaw, trilobites, an ammonite and labelled specimens on black cloth.",
+    "caption": "The fossil collection of the Palaeontology Laboratory, Faculty of Science and Technology, UFG — May 2025.",
+    "credit": "Fronteira",
+    "sourcePage": "https://commons.wikimedia.org/wiki/File:Cole%C3%A7%C3%A3o_de_f%C3%B3sseis_do_Laborat%C3%B3rio_de_Paleontologia_da_Faculdade_de_Ci%C3%AAncias_e_Tecnologia_da_Universidade_Federal_de_Goi%C3%A1s,_maio_de_2025_(1).jpg",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "edits": "Resized, converted to WebP"
+  },
+  "U04": {
+    "id": "U04",
+    "src": "/images/stories/U04.webp",
+    "thumbnail": "/images/stories/U04-thumb.webp",
+    "width": 1400,
+    "height": 1050,
+    "alt": "A low modernist building with blue window awnings behind lawn and palms, under a blue sky.",
+    "caption": "The School of Music and Performing Arts, Campus Samambaia, UFG — December 2022.",
+    "credit": "Fronteira",
+    "sourcePage": "https://commons.wikimedia.org/wiki/File:Escola_de_M%C3%BAsica_e_Artes_C%C3%AAnicas_da_Universidade_Federal_de_Goi%C3%A1s,_Campus_Samambaia,_dezembro_de_2022_(1).jpg",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
     "edits": "Resized, converted to WebP"
   }
 }
