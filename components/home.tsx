@@ -1,14 +1,24 @@
-import { ArrowRight, CalendarDays, ChevronRight, MapPin } from 'lucide-react';
+import {
+  ArrowRight,
+  ArrowUpRight,
+  CalendarDays,
+  ChevronRight,
+  MapPin,
+} from 'lucide-react';
 import type { CSSProperties } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { AGENDA, CALENDAR_RELEASE } from '@/data/agenda';
+import { PARTICIPANT_GROUP } from '@/data/contact';
 import {
   DISPLAYED_INSTITUTIONS,
   type Institution,
 } from '@/data/institutions';
 import { withBasePath } from '@/lib/base-path';
 import { materialsByDay } from '@/lib/materials';
+import { OptionalStory } from '@/components/optional-story';
+import { StoryLink } from '@/components/story-link';
+import { WhatsAppMark } from '@/components/whatsapp-mark';
 
 const SCHEDULED_ITEMS = AGENDA.reduce(
   (total, day) => total + day.sessions.length,
@@ -88,6 +98,43 @@ function Directory() {
   );
 }
 
+/**
+ * The participants' group, as a coda to the directory rather than a fourth
+ * destination: the directory indexes the site, and this leaves it. It shares
+ * the directory's frame — those cards' bottom rule is this strip's top rule —
+ * so the two read as one block, and it carries the outward arrow the internal
+ * cards never do.
+ *
+ * The whole strip is the link, as each directory card is, and the mark takes
+ * the column the card indices use so the two text columns share one left edge.
+ * The note says what tapping it does and who the group is open to; what the
+ * group is *for* has not been stated by the organiser, and is not guessed at
+ * here.
+ *
+ * A plain element, not an `aside`: one link is not a complementary region, and
+ * an unnamed landmark beside the directory's `nav` would be one more thing for
+ * a screen reader to announce and nothing more to find in it.
+ */
+function ParticipantGroup() {
+  return (
+    <div className="home-group">
+      <a href={PARTICIPANT_GROUP.href} target="_blank" rel="noreferrer">
+        <span className="home-group-mark">
+          <WhatsAppMark />
+        </span>
+        <span className="home-group-text">
+          <em>{PARTICIPANT_GROUP.eyebrow}</em>
+          <strong>{PARTICIPANT_GROUP.title}</strong>
+          <small>{PARTICIPANT_GROUP.note}</small>
+        </span>
+        <span className="home-group-action">
+          {PARTICIPANT_GROUP.action} <ArrowUpRight aria-hidden="true" />
+        </span>
+      </a>
+    </div>
+  );
+}
+
 function Institutions() {
   return (
     <section
@@ -122,6 +169,11 @@ function Institutions() {
             />
           </a>
         ))}
+      </div>
+      <div className="institution-stories">
+        <OptionalStory id="ufg" />
+        <OptionalStory id="lapig" />
+        <OptionalStory id="funape" />
       </div>
     </section>
   );
@@ -176,6 +228,8 @@ export function HomeLanding() {
 
       <Directory />
 
+      <ParticipantGroup />
+
       <section className="overview section-pad" id="about">
         <div className="section-title">
           <p>Workshop overview</p>
@@ -207,7 +261,9 @@ export function HomeLanding() {
             </div>
             <div>
               <dt>Host</dt>
-              <dd>LAPIG · Federal University of Goiás</dd>
+              <dd>LAPIG · Federal University of Goiás
+                <StoryLink className="story-inline-link" href="/#about-ufg">About UFG and LAPIG <ArrowRight aria-hidden="true" /></StoryLink>
+              </dd>
             </div>
           </dl>
         </div>

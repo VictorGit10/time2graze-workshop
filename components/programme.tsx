@@ -5,6 +5,7 @@ import { AGENDA } from '@/data/agenda';
 import type { Day, Session, Track } from '@/data/types';
 import { useChoices } from '@/hooks/use-track-choice';
 import { type Clock, nextSessionId, stateOf } from '@/lib/now';
+import { choosingOpen, splitAnchor } from '@/lib/split-sessions';
 import {
   axisBounds, axisTicks, dayLabel, durationOf, fromMinutes, isEvening,
   presenterLabel, timeLabel, toMinutes,
@@ -27,10 +28,65 @@ function offset(session: Session, from: number) {
   return { '--start': toMinutes(session.start) - from } as React.CSSProperties;
 }
 
-function span(session: Session, from: number) {
+/**
+ * Where a block sits across the width of the axis.
+ *
+ * Most days are a single chain and every block takes the whole rail: `--col`
+ * 0 of `--cols` 1. Two items that genuinely run at the same time are not a
+ * split session — nobody chooses between them — so they cannot be tracks, and
+ * drawn in one column they would be stacked on top of each other. Day 1 has
+ * the case: the welcome coffee occupies the last twenty minutes of the UFG
+ * tour. Overlapping items share the width for the length of the run they
+ * belong to, which is how a week of calendars has always drawn them.
+ */
+type Lane = { col: number; cols: number };
+
+function lanes(sessions: Session[]) {
+  const placed = new Map<string, Lane>();
+  const ordered = [...sessions].sort(
+    (a, b) => toMinutes(a.start) - toMinutes(b.start),
+  );
+
+  /* A run is a set of items chained by overlap: it stays open while the next
+     item starts before the latest end reached so far, and every member of it
+     is drawn at the same width, so the columns line up down the whole run. */
+  let run: Session[] = [];
+  let columnEnds: number[] = [];
+  let runEnd = -1;
+
+  const close = () => {
+    for (const session of run) {
+      placed.set(session.id, { ...placed.get(session.id)!, cols: columnEnds.length });
+    }
+    run = [];
+    columnEnds = [];
+    runEnd = -1;
+  };
+
+  for (const session of ordered) {
+    const start = toMinutes(session.start);
+    const end = start + (durationOf(session) ?? 0);
+    if (run.length && start >= runEnd) close();
+
+    let col = columnEnds.findIndex((free) => free <= start);
+    if (col === -1) col = columnEnds.length;
+    columnEnds[col] = end;
+
+    placed.set(session.id, { col, cols: 1 });
+    run.push(session);
+    runEnd = Math.max(runEnd, end);
+  }
+  if (run.length) close();
+
+  return placed;
+}
+
+function span(session: Session, from: number, lane: Lane | undefined) {
   return {
     '--start': toMinutes(session.start) - from,
     '--dur': durationOf(session) ?? 0,
+    '--col': lane?.col ?? 0,
+    '--cols': lane?.cols ?? 1,
   } as React.CSSProperties;
 }
 
@@ -45,6 +101,26 @@ function PresenterLine(
       <span className="tl-meta-label">{compact ? 'By' : 'Presenter / institution'}</span>
       <span>{presenter}</span>
     </p>
+  );
+}
+
+/**
+ * "This hour is still waiting on you", on the session itself.
+ *
+ * A link, because a green chip that says `Choose one` and does nothing when
+ * tapped is a broken promise. `silent` is the copy inside the proportional
+ * grid: that diagram is `aria-hidden`, so the chip in it is for the mouse and
+ * is kept out of the tab order — a focus stop nobody can see is worse than no
+ * focus stop. The list's copy is a real link, and the desktop rule in
+ * globals.css drops it there, where that list is clipped away and `SplitNotice`
+ * is carrying the same link in plain view.
+ */
+function ChooseChip({ href, silent }: { href?: string; silent?: boolean }) {
+  if (!href) return <span className="split-todo">Choose one</span>;
+  return (
+    <a className="split-todo" href={href} tabIndex={silent ? -1 : undefined}>
+      Choose one
+    </a>
   );
 }
 
@@ -67,12 +143,22 @@ function TrackCard({ track, chosen }: { track: Track; chosen: boolean }) {
  * visibly marked and do not count as confirmed operational times.
  */
 function Block(
-  { session, from, state }: { session: Session; from: number; state: SessionMark },
+  { session, from, lane, state, clock, splitHref }: {
+    session: Session;
+    from: number;
+    /** Which column of a run of overlapping items this one takes. */
+    lane: Lane | undefined;
+    state: SessionMark;
+    clock: Clock | null;
+    /** Where the chooser for this day lives. */
+    splitHref: string;
+  },
 ) {
   /* Under 45 minutes there is no room to stack time, title and metadata, so the
      block lays them out on one row instead of clipping them. */
   const compact = (durationOf(session) ?? 0) <= 45;
   const { picks } = useChoices();
+  const undecided = !picks[session.id] && choosingOpen(session, clock);
 
   return (
     <article
@@ -81,7 +167,7 @@ function Block(
       data-kind={session.kind}
       data-compact={compact || undefined}
       data-state={state ?? undefined}
-      style={span(session, from)}
+      style={span(session, from, lane)}
     >
       <p className="tl-time">{timeLabel(session)}</p>
 
@@ -89,7 +175,8 @@ function Block(
         {session.tracks ? (
           <>
             <p className="tl-split-label">
-              Split session · choose one
+              Split session
+              {undecided && <ChooseChip href={splitHref} silent />}
               <Mark state={state} />
             </p>
             <div className="tl-tracks">
@@ -164,6 +251,7 @@ function Point(
 function Timeline({ day, clock }: { day: Day; clock: Clock | null }) {
   const { from, to } = axisBounds(day);
   const daytime = day.sessions.filter((s) => !isEvening(s));
+  const columns = lanes(daytime.filter((s) => s.end));
   const ticks = axisTicks(day);
   const height = { '--span': to - from } as React.CSSProperties;
   const nextId = nextSessionId(day, clock);
@@ -205,7 +293,17 @@ function Timeline({ day, clock }: { day: Day; clock: Clock | null }) {
         )}
         {daytime.map((s) =>
           s.end
-            ? <Block key={s.id} session={s} from={from} state={mark(s)} />
+            ? (
+              <Block
+                key={s.id}
+                session={s}
+                from={from}
+                lane={columns.get(s.id)}
+                state={mark(s)}
+                clock={clock}
+                splitHref={`#${splitAnchor(day)}`}
+              />
+            )
             : <Point key={s.id} session={s} from={from} state={mark(s)} />
         )}
       </div>
@@ -219,10 +317,13 @@ function Timeline({ day, clock }: { day: Day; clock: Clock | null }) {
  * diagram into 375px would turn the signature into an obstacle.
  */
 function List(
-  { sessions, anchors = true, marks }: {
+  { sessions, anchors = true, marks, clock = null, splitHref }: {
     sessions: Session[];
     anchors?: boolean;
     marks?: (s: Session) => SessionMark;
+    clock?: Clock | null;
+    /** Absent on paper, where a link to a form is nothing to press. */
+    splitHref?: string;
   },
 ) {
   const { picks } = useChoices();
@@ -240,7 +341,12 @@ function List(
             <div className="session-body" data-state={marks?.(session) ?? undefined}>
               {session.tracks ? (
                 <>
-                  <p className="tl-split-label">Split session · choose one</p>
+                  <p className="tl-split-label">
+                    Split session
+                    {!picks[session.id] && choosingOpen(session, clock) && (
+                      <ChooseChip href={splitHref} />
+                    )}
+                  </p>
                   <ul className="session-tracks">
                     {session.tracks.map((t) => (
                       <li key={t.id} data-chosen={picks[session.id] === t.id || undefined}>
@@ -327,7 +433,12 @@ export function Programme({ day, clock }: { day: Day; clock: Clock | null }) {
 
       {/* The same day as a list: the only version small screens and print show,
           and the one assistive technology reads. */}
-      <List sessions={day.sessions} marks={marks} />
+      <List
+        sessions={day.sessions}
+        marks={marks}
+        clock={clock}
+        splitHref={`#${splitAnchor(day)}`}
+      />
     </div>
   );
 }

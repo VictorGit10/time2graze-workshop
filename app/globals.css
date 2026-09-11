@@ -63,8 +63,23 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 88px; }
-body { margin: 0; color: var(--ink); background: var(--paper); font-family: var(--font-sans), Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+html { scroll-behavior: smooth; scroll-padding-top: 88px; scrollbar-gutter: stable; }
+/* Lining figures, once, for the whole document.
+
+   Cormorant Garamond ships old-style figures as its default: 1999 with two
+   descending nines, a 4 that drops below the baseline, a 3 that drops further.
+   In running serif text that is correct typography. In this site's numbers it
+   is not — the figures here are dates, years, editions, counts and distances,
+   read as data at 32-60px, where uneven heights read as a wobble rather than
+   as a texture. It was reported as exactly that in September 2026.
+
+   The property inherits, so one declaration reaches every serif number on the
+   site: the hero's 14-18, the day tabs, the story facts, the step years.
+   Manrope's figures are already lining, so nothing sans changes. A rule that
+   needs tabular figures writes `lining-nums tabular-nums`, because
+   font-variant-numeric is one property and a bare `tabular-nums` would send
+   the figure style back to the font's default. */
+body { margin: 0; color: var(--ink); background: var(--paper); font-family: var(--font-sans), Arial, sans-serif; font-variant-numeric: lining-nums; -webkit-font-smoothing: antialiased; }
 a { color: inherit; text-decoration: none; }
 button { color: inherit; font: inherit; }
 ::selection { color: var(--forest-dark); background: var(--accent); }
@@ -139,7 +154,7 @@ button { color: inherit; font: inherit; }
   .home-directory a { display: grid; grid-template-columns: 34px 1fr 18px; align-items: start; gap: 14px; min-height: 145px; padding: 25px 22px; background: var(--surface); border-top: 1px solid var(--line); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); transition: background var(--m-quick) var(--m-ease); }
   .home-directory a:first-child { border-left: 1px solid var(--line); }
   .home-directory a:hover { background: #f7f9f3; }
-  .home-directory-index { padding-top: 3px; color: var(--forest); font-size: var(--t-label); font-weight: 800; font-variant-numeric: tabular-nums; }
+  .home-directory-index { padding-top: 3px; color: var(--forest); font-size: var(--t-label); font-weight: 800; font-variant-numeric: lining-nums tabular-nums; }
   .home-directory a > div { display: grid; }
   .home-directory strong { font-family: var(--font-serif), Georgia, serif; font-size: 24px; font-weight: 600; line-height: 1.05; }
   .home-directory small { max-width: 34ch; margin-top: 9px; color: var(--muted); font-size: var(--t-meta); line-height: 1.4; }
@@ -147,6 +162,27 @@ button { color: inherit; font: inherit; }
   .home-directory a[data-status='neutral'] em { color: var(--forest); }
   .home-directory svg { align-self: center; width: 16px; height: 16px; color: var(--muted); transition: transform var(--m-quick) var(--m-ease); }
   .home-directory a:hover svg { transform: translateX(3px); }
+
+  /* The participants' group. It is a coda to the directory, not a fourth
+     destination: the cards' bottom rule is this strip's top rule, so the two
+     read as one frame, and the strip is the only link in that frame that
+     leaves the site — hence the outward arrow where the cards carry a chevron.
+     The mark sits on the lime, which is the site's own accent and not
+     WhatsApp's green: the glyph identifies the service, the colour stays the
+     page's. */
+  .home-group { position: relative; z-index: 1; max-width: var(--wide); margin: 0 auto; padding: 0 var(--gutter); background: var(--paper); }
+  .home-group > a { display: grid; grid-template-columns: 34px 1fr auto; align-items: center; gap: 14px; padding: 22px; background: var(--surface); border: 1px solid var(--line); border-top: 0; transition: background var(--m-quick) var(--m-ease); }
+  .home-group > a:hover { background: #f7f9f3; }
+  .home-group-mark { display: grid; place-items: center; width: 34px; height: 34px; color: var(--forest-dark); background: var(--accent); border: 1px solid rgba(16,56,43,.18); }
+  .home-group-mark svg { width: 19px; height: 19px; }
+  .home-group-text { display: grid; }
+  .home-group-text em { color: var(--forest); font-size: var(--t-label); font-style: normal; font-weight: 800; letter-spacing: .065em; text-transform: uppercase; }
+  .home-group-text strong { margin-top: 8px; font-family: var(--font-serif), Georgia, serif; font-size: 24px; font-weight: 600; line-height: 1.05; }
+  .home-group-text small { margin-top: 8px; color: var(--muted); font-size: var(--t-meta); line-height: 1.4; }
+  .home-group-action { display: inline-flex; align-items: center; gap: 12px; padding: 13px 18px; color: #fff; background: var(--forest); border: 1px solid var(--forest); border-radius: var(--radius); font-size: var(--t-meta); font-weight: 800; letter-spacing: .035em; white-space: nowrap; transition: color var(--m-quick) var(--m-ease), background var(--m-quick) var(--m-ease); }
+  .home-group-action svg { width: 15px; height: 15px; transition: transform var(--m-quick) var(--m-ease); }
+  .home-group > a:hover .home-group-action { color: var(--forest-dark); background: var(--accent); }
+  .home-group > a:hover .home-group-action svg { transform: translate(2px, -2px); }
 
   main > .overview { background: #eef1ea; }
 }
@@ -173,10 +209,16 @@ button { color: inherit; font: inherit; }
   .home-directory { grid-template-columns: 1fr; padding-inline: 16px; }
   .home-directory a { min-height: 116px; padding: 22px 18px; border-left: 1px solid var(--line); }
   .home-directory strong { font-size: 23px; }
+  /* The action drops to its own row and takes the full width: at 375px it
+     cannot sit beside the title without squeezing both. */
+  .home-group { padding-inline: 16px; }
+  .home-group > a { grid-template-columns: 34px 1fr; align-items: start; gap: 16px 14px; padding: 22px 18px; }
+  .home-group-action { grid-column: 1 / -1; justify-content: space-between; }
+  .home-group-text strong { font-size: 23px; }
 }
 
 @media print {
-  .landscape-photo, .landscape-date, .home-directory { display: none !important; }
+  .landscape-photo, .landscape-date, .home-directory, .home-group { display: none !important; }
   .landscape-hero { display: block; min-height: 0; padding: 0; }
   .landscape-card { position: static; display: block; width: 100%; padding: 0; color: #000; background: #fff; border: 0; box-shadow: none; }
   .landscape-action { display: none !important; }
@@ -252,7 +294,7 @@ button { color: inherit; font: inherit; }
 .now-band { display: grid; grid-template-columns: minmax(150px, .7fr) minmax(0, 4.3fr); align-items: center; gap: 24px; max-width: var(--wide); margin: 0 auto; padding: 20px var(--gutter); color: #fff; background: var(--forest-dark); border-top: 4px solid var(--accent); animation: enter-down var(--m-enter) var(--m-ease) both; }
 .now-band-day { margin: 0; color: var(--accent); font-size: var(--t-label); font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
 .now-band-item { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px; margin: 0; font-size: var(--t-body-lg); }
-.now-band-time { color: rgba(255,255,255,.72); font-variant-numeric: tabular-nums; }
+.now-band-time { color: rgba(255,255,255,.72); font-variant-numeric: lining-nums tabular-nums; }
 .now-band-item a { font-weight: 700; border-bottom: 1px solid rgba(255,255,255,.38); transition: border-color var(--m-quick) var(--m-ease); }
 .now-band-item a:hover { border-color: var(--accent); }
 .now-band .tl-mark { margin-left: 0; color: var(--forest-dark); background: var(--accent); }
@@ -324,7 +366,7 @@ button { color: inherit; font: inherit; }
 .programme-title { display: flex; justify-content: space-between; align-items: end; gap: 32px; margin-bottom: clamp(32px, 4vw, 52px); }
 .programme-clock { display: flex; align-items: baseline; gap: 18px; margin: 0 0 5px; padding-left: 18px; border-left: 1px solid var(--line); }
 .programme-clock > span { color: var(--muted); font-size: var(--t-label); font-weight: 750; letter-spacing: .06em; text-transform: uppercase; }
-.programme-clock time { min-width: 72px; color: var(--forest); font-size: 20px; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1; }
+.programme-clock time { min-width: 72px; color: var(--forest); font-size: 20px; font-weight: 800; font-variant-numeric: lining-nums tabular-nums; line-height: 1; }
 .programme-clock small { margin-right: 7px; color: var(--muted); font-size: var(--t-label); font-weight: 750; letter-spacing: .06em; text-transform: uppercase; }
 .day-tabs { display: grid; grid-template-columns: repeat(5, 1fr); border: 1px solid var(--line); }
 .day-tabs [role='tab'] { min-width: 0; padding: 23px clamp(15px, 2vw, 28px); text-align: left; background: transparent; border: 0; border-right: 1px solid var(--line); cursor: pointer; transition: background var(--m-move) var(--m-ease), color var(--m-move) var(--m-ease); }
@@ -390,7 +432,7 @@ button { color: inherit; font: inherit; }
 .resource-groups { border-top: 1px solid var(--ink); }
 .resource-group { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 48px; padding: 40px 0 46px; border-bottom: 1px solid var(--line); }
 .resource-group > header { display: grid; grid-template-columns: 52px 1fr; gap: 18px; align-content: start; }
-.resource-group > header > span { display: grid; place-items: center; width: 52px; height: 52px; color: var(--forest); background: var(--accent); border: 1px solid var(--forest); font-size: var(--t-meta-lg); font-weight: 850; font-variant-numeric: tabular-nums; }
+.resource-group > header > span { display: grid; place-items: center; width: 52px; height: 52px; color: var(--forest); background: var(--accent); border: 1px solid var(--forest); font-size: var(--t-meta-lg); font-weight: 850; font-variant-numeric: lining-nums tabular-nums; }
 .resource-group > header p { margin: 0; color: var(--muted); font-size: var(--t-label); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .resource-group > header h2 { margin: 5px 0 0; font-family: var(--font-serif), Georgia, serif; font-size: 27px; font-weight: 600; letter-spacing: -.02em; }
 .resource-group > header small { display: block; margin-top: 9px; color: var(--muted); font-size: var(--t-meta); }
@@ -416,12 +458,18 @@ button { color: inherit; font: inherit; }
 a[href^='tel:'] { text-decoration: underline; text-underline-offset: 3px; }
 a[href^='tel:'] svg { width: 13px; height: 13px; margin-right: 5px; }
 .hash-notice { display: block; margin: 18px auto 0; padding: 11px 16px; color: var(--warning); background: var(--warning-bg); border: 1px solid var(--warning); border-radius: var(--radius); font-size: var(--t-meta-lg); }
-footer { display: grid; grid-template-columns: 1fr 1.3fr 1fr; align-items: center; gap: 35px; min-height: 155px; padding: 30px clamp(24px, 5vw, 72px); color: #fff; background: var(--forest-dark); }
+footer { display: grid; grid-template-columns: 1fr 1.3fr 1fr; align-items: center; gap: 18px 35px; min-height: 155px; padding: 30px clamp(24px, 5vw, 72px); color: #fff; background: var(--forest-dark); }
 .footer-brand small { color: rgba(255,255,255,.75); }
 footer > p { margin: 0; color: rgba(255,255,255,.62); font-size: var(--t-meta-lg); line-height: 1.6; text-align: center; }
 footer > a:last-child { justify-self: end; display: inline-flex; align-items: center; min-height: 24px; padding: 4px 0; gap: 8px; font-size: var(--t-label); font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
 footer > a:last-child svg { width: 14px; height: 14px; transition: transform var(--m-move) var(--m-ease); }
 footer > a:last-child:hover svg { transform: translateY(-3px); }
+/* The group link takes the second row of the centre column, under the line it
+   belongs to, so the three-column balance the footer already had is untouched:
+   nothing moves, one row appears. */
+.footer-group { grid-area: 2 / 2; justify-self: center; display: inline-flex; align-items: center; gap: 9px; min-height: 24px; padding: 4px 0; font-size: var(--t-label); font-weight: 800; letter-spacing: .07em; text-transform: uppercase; transition: color var(--m-quick) var(--m-ease); }
+.footer-group svg { width: 15px; height: 15px; color: var(--accent); transition: color var(--m-quick) var(--m-ease); }
+.footer-group:hover { color: var(--accent); }
 
 @media (max-width: 1050px) {
   .overview-layout { grid-template-columns: 1fr; gap: 65px; }
@@ -469,6 +517,9 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
   .document-placeholders article:first-child { border-top: 0; }
   footer { grid-template-columns: 1fr auto; }
   footer > p { display: none; }
+  /* Centre column gone: the link keeps its row and returns to the name's edge,
+     at the 44px target height the site uses for a standalone link on a phone. */
+  .footer-group { grid-area: 2 / 1; justify-self: start; min-height: 44px; }
 }
 
 /* --- Programme --------------------------------------------------------------
@@ -482,7 +533,10 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
    exactly as tall as its session is long and clips what does not fit, so a
    scale that grew the titles and not the boxes would start cutting the short
    sessions off on the widest monitors — the ones the growth is for. */
-.programme { --hour: clamp(76px, calc(76px + 12 * var(--t-ramp)), 88px); }
+.programme { --hour: clamp(76px, calc(76px + 12 * var(--t-ramp)), 88px); --tl-gutter: 10px; }
+/* A block spans the rail alone (--cols 1) or shares it with whatever runs at
+   the same time. The two declarations above collapse to `left: 0; width: 100%`
+   at --cols 1, which is every block on four of the five days. */
 
 /* Minutes to pixels: the one rule the whole proportion depends on. */
 .timeline { display: grid; grid-template-columns: 62px 1fr; gap: 18px; margin-top: 8px; }
@@ -492,12 +546,12 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
    to exist on. It does not touch the scale — it is paper, not time. */
 .tl-body { position: relative; height: calc(var(--span) * var(--hour) / 60 + 26px); }
 
-.tl-tick { position: absolute; top: calc(var(--start) * var(--hour) / 60); right: 0; color: var(--muted); font-size: var(--t-label); font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1; transform: translateY(-50%); }
+.tl-tick { position: absolute; top: calc(var(--start) * var(--hour) / 60); right: 0; color: var(--muted); font-size: var(--t-label); font-weight: 700; font-variant-numeric: lining-nums tabular-nums; line-height: 1; transform: translateY(-50%); }
 .tl-rule { position: absolute; top: calc(var(--start) * var(--hour) / 60); right: 0; left: 0; border-top: 1px solid var(--line); opacity: .45; }
 .tl-rule[data-hour] { opacity: 1; }
 
-.tl-block { position: absolute; z-index: 2; top: calc(var(--start) * var(--hour) / 60); right: 0; left: 0; display: grid; grid-template-columns: 92px 1fr; gap: 14px; overflow: hidden; align-content: center; padding: 7px 14px; background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--forest); border-radius: var(--radius); height: calc(var(--dur) * var(--hour) / 60); }
-.tl-block .tl-time { margin: 0; color: var(--muted); font-size: var(--t-label); font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.35; }
+.tl-block { position: absolute; z-index: 2; top: calc(var(--start) * var(--hour) / 60); left: calc(var(--col, 0) * (100% + var(--tl-gutter)) / var(--cols, 1)); width: calc((100% - (var(--cols, 1) - 1) * var(--tl-gutter)) / var(--cols, 1)); display: grid; grid-template-columns: 92px 1fr; gap: 14px; overflow: hidden; align-content: center; padding: 7px 14px; background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--forest); border-radius: var(--radius); height: calc(var(--dur) * var(--hour) / 60); }
+.tl-block .tl-time { margin: 0; color: var(--muted); font-size: var(--t-label); font-weight: 700; font-variant-numeric: lining-nums tabular-nums; line-height: 1.35; }
 .tl-block-body { min-width: 0; }
 .tl-block-meta { display: flex; flex-wrap: wrap; gap: 9px; align-items: center; margin: 4px 0 0; }
 .tl-title { margin: 0; font-size: var(--t-meta-lg); font-weight: 700; line-height: 1.3; }
@@ -528,7 +582,7 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
 .tl-point[data-kind='meal'] .tl-dot,
 .tl-point[data-kind='break'] .tl-dot,
 .tl-point[data-kind='transport'] .tl-dot { background: var(--muted); }
-.tl-point .tl-time { margin: 0; color: var(--muted); font-size: var(--t-label); font-weight: 700; font-variant-numeric: tabular-nums; }
+.tl-point .tl-time { margin: 0; color: var(--muted); font-size: var(--t-label); font-weight: 700; font-variant-numeric: lining-nums tabular-nums; }
 /* A session title is functional text: 14px, not 13. */
 .tl-point-title { margin: 0; font-size: var(--t-meta-lg); font-weight: 700; line-height: 1.3; }
 .tl-point-copy { min-width: 0; }
@@ -540,7 +594,7 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
 .tl-evening-title { margin: 13px 0 0; color: var(--forest); font-size: var(--t-label); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .tl-evening-items { display: grid; gap: 10px; }
 .tl-evening-card { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 14px; align-items: start; padding: 13px 14px; background: var(--surface-soft); border: 1px solid var(--line); border-left: 3px solid var(--line); border-radius: var(--radius); }
-.tl-evening-card .tl-time { margin: 1px 0 0; color: var(--muted); font-size: var(--t-label); font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.35; }
+.tl-evening-card .tl-time { margin: 1px 0 0; color: var(--muted); font-size: var(--t-label); font-weight: 700; font-variant-numeric: lining-nums tabular-nums; line-height: 1.35; }
 .tl-evening-body { min-width: 0; }
 
 /* The list. On desktop it leaves the view without leaving the accessibility
@@ -556,7 +610,7 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
 .session-list { display: grid; gap: 0; margin: 0; padding: 0 34px; list-style: none; }
 .session-list .session { display: grid; grid-template-columns: 128px 1fr; gap: 18px; padding: 15px 0; border-top: 1px solid var(--line); }
 .session-list .session:first-child { border-top: 0; }
-.session-time { display: flex; gap: 8px; align-items: center; margin: 0; color: var(--muted); font-size: var(--t-meta); font-weight: 700; font-variant-numeric: tabular-nums; }
+.session-time { display: flex; gap: 8px; align-items: center; margin: 0; color: var(--muted); font-size: var(--t-meta); font-weight: 700; font-variant-numeric: lining-nums tabular-nums; }
 .session-time svg { width: 14px; height: 14px; }
 .session-body h3 { margin: 0; font-size: var(--t-body); font-weight: 700; line-height: 1.35; }
 .session-tracks { display: grid; gap: 7px; margin: 0; padding: 0; list-style: none; }
@@ -651,7 +705,7 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
    not cover the running block's text, and shows the time rather than repeating
    the word "now". */
 .tl-now { position: absolute; z-index: 1; top: calc(var(--start) * var(--hour) / 60); right: 0; left: 0; border-top: 2px solid var(--forest); pointer-events: none; }
-.tl-now-label { position: absolute; z-index: 4; right: calc(100% + 18px); padding: 2px 7px; color: #fff; background: var(--forest); border-radius: 99px; font-size: var(--t-label); font-weight: 800; font-variant-numeric: tabular-nums; transform: translateY(-50%); }
+.tl-now-label { position: absolute; z-index: 4; right: calc(100% + 18px); padding: 2px 7px; color: #fff; background: var(--forest); border-radius: 99px; font-size: var(--t-label); font-weight: 800; font-variant-numeric: lining-nums tabular-nums; transform: translateY(-50%); }
 
 .tl-mark { display: inline-block; margin-left: 9px; vertical-align: 1px; padding: 2px 8px; color: #fff; background: var(--forest); border-radius: 99px; font-size: var(--t-label); font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
 .tl-mark--next { color: var(--forest); background: var(--accent); }
@@ -699,6 +753,7 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
   @media (prefers-reduced-motion: no-preference) {
     .section-title,
     .home-directory > a,
+    .home-group > a,
     .objective-block,
     .fact-list,
     .institution-list,
@@ -714,6 +769,8 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
        to. */
     .home-directory > a:nth-child(2) { animation-range: entry 6% entry 44%; }
     .home-directory > a:nth-child(3) { animation-range: entry 12% entry 50%; }
+    /* The group strip continues that count rather than starting a new one. */
+    .home-group > a { animation-range: entry 18% entry 56%; }
   }
 }
 
@@ -736,7 +793,7 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
 .materials .materials-index { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0; }
 .materials .materials-index a { display: flex; flex-direction: column; align-items: center; gap: 5px; border-right-width: 0; }
 .materials .materials-index a:last-child { border-right-width: 1px; }
-.materials .materials-index strong { font-size: 20px; font-variant-numeric: tabular-nums; }
+.materials .materials-index strong { font-size: 20px; font-variant-numeric: lining-nums tabular-nums; }
 @media screen and (max-width: 760px) { .materials .materials-index a { min-width: 0; padding: 12px 3px; } }
 @media screen and (max-width: 1279px) {
   .agenda-panel { grid-template-columns: 1fr; }
@@ -773,11 +830,68 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
   /* The printed programme is all five days; the panel holds one. A recap for
      the open day alone would be a single day's record stapled to a five-day
      agenda, so paper carries the schedule and the recaps stay on screen. */
-  .programme-tools, .programme-resources, .recap, .split-choice { display: none !important; }
+  .programme-tools, .programme-resources, .recap, .split-choice, .split-notice, .split-todo { display: none !important; }
   /* The choice itself does print — it is the reader's own agenda — but as
      text, not as a tinted pill. */
   .split-mark { padding: 0; color: #000 !important; background: none !important; }
   .resource-item { break-inside: avoid; }
+}
+
+/* The decision, announced where the day starts rather than at the foot of the
+   page. It is glued to the tabs above and the panel below — border-top: 0, as
+   .agenda-panel has — so the three read as one card rather than as a banner
+   dropped between them. */
+.split-notice { display: grid; gap: 10px; padding: 14px clamp(15px, 2vw, 24px); background: var(--surface-soft); border: 1px solid var(--line); border-top: 0; border-left: 3px solid var(--forest); }
+.split-notice p { display: flex; flex-wrap: wrap; gap: 7px 14px; align-items: center; margin: 0; color: var(--text); font-size: var(--t-meta-lg); line-height: 1.5; }
+.split-notice-when { color: var(--forest); font-size: var(--t-label); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.split-notice-state { flex: 1 1 16ch; }
+.split-notice a { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 18px; color: #fff; background: var(--forest); border-radius: var(--radius); font-size: var(--t-meta-lg); font-weight: 750; transition: background var(--m-quick) var(--m-ease); }
+.split-notice a:hover { background: var(--forest-dark); }
+
+/* The one thing on this page that asks for something back, so it is the one
+   thing that moves on its own: a ring that opens out of the control and
+   fades, then a long rest before the next. A slow beat carries across a room;
+   a blink is a smoke alarm, and this is a workshop programme.
+   Both controls share the keyframes and the period, so they beat together
+   rather than competing — and both stop the moment the reader is on them,
+   the signal having done its work. `--m-enter` × 5 keeps the timing inside
+   the site's own vocabulary, as .calendar-spinner does. */
+@keyframes split-pulse {
+  0% { box-shadow: 0 0 0 0 var(--pulse-from); }
+  /* Out in the first third, then two thirds of nothing. The rest is what
+     makes it a beat instead of a flash. */
+  35% { box-shadow: 0 0 0 10px var(--pulse-to); }
+  100% { box-shadow: 0 0 0 0 var(--pulse-to); }
+}
+
+@media screen and (prefers-reduced-motion: no-preference) {
+  /* linear, not --m-ease: the site's curve is an ease-out written for a state
+     landing under the cursor, and on a loop it spends the ring's whole life in
+     the first tenth of a second. A beat wants an even one, as .calendar-spinner
+     does. */
+  a.split-todo, .split-notice a[data-todo] {
+    animation: split-pulse calc(var(--m-enter) * 5) linear infinite;
+  }
+  /* The ring reads against what it sits on: forest around the pale chip,
+     pale around the forest button. */
+  a.split-todo { --pulse-from: rgba(24, 56, 43, .4); --pulse-to: rgba(24, 56, 43, 0); }
+  .split-notice a[data-todo] { --pulse-from: rgba(220, 232, 155, .9); --pulse-to: rgba(220, 232, 155, 0); }
+  a.split-todo:hover, a.split-todo:focus-visible,
+  .split-notice a:hover, .split-notice a:focus-visible { animation: none; }
+
+}
+
+/* The same fact on the session itself, and a way to act on it: this hour is
+   still waiting on you, and the chip goes to the chooser. */
+.split-todo { display: inline-flex; align-items: center; min-height: 30px; margin-left: 9px; vertical-align: -9px; padding: 4px 12px; color: var(--forest-dark); background: var(--accent); border: 1px solid transparent; border-radius: 99px; font-size: var(--t-label); font-weight: 800; letter-spacing: .05em; transition: border-color var(--m-quick) var(--m-ease); }
+a.split-todo:hover { border-color: var(--forest); }
+/* Above 1280px the list is clipped away and the grid beside it is
+   aria-hidden, so this copy of the chip would be a link nobody can see —
+   a tab stop into blank space. SplitNotice carries the same link in plain
+   view there; on smaller screens this list IS the programme, and the chip
+   has to work. */
+@media (min-width: 1280px) {
+  .programme > .session-list .split-todo { display: none; }
 }
 
 /* --- Split sessions ---------------------------------------------------------
@@ -788,14 +902,14 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
    control half the readers cannot reach. It sits below the programme instead,
    outside .agenda-panel for the same reason the recap is, and the programme
    above only ever displays the answer. */
-.split-choice { margin-top: 24px; background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--forest); }
+.split-choice { margin-top: 24px; background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--forest); scroll-margin-top: 110px; }
 .split-choice-head { padding: 18px 20px; background: var(--surface-soft); border-bottom: 1px solid var(--line); }
 .split-choice-head h3 { margin: 0; color: var(--forest); font-family: var(--font-sans), Arial, sans-serif; font-size: var(--t-head-sm); font-weight: 800; }
 .split-choice-head p { max-width: 62ch; margin: 6px 0 0; color: var(--text); font-size: var(--t-meta-lg); line-height: 1.5; }
 
 .split-session { padding: 20px; border-top: 1px solid var(--line); }
 .split-choice-head + .split-session { border-top: 0; }
-.split-when { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; margin: 0 0 12px; color: var(--muted); font-size: var(--t-meta); font-variant-numeric: tabular-nums; }
+.split-when { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; margin: 0 0 12px; color: var(--muted); font-size: var(--t-meta); font-variant-numeric: lining-nums tabular-nums; }
 
 .split-form fieldset { margin: 0; padding: 0; border: 0; }
 .split-form legend { margin-bottom: 8px; padding: 0; color: var(--ink); font-size: var(--t-meta-lg); font-weight: 700; }
@@ -835,7 +949,7 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
 .recap { margin-top: 24px; background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--forest); scroll-margin-top: 110px; }
 .recap-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 20px; padding: 18px 20px; background: var(--surface-soft); border-bottom: 1px solid var(--line); }
 .recap-head h3 { margin: 0; color: var(--forest); font-family: var(--font-sans), Arial, sans-serif; font-size: var(--t-head-sm); font-weight: 800; }
-.recap-stamp { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 0; color: var(--muted-soft); font-size: var(--t-meta); font-variant-numeric: tabular-nums; }
+.recap-stamp { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 0; color: var(--muted-soft); font-size: var(--t-meta); font-variant-numeric: lining-nums tabular-nums; }
 .recap-stamp em { color: var(--muted-soft); font-style: normal; font-weight: 700; }
 .recap-revised { color: var(--forest); font-weight: 700; }
 /* The rule belongs to the block, not to the sentence: a border on the capped

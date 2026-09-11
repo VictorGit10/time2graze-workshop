@@ -45,4 +45,11 @@ export const DISPLAYED_INSTITUTIONS: Institution[] = [
     width: 958,
     height: 407,
   },
+  {
+    name: 'FUNAPE',
+    href: 'https://site.funape.org.br/',
+    logo: '/logos/institutions/funape.png',
+    width: 256,
+    height: 71,
+  },
 ];

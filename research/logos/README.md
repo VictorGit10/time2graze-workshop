@@ -7,6 +7,10 @@ cross-project operational checklist is in `research/pending-information.md`.
 
 ## Candidate final assets
 
+FUNAPE was added to the displayed institutions at the client's explicit request
+on 9 September 2026. `public/logos/institutions/funape.png` is the supplied
+`logo_site.png` (256 × 71), copied without changes to the artwork or colours.
+
 Files in `public/logos/institutions/` were downloaded from official
 institutional sites or from the Land & Carbon Lab asset host. The artwork is
 unmodified; several files had their **canvas** cropped to the artwork, which is
@@ -91,6 +95,20 @@ affiliation. They appear in one neutral institutional row, without unconfirmed
 public-role labels. Every other asset in the candidate set remains unpublished
 until the relevant institution approves its use and the Time2Graze/LAPIG team
 confirms its inclusion.
+
+## The WhatsApp glyph
+
+`components/whatsapp-mark.tsx` is not an institutional mark and is not part of
+the set above. It is the WhatsApp glyph from **Simple Icons 16.30.0**
+(`icons/whatsapp.svg`, released CC0 1.0), inlined with its path data unchanged
+so that the participants' group link says which application it opens. The rest
+of the site draws its icons with lucide-react, which ships no brand marks.
+
+It is rendered in `currentColor` — forest on the lime accent in the home strip,
+white with a lime glyph in the footer — and never in WhatsApp's own green. The
+site has no badge of its own and does not acquire one by linking out; the glyph
+identifies a destination and takes the page's palette while doing it. WhatsApp
+is a trademark of Meta Platforms, used here to name the service the link opens.
 
 ## Previous GPW workshop references
 

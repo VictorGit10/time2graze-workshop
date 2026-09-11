@@ -1,5 +1,6 @@
 import { CITY_STORIES } from '@/data/city-guide';
 import { FreeTimeMap } from '@/components/free-time-map';
+import { OptionalStory } from '@/components/optional-story';
 
 /**
  * Part two of Travel & stay: the city itself, for the hours the programme
@@ -21,22 +22,10 @@ export function Orientation() {
           </h2>
           <p className="city-introduction-label">{city.workshopContext}</p>
         </header>
-        <div className="city-prose">
-          <h3>
-            {city.title}: {city.subtitle.toLowerCase()}
-          </h3>
-          {city.paragraphs.map((paragraph) => (
-            <p key={paragraph}>{paragraph}</p>
-          ))}
-          <a
-            className="city-source"
-            href={city.source.href}
-            target="_blank"
-            rel="noreferrer"
-          >
-            {city.source.label}
-          </a>
-        </div>
+      </div>
+      <div className="city-stories">
+        <OptionalStory id="goiania" />
+        <OptionalStory id="cerrado" />
       </div>
 
       <section

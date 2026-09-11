@@ -78,3 +78,20 @@ export function uberLink({ lat, lon }: Coordinates, nickname: string, address?: 
 export function formatCoordinates({ lat, lon }: Coordinates): string {
   return `${lat.toFixed(6)}, ${lon.toFixed(6)}`;
 }
+
+/**
+ * Great-circle distance in kilometres, from the recorded pins.
+ *
+ * Computed rather than written down, for the same reason the pins are: a
+ * distance typed into copy is a fact nobody re-checks when a coordinate moves.
+ * It is a straight line, never a road distance — say so wherever it is shown.
+ */
+export function greatCircleKm(a: Coordinates, b: Coordinates): number {
+  const R = 6371;
+  const rad = (n: number) => (n * Math.PI) / 180;
+  const dLat = rad(b.lat - a.lat);
+  const dLon = rad(b.lon - a.lon);
+  const h = Math.sin(dLat / 2) ** 2
+    + Math.cos(rad(a.lat)) * Math.cos(rad(b.lat)) * Math.sin(dLon / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(h));
+}

@@ -155,14 +155,14 @@ it. What keeps the site from reading as generated is not the colour — it is
 structure and detail. Do not try to fix "it looks AI-made" by changing the
 palette; fix it by making the structure specific to this content.
 
-**The thesis is measured time.** Five days, 46 scheduled items, a strict clock,
+**The thesis is measured time.** Five days, 47 scheduled items, a strict clock,
 people arriving from seven time zones. The programme is not one section among
 others — it is why the site exists. Everything else is reference material.
 
 In one line: **an international operational document, with editorial finish and
 temporal behaviour.**
 
-Count carefully. "46 sessions" is wrong — the 46 includes meals, coffee breaks,
+Count carefully. "47 sessions" is wrong — the 47 includes meals, coffee breaks,
 transfers and receptions. Say _scheduled items_.
 
 **The signature is the programme, drawn to scale — on large screens only.**
@@ -171,7 +171,7 @@ the height of a forty-five minute country presentation and the shape of a day
 is visible at a glance. Parallel activities sit in adjacent columns, because
 that is what they are.
 
-**All 46 end times are confirmed.** Twenty of them were logical display
+**All 47 end times are confirmed.** Twenty of them were logical display
 intervals for lunches, coffee breaks, check-ins, summaries, dinners and Day 5
 transfers, chosen so every item had the same visual grammar; the organiser
 approved them as real on 5 September 2026 and the `endStatus: 'provisional'`
@@ -532,8 +532,34 @@ Extract the data with no visual change at all, as its own step.
   narrower than 1024px, and the `max-width` blocks sit inside it, so both keep
   the literals they were written with — those are deliberate step-downs, not
   tokens waiting to be substituted.
-- **Tabular numerals for times** (`font-variant-numeric: tabular-nums`) so the
-  time column aligns exactly.
+- **Tabular numerals for times** (`font-variant-numeric: lining-nums
+  tabular-nums`) so the time column aligns exactly. Write both keywords:
+  `font-variant-numeric` is one property, and a bare `tabular-nums` sends the
+  figure style back to the font's default, which is the next bullet's problem.
+- **Lining figures, declared once on `body`.** Cormorant Garamond's default
+  figures are old-style — 1999 with two descending nines, a 4 and a 3 that drop
+  below the baseline. That is correct in running serif text and wrong for what
+  this site sets in the serif: years, dates, editions, counts and distances,
+  read as data at 32–60px, where uneven heights read as a wobble. It was
+  reported as exactly that on 10 September 2026 and fixed in one inherited
+  declaration, which reaches the hero's `14–18`, the wordmark's `2`, the day
+  tabs, the story facts and the step years. Manrope's figures are already
+  lining, so nothing sans moved.
+- **Every display figure on the site is set in Manrope**, at weight 750 with
+  `letter-spacing: -.045em` and `lining-nums tabular-nums`. Same reasoning that
+  keeps session titles out of the serif on the grid: a figure is functional
+  text. This started as FICA's counts alone, with the dated spines left in the
+  serif; the client asked on 10 September 2026 for the same treatment
+  everywhere, and it now covers `.story-facts dd`, `.story-steps-year`,
+  `.story-observatories-figure` and `.story-campuses-figures dd` — LAPIG's
+  1994, FUNAPE's 1,772 m², the town's `1727 · 1937 · 2001`, Goiânia's steps and
+  UFG's 114 / 22,000+ / 6. **Each ceiling came down by about a sixth** when it
+  moved (48→43, 52→44, 54→46, 36→32): Manrope is optically larger than
+  Cormorant at the same size, and keeping the old numbers would have made every
+  band heavier than the one it replaced. What stays serif is the display voice
+  that happens to contain digits — the `Time2Graze` wordmark, the hero's
+  `14—18`, `Mon · 14 Sep` on the day tabs, `Day 1 · Welcome` on materials.
+  Those are names and headings, not measurements.
 - **No third typeface.** Cormorant Garamond and Manrope are enough. Reach for
   weight, size and spacing before reaching for a new family.
 
@@ -588,6 +614,7 @@ components/venue-card.tsx    A place you navigate to (hotel, LAPIG): actions, co
 components/friday-visit.tsx  Cidade de Goiás as one block: the coach, then the town.
 components/orientation.tsx   Travel part two: Goiânia's context and the free-time map.
 components/free-time-map.tsx Embedded reference Google My Maps for free time.
+components/whatsapp-mark.tsx The WhatsApp glyph, inlined. lucide carries no brand marks.
 components/recap.tsx         The day's published record, and the control that flags a line as wrong.
 components/add-to-calendar.tsx  .ics downloads, subscription URL and the share form.
 hooks/use-tab-keys.ts        Arrow-key movement for the day tablist. Horizontal only.
@@ -595,6 +622,7 @@ data/agenda.ts               The five days, sessions, tracks and materials.
 data/types.ts                Content contracts.
 data/venues.ts               The single venue registry: names, pins, addresses.
 data/practical.ts            Accommodation, contracted shuttle and selected guide links.
+data/contact.ts              The participants' WhatsApp group: the one link that leaves the site.
 data/recaps.ts               The daily recaps, one entry per day, written the evening of that day.
 data/geography.ts            The two towns: figures, chronologies, map markers, drawn geometry.
 data/institutions.ts         The marks cleared for display, with their artwork sizes.
@@ -647,6 +675,8 @@ rather than being declared inside a component.
   [`docs/daily-recap.md`](docs/daily-recap.md) — the item ids in it are what
   reader corrections point at, so they are assigned by that procedure and not
   by hand on a whim. See [Daily recaps](#daily-recaps).
+- Edit `data/contact.ts` to change the participants' group link. The home strip
+  and the footer both read it; neither writes a URL of its own.
 - Materials are declared on the day, session or track that produces them.
   `lib/materials.ts` aggregates them; do not recreate a hand-maintained list.
 - The four page components compose the data. Do not move operational facts
@@ -884,7 +914,7 @@ is a decision to take on its own, in its own commit, when nothing else is in
 flight — not a tidy-up bundled into someone else's change.
 
 Pushing to `main` triggers `.github/workflows/deploy-pages.yml`, which builds
-and publishes `out/` to https://victorgit10.github.io/time2graze-workshop/
+and publishes `out/` to https://lapig-ufg.github.io/time2graze-workshop/
 
 **Why Next.js and not `vinext`.** The site was built on `vinext`
 1.0.0-beta.5 until September 2026. Its static export could not emit a second
@@ -1347,10 +1377,55 @@ so a button inside it is focusable by keyboard and invisible to a screen
 reader; its list counterpart carries the day to assistive technology but is
 clipped away above 1280px, so a button there is one desktop readers cannot
 click. `components/split-choice.tsx` therefore sits below the programme,
-outside `.agenda-panel` for the same reason the recap does, and the programme
-above only ever *displays* the answer — the `Your choice` mark on the track
-card and on the list entry, from this browser's own storage. Do not "improve"
+outside `.agenda-panel` for the same reason the recap does. Do not "improve"
 this by moving the control into the grid.
+
+**Which is exactly why the day has to announce it.** Shipped first without
+that, the chooser was a block at the foot of the page nothing pointed at: a
+reader looking at the 10:00 slot had no reason to think an answer was expected
+of them, let alone that the page could take one. Three surfaces now carry the
+same state, and they answer to one function, `choosingOpen` in
+`lib/split-sessions.ts`, so they cannot disagree:
+
+- **The session says it needs an answer, and takes you there.** `Split
+  session` plus a `Choose one` chip, in the grid and in the list, until this
+  browser has picked; then the chosen activity carries `Your choice` instead.
+  The chip is a link to the chooser — a green pill saying `Choose one` that
+  does nothing when tapped is a broken promise.
+- **`SplitNotice` sits between the day tabs and the panel**, carrying the
+  time, the state and the same link. It is glued to the tabs above and the
+  panel below (`border-top: 0`, as `.agenda-panel` has) so the three read as
+  one card.
+- **The chooser itself** states the answer back once it has one.
+
+**Both controls pulse, and that is the only thing on the site that moves on
+its own.** A ring opens out of the chip and the notice button over the first
+third of a three-second cycle and then rests for the other two — a beat, not a
+blink, because this is a workshop programme and a flashing control reads as an
+alarm. They share the keyframes and start together, so the page has one
+heartbeat rather than two competing ones, and both stop under the cursor or on
+focus: the reader is there, the signal has done its work. It is guarded the
+way `.calendar-spinner` is — inside
+`@media screen and (prefers-reduced-motion: no-preference)`, timed off
+`--m-enter`, and `linear` rather than `--m-ease`, which is an ease-out written
+for a state landing under a cursor and spends a looping ring's whole life in
+its first tenth of a second. The ring is `box-shadow`, so it costs no layout
+and cannot push a timeline block out of its hour; it is 10px, which clears the
+`overflow: hidden` on `.tl-block` with 25px to spare. Nothing of it prints.
+
+Every link resolves through `splitAnchor()`, so the three cannot point at
+different places. The two chip copies exist because the programme has two
+representations, and each is made reachable by exactly the readers who can see
+it: the grid's copy is `tabIndex={-1}`, since that diagram is `aria-hidden`
+and a focusable link in it would be a tab stop into nothing; the list's copy
+is a real link, and `display: none` above 1280px, where that list is clipped
+away and would be the same trap. Below 1280px the list *is* the programme and
+its chip is the one a thumb reaches. Check `.programme > .session-list` holds
+no focusable element on a wide screen before adding another control to it.
+
+A day with no split session renders none of it, and none of it prints: paper
+carries the schedule, and a chip saying `Choose one` on a sheet that cannot be
+clicked is noise. `Your choice` does print — that sheet is the reader's own.
 
 **A choice is changed, not repeated.** The sheet is keyed by session and name,
 matched case- and space-insensitively, so someone who changes their mind
@@ -1470,3 +1545,616 @@ reimplementing them, and it never prints.
 **Do not give the assistant a page, a name, or an introduction.** "Ask" is a
 plain word; a paragraph explaining what it can do would be prose explaining the
 interface, which the site does not carry.
+
+## Optional stories — 9 September 2026
+
+Seven subjects that a participant may want and none of them needs: UFG, LAPIG
+and FUNAPE on the home page, Goiânia, the Cerrado, Cidade de Goiás and FICA on
+Travel & stay. They are reference reading, and the whole design follows from
+that: closed, they cost one row each; opened, they are allowed a magazine.
+
+**They are not a fifth destination, and the rule against one still holds.**
+No story has a route, a navigation entry or a place in the directory. Each is
+addressed by a hash inside a page that already exists — `/#about-ufg`,
+`/practical/#about-fica` — and its entry is a row in the page that already
+carries the subject. The names obey the same test as the pages do: `About UFG`
+and `Learn more` are things a reader already understands. Do not promote one
+to a route, and do not add an eighth without asking what page already earns it.
+
+**The panel is a native `<dialog>` opened with `showModal()`, and that
+overrode the plan.** `research/optional-content-plan.md` recommended expanding
+in place, below the entry. That is superseded — the panels are modal — and the
+rest of that document is research, not a specification. The reason is the
+sticky header: an in-page panel scrolls under it and a long story leaves the
+reader with no fixed way out, while the modal layer sits above it and carries
+`Back to page` at the top and the foot of every panel.
+
+**The `#about-` hash space is the stories' own.** It has nothing to do with
+`/programme/`'s `data-session` resolver, and the two must not be merged — that
+resolver has its own rules under [Deep links](#deep-links). The story trigger
+*does* carry the `id`, deliberately: a reader arriving from another page lands
+on the entry the panel came out of, so closing it leaves them where the link
+promised.
+
+**The history contract is three lines in `lib/story-navigation.ts`, and every
+part of it is load-bearing:**
+
+- Opening from the page **pushes one entry**, so Back closes the panel.
+- Opening a *related* story from inside a panel **replaces** it, so a reader
+  three subjects deep still leaves with one Back rather than three.
+- A story reached by a link from outside has no entry to pop, so `closeStory`
+  falls back to `replaceState` — a shared link closes into the site instead of
+  leaving it.
+
+`scripts/story-navigation.test.mjs` covers all three, plus the scroll lock.
+**The lock is a counter, not a flag** (`lockStoryScroll`), because the
+photograph lightbox is a second dialog inside the first and the two unmount in
+whichever order React chooses; a boolean let the inner one unlock the page
+while the outer was still open.
+
+**Closed panels download nothing.** The text is server-rendered and sits in the
+HTML; every image, gallery, explorer and film player is mounted behind
+`useStoryOpen()`, so a reader who never opens a story pays for none of it —
+confirmed against `performance.getEntriesByType('resource')`, not assumed.
+Films are YouTube embeds that load only on a deliberate play, and closing a
+story unmounts the player so reopening never resumes audio. Keep it that way:
+an `img` or an `iframe` rendered outside that gate silently undoes it.
+
+**Print carries only what a reader asked for.** An open panel prints; a closed
+one does not, except `data-print-always`, which is Cidade de Goiás alone —
+that town's history printed before the stories existed and still does.
+**Goiânia's history no longer prints**, which is a real change from the version
+before 9 September 2026: it moved behind its panel with the rest. That is
+deliberate. Adding `printAlways` to `goiania` in `components/optional-story.tsx`
+reverses it in one word if the organiser wants the paper sheet to carry it.
+
+### Media rights in the stories
+
+Nothing enters `data/story-images.json` without a local file and documented
+rights; `research/optional-content-image-provenance.json` records the source
+page, the credit, the licence, the changes and the date each was checked.
+
+**Every record states its modification, and that is a licence term rather than
+a courtesy.** The files are resized and converted to WebP, and both licences in
+use require saying so — CC BY-SA 4.0 asks whether the material was modified,
+and Portal UFG's terms at https://ufg.br/n/63495-direitos-autorais require
+derived material to identify its changes. The `edits` field carries it and the
+caption prints it. A new image without `edits` is a rights defect, not a
+cosmetic one.
+
+**The Portal UFG photographs are non-commercial**, and their `license` says so;
+their `licenseUrl` points at those terms, never at the article the photograph
+was published in. The LAPIG pair pointed at the article until 9 September 2026
+and understated the restriction as `Reuse with credit`.
+
+### Two things a person still has to answer
+
+- **FUNAPE sits in the institutions row at the client's explicit request** of
+  9 September 2026, under the heading `Institutional affiliations`. Its role in
+  *this* workshop is not established in any source consulted —
+  `research/optional-content-plan.md` records that as open — so the row asserts
+  a relationship the research does not yet support. Confirm it with the
+  organiser before the site is announced. The story text itself claims nothing
+  beyond what FUNAPE's own site says.
+- **FICA's festival is in June and the workshop is in September.** The entry
+  sits under the Friday visit to Cidade de Goiás, which is the one place a
+  reader could mistake it for something on the programme. The prose is past
+  tense throughout, and since 10 September 2026 the masthead says it outright —
+  `The most recent edition ran in June 2026. The festival is not part of the
+  workshop programme.` — rather than leaving tense to carry it alone. Keep any
+  new FICA fact in that tense, and do not give the subject a week link: it has
+  no session, and `lib/story-week.ts` is correct to render nothing for it.
+  Note the wording: **not** "held every June". Recent editions run in June and
+  the first ran in June 1999, but Secult announced one opening on 14 December,
+  so the site says *held in Cidade de Goiás since 1999* and *recent editions
+  have run in June*.
+
+## Story devices — 9 September 2026
+
+The seven panels were built with four presentational widgets shared between
+them, and it showed: every one ran opening → media widget → facts → two
+columns of prose → references. They differed by which widget sat in slot two.
+That is a template, and a template is what the reader feels.
+
+**Each subject now has a device only that subject could justify**, and the
+composition lives in `components/stories/<id>.tsx`. `optional-story.tsx` is the
+frame — entry, opening, week link, references — and holds no `id ===` branches:
+it had four, and every new subject wanted a fifth. `components/story-parts.tsx`
+carries the shared pieces a composition may draw on.
+
+| Subject | Device | Why that subject |
+| ------- | ------ | ---------------- |
+| UFG | Five founding schools; the campus list with a computed distance | The reader is standing inside it, and Friday's town holds another campus |
+| LAPIG | Its own three films, then the retrospective photographs | It publishes its own account of itself |
+| FUNAPE | A four-step sequence, labelled as general | It has no cleared photography and no documented role here |
+| Goiânia | 1933 · 1937 · 2003 as steps | A city drawn before it was built is an order of events |
+| Cidade de Goiás | Two views, the dated spine, then the walk | Its heritage argument is a relationship between river, hills and town |
+| FICA | Typographic: the acronym keyed to its Portuguese name, a title card, four competitive showcases | No cleared festival photography beyond three archive frames |
+| Cerrado | The scale ladder: ground, air, orbit | It is the working method of the laboratory hosting the week |
+
+**The scale ladder must stay a set of choices.** Its three photographs are
+three different places — Serra Dourada, a LAPIG aerial frame and Serra de
+Caldas — and a slider, a dissolve or a continuous zoom would assert a single
+site across them. That would be a false claim made by an interaction rather
+than by a sentence, which is harder to notice and harder to correct. Rungs are
+pressed, each names its own location, and the closing chapter says outright
+that these are three places. Only Landsat's 30 m is a published figure; the
+other rungs name the instrument, because no ground coverage is documented for
+them and a fabricated number beside a real one is worse than no number.
+
+**Only one device needs JavaScript.** The founding list, the campus list, the
+steps and the sequence are server-rendered and print. Keep it that way: a
+device that hides content behind a click cannot be printed and cannot be read
+by someone who arrived with the panel already open.
+
+### The week link
+
+`lib/story-week.ts` resolves a story's `weekSessionId` against `AGENDA` and
+renders the title, day, time and venue with a link into the programme. **The
+time is never written in the story's own copy** — the programme is the only
+place a time lives, and a second copy is a second thing to update.
+
+Four stories declare a session and three do not, and the three are the point:
+FICA is a June festival, FUNAPE is not a place, and Goiânia is the whole week
+rather than an appointment. Giving all seven a line would have invented three
+appointments to make a row look consistent. An id that no longer resolves
+renders nothing rather than a dead deep link.
+
+Two of the four are worth keeping: `d1-ufg-tour` is literally "UFG Tour —
+Welcome at LAPIG", and `d5-serra-dourada` is the lookout at the mountain in the
+Cerrado ladder's first rung. The connection is real; do not manufacture more.
+
+### The entry rows
+
+Each row carries a thumbnail, the subject, and one line saying what is inside.
+Seven identical rows were a list nobody read before opening one, and the
+accessible name is set explicitly (`aria-label`) so the same is true by ear.
+
+**Entry thumbnails are their own file.** `scripts/build-entry-thumbs.mjs`
+crops 260×186 versions into `public/images/stories/<id>-entry.webp`; the
+gallery's 640px thumbnails were serving 85 KB to paint a 92×66 slot. Run it by
+hand after adding a story thumbnail — it resolves sharp from Next's own copy,
+which is transitive and must never be something the deploy depends on — and
+commit the output. `ENTRY_THUMB` in `optional-story.tsx` mirrors its
+dimensions; changing one means changing both.
+
+**Watch the closed height on a phone.** Stacking `Learn more` under the row
+first time out cost about 100px per entry and put four entries — 800px, most of
+a screen — between a reader and the transport information below them. The
+action sits at the right as a 44px target, and the teaser is clamped to two
+lines. Measured at 375px: 115–137px per row. If a change pushes that back over
+150, it is taking the page back.
+
+### UFG's facts are sourced now
+
+The panel used to carry three sentences. It now carries the creation date, the
+five schools and the campuses, from
+https://ufg.br/n/63408-historia and https://ufg.br/p/27153-campus (checked
+9 September 2026), in `data/story-features.ts`.
+
+**One thing on the history page is deliberately not reproduced.** It gives the
+creation as 14 December 1960 and also describes a decree signed by Juscelino
+Kubitschek on 18 December 1961. Those cannot both be the founding act, the page
+does not reconcile them, and this site does not publish a fact it cannot
+resolve. Only the creation date is on the page. If someone confirms the decree,
+it can go in with its own source — do not add it from the history page alone.
+
+## UFG, expanded — 10 September 2026
+
+**Look at every photograph at full size before it is published.** The pair that
+opened this panel until 10 September had been through a documented provenance
+check that recorded "visible weathering and graffiti" — and shipped. The
+graffiti read `FORA PM`, `REITOR TEM RABO PRESO` and `A+ ZONA ANTIFA`, on the
+Central Library of the host university, on the page that introduces that
+university to people arriving from seven countries. A licence check is not a
+look. The provenance file now carries a `visualInspection` line that says what
+was actually examined.
+
+**A university is easier to describe by what it measures than by how many
+people it enrols.** That is the panel's argument and it is checkable: UFG keeps
+observatories pointed at the land (LAPIG), at the sky (CEMPA-Cerrado) and at
+its own use of artificial intelligence (Observatório UFG-IA, which LAPIG built
+— the same laboratory the participants sit in). CEIA is the fourth card and is
+labelled `Builds the instruments`, not a fourth "watches": forcing the
+symmetry would have been the device inventing a fact to complete its own
+shape. `UFG_OBSERVATORIES` in `data/story-features.ts` carries the sources.
+
+**The photographs are not a campus tour**, and that is the correction to what
+was there before. A monkey hanging from the walkway of Campus Samambaia, an
+agrometeorological station photographed from directly above, a case of fossils
+and a music school: the range of one university, which is truer than its
+façades and survives being seen by someone who has never been there. All four
+are CC BY-SA 4.0 from Wikimedia Commons and every frame was opened at full
+size first. Three sunset views of the same campus were rejected in the same
+pass — each was a car park with overhead cables.
+
+**`natural` on `StoryGallery` keeps each photograph's own proportions**, and
+the ratio is written inline per image rather than left to `aspect-ratio: auto`.
+That is not a style preference: with `auto`, an unloaded image reserves no
+height at all, the gallery collapses to nothing, and every caption below it
+jumps as the files land. Measured before the fix: four images at 0px tall.
+
+**A pre-existing rule had to be narrowed for this.** `.story-photo:first-child`
+was given `grid-column: 1 / -1` and `aspect-ratio: 16 / 9` for the stories that
+lead with one wide frame. UFG was in that list and is not one of them any more;
+leaving it there letterboxed a portrait photograph into 16:9. Goiânia and
+Cidade de Goiás still are, and still want it.
+
+**`scripts/build-entry-thumbs.mjs` reads the stories rather than a list.** The
+hand-kept list went stale the first time a story changed its thumbnail and
+failed on an image that no longer existed.
+
+### One fact deliberately left out
+
+UFG's own history page gives the creation as 14 December 1960 and also
+describes a decree signed by Juscelino Kubitschek on 18 December 1961. Both
+cannot be the founding act, the page does not reconcile them, and only the
+creation date is published. The Observatório UFG-IA has no launch date on its
+announcement either, so the site gives none.
+
+## Campuses, FUNAPE and the science park — 10 September 2026
+
+**The campus a visitor never notices is a campus.** Câmpus Colemar Natal e
+Silva has no gate and no perimeter: the Faculty of Law, the Hospital das
+Clínicas and their neighbours stand among ordinary streets in Goiânia's Setor
+Universitário, four kilometres from Samambaia. The panel says that outright,
+because a reader who walks past it will otherwise see a hospital and a law
+school and not a university. It is named after the man who directed that
+faculty, organised the assemblies and marches that argued for a federal
+university in Goiás, and became UFG's first rector in 1961
+(https://jornal.ufg.br/n/135985-a-criacao-da-ufg-uma-ousadia-historica).
+
+That page also has JK signing the creation decree in **December 1960**, which
+agrees with the 14 December 1960 date on the history page and makes the
+"18 December 1961" sentence there look like a slip. Still only the creation
+date is published, and still from one source.
+
+**FUNAPE is a building, and the address is the argument.** The panel used to
+be two paragraphs about administrative support, which is true and forgettable.
+It now opens on the building itself — 1,772 m², two floors, a roof garden and
+a training room for 97, opened December 2020 — and then lists its neighbours in
+the Parque Tecnológico Samambaia: the innovation agency, the prototyping lab,
+the incubator, and LaMCAD, whose largest client is the CEMPA-Cerrado that
+forecasts the weather in the UFG panel. Naming the neighbours says what the
+foundation is for better than a sentence about contracting does.
+
+**It still claims no role in this workshop.** Every sentence describes what
+FUNAPE is and does generally. Its place in the institutions row remains
+unconfirmed — see the earlier entry — and nothing in the panel was written to
+make that placement look settled.
+
+### What is not there, and why
+
+Wikimedia Commons has no photograph of the Parque Tecnológico, of FUNAPE, or
+of Câmpus Colemar Natal e Silva under any licence. The FUNAPE building comes
+from Portal UFG under its attributed, non-commercial terms — the same basis as
+the FICA and LAPIG photographs. The park itself has none and is drawn in type,
+as FICA is.
+
+**Three Commons photographs of the Faculty of Law were rejected**, and they are
+the best that exists there: each is a wall of window air-conditioners on
+stained concrete. The Hospital das Clínicas frame was taken instead, and it is
+honest about what that campus looks like — an urban block on a working street.
+Its provenance note records what is in it, including the parked cars, because
+the rule now is that the record says what was actually seen.
+
+### A pre-existing layout bug, found while doing this
+
+`.story-photo-essay .story-photo-open img` carried `aspect-ratio: auto`, so
+the LAPIG and FICA essays reserved **no height at all** until their images
+arrived: measured at 0px, with every caption below them jumping on load. Both
+now pass `natural` to `StoryPhotos`, which writes each ratio inline. If a new
+gallery wants natural proportions, use `natural` — never bare
+`aspect-ratio: auto`.
+
+## The numerals, and FICA rebuilt — 10 September 2026
+
+Two things, and the first is the site's and not FICA's.
+
+### The figures were old-style everywhere
+
+Reported by the client on the FICA panel and true on all four routes: the
+numbers looked crooked. They were. Cormorant Garamond ships old-style figures
+as its default, so every serif number on the site — the hero's `14–18`, the
+`2` in the Time2Graze wordmark, `Mon · 14 Sep` on the day tabs, `1994`,
+`1727 · 1937 · 2001`, `Inside FICA 2026` — was set with descending nines,
+threes and fours. The rule is in
+[Type and detail rules](#type-and-detail-rules); the fix is one inherited
+declaration on `body` plus `lining-nums` written into the thirteen
+`tabular-nums` rules that would otherwise have reset it.
+
+The client also said the numbers looked like "what every AI site uses", and
+that half of it is not solved by an OpenType feature: a 60px serif figure on a
+cream ground is the current house style of generated design. Where a figure is
+a **count**, it is now Manrope — FICA's `38 / 7 / 4`. Where it is a **date in a
+sequence** — Goiânia's steps, the town's spine — the serif stays, because there
+the year is being read as a date and not as a measurement. Do not flatten that
+distinction in either direction.
+
+### The panel
+
+FICA is the one subject with no cleared photography beyond three archive
+frames, so the panel is built out of type and out of the festival's own words.
+What it now carries, and why each part is there:
+
+- **A masthead that spells the acronym out of the name.** `FICA` set large,
+  and under it `Festival Internacional de Cinema e Vídeo Ambiental` with the
+  four initials it gave up marked in the accent. A reader who does not read
+  Portuguese gets the acronym explained without a sentence explaining it, and
+  the festival's own name — not a translation of it — is what the panel is
+  titled. `keyed()` in `components/stories/fica.tsx` walks the mark against the
+  title and returns null if any letter fails to land on a word initial, so a
+  future edit that breaks the correspondence renders plain text rather than a
+  wrong claim about the name.
+- **A title card, flush on the film.** `Cidade de Goiás, Goiás`, one line
+  saying what the festival is, then `1999 / 27 / 4`. It is dark, and it sits
+  directly on top of `StoryCinema` with no gap, so the card and the screen read
+  as one block: the room going down before the projector. That is the only dark
+  surface in the stories, and it is there because the subject is cinema — not
+  because a panel needed contrast.
+- **Four competitive showcases, with their real Portuguese names**, ordered
+  from the widest reach inwards: international, then Indigenous cinema and
+  traditional peoples, then the state, then `Becos da Minha Terra` — the town
+  Friday goes to. The Indigenous showcase sits second because it is not a
+  geographic category at all; forcing it onto that axis to tidy the shape would
+  be the order inventing a claim. They are a `ul`, not an `ol`: a set, not a
+  ranking, and the `01 02 03 04` that used to number them was both arbitrary
+  and the worst of the old-style figures.
+- **The Cora Coralina link.** The best feature in the main competition wins the
+  Prêmio Cora Coralina, and the poet's house is a museum a few streets from the
+  festival's cinema, already covered in the town's own story. Two subjects the
+  site already carries turn out to be one fact.
+
+Sources and the deliberate omissions are in
+`research/optional-content-fica.md`. The structured material is in
+`data/story-features.ts` beside the other devices'.
+
+**The lime fact row is gone.** It carried `1999`, `16–21 June 2026` and `27` in
+60px serif, and the middle one was a June date set in display type on a
+September workshop's site.
+
+### Then it was rebuilt again, the same day
+
+The first pass was assembled entirely out of the festival's reporting of its
+27th edition, and the client read the result correctly: **it was a page about
+the 27th FICA, not about FICA.** A dated title card opened it and the reader
+met a theme, a venue, a selection and a prize list before ever learning what
+the festival is.
+
+Three rules came out of that, and they generalise past this panel:
+
+- **A subject's page opens on the subject.** The most recent edition is now one
+  labelled block — `The most recent edition` — near the foot, styled as the
+  quietest band in the panel. It is a fact *about* FICA; it is not FICA.
+- **A count belonging to one year is not the shape of the institution.** `38
+  films / 7 countries` and the per-showcase feature counts were true and were
+  2026's. The showcases now say what each is *for*, permanently. The title
+  card's figures are `1999 / 27 / 4`, none of which belongs to a single year.
+- **Explain before you show.** `StoryChapters` moved up to sit directly under
+  the film block, so a reader learns the festival's subject, the journalist who
+  set its line, what it does between screenings and who runs it before reaching
+  the competition structure.
+
+**No prize values anywhere**, on the client's instruction of 10 September 2026.
+The Prêmio Cora Coralina keeps its name — the name is the whole point of it —
+and the Acari Passos and João Bennio prizes are not named at all, because
+nothing consulted says who those figures were and a prize name whose owner you
+cannot identify adds nothing.
+
+### The frame stopped branching on id
+
+`optional-story.tsx` had one `id === 'fica'` branch left, inside the shared
+opening, which is exactly what
+[Story devices](#story-devices--9-september-2026) says should not be there. The
+default opening is now `StoryOpening` in `story-parts.tsx`, and a subject whose
+opening is its own exports one that an `OPENINGS` registry picks up — the same
+shape as `BODIES`. `Story` gained two optional fields for it: `mark`, the
+acronym a subject is known by, and `note`, the one misreading a subject invites.
+FICA is the only user of either. Adding a third `id ===` branch instead of a
+registry entry is the failure this replaced.
+
+### A second pre-existing bug, found in the same pass
+
+`.story-steps li p` set `font-size: var(--t-body)` and outranked
+`.story-steps-year` on specificity, so Goiânia's `1933 · 1937 · 2003` — written
+as display type at `clamp(34px, 3.4vw, 52px)`, with its own mobile and print
+step-downs — had been rendering at 16px since the device was built. Nobody saw
+it while the years were serif and small; putting them in a heavy sans made it
+obvious immediately. The paragraph rule is now `.story-steps li > div p`, which
+is where the prose actually lives.
+
+The general shape of this is worth keeping: **a rule written for one child of a
+list, sitting beside a rule written for the list's descendants, loses.** If a
+device gives an element a display size and the element does not look like
+display type, check what else in the file can reach it.
+
+## The phone pass — 10 September 2026
+
+Three things reported from a phone, all of them real.
+
+### A figure and its label were half a screen apart
+
+`.story-facts` and `.fica-figures` both stacked to one column below 600px and
+then split each pair into **two equal halves** — `minmax(0, 1fr)
+minmax(0, 1fr)`. At 390px that put the number at the left edge and its label at
+the right, with room left over for the label to wrap onto two lines. `4` sat
+alone opposite `Competitive showcases`, and the reader could not tell which
+label belonged to which number.
+
+Both are now `auto minmax(0, 1fr)` on a shared **baseline**: the figure column
+shrinks to the widest value and the label starts immediately after it. Hairline
+rules separate the pairs, so each row is one thing.
+
+**The rule this generalises to:** on a phone, a label belongs to the value it
+names, not to the opposite margin. Two equal columns are a desktop habit —
+`auto` plus a baseline is what makes a pair read as a pair. `.fica-edition`
+takes the same treatment stacked, with the gap inside a pair smaller than the
+gap between them.
+
+### The film chooser did not read as a control
+
+The block ran screen → description → **three notes** → chooser, which on a
+phone is a wall of grey type between the screen and the only thing that changes
+what is on it. The chooser then read as three unrelated cards.
+
+`components/story-cinema.tsx` now runs screen → the film's own line → chooser →
+small print. Three things carry the relationship, and **none of them is a
+paragraph explaining the interface** — that rule still holds:
+
+- The chooser is a `fieldset` with a `legend` reading `Choose a film`. Not a
+  `div` with `role="group"`: `jsx-a11y/prefer-tag-over-role` asks for the native
+  pair, and it needs no id wiring. **`min-width: 0` on the fieldset is
+  load-bearing** — a fieldset defaults to `min-width: min-content` and will not
+  shrink inside the panel.
+- Every row wears a play badge over its own frame, so a row reads as a film you
+  can start rather than as a card that links somewhere.
+- The row already loaded says `On screen now`; the others say `Watch next`.
+
+### The thumbnails looked cropped
+
+They were `110px` wide with `height: auto` inside a `93px` row, so each frame
+floated as a short sliver with dead space above and below it. The frame now
+stretches the row (`align-items: stretch`, `122px` wide, the image filling it
+with `object-fit: cover`), which is what makes it read as a frame.
+
+Both changes are shared with LAPIG, which uses the same component. Check both
+panels after touching it.
+
+### Then the same check was run on all seven
+
+The phone pass above was done on FICA alone, which was the wrong scope: the
+same faults were sitting in the other panels. `.story-facts` is shared, so the
+pairing fix reached LAPIG, FUNAPE and both city stories the moment it landed —
+but two things had to be found by looking.
+
+**There are three choosers, not one.** Films, views (`story-explorer`) and
+scales (`story-scale`) all ask the reader to pick, and only the container ever
+carried the word — in an `aria-label` no sighted reader saw and which, on the
+explorer's bare `div` with no role, assistive technology ignored as well. All
+three are now `fieldset` + `legend` with the shared `.story-picker` /
+`.story-picker-label` pair: `Choose a film`, `Choose a view`, `Choose a scale of
+observation`. If a fourth device asks the reader to choose, it uses the same
+two classes.
+
+**Standalone links were between 18px and 37px tall on a phone.** The campus
+link was the worst at 18 — under even the 24px WCAG 2.5.8 AA minimum, and the
+site's own convention is the 44px target the story trigger already uses. One
+rule in the ≤600px block now raises every standalone link to 44. **Links inside
+a credit sentence are deliberately excluded**: 2.5.8 exempts a target in a
+block of text, and padding them out would break the line they sit in.
+
+The audit is `scripts/`-free on purpose — it was a throwaway Playwright pass at
+390px over all seven panels, checking for horizontal overflow, text under 12px,
+targets under 40px, and label/value pairs more than 55px apart. Worth
+re-running by hand after a layout change; the useful part is the list of what
+to look for, which is this paragraph.
+
+
+## The participants' group — 11 September 2026
+
+The client supplied the workshop's WhatsApp group invite and asked for it on the
+site. It is the first link on any page that leaves the site for a destination
+that is not an institution's own website, and it landed in two places.
+
+**On the home page, as a coda to the directory.** Not a fourth destination: the
+directory indexes the site's three other pages, and this one does not belong in
+that count. The strip sits directly under the cards, shares their frame — those
+cards' bottom rule is its top rule — and takes the mark into the column the
+card indices occupy, so both text columns start on the same left edge. It
+carries the outward arrow the internal cards never do. The order of the home
+page is unchanged and the argument now ends one step further on: what is
+happening now, what this is, where to go, how to reach everyone.
+
+**In the footer, on the second row of the centre column.** Under the name it
+belongs to, so a reader on `/programme/` or `/materials/` does not have to go
+home for it. The three-column balance the footer already had is untouched:
+nothing moved, one row appeared. Both links are direct children of `footer`
+because the print rule hides `footer > a`, and a wrapper would have put them
+back on paper.
+
+Four things about it are deliberate:
+
+- **The stored link is the canonical invite**, `chat.whatsapp.com/<code>`. It
+  arrived from WhatsApp's share sheet carrying `?s=sw&p=i&mlu=4&ilr=4`; those
+  parameters describe how the organiser happened to copy it, not the group, and
+  publishing them would hand them to every reader.
+- **The copy states what happens and who can join, and nothing else.** "Opens
+  in WhatsApp. Anyone with the link can join." What the group is *for* has not
+  been stated by the organiser, so it is not described. The second sentence is
+  also the one property worth knowing before tapping: **an invite link on a
+  public page is open to anyone who finds the page**, and this site is published
+  on GitHub Pages. If that becomes a problem, the fix is the organiser's —
+  reset the invite in WhatsApp and supply a new code — not a change here.
+- **The glyph is the real one**, from Simple Icons (CC0), because a generic
+  speech bubble does not say which application is about to open. It is drawn in
+  `currentColor` and never in WhatsApp's green: the workshop has no badge and
+  does not acquire one by linking out. Provenance is in
+  `research/logos/README.md`.
+- **It is hidden in print**, with the directory and the footer's links. A join
+  button on paper does nothing.
+
+
+## The agenda, reconciled again — 11 September 2026
+
+A newer copy of the organiser's own workbook (`T2G_Brazil_Workshop.xlsx`,
+`Agenda` sheet) was compared line by line against `data/agenda.ts`. Five things
+had moved; everything else matched exactly, and the reconciliation of
+9 September stands.
+
+| Day | Was | Is |
+| --- | --- | --- |
+| 1, 09:40–10:00 | absent | Welcome Coffee, inside the UFG tour's window |
+| 2, 14:00–15:30 | Biomass Data: Methodology and Updates | Remote sensing overview and grassland biomass monitoring: State of the art and future applications (Leandro/OGH) |
+| 2, 16:45–17:30 | Open Agenda | A few lessons from recent field campaigns in Brazil (Laerte/LAPIG) |
+| 3, 09:00–09:45 | State of the Art: Remote Sensing of Pasture & Decision Support Tools (Leandro/OGH, Emily/WWF) | On the ground biomass estimation: Key concepts and methodologies (Nathália/LAPIG) |
+| 5, 09:30–12:00 | Field Visit: Grazing Livestock Farm | …(Fazenda Buriti Queimado) |
+
+The count is 47 scheduled items, not 46. Everything that reads the agenda
+followed on its own: the home page's count, the Materials total (22 expected
+files, up one — the new Day 2 talk declares slides) and the `.ics` files.
+
+Four decisions in it:
+
+- **Ids did not change.** `d2-open-agenda-afternoon` now holds a talk and
+  `d3-state-of-the-art` a different subject, and both keep their names because
+  an id is the address a shared link, a material and a recap point at. The
+  slot did not move; only what happens in it. Each carries a comment saying so.
+- **Two spellings were corrected** — `lessos` and `campaings` — as `Aligment`
+  was before them. Nothing else about the supplied wording was touched, and
+  the one capital in `On the ground Biomass estimation` came down for the same
+  reason.
+- **The farm rides `venueNote`, not the title.** It renders as
+  `Field Visit: Grazing Livestock Farm (Fazenda Buriti Queimado)` in the `.ics`
+  and as a `Note` line on the page, which is exactly how the organiser wrote
+  it — and it keeps the title a title rather than a blob holding a place.
+  `research/pending-information.md` records that this supersedes the
+  8 September "farm names are not required". The Day 1 experimental area stays
+  unnamed because nothing names it.
+- **The welcome coffee overlaps the tour, and the grid now draws overlaps.**
+  See below.
+
+### Overlapping items on the axis
+
+The organiser's sheet gives the UFG tour 08:30–10:00 and the welcome coffee
+09:40–10:00 — the coffee closes the tour rather than following it. Both are
+kept as written.
+
+Two items running at once are **not** a split session: nobody chooses between
+them, so they cannot be `tracks`. Until now every block was `left: 0; right: 0`
+and two of them at the same hour would have been drawn on top of each other.
+`lanes()` in `components/programme.tsx` now walks a day in start order,
+chains items into runs of overlap, and gives each the lowest column free at
+its start; `--col` and `--cols` reach the CSS, where they collapse to
+`left: 0; width: 100%` at one column — which is every block on four of the
+five days. A run shares its width down its whole length, as a week of
+calendars has always drawn it.
+
+The chronological list, print and the `.ics` needed nothing: a list is
+chronological whether or not two items overlap, and a calendar has always
+allowed it. `NowNext` shows the first running item in document order, which
+during that twenty minutes is the tour — still true, and the band shows one
+item by design.
+
+**If the tour is meant to end at 09:40**, that is a one-line change to
+`d1-ufg-tour` and the lane machinery goes quiet on its own. It is not a
+guess this file should make.

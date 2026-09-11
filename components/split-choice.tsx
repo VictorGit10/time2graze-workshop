@@ -2,16 +2,15 @@
 
 import { CheckCircle2, CircleAlert, LoaderCircle } from 'lucide-react';
 import { useState, type SyntheticEvent } from 'react';
-import { TRACK_CHOICE_CLOSES } from '@/data/agenda';
 import type { Day, Session } from '@/data/types';
 import { rememberChoice, useChoices } from '@/hooks/use-track-choice';
 import type { Clock } from '@/lib/now';
-import { presenterLabel, timeLabel, toMinutes } from '@/lib/schedule';
+import { presenterLabel, timeLabel } from '@/lib/schedule';
+import { choosingOpen, splitAnchor, splitSessions } from '@/lib/split-sessions';
 import {
   CHOICE_NAME_MAX,
   chooseTrack,
   type ChoiceStatus,
-  trackChoiceEnabled,
 } from '@/lib/track-choice';
 
 const MESSAGES: Record<ChoiceStatus | 'sending', string> = {
@@ -25,11 +24,16 @@ const MESSAGES: Record<ChoiceStatus | 'sending', string> = {
   error: 'That did not send. Try again, or tell an organiser directly.',
 };
 
-/** True once the session has started: from then on the room is what it is. */
-function started(session: Session, clock: Clock | null) {
-  if (!clock) return false;
-  if (clock.date !== session.date) return clock.date > session.date;
-  return clock.minutes >= toMinutes(session.start);
+/**
+ * The day's split sessions that still have something to say: one still open to
+ * an answer, or one this browser has already answered. A session that is
+ * neither — it started, or choosing closed, and nothing was picked — is past
+ * asking about, and a day left with none says nothing at all.
+ */
+function answerable(day: Day, clock: Clock | null, picks: Record<string, string>) {
+  return splitSessions(day)
+    .map((session) => ({ session, editable: choosingOpen(session, clock) }))
+    .filter(({ session, editable }) => editable || picks[session.id]);
 }
 
 /**
@@ -200,24 +204,18 @@ function SessionChoice({
  */
 export function SplitChoice({ day, clock }: { day: Day; clock: Clock | null }) {
   const { name, picks } = useChoices();
-  const open = trackChoiceEnabled
-    && (clock === null || clock.date <= TRACK_CHOICE_CLOSES);
-
-  /* Once a session has started, or after choosing closes, it keeps its place
-     only to state what this reader picked. A session with neither an open
-     window nor an answer is dropped, and a day left with none renders
-     nothing — the block never offers a control that has no effect left. */
-  const splits = day.sessions
-    .filter((s) => s.tracks?.length)
-    .map((session) => ({ session, editable: open && !started(session, clock) }))
-    .filter(({ session, editable }) => editable || picks[session.id]);
+  const splits = answerable(day, clock, picks);
 
   if (splits.length === 0) return null;
 
   return (
-    <section className="split-choice" aria-labelledby={`split-day-${day.index}`}>
+    <section
+      className="split-choice"
+      id={splitAnchor(day)}
+      aria-labelledby={`split-day-${day.index}-title`}
+    >
       <div className="split-choice-head">
-        <h3 id={`split-day-${day.index}`}>
+        <h3 id={`split-day-${day.index}-title`}>
           Day {day.index} ·{' '}
           {splits.length === 1 ? 'split session' : 'split sessions'}
         </h3>
@@ -236,5 +234,54 @@ export function SplitChoice({ day, clock }: { day: Day; clock: Clock | null }) {
         />
       ))}
     </section>
+  );
+}
+
+/**
+ * The line that says a decision is waiting, above the programme rather than
+ * under it.
+ *
+ * Without it the chooser was a block at the foot of the page that nothing
+ * pointed at: a reader looking at the 10:00 slot had no reason to believe an
+ * answer was expected of them, let alone that the page could take one. This
+ * is the one interactive pointer — the grid cannot hold it, being aria-hidden,
+ * and its accessible counterpart is clipped away on desktop — so it carries
+ * the time, the state and the link, and it is the same link on every width.
+ */
+export function SplitNotice({ day, clock }: { day: Day; clock: Clock | null }) {
+  const { picks } = useChoices();
+  const splits = answerable(day, clock, picks);
+
+  if (splits.length === 0) return null;
+
+  return (
+    <aside className="split-notice">
+      {splits.map(({ session, editable }) => {
+        const chosen = session.tracks?.find((t) => t.id === picks[session.id]);
+        return (
+          <p key={session.id}>
+            <span className="split-notice-when">
+              Split session · {timeLabel(session)}
+            </span>
+            <span className="split-notice-state">
+              {chosen ? (
+                <>
+                  You are in <strong>{chosen.title}</strong>.
+                </>
+              ) : (
+                'Two activities run at the same hour, and you have not said which one you will join.'
+              )}
+            </span>
+            {editable && (
+              /* Only an unanswered session pulses. A "Change" that beats at
+                 someone who has already told us where they will be is a nag. */
+              <a href={`#${splitAnchor(day)}`} data-todo={chosen ? undefined : ''}>
+                {chosen ? 'Change' : 'Choose one'}
+              </a>
+            )}
+          </p>
+        );
+      })}
+    </aside>
   );
 }

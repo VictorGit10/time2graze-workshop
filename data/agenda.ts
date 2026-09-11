@@ -13,6 +13,13 @@ import type { Day } from './types';
  * Dourada lookout, in place of a farm visit duplicated from the morning) and
  * every Day 5 time were reconciled against the organiser's own agenda
  * spreadsheet on 9 September 2026.
+ *
+ * Reconciled again on 11 September 2026 against a newer copy of the same
+ * spreadsheet: Day 1 gained the welcome coffee, Day 2's afternoon talk was
+ * retitled and its second open hour became a talk of its own, Day 3's opening
+ * changed subject and presenter, and the Day 5 farm was named. Everything
+ * else matched line for line. Two spellings in the spreadsheet are corrected
+ * here, as `Aligment` was before them: `lessos` and `campaings`.
  */
 /**
  * Calendar publication state. `final` since 5 September 2026: the organiser
@@ -44,6 +51,21 @@ export const AGENDA: Day[] = [
         title: 'UFG Tour — Welcome at LAPIG',
         venueId: 'lapig',
         kind: 'technical',
+      },
+      /**
+       * Inside the tour's window, not after it: the organiser's agenda gives
+       * the tour 08:30–10:00 and this 09:40–10:00, so the coffee closes the
+       * tour rather than following it. Both are kept as written — the grid
+       * draws overlapping items side by side, which is what they are.
+       */
+      {
+        id: 'd1-welcome-coffee',
+        date: '2026-09-14',
+        start: '09:40',
+        end: '10:00',
+        title: 'Welcome Coffee',
+        venueId: 'lapig',
+        kind: 'break',
       },
       {
         id: 'd1-split-inspection-gee',
@@ -177,7 +199,8 @@ export const AGENDA: Day[] = [
         date: '2026-09-15',
         start: '14:00',
         end: '15:30',
-        title: 'Biomass Data: Methodology and Updates',
+        title:
+          'Remote sensing overview and grassland biomass monitoring: State of the art and future applications',
         speakers: [{ name: 'Leandro', org: 'OGH' }],
         venueId: null,
         kind: 'technical',
@@ -206,14 +229,21 @@ export const AGENDA: Day[] = [
         kind: 'technical',
         materials: [{ kind: 'slides' }],
       },
+      /**
+       * The id still says open-agenda: this hour was one until the organiser
+       * filled it on 11 September 2026, and an id is the address a shared link
+       * and a recap point at. The slot did not move; only what happens in it.
+       */
       {
         id: 'd2-open-agenda-afternoon',
         date: '2026-09-15',
         start: '16:45',
         end: '17:30',
-        title: 'Open Agenda',
+        title: 'A few lessons from recent field campaigns in Brazil',
+        speakers: [{ name: 'Laerte', org: 'LAPIG' }],
         venueId: null,
         kind: 'technical',
+        materials: [{ kind: 'slides' }],
       },
       {
         id: 'd2-daily-summary',
@@ -254,11 +284,8 @@ export const AGENDA: Day[] = [
         date: '2026-09-16',
         start: '09:00',
         end: '09:45',
-        title: 'State of the Art: Remote Sensing of Pasture & Decision Support Tools',
-        speakers: [
-          { name: 'Leandro', org: 'OGH' },
-          { name: 'Emily', org: 'WWF' },
-        ],
+        title: 'On the ground biomass estimation: Key concepts and methodologies',
+        speakers: [{ name: 'Nathália', org: 'LAPIG' }],
         venueId: null,
         kind: 'technical',
         materials: [{ kind: 'slides' }],
@@ -497,6 +524,10 @@ export const AGENDA: Day[] = [
         end: '12:00',
         title: 'Field Visit: Grazing Livestock Farm',
         venueId: null,
+        /* Named by the organiser on 11 September 2026. It is not a registry
+           venue — no sourced pin, and nobody navigates there alone — so it
+           rides the agenda line as the organiser writes it. */
+        venueNote: 'Fazenda Buriti Queimado',
         kind: 'field',
       },
       {

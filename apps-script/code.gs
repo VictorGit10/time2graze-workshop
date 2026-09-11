@@ -19,7 +19,7 @@ const CALENDAR_DESCRIPTION =
   'workshop website.';
 const CALENDAR_TIME_ZONE = 'America/Sao_Paulo';
 const ICS_URL =
-  'https://victorgit10.github.io/time2graze-workshop/calendar/time2graze-workshop.ics';
+  'https://lapig-ufg.github.io/time2graze-workshop/calendar/time2graze-workshop.ics';
 const DAILY_SHARE_LIMIT = 50;
 
 /** The workshop calendar's id, found or created once and then remembered. */
