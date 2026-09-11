@@ -65,8 +65,14 @@ ${corpus.entries.map((e) => `[${e.id}] (${e.kind}) ${e.title} — ${e.text}`).jo
 
 /** The published corpus, cached at the edge so a busy hour is one fetch. */
 async function loadCorpus(env) {
+  /* Only a good corpus is cached. `cacheTtl` alone caches every status for
+     the same five minutes, so a 404 caught mid-deploy kept the assistant
+     answering 503 long after the site had published the file. */
   const response = await fetch(env.CORPUS_URL, {
-    cf: { cacheTtl: LIMITS.corpusTtl, cacheEverything: true },
+    cf: {
+      cacheEverything: true,
+      cacheTtlByStatus: { '200-299': LIMITS.corpusTtl, '400-599': 0 },
+    },
   });
   if (!response.ok) throw new Error(`corpus ${response.status}`);
   const corpus = await response.json();
