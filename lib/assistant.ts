@@ -21,7 +21,7 @@ import { withBasePath } from '@/lib/base-path';
  * the same reason the Apps Script URL lives in one place: two copies is one
  * copy that gets forgotten.
  */
-export const ASSISTANT_ENDPOINT: string = '';
+export const ASSISTANT_ENDPOINT: string = 'https://time2graze-assistant.lapig-ufg.workers.dev';
 
 export const assistantEnabled = ASSISTANT_ENDPOINT !== '';
 
