@@ -914,7 +914,7 @@ is a decision to take on its own, in its own commit, when nothing else is in
 flight — not a tidy-up bundled into someone else's change.
 
 Pushing to `main` triggers `.github/workflows/deploy-pages.yml`, which builds
-and publishes `out/` to https://victorgit10.github.io/time2graze-workshop/
+and publishes `out/` to https://lapig-ufg.github.io/time2graze-workshop/
 
 **Why Next.js and not `vinext`.** The site was built on `vinext`
 1.0.0-beta.5 until September 2026. Its static export could not emit a second

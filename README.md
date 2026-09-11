@@ -3,7 +3,7 @@
 Institutional information hub for the internal Time2Graze technical workshop,
 held in Goiânia, Brazil, from 14 to 18 September 2026.
 
-Live site: https://victorgit10.github.io/time2graze-workshop/
+Live site: https://lapig-ufg.github.io/time2graze-workshop/
 
 The site is intentionally operational rather than promotional. It brings the
 programme, presentation materials, venues, accommodation, transport and
