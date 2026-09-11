@@ -41,7 +41,7 @@ ROOT = os.path.dirname(HERE)
 CACHE = os.path.join(HERE, ".map-cache")
 OUT_DIR = os.path.join(ROOT, "public", "images", "maps")
 R = 6371.0088  # km, IUGG mean radius
-UA = "Time2GrazeWorkshopSite/1.0 (+https://victorgit10.github.io/time2graze-workshop/)"
+UA = "Time2GrazeWorkshopSite/1.0 (+https://lapig-ufg.github.io/time2graze-workshop/)"
 
 # MapTiler serves 512px logical tiles, 1024px at @2x. Assuming the usual 256
 # cost an afternoon: tiles were pasted at half their width and the seams showed
