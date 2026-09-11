@@ -28,10 +28,65 @@ function offset(session: Session, from: number) {
   return { '--start': toMinutes(session.start) - from } as React.CSSProperties;
 }
 
-function span(session: Session, from: number) {
+/**
+ * Where a block sits across the width of the axis.
+ *
+ * Most days are a single chain and every block takes the whole rail: `--col`
+ * 0 of `--cols` 1. Two items that genuinely run at the same time are not a
+ * split session — nobody chooses between them — so they cannot be tracks, and
+ * drawn in one column they would be stacked on top of each other. Day 1 has
+ * the case: the welcome coffee occupies the last twenty minutes of the UFG
+ * tour. Overlapping items share the width for the length of the run they
+ * belong to, which is how a week of calendars has always drawn them.
+ */
+type Lane = { col: number; cols: number };
+
+function lanes(sessions: Session[]) {
+  const placed = new Map<string, Lane>();
+  const ordered = [...sessions].sort(
+    (a, b) => toMinutes(a.start) - toMinutes(b.start),
+  );
+
+  /* A run is a set of items chained by overlap: it stays open while the next
+     item starts before the latest end reached so far, and every member of it
+     is drawn at the same width, so the columns line up down the whole run. */
+  let run: Session[] = [];
+  let columnEnds: number[] = [];
+  let runEnd = -1;
+
+  const close = () => {
+    for (const session of run) {
+      placed.set(session.id, { ...placed.get(session.id)!, cols: columnEnds.length });
+    }
+    run = [];
+    columnEnds = [];
+    runEnd = -1;
+  };
+
+  for (const session of ordered) {
+    const start = toMinutes(session.start);
+    const end = start + (durationOf(session) ?? 0);
+    if (run.length && start >= runEnd) close();
+
+    let col = columnEnds.findIndex((free) => free <= start);
+    if (col === -1) col = columnEnds.length;
+    columnEnds[col] = end;
+
+    placed.set(session.id, { col, cols: 1 });
+    run.push(session);
+    runEnd = Math.max(runEnd, end);
+  }
+  if (run.length) close();
+
+  return placed;
+}
+
+function span(session: Session, from: number, lane: Lane | undefined) {
   return {
     '--start': toMinutes(session.start) - from,
     '--dur': durationOf(session) ?? 0,
+    '--col': lane?.col ?? 0,
+    '--cols': lane?.cols ?? 1,
   } as React.CSSProperties;
 }
 
@@ -88,9 +143,11 @@ function TrackCard({ track, chosen }: { track: Track; chosen: boolean }) {
  * visibly marked and do not count as confirmed operational times.
  */
 function Block(
-  { session, from, state, clock, splitHref }: {
+  { session, from, lane, state, clock, splitHref }: {
     session: Session;
     from: number;
+    /** Which column of a run of overlapping items this one takes. */
+    lane: Lane | undefined;
     state: SessionMark;
     clock: Clock | null;
     /** Where the chooser for this day lives. */
@@ -110,7 +167,7 @@ function Block(
       data-kind={session.kind}
       data-compact={compact || undefined}
       data-state={state ?? undefined}
-      style={span(session, from)}
+      style={span(session, from, lane)}
     >
       <p className="tl-time">{timeLabel(session)}</p>
 
@@ -194,6 +251,7 @@ function Point(
 function Timeline({ day, clock }: { day: Day; clock: Clock | null }) {
   const { from, to } = axisBounds(day);
   const daytime = day.sessions.filter((s) => !isEvening(s));
+  const columns = lanes(daytime.filter((s) => s.end));
   const ticks = axisTicks(day);
   const height = { '--span': to - from } as React.CSSProperties;
   const nextId = nextSessionId(day, clock);
@@ -240,6 +298,7 @@ function Timeline({ day, clock }: { day: Day; clock: Clock | null }) {
                 key={s.id}
                 session={s}
                 from={from}
+                lane={columns.get(s.id)}
                 state={mark(s)}
                 clock={clock}
                 splitHref={`#${splitAnchor(day)}`}

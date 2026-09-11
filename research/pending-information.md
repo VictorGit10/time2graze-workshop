@@ -14,14 +14,17 @@ teams' responsibility and does not block acceptance of the website.
 - [x] Uber is the recommended airport-to-hotel option.
 - [x] LAPIG entry instruction: ring the intercom if the gate is closed. Keep
   the authorised map pin; do not invent a postal address.
-- [x] Farm names/details are not required on the site.
+- [x] Farm names/details are not required on the site. **Superseded
+  11 September 2026**: the organiser's agenda now names Fazenda Buriti
+  Queimado as the Day 5 host, and the site carries it on that session's line.
+  The Day 1 experimental area is still unnamed and nothing asks for it.
 - [x] The organiser enabled Google Calendar sync every four hours. Frontend
   changes should not replace the configured trigger.
 - [x] The supplied hotel photograph is present; it is not a missing asset.
 
 ## Content supplied by other teams
 
-- [ ] Presentation/document files: 21 expected entries remain linked to their
+- [ ] Presentation/document files: 22 expected entries remain linked to their
   corresponding days and sessions. Publish each as its team supplies it.
 - [ ] Shared workshop folder and its participant access route.
 - [ ] Programme PDF if supplied/approved; the site's five-day print view remains

@@ -533,7 +533,10 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
    exactly as tall as its session is long and clips what does not fit, so a
    scale that grew the titles and not the boxes would start cutting the short
    sessions off on the widest monitors — the ones the growth is for. */
-.programme { --hour: clamp(76px, calc(76px + 12 * var(--t-ramp)), 88px); }
+.programme { --hour: clamp(76px, calc(76px + 12 * var(--t-ramp)), 88px); --tl-gutter: 10px; }
+/* A block spans the rail alone (--cols 1) or shares it with whatever runs at
+   the same time. The two declarations above collapse to `left: 0; width: 100%`
+   at --cols 1, which is every block on four of the five days. */
 
 /* Minutes to pixels: the one rule the whole proportion depends on. */
 .timeline { display: grid; grid-template-columns: 62px 1fr; gap: 18px; margin-top: 8px; }
@@ -547,7 +550,7 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
 .tl-rule { position: absolute; top: calc(var(--start) * var(--hour) / 60); right: 0; left: 0; border-top: 1px solid var(--line); opacity: .45; }
 .tl-rule[data-hour] { opacity: 1; }
 
-.tl-block { position: absolute; z-index: 2; top: calc(var(--start) * var(--hour) / 60); right: 0; left: 0; display: grid; grid-template-columns: 92px 1fr; gap: 14px; overflow: hidden; align-content: center; padding: 7px 14px; background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--forest); border-radius: var(--radius); height: calc(var(--dur) * var(--hour) / 60); }
+.tl-block { position: absolute; z-index: 2; top: calc(var(--start) * var(--hour) / 60); left: calc(var(--col, 0) * (100% + var(--tl-gutter)) / var(--cols, 1)); width: calc((100% - (var(--cols, 1) - 1) * var(--tl-gutter)) / var(--cols, 1)); display: grid; grid-template-columns: 92px 1fr; gap: 14px; overflow: hidden; align-content: center; padding: 7px 14px; background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--forest); border-radius: var(--radius); height: calc(var(--dur) * var(--hour) / 60); }
 .tl-block .tl-time { margin: 0; color: var(--muted); font-size: var(--t-label); font-weight: 700; font-variant-numeric: lining-nums tabular-nums; line-height: 1.35; }
 .tl-block-body { min-width: 0; }
 .tl-block-meta { display: flex; flex-wrap: wrap; gap: 9px; align-items: center; margin: 4px 0 0; }

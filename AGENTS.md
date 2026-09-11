@@ -155,14 +155,14 @@ it. What keeps the site from reading as generated is not the colour — it is
 structure and detail. Do not try to fix "it looks AI-made" by changing the
 palette; fix it by making the structure specific to this content.
 
-**The thesis is measured time.** Five days, 46 scheduled items, a strict clock,
+**The thesis is measured time.** Five days, 47 scheduled items, a strict clock,
 people arriving from seven time zones. The programme is not one section among
 others — it is why the site exists. Everything else is reference material.
 
 In one line: **an international operational document, with editorial finish and
 temporal behaviour.**
 
-Count carefully. "46 sessions" is wrong — the 46 includes meals, coffee breaks,
+Count carefully. "47 sessions" is wrong — the 47 includes meals, coffee breaks,
 transfers and receptions. Say _scheduled items_.
 
 **The signature is the programme, drawn to scale — on large screens only.**
@@ -171,7 +171,7 @@ the height of a forty-five minute country presentation and the shape of a day
 is visible at a glance. Parallel activities sit in adjacent columns, because
 that is what they are.
 
-**All 46 end times are confirmed.** Twenty of them were logical display
+**All 47 end times are confirmed.** Twenty of them were logical display
 intervals for lunches, coffee breaks, check-ins, summaries, dinners and Day 5
 transfers, chosen so every item had the same visual grammar; the organiser
 approved them as real on 5 September 2026 and the `endStatus: 'provisional'`
@@ -2014,3 +2014,69 @@ Four things about it are deliberate:
   `research/logos/README.md`.
 - **It is hidden in print**, with the directory and the footer's links. A join
   button on paper does nothing.
+
+
+## The agenda, reconciled again — 11 September 2026
+
+A newer copy of the organiser's own workbook (`T2G_Brazil_Workshop.xlsx`,
+`Agenda` sheet) was compared line by line against `data/agenda.ts`. Five things
+had moved; everything else matched exactly, and the reconciliation of
+9 September stands.
+
+| Day | Was | Is |
+| --- | --- | --- |
+| 1, 09:40–10:00 | absent | Welcome Coffee, inside the UFG tour's window |
+| 2, 14:00–15:30 | Biomass Data: Methodology and Updates | Remote sensing overview and grassland biomass monitoring: State of the art and future applications (Leandro/OGH) |
+| 2, 16:45–17:30 | Open Agenda | A few lessons from recent field campaigns in Brazil (Laerte/LAPIG) |
+| 3, 09:00–09:45 | State of the Art: Remote Sensing of Pasture & Decision Support Tools (Leandro/OGH, Emily/WWF) | On the ground biomass estimation: Key concepts and methodologies (Nathália/LAPIG) |
+| 5, 09:30–12:00 | Field Visit: Grazing Livestock Farm | …(Fazenda Buriti Queimado) |
+
+The count is 47 scheduled items, not 46. Everything that reads the agenda
+followed on its own: the home page's count, the Materials total (22 expected
+files, up one — the new Day 2 talk declares slides) and the `.ics` files.
+
+Four decisions in it:
+
+- **Ids did not change.** `d2-open-agenda-afternoon` now holds a talk and
+  `d3-state-of-the-art` a different subject, and both keep their names because
+  an id is the address a shared link, a material and a recap point at. The
+  slot did not move; only what happens in it. Each carries a comment saying so.
+- **Two spellings were corrected** — `lessos` and `campaings` — as `Aligment`
+  was before them. Nothing else about the supplied wording was touched, and
+  the one capital in `On the ground Biomass estimation` came down for the same
+  reason.
+- **The farm rides `venueNote`, not the title.** It renders as
+  `Field Visit: Grazing Livestock Farm (Fazenda Buriti Queimado)` in the `.ics`
+  and as a `Note` line on the page, which is exactly how the organiser wrote
+  it — and it keeps the title a title rather than a blob holding a place.
+  `research/pending-information.md` records that this supersedes the
+  8 September "farm names are not required". The Day 1 experimental area stays
+  unnamed because nothing names it.
+- **The welcome coffee overlaps the tour, and the grid now draws overlaps.**
+  See below.
+
+### Overlapping items on the axis
+
+The organiser's sheet gives the UFG tour 08:30–10:00 and the welcome coffee
+09:40–10:00 — the coffee closes the tour rather than following it. Both are
+kept as written.
+
+Two items running at once are **not** a split session: nobody chooses between
+them, so they cannot be `tracks`. Until now every block was `left: 0; right: 0`
+and two of them at the same hour would have been drawn on top of each other.
+`lanes()` in `components/programme.tsx` now walks a day in start order,
+chains items into runs of overlap, and gives each the lowest column free at
+its start; `--col` and `--cols` reach the CSS, where they collapse to
+`left: 0; width: 100%` at one column — which is every block on four of the
+five days. A run shares its width down its whole length, as a week of
+calendars has always drawn it.
+
+The chronological list, print and the `.ics` needed nothing: a list is
+chronological whether or not two items overlap, and a calendar has always
+allowed it. `NowNext` shows the first running item in document order, which
+during that twenty minutes is the tour — still true, and the band shows one
+item by design.
+
+**If the tour is meant to end at 09:40**, that is a one-line change to
+`d1-ufg-tour` and the lane machinery goes quiet on its own. It is not a
+guess this file should make.
