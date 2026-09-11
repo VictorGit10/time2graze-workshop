@@ -6,6 +6,12 @@ name = "time2graze-assistant"
 main = "src/index.js"
 compatibility_date = "2026-09-09"
 
+# One public address: https://time2graze-assistant.lapig-ufg.workers.dev.
+# Preview URLs would give every uploaded version an address of its own that
+# can spend the key as well, so they are off.
+workers_dev = true
+preview_urls = false
+
 [vars]
 # The published corpus. This worker holds no copy of the workshop — it reads
 # the one the site publishes, so a programme change needs no redeploy here.
@@ -32,9 +38,8 @@ namespace_id = "1001"
   limit = 8
   period = 60
 
-# The daily counter. Create it once with
-#   npx wrangler kv namespace create ASSISTANT_KV
-# and paste the id it prints here, then uncomment.
-# [[kv_namespaces]]
-# binding = "ASSISTANT_KV"
-# id = "paste-the-id-here"
+# The daily counter, created with `npx wrangler kv namespace create ASSISTANT_KV`.
+# The id names a namespace in the Cloudflare account; it grants nothing by itself.
+[[kv_namespaces]]
+binding = "ASSISTANT_KV"
+id = "9ca3fcb98c02438fb913386f0466acc1"
