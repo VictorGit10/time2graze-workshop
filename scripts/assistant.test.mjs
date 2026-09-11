@@ -48,6 +48,27 @@ test('ids are unique, because the panel resolves links by them', () => {
   assert.equal(new Set(ids).size, ids.length);
 });
 
+/**
+ * Anchors rendered as plain ids by a page, rather than resolved by the
+ * programme. A source button aimed at one lands on the card it names; if the
+ * page stops rendering it, the button quietly drops the reader at the top.
+ */
+const pageSources = [
+  'app/practical/page.tsx',
+  'components/orientation.tsx',
+  'components/friday-visit.tsx',
+  'app/materials/page.tsx',
+].map((file) => readFileSync(new URL(`../${file}`, import.meta.url), 'utf8'));
+
+function pageRendersAnchor(anchor) {
+  if (/^materials-day-\d+$/.test(anchor)) {
+    return pageSources.some((source) => source.includes('id={`materials-day-${day.index}`}'));
+  }
+  return pageSources.some(
+    (source) => source.includes(`id="${anchor}"`) || source.includes(`anchor="${anchor}"`),
+  );
+}
+
 test('every link lands on a real route and a real anchor', () => {
   for (const entry of corpus.entries) {
     const [path, anchor] = entry.href.split('#');
@@ -57,8 +78,8 @@ test('every link lands on a real route and a real anchor', () => {
     );
     if (anchor) {
       assert.ok(
-        sessionIds.has(anchor) || dayAnchors.has(anchor),
-        `${entry.id}: #${anchor} names no session or day`,
+        sessionIds.has(anchor) || dayAnchors.has(anchor) || pageRendersAnchor(anchor),
+        `${entry.id}: #${anchor} names no session, day or page anchor`,
       );
     }
   }

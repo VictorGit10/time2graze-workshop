@@ -1514,6 +1514,31 @@ reads this in an arrivals hall, and a plausible guess is worse than a blank.
   An id it invents resolves to nothing and is dropped. That is also how the
   panel conducts navigation — the buttons under an answer are real entries.
 
+### Following a source
+
+A source button is only worth having if it lands the reader on the thing it
+names, so every `href` in the corpus carries the anchor of that thing:
+`/programme/#d3-lunch`, `/practical/#hotel`, `/materials/#materials-day-2`.
+The page anchors a corpus entry may use are checked against the pages that
+render them in `scripts/assistant.test.mjs`; a renamed card fails the test
+rather than dropping the reader at the top of the page.
+
+`follow` in `components/assistant.tsx` does the navigating, and two things in
+it are easy to undo by accident:
+
+- **On the same route it raises `hashchange` itself.** A `Link` to
+  `/programme/#d3-lunch` from the programme changed the address bar and
+  nothing else — Next emits no `hashchange` for a same-route navigation, so
+  the day stayed on Day 1 and the page did not move. It is the same problem
+  `components/story-link.tsx` solves for the story panels.
+- **Across routes the page changes first and the hash applies after.** The
+  route is pushed without its hash inside `document.startViewTransition`, so
+  the page cross-fades at `--m-move`; only when the transition has finished is
+  the hash replaced into the URL, and the smooth scroll to it is visible.
+  Pushing the full `href` let Next jump to the anchor instantly and left
+  nothing for the eye to follow. Under `prefers-reduced-motion`, or without
+  View Transitions, the same two steps run with no fade.
+
 ### The worker, and why there is one
 
 Static export means no server on the origin, so a key in the bundle is a key a

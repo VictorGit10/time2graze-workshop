@@ -50,6 +50,19 @@ const MAX_BYTES = 120_000;
 /** @type {{ id: string, kind: string, title: string, text: string, href: string }[]} */
 const entries = [];
 
+/* Where each place is drawn on Travel & stay, so a source button lands on the
+   card rather than the top of the page. The anchors are the ones the page
+   itself renders; `scripts/assistant.test.mjs` checks they still exist. */
+const PLACE_HREF = {
+  hotel: '/practical/#hotel',
+  lapig: '/practical/#lapig',
+  cidadeDeGoias: '/practical/#cidade-de-goias',
+};
+const CITY_HREF = {
+  goiania: '/practical/#orientation',
+  goias: '/practical/#cidade-de-goias',
+};
+
 function add(id, kind, title, text, href, day) {
   const body = text.replace(/\s+/g, ' ').trim();
   if (body)
@@ -168,7 +181,7 @@ for (const day of AGENDA) {
       'material',
       `${material.title ?? material.kind} · ${context}`,
       `${material.kind} for ${context}, Day ${day.index}. ${state}`,
-      '/materials/',
+      `/materials/#materials-day-${day.index}`,
       day.index,
     );
   };
@@ -209,7 +222,7 @@ for (const [id, venue] of Object.entries(VENUES)) {
         : 'Travel & stay maps this place. No ride link is offered for it.',
     );
   }
-  add(`venue-${id}`, 'venue', venue.name, parts.join(' '), '/practical/');
+  add(`venue-${id}`, 'venue', venue.name, parts.join(' '), PLACE_HREF[id] ?? '/practical/');
 }
 
 add(
@@ -217,7 +230,7 @@ add(
   'practical',
   'Accommodation',
   `Rooms are booked for ${ACCOMMODATION_PLAN.dates} at ${VENUES.hotel.name}. Payment: ${ACCOMMODATION_PLAN.payment}.`,
-  '/practical/',
+  '/practical/#stay',
 );
 
 add(
@@ -228,7 +241,7 @@ add(
     (leg) =>
       `${leg.days}: ${leg.time}, ${leg.detail}${leg.provisional ? ' (provisional)' : ''}`,
   ).join('. ')}.`,
-  '/practical/',
+  '/practical/#transport',
 );
 
 /* City context and free-time places. These are recommendations, not workshop
@@ -239,7 +252,7 @@ for (const [id, story] of Object.entries(CITY_STORIES)) {
   parts.push(...story.paragraphs);
   for (const detail of story.details ?? [])
     parts.push(`${detail.title}: ${detail.text}`);
-  add(`city-${id}`, 'city', story.title, parts.join(' '), '/practical/');
+  add(`city-${id}`, 'city', story.title, parts.join(' '), CITY_HREF[id] ?? '/practical/#orientation');
 }
 
 add(
@@ -247,7 +260,7 @@ add(
   'city',
   'Goiânia in figures',
   `${GOIANIA_INTRO} ${GOIANIA_FACTS.map((f) => `${f.label}: ${f.value}${f.note ? ` (${f.note})` : ''}`).join('. ')}. History: ${GOIANIA_HISTORY.map((m) => `${m.year} — ${m.event}`).join(' ')}`,
-  '/practical/',
+  CITY_HREF.goiania,
 );
 
 add(
@@ -255,7 +268,7 @@ add(
   'city',
   'Cidade de Goiás in figures',
   `${TOWN_INTRO} ${TOWN_FACTS.map((f) => `${f.label}: ${f.value}${f.note ? ` (${f.note})` : ''}`).join('. ')}. History: ${TOWN_HISTORY.map((m) => `${m.year} — ${m.event}`).join(' ')}`,
-  '/practical/',
+  CITY_HREF.goias,
 );
 
 for (const place of GUIDE_PLACES) {
@@ -264,7 +277,7 @@ for (const place of GUIDE_PLACES) {
     'guide',
     place.name,
     `${place.category} in ${place.area}, Goiânia. ${place.description} A free-time recommendation, not a workshop venue; opening hours are not published here. Website: ${place.website}`,
-    '/practical/',
+    '/practical/#recommendations',
   );
 }
 

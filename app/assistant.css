@@ -202,6 +202,15 @@
   line-height: 1.45;
 }
 
+/* Following a source changes page under a cross-fade rather than a cut, at
+   the site's own "change the reader asked for" duration. The component skips
+   the transition entirely under prefers-reduced-motion. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--m-move);
+  animation-timing-function: var(--m-ease);
+}
+
 @media print {
   .ask-trigger, .ask-panel { display: none; }
   .ask-panel::backdrop { display: none; }

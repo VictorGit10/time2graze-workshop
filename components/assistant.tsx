@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { useCallback, useEffect, useRef, useState, type SyntheticEvent } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import { useCallback, useEffect, useRef, useState, type MouseEvent, type SyntheticEvent } from 'react';
 import { MessageCircle, X } from 'lucide-react';
 import {
   assistantEnabled, loadCorpus, splitSources, streamAnswer,
@@ -33,6 +34,28 @@ type Turn = {
   note?: string;
 };
 
+/**
+ * Brings a hash into effect on the page already showing.
+ *
+ * Next does not emit `hashchange` for a same-route navigation (see
+ * `components/story-link.tsx`), and a `Link` to `/programme/#d3-lunch` from
+ * the programme changed the address bar and nothing else: the day stayed on
+ * Day 1 and the page did not move. The programme and the story panels both
+ * listen for `hashchange`, so it is raised here. A plain id — a venue card, a
+ * day of materials — is scrolled to directly; `scroll-behavior: smooth` on the
+ * html makes that a glide, and the reduced-motion rule makes it instant.
+ */
+function applyHash(hash: string, mode: 'push' | 'replace') {
+  if (!hash) return;
+  if (window.location.hash !== hash) {
+    const url = window.location.pathname + window.location.search + hash;
+    if (mode === 'push') window.history.pushState(window.history.state, '', url);
+    else window.history.replaceState(window.history.state, '', url);
+  }
+  window.dispatchEvent(new HashChangeEvent('hashchange'));
+  document.getElementById(hash.slice(1))?.scrollIntoView({ block: 'start' });
+}
+
 export function Assistant() {
   const [open, setOpen] = useState(false);
   const [corpus, setCorpus] = useState<Corpus | null>(null);
@@ -45,6 +68,60 @@ export function Assistant() {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const logRef = useRef<HTMLDivElement>(null);
   const abortRef = useRef<AbortController | null>(null);
+
+  const router = useRouter();
+  const pathname = usePathname();
+  /** Resolves the navigation a source button started, once its page has committed. */
+  const arrivedRef = useRef<(() => void) | null>(null);
+
+  useEffect(() => {
+    arrivedRef.current?.();
+    arrivedRef.current = null;
+  }, [pathname]);
+
+  /**
+   * A source button takes the reader to the place it names, in two steps: the
+   * page changes under a cross-fade, and only then does the hash apply, so the
+   * programme opens the right day and the page glides to the session rather
+   * than cutting to it. Arriving with the hash already in the URL let Next jump
+   * there instantly and left nothing for the eye to follow.
+   */
+  const follow = useCallback(
+    (event: MouseEvent<HTMLAnchorElement>, href: string) => {
+      // A new tab or a copied link keeps the plain anchor behaviour.
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
+      event.preventDefault();
+
+      const [path, anchor] = href.split('#');
+      const hash = anchor ? `#${anchor}` : '';
+      dialogRef.current?.close();
+
+      if (path === pathname) {
+        applyHash(hash, 'push');
+        return;
+      }
+
+      const arrive = () =>
+        new Promise<void>((resolve) => {
+          // A navigation that never commits must not hold the page frozen.
+          const timer = setTimeout(resolve, 3000);
+          arrivedRef.current = () => {
+            clearTimeout(timer);
+            resolve();
+          };
+          router.push(path);
+        });
+
+      const land = () => applyHash(hash, 'replace');
+      const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (still || !('startViewTransition' in document)) {
+        void arrive().then(land);
+        return;
+      }
+      void document.startViewTransition(arrive).finished.then(land, land);
+    },
+    [pathname, router],
+  );
 
   /* The corpus is 30 kB and only the panel needs it, so it is not part of the
      page's own payload — it is fetched the first time the panel opens. */
@@ -69,7 +146,7 @@ export function Assistant() {
       inputRef.current?.focus();
     } else if (!open && dialog.open) {
       dialog.close();
-      triggerRef.current?.focus();
+      triggerRef.current?.focus({ preventScroll: true });
     }
   }, [open]);
 
@@ -199,7 +276,7 @@ export function Assistant() {
                 {turn.sources && turn.sources.length > 0 && (
                   <nav className="ask-sources" aria-label="Where this is on the site">
                     {turn.sources.map((entry) => (
-                      <Link key={entry.id} href={entry.href} onClick={() => setOpen(false)}>
+                      <Link key={entry.id} href={entry.href} onClick={(event) => follow(event, entry.href)}>
                         {entry.title}
                       </Link>
                     ))}
