@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex">
+    <title>Time2Graze Brazil Workshop — moved</title>
+    <script>
+      /* Preserves path and hash: /time2graze-workshop/programme/#d3-lunch
+         forwards to the same session at the LAPIG address. */
+      var base = "/time2graze-workshop";
+      var path = location.pathname;
+      var atBase = path === base || path === base + "/" || path.indexOf(base + "/") === 0;
+      location.replace(
+        "https://lapig-ufg.github.io" + (atBase ? path : base + "/") + location.hash
+      );
+    </script>
+    <meta http-equiv="refresh" content="0;url=https://lapig-ufg.github.io/time2graze-workshop/">
+  </head>
+  <body>
+    <p>
+      The Time2Graze Brazil Workshop site has moved to
+      <a href="https://lapig-ufg.github.io/time2graze-workshop/">https://lapig-ufg.github.io/time2graze-workshop/</a>.
+      You are being redirected.
+    </p>
+  </body>
+</html>
