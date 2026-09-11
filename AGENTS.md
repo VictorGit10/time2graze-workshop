@@ -614,6 +614,7 @@ components/venue-card.tsx    A place you navigate to (hotel, LAPIG): actions, co
 components/friday-visit.tsx  Cidade de Goiás as one block: the coach, then the town.
 components/orientation.tsx   Travel part two: Goiânia's context and the free-time map.
 components/free-time-map.tsx Embedded reference Google My Maps for free time.
+components/whatsapp-mark.tsx The WhatsApp glyph, inlined. lucide carries no brand marks.
 components/recap.tsx         The day's published record, and the control that flags a line as wrong.
 components/add-to-calendar.tsx  .ics downloads, subscription URL and the share form.
 hooks/use-tab-keys.ts        Arrow-key movement for the day tablist. Horizontal only.
@@ -621,6 +622,7 @@ data/agenda.ts               The five days, sessions, tracks and materials.
 data/types.ts                Content contracts.
 data/venues.ts               The single venue registry: names, pins, addresses.
 data/practical.ts            Accommodation, contracted shuttle and selected guide links.
+data/contact.ts              The participants' WhatsApp group: the one link that leaves the site.
 data/recaps.ts               The daily recaps, one entry per day, written the evening of that day.
 data/geography.ts            The two towns: figures, chronologies, map markers, drawn geometry.
 data/institutions.ts         The marks cleared for display, with their artwork sizes.
@@ -673,6 +675,8 @@ rather than being declared inside a component.
   [`docs/daily-recap.md`](docs/daily-recap.md) — the item ids in it are what
   reader corrections point at, so they are assigned by that procedure and not
   by hand on a whim. See [Daily recaps](#daily-recaps).
+- Edit `data/contact.ts` to change the participants' group link. The home strip
+  and the footer both read it; neither writes a URL of its own.
 - Materials are declared on the day, session or track that produces them.
   `lib/materials.ts` aggregates them; do not recreate a hand-maintained list.
 - The four page components compose the data. Do not move operational facts
@@ -1966,3 +1970,47 @@ The audit is `scripts/`-free on purpose — it was a throwaway Playwright pass a
 targets under 40px, and label/value pairs more than 55px apart. Worth
 re-running by hand after a layout change; the useful part is the list of what
 to look for, which is this paragraph.
+
+
+## The participants' group — 11 September 2026
+
+The client supplied the workshop's WhatsApp group invite and asked for it on the
+site. It is the first link on any page that leaves the site for a destination
+that is not an institution's own website, and it landed in two places.
+
+**On the home page, as a coda to the directory.** Not a fourth destination: the
+directory indexes the site's three other pages, and this one does not belong in
+that count. The strip sits directly under the cards, shares their frame — those
+cards' bottom rule is its top rule — and takes the mark into the column the
+card indices occupy, so both text columns start on the same left edge. It
+carries the outward arrow the internal cards never do. The order of the home
+page is unchanged and the argument now ends one step further on: what is
+happening now, what this is, where to go, how to reach everyone.
+
+**In the footer, on the second row of the centre column.** Under the name it
+belongs to, so a reader on `/programme/` or `/materials/` does not have to go
+home for it. The three-column balance the footer already had is untouched:
+nothing moved, one row appeared. Both links are direct children of `footer`
+because the print rule hides `footer > a`, and a wrapper would have put them
+back on paper.
+
+Four things about it are deliberate:
+
+- **The stored link is the canonical invite**, `chat.whatsapp.com/<code>`. It
+  arrived from WhatsApp's share sheet carrying `?s=sw&p=i&mlu=4&ilr=4`; those
+  parameters describe how the organiser happened to copy it, not the group, and
+  publishing them would hand them to every reader.
+- **The copy states what happens and who can join, and nothing else.** "Opens
+  in WhatsApp. Anyone with the link can join." What the group is *for* has not
+  been stated by the organiser, so it is not described. The second sentence is
+  also the one property worth knowing before tapping: **an invite link on a
+  public page is open to anyone who finds the page**, and this site is published
+  on GitHub Pages. If that becomes a problem, the fix is the organiser's —
+  reset the invite in WhatsApp and supply a new code — not a change here.
+- **The glyph is the real one**, from Simple Icons (CC0), because a generic
+  speech bubble does not say which application is about to open. It is drawn in
+  `currentColor` and never in WhatsApp's green: the workshop has no badge and
+  does not acquire one by linking out. Provenance is in
+  `research/logos/README.md`.
+- **It is hidden in print**, with the directory and the footer's links. A join
+  button on paper does nothing.
